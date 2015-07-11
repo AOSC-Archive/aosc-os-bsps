@@ -1,4 +1,4 @@
-./configure --host=$HOST --build=x86_64-unknown-linux-gnu \
+PYTHON_CFLAGS="-I/var/ab/cross-root/armel/usr/include/python2.7" PYTHON_LIBS="-lpython2.7" ./configure --host=$HOST --build=x86_64-unknown-linux-gnu \
       --localstatedir=/var \
       --sysconfdir=/etc \
       --disable-lz4 --disable-libgcrypt \
