@@ -4,3 +4,4 @@ PKGDEP="glib xz acl bash kbd kmod libcap linux-pam util-linux" # "libgcrypt lz4 
 PKGDES="system and service manager"
 
 PKGVER=219-ver215
+export PYTHON_CFLAGS=-I/var/ab/cross-root/armel/usr/include/python2.7
