@@ -1,2 +1,5 @@
 VER=0.4.0+git20151007
-SRCTBL="https://github.com/ssvb/xf86-video-fbturbo/archive/f9a6ed78419f0b98cf2c3ce3cdd4c97fe9a46195.tar.gz"
+SHA="f9a6ed78419f0b98cf2c3ce3cdd4c97fe9a46195"
+SRCTBL="https://github.com/ssvb/xf86-video-fbturbo/archive/$SHA.tar.gz"
+SUBDIR="xf86-video-fbturbo-$SHA"
+
