@@ -1,0 +1,4 @@
+PKGNAME=sun8iw5p1-workaround
+PKGSEC=misc
+PKGDEP="systemd"
+PKGDES="Workaround to get X.Org running on sun8iw5p1 (Allwinner A33) devices"

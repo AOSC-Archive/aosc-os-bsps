@@ -1,0 +1,13 @@
+#! /bin/bash
+TERM=linux setterm --blank force >/dev/tty0 </dev/tty0 2>&1
+TERM=linux setterm --blank poke >/dev/tty0 </dev/tty0 2>&1
+echo 1200000 > /sys/class/power_supply/BAT0/chgintmicrocur
+echo 1 > /sys/devices/virtual/disp/disp/attr/lcdbl
+# echo 2 > /sys/class/graphics/fbcon/rotate_all
+echo 0 > /sys/class/power_supply/BAT0/iholden
+cd /usr/lib/modules/3.4.39+/kernel/drivers
+for i in ump mali mali_drm disp_ump
+do
+modprobe $i
+done
+chmod 0666 /dev/ump /dev/mali /dev/dri/card0

@@ -1,0 +1,10 @@
+[Unit]
+Description=SUN8IW5P1 Workaround
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/sun8iw5p1-workaround start
+
+[Install]
+WantedBy=multi-user.target

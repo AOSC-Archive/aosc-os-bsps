@@ -1,0 +1,4 @@
+PKGNAME=libump
+PKGDES="Unified Memory Provider userspace API source code needed for Mali binary driver"
+PKGDEP="glibc"
+PKGSEC=libs

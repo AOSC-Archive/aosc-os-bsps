@@ -1,0 +1,2 @@
+VER=3.2.1.2+git20140326 # r3p2-01rel2
+SRCTBL="https://github.com/linux-sunxi/libump/archive/ec0680628744f30b8fac35e41a7bd8e23e59c39f.tar.gz"
