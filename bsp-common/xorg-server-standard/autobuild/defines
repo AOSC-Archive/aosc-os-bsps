@@ -1,0 +1,37 @@
+PKGNAME=xorg-server
+PKGSEC=x11
+PKGDEP="xkeyboard-config x11-app x11-lib libdrm pixman mesa libgcrypt"
+PKGDES="Xorg Server"
+
+AUTOTOOLS_AFTER="--enable-ipv6 \
+                 --enable-dri \
+                 --enable-dri3 \
+                 --enable-dmx \
+                 --enable-xvfb \
+                 --enable-xnest \
+                 --enable-composite \
+                 --enable-xcsecurity \
+                 --enable-xorg \
+                 --enable-xephyr \
+                 --enable-xwayland \
+                 --enable-glx-tls \
+                 --enable-kdrive \
+                 --enable-kdrive-evdev \
+                 --enable-kdrive-kbd \
+                 --enable-kdrive-mouse \
+                 --enable-config-udev \
+                 --disable-systemd-logind \
+                 --enable-install-setuid \
+                 --enable-record \
+                 --disable-xfbdev \
+                 --disable-xfake \
+                 --disable-static \
+                 --libexecdir=/usr/bin \
+                 --localstatedir=/var \
+                 --with-xkb-path=/usr/share/X11/xkb \
+                 --with-xkb-output=/var/lib/xkb \
+                 --with-fontrootdir=/usr/share/fonts \
+                 --with-sha1=libgcrypt"
+
+AB_FLAGS_RRO=0
+AB_FLAGS_NOW=0
