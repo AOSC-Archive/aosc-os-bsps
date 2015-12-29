@@ -2,3 +2,4 @@ PKGNAME=xf86-video-fbturbo
 PKGDES="Xorg DDX driver for ARM devices with CPU or specified IP core acceleration"
 PKGSEC=x11
 PKGDEP="xorg-server libump"
+ABSHADOW=no
