@@ -1,0 +1,3 @@
+mkdir -p $PKGDIR/boot $PKGDIR/lib/modules
+cp boot/kernel7.img boot/bcm2709-rpi-2-b.dtb $PKGDIR/boot/
+cp -r modules/*v7+ $PKGDIR/lib/modules/

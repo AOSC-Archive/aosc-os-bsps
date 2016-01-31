@@ -1,0 +1,3 @@
+PKGNAME=raspberrypi-firmware-bootloader
+PKGDES="Bootloader of Raspberry Pi 2"
+PKGSEC=misc
