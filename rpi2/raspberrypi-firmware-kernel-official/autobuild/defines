@@ -1,5 +1,5 @@
-PKGNAME=raspberrypi-firmware-bootloader
-PKGDES="Bootloader of Raspberry Pi 2"
+PKGNAME=raspberrypi-firmware-kernel-official
+PKGDES="Official Kernel for Raspberry Pi 2"
 PKGSEC=misc
 
 ABSTRIP=no
