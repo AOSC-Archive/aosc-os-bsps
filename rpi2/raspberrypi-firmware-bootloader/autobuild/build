@@ -1,2 +1,2 @@
 mkdir -p $PKGDIR/boot
-cp boot/*.bin boot/*.elf boot/*.dat boot/LICENSE.broadcom $PKGDIR/boot/
+cp boot/*.bin boot/*.elf boot/*.dat boot/LICENCE.broadcom $PKGDIR/boot/
