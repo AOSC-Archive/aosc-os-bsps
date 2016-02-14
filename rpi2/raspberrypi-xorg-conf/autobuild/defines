@@ -1,0 +1,4 @@
+PKGNAME=raspberrypi-xorg-conf
+PKGSEC=x11
+PKGDEP=""
+PKGDES="Standard Xorg Server configuration files for Raspberry Pi [2]"
