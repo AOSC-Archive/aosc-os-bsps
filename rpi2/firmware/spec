@@ -1,0 +1,3 @@
+VER=20160315
+SRCTBL="https://github.com/raspberrypi/firmware/archive/1.$VER.tar.gz"
+SUBDIR="firmware-1.$VER"
