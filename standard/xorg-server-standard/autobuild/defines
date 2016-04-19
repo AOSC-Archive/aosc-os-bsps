@@ -1,7 +1,8 @@
 PKGNAME=xorg-server
 PKGSEC=x11
-PKGDEP="xkeyboard-config x11-app x11-lib libdrm pixman mesa libgcrypt"
-PKGDES="Xorg Server"
+PKGDEP="xkeyboard-config x11-app x11-lib libdrm pixman mesa libgcrypt libepoxy"
+BUILDDEP="xcb-util-renderutil x11-proto xcb-util-image xcb-util-keysyms xcb-util-wm x11-app"
+PKGDES="X.Org display server (standard ARM)"
 
 AUTOTOOLS_AFTER="--enable-ipv6 \
                  --enable-dri \
@@ -9,10 +10,12 @@ AUTOTOOLS_AFTER="--enable-ipv6 \
                  --enable-dmx \
                  --enable-xvfb \
                  --enable-xnest \
+                 --disable-libunwind \
                  --enable-composite \
                  --enable-xcsecurity \
                  --enable-xorg \
                  --enable-xephyr \
+                 --enable-glamor \
                  --enable-xwayland \
                  --enable-glx-tls \
                  --enable-kdrive \
@@ -32,6 +35,11 @@ AUTOTOOLS_AFTER="--enable-ipv6 \
                  --with-xkb-output=/var/lib/xkb \
                  --with-fontrootdir=/usr/share/fonts \
                  --with-sha1=libgcrypt"
+PKGBREAK="xf86-input-aiptek xf86-video-openchrome"
+PKGCONFL="xf86-video-modesetting<=0.9.0-1"
+PKGREP="xf86-video-modesetting<=0.9.0-1"
 
 AB_FLAGS_RRO=0
 AB_FLAGS_NOW=0
+
+RECONF=no
