@@ -1,0 +1,32 @@
+# From Raspbian.
+mkdir -p /boot/overlays
+mkdir -p /usr/share/rpikernelhack/overlays
+
+if [ -f "/boot/recovery.elf" ]; then
+  echo "/boot appears to be NOOBS recovery partition. Applying fix."
+  rootnum=`cat /proc/cmdline | sed -n 's|.*root=/dev/mmcblk0p\([0-9]*\).*|\1|p'`
+  if [ ! "$rootnum" ];then
+    echo "Could not determine root partition"
+    exit 1
+  fi
+
+  if ! grep -qE "/dev/mmcblk0p1\s+/boot" /etc/fstab; then
+    echo "Unexpected fstab entry"
+    exit 1
+  fi
+
+  boot="/dev/mmcblk0p$((rootnum-1))"
+  root="/dev/mmcblk0p${rootnum}"
+  sed /etc/fstab -i -e "s|^.* / |${root}  / |"
+  sed /etc/fstab -i -e "s|^.* /boot |${boot}  /boot |"
+  umount /boot
+  if [ $? -ne 0 ]; then
+    echo "Failed to umount /boot. Remount manually and run sudo apt-get install -f."
+    exit 1
+  else
+    mount /boot
+  fi
+fi
+
+dpkg-divert --package rpikernelhack --divert /usr/share/rpikernelhack/kernel7.img /boot/kernel7.img
+dpkg-divert --package rpikernelhack --divert /usr/share/rpikernelhack/bcm2709-rpi-2-b.dtb /boot/bcm2709-rpi-2-b.dtb

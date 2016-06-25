@@ -1,5 +1,5 @@
 PKGNAME=raspberrypi-firmware-vctools
-PKGDES="Closed VideoCore(TM) IV Tools"
+PKGDES="Tools and libraries for interaction with VideoCore(TM) IV"
 PKGSEC=misc
 PKGDEP="raspberrypi-firmware-bootloader"
 

@@ -1,0 +1,10 @@
+rm /boot/kernel7.img
+rm /boot/bcm2709-rpi-2-b.dtb
+
+dpkg-divert --package rpikernelhack --remove --rename /boot/kernel7.img
+dpkg-divert --package rpikernelhack --remove --rename /boot/bcm2709-rpi-2-b.dtb
+
+rm -r /usr/share/rpikernelhack/overlays
+rm -r /boot/overlays
+
+sync
