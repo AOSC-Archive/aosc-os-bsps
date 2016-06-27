@@ -1,5 +1,4 @@
-VER=20160417
-REL=1
-GITCO="9628ed8ee809ace08e64beb58fddad5ebd8155f0"
+VER=20160620
+GITCO="390f53ed0fd79df274bdcc81d99e09fa262f03ab"
 SRCTBL="https://github.com/raspberrypi/firmware/archive/$GITCO.zip"
 SUBDIR="firmware-$GITCO"

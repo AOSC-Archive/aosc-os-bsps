@@ -30,3 +30,4 @@ fi
 
 dpkg-divert --package rpikernelhack --divert /usr/share/rpikernelhack/kernel7.img /boot/kernel7.img
 dpkg-divert --package rpikernelhack --divert /usr/share/rpikernelhack/bcm2709-rpi-2-b.dtb /boot/bcm2709-rpi-2-b.dtb
+dpkg-divert --package rpikernelhack --divert /usr/share/rpikernelhack/bcm2709-rpi-3-b.dtb /boot/bcm2709-rpi-3-b.dtb
