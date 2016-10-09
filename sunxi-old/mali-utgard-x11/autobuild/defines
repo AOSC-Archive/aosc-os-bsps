@@ -1,5 +1,0 @@
-PKGNAME=mali-utgard-x11
-PKGSEC=libs
-PKGDEP="libump"
-PKGDES="Mali binary driver for Mali-400 or its MP version"
-ABSTRIP=no

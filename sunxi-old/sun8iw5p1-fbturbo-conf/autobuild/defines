@@ -1,4 +1,0 @@
-PKGNAME=sun8iw5p1-fbturbo-conf
-PKGSEC=misc
-PKGDEP="xf86-video-fbturbo"
-PKGDES="fbturbo DDX config to run on sun8iw5p1 (Allwinner A33) devices"
