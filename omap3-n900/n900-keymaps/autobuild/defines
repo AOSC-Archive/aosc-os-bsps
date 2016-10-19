@@ -1,0 +1,3 @@
+PKGNAME=n900-keymaps
+PKGSEC=admin
+PKGDES="Console keymap for Nokia N900 Internet Tablet"

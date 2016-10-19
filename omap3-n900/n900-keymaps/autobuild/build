@@ -1,0 +1,2 @@
+mkdir -p $PKGDIR/usr/share/kbd/keymaps/arm
+cp rx51_us.map $PKGDIR/usr/share/kbd/keymaps/arm
