@@ -1,0 +1,10 @@
+[Unit]
+Description=Enable the modem of N900
+Before=ofono.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/enable-n900-modem
+
+[Install]
+WantedBy=multi-user.target

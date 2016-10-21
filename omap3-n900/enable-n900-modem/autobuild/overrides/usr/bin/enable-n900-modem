@@ -1,0 +1,4 @@
+#! /bin/bash
+rm -rf /dev/cmt
+ln -sv /sys/bus/hsi/devices/n900-modem /dev/cmt
+modprobe nokia-modem pm=1
