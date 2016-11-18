@@ -1,0 +1,6 @@
+mkdir -p "$PKGDIR"/usr/lib/mali
+cp usr/lib/arm-linux-gnueabihf/libMali.so "$PKGDIR"/usr/lib
+for i in libEGL.so libEGL.so.1 libEGL.so.1.0.0 libGLESv1_CM.so libGLESv1_CM.so.1 libGLESv1_CM.so.1.1.0 libGLESv2.so libGLESv2.so.2 libGLESv2.so.2.0.0
+do
+ln -sfv ../libMali.so "$PKGDIR"/usr/lib/mali/$i
+done

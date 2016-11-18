@@ -1,0 +1,3 @@
+PKGNAME=gles-mali-400-x11
+PKGDES="Mali blobs from NextThingCo for Mali-400 GPU"
+PKGSEC=x11
