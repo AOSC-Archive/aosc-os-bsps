@@ -9,7 +9,7 @@ All AOSC ARM device image are suggested to add a /etc/aosc-arm.conf file
 
 Currently, the variables above are introduced:
 
-#### DEVICE
+#### DEVICE\_NAME
 
 This is used to indicate the device name.
 
