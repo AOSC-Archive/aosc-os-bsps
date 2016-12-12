@@ -1,3 +1,8 @@
 PKGNAME=aosc-os-armel-sunxi-boot
 PKGSEC=kernel
 PKGDES="Kernel and U-Boot for sunxi platform"
+
+ABSTRIP=no
+ABELFDEP=no
+ABRPMAUTOPROVONLY=yes
+
