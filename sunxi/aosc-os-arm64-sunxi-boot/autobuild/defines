@@ -1,0 +1,9 @@
+PKGNAME=aosc-os-arm64-sunxi-boot
+PKGSEC=kernel
+PKGDES="Kernel and U-Boot for 64-bit sunxi platform"
+PKGRECOM="aosc-os-arm-boot-flasher"
+
+ABSTRIP=no
+ABELFDEP=no
+ABRPMAUTOPROVONLY=yes
+
