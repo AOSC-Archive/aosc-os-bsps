@@ -1,2 +1,2 @@
-VER=20170317
+VER=20170324
 SRCTBL="https://mirror.anthonos.org/aosc-repacks/aosc-os-arm64-sunxi-boot/aosc-os-arm64-sunxi-boot-experimental-$VER.tar.xz"
