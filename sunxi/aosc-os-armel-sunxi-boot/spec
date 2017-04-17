@@ -1,2 +1,2 @@
-VER=20170309
-SRCTBL="https://mirror.anthonos.org/aosc-repacks/aosc-os-armel-sunxi-boot/aosc-os-armel-sunxi-boot-20170309-ge90db28-linux-4.11-rc1-u-boot-2017.03-rc3.tar.xz"
+VER=20170417
+SRCTBL="https://mirror.anthonos.org/aosc-repacks/aosc-os-armel-sunxi-boot/aosc-os-armel-sunxi-boot-20170417-gd7dd85d-linux-4.11-rc7-u-boot-2017.05-rc1.tar.xz"
