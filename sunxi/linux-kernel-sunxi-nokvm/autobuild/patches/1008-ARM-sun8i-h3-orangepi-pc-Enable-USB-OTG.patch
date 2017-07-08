@@ -1,0 +1,88 @@
+From patchwork Wed Apr 19 05:09:18 2017
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Subject: [3/4] ARM: sun8i: h3: orangepi-pc: Enable USB OTG
+From: Chen-Yu Tsai <wens@csie.org>
+X-Patchwork-Id: 9686815
+Message-Id: <20170419050919.6762-4-wens@csie.org>
+To: Maxime Ripard <maxime.ripard@free-electrons.com>
+Cc: devicetree@vger.kernel.org, Chen-Yu Tsai <wens@csie.org>,
+ linux-sunxi@googlegroups.com, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+Date: Wed, 19 Apr 2017 13:09:18 +0800
+
+The Orange Pi PC, PC Plus, and Plus 2E all have a USB OTG port
+that can be used in both powered host mode and peripheral mode.
+When in peripheral mode, the port does not power the board.
+There is no VBUS sensing on the port. All three boards have all
+related pins routed the same way.
+
+The device tree file for the Orange Pi Plus 2E is based on the
+Orange Pi PC Plus, which itself is based on the Orange Pi PC.
+Changes to the base Orange Pi PC device tree file affects all 3
+boards.
+
+This patch adds the regulator controlling VBUS on the OTG port,
+the GPIO for the ID detect pin, and enables the USB OTG and host
+controllers.
+
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+---
+ arch/arm/boot/dts/sun8i-h3-orangepi-pc.dts | 22 +++++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/boot/dts/sun8i-h3-orangepi-pc.dts b/arch/arm/boot/dts/sun8i-h3-orangepi-pc.dts
+index f148111c326d..1a044b17d6c6 100644
+--- a/arch/arm/boot/dts/sun8i-h3-orangepi-pc.dts
++++ b/arch/arm/boot/dts/sun8i-h3-orangepi-pc.dts
+@@ -97,6 +97,10 @@
+ 	status = "okay";
+ };
+ 
++&ehci0 {
++	status = "okay";
++};
++
+ &ehci1 {
+ 	status = "okay";
+ };
+@@ -125,6 +129,10 @@
+ 	status = "okay";
+ };
+ 
++&ohci0 {
++	status = "okay";
++};
++
+ &ohci1 {
+ 	status = "okay";
+ };
+@@ -156,6 +164,11 @@
+ 	};
+ };
+ 
++&reg_usb0_vbus {
++	gpio = <&r_pio 0 2 GPIO_ACTIVE_HIGH>; /* PL2 */
++	status = "okay";
++};
++
+ &uart0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&uart0_pins_a>;
+@@ -180,7 +193,14 @@
+ 	status = "disabled";
+ };
+ 
++&usb_otg {
++	dr_mode = "otg";
++	status = "okay";
++};
++
+ &usbphy {
+-	/* USB VBUS is always on */
++	usb0_id_det-gpios = <&pio 6 12 GPIO_ACTIVE_HIGH>; /* PG12 */
++	usb0_vbus-supply = <&reg_usb0_vbus>;
++	/* VBUS on USB host ports are always on */
+ 	status = "okay";
+ };

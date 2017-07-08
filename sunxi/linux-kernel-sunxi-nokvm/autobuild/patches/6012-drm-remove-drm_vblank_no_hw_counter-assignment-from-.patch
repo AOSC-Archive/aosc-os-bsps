@@ -1,0 +1,374 @@
+From 5d2f97f8252f041d23f98c565a7f41d3774507a5 Mon Sep 17 00:00:00 2001
+From: Shawn Guo <shawn.guo@linaro.org>
+Date: Tue, 7 Feb 2017 17:16:14 +0800
+Subject: [PATCH 12/94] drm: remove drm_vblank_no_hw_counter assignment from
+ driver code
+
+Core code already makes drm_driver.get_vblank_counter hook optional by
+letting drm_vblank_no_hw_counter be the default implementation for the
+function hook.  So the drm_vblank_no_hw_counter assignment in the driver
+code becomes redundant and can be removed now.
+
+Signed-off-by: Shawn Guo <shawn.guo@linaro.org>
+Cc: Alexey Brodkin <abrodkin@synopsys.com>
+Cc: Liviu Dudau <liviu.dudau@arm.com>
+Cc: Mali DP Maintainers <malidp@foss.arm.com>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Boris Brezillon <boris.brezillon@free-electrons.com>
+Cc: Inki Dae <inki.dae@samsung.com>
+Cc: Stefan Agner <stefan@agner.ch>
+Cc: Xinliang Liu <z.liuxinliang@hisilicon.com>
+Cc: Daniel Vetter <daniel.vetter@intel.com>
+Cc: Philipp Zabel <p.zabel@pengutronix.de>
+Cc: CK Hu <ck.hu@mediatek.com>
+Cc: Neil Armstrong <narmstrong@baylibre.com>
+Cc: Rob Clark <robdclark@gmail.com>
+Cc: Marek Vasut <marex@denx.de>
+Cc: Ben Skeggs <bskeggs@redhat.com>
+Cc: Tomi Valkeinen <tomi.valkeinen@ti.com>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Mark Yao <mark.yao@rock-chips.com>
+Cc: Benjamin Gaignard <benjamin.gaignard@linaro.org>
+Cc: Maxime Ripard <maxime.ripard@free-electrons.com>
+Cc: Jyri Sarha <jsarha@ti.com>
+Cc: Eric Anholt <eric@anholt.net>
+Acked-by: Maxime Ripard <maxime.ripard@free-electrons.com>
+Acked-by: Boris Brezillon <boris.brezillon@free-electrons.com>
+Acked-by: Neil Armstrong <narmstrong@baylibre.com>
+Acked-by: Russell King <rmk+kernel@armlinux.org.uk>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Acked-by: Alexey Brodkin <abrodkin@synopsys.com>
+Acked-by: Liviu Dudau <liviu.dudau@arm.com>
+Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+Link: http://patchwork.freedesktop.org/patch/msgid/1486458995-31018-3-git-send-email-shawnguo@kernel.org
+---
+ drivers/gpu/drm/arc/arcpgu_drv.c                | 1 -
+ drivers/gpu/drm/arm/hdlcd_drv.c                 | 1 -
+ drivers/gpu/drm/arm/malidp_drv.c                | 1 -
+ drivers/gpu/drm/armada/armada_drv.c             | 1 -
+ drivers/gpu/drm/atmel-hlcdc/atmel_hlcdc_dc.c    | 1 -
+ drivers/gpu/drm/exynos/exynos_drm_drv.c         | 1 -
+ drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c       | 1 -
+ drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c | 1 -
+ drivers/gpu/drm/hisilicon/kirin/kirin_drm_ade.c | 1 -
+ drivers/gpu/drm/i915/i915_irq.c                 | 1 -
+ drivers/gpu/drm/imx/imx-drm-core.c              | 1 -
+ drivers/gpu/drm/mediatek/mtk_drm_drv.c          | 1 -
+ drivers/gpu/drm/meson/meson_drv.c               | 1 -
+ drivers/gpu/drm/msm/msm_drv.c                   | 1 -
+ drivers/gpu/drm/mxsfb/mxsfb_drv.c               | 1 -
+ drivers/gpu/drm/nouveau/nouveau_drm.c           | 1 -
+ drivers/gpu/drm/omapdrm/omap_drv.c              | 1 -
+ drivers/gpu/drm/rcar-du/rcar_du_drv.c           | 1 -
+ drivers/gpu/drm/rockchip/rockchip_drm_drv.c     | 1 -
+ drivers/gpu/drm/shmobile/shmob_drm_drv.c        | 1 -
+ drivers/gpu/drm/sti/sti_drv.c                   | 1 -
+ drivers/gpu/drm/sun4i/sun4i_drv.c               | 1 -
+ drivers/gpu/drm/tilcdc/tilcdc_drv.c             | 1 -
+ drivers/gpu/drm/vc4/vc4_drv.c                   | 1 -
+ drivers/gpu/drm/zte/zx_drm_drv.c                | 1 -
+ 25 files changed, 25 deletions(-)
+
+diff --git a/drivers/gpu/drm/arc/arcpgu_drv.c b/drivers/gpu/drm/arc/arcpgu_drv.c
+index 8d8344ed655e..1926b200e4cb 100644
+--- a/drivers/gpu/drm/arc/arcpgu_drv.c
++++ b/drivers/gpu/drm/arc/arcpgu_drv.c
+@@ -175,7 +175,6 @@ static struct drm_driver arcpgu_drm_driver = {
+ 	.dumb_create = drm_gem_cma_dumb_create,
+ 	.dumb_map_offset = drm_gem_cma_dumb_map_offset,
+ 	.dumb_destroy = drm_gem_dumb_destroy,
+-	.get_vblank_counter = drm_vblank_no_hw_counter,
+ 	.prime_handle_to_fd = drm_gem_prime_handle_to_fd,
+ 	.prime_fd_to_handle = drm_gem_prime_fd_to_handle,
+ 	.gem_free_object_unlocked = drm_gem_cma_free_object,
+diff --git a/drivers/gpu/drm/arm/hdlcd_drv.c b/drivers/gpu/drm/arm/hdlcd_drv.c
+index 4ce4f970920b..5d79e87f7421 100644
+--- a/drivers/gpu/drm/arm/hdlcd_drv.c
++++ b/drivers/gpu/drm/arm/hdlcd_drv.c
+@@ -278,7 +278,6 @@ static struct drm_driver hdlcd_driver = {
+ 	.irq_preinstall = hdlcd_irq_preinstall,
+ 	.irq_postinstall = hdlcd_irq_postinstall,
+ 	.irq_uninstall = hdlcd_irq_uninstall,
+-	.get_vblank_counter = drm_vblank_no_hw_counter,
+ 	.enable_vblank = hdlcd_enable_vblank,
+ 	.disable_vblank = hdlcd_disable_vblank,
+ 	.gem_free_object_unlocked = drm_gem_cma_free_object,
+diff --git a/drivers/gpu/drm/arm/malidp_drv.c b/drivers/gpu/drm/arm/malidp_drv.c
+index 8b0672d4aee9..ca6ccd172de3 100644
+--- a/drivers/gpu/drm/arm/malidp_drv.c
++++ b/drivers/gpu/drm/arm/malidp_drv.c
+@@ -213,7 +213,6 @@ static struct drm_driver malidp_driver = {
+ 	.driver_features = DRIVER_GEM | DRIVER_MODESET | DRIVER_ATOMIC |
+ 			   DRIVER_PRIME,
+ 	.lastclose = malidp_lastclose,
+-	.get_vblank_counter = drm_vblank_no_hw_counter,
+ 	.enable_vblank = malidp_enable_vblank,
+ 	.disable_vblank = malidp_disable_vblank,
+ 	.gem_free_object_unlocked = drm_gem_cma_free_object,
+diff --git a/drivers/gpu/drm/armada/armada_drv.c b/drivers/gpu/drm/armada/armada_drv.c
+index 63f42d001f33..bb27892012de 100644
+--- a/drivers/gpu/drm/armada/armada_drv.c
++++ b/drivers/gpu/drm/armada/armada_drv.c
+@@ -87,7 +87,6 @@ static const struct file_operations armada_drm_fops = {
+ 
+ static struct drm_driver armada_drm_driver = {
+ 	.lastclose		= armada_drm_lastclose,
+-	.get_vblank_counter	= drm_vblank_no_hw_counter,
+ 	.enable_vblank		= armada_drm_enable_vblank,
+ 	.disable_vblank		= armada_drm_disable_vblank,
+ 	.gem_free_object_unlocked = armada_gem_free_object,
+diff --git a/drivers/gpu/drm/atmel-hlcdc/atmel_hlcdc_dc.c b/drivers/gpu/drm/atmel-hlcdc/atmel_hlcdc_dc.c
+index 427bdff425c2..5cba65b5ea16 100644
+--- a/drivers/gpu/drm/atmel-hlcdc/atmel_hlcdc_dc.c
++++ b/drivers/gpu/drm/atmel-hlcdc/atmel_hlcdc_dc.c
+@@ -760,7 +760,6 @@ static struct drm_driver atmel_hlcdc_dc_driver = {
+ 	.irq_preinstall = atmel_hlcdc_dc_irq_uninstall,
+ 	.irq_postinstall = atmel_hlcdc_dc_irq_postinstall,
+ 	.irq_uninstall = atmel_hlcdc_dc_irq_uninstall,
+-	.get_vblank_counter = drm_vblank_no_hw_counter,
+ 	.enable_vblank = atmel_hlcdc_dc_enable_vblank,
+ 	.disable_vblank = atmel_hlcdc_dc_disable_vblank,
+ 	.gem_free_object_unlocked = drm_gem_cma_free_object,
+diff --git a/drivers/gpu/drm/exynos/exynos_drm_drv.c b/drivers/gpu/drm/exynos/exynos_drm_drv.c
+index 035d02ecffcd..a1c22eb12f4b 100644
+--- a/drivers/gpu/drm/exynos/exynos_drm_drv.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_drv.c
+@@ -263,7 +263,6 @@ static struct drm_driver exynos_drm_driver = {
+ 	.preclose		= exynos_drm_preclose,
+ 	.lastclose		= exynos_drm_lastclose,
+ 	.postclose		= exynos_drm_postclose,
+-	.get_vblank_counter	= drm_vblank_no_hw_counter,
+ 	.enable_vblank		= exynos_drm_crtc_enable_vblank,
+ 	.disable_vblank		= exynos_drm_crtc_disable_vblank,
+ 	.gem_free_object_unlocked = exynos_drm_gem_free_object,
+diff --git a/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c b/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c
+index 04173235f448..b59b816a1d7d 100644
+--- a/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c
++++ b/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c
+@@ -203,7 +203,6 @@ static struct drm_driver fsl_dcu_drm_driver = {
+ 	.load			= fsl_dcu_load,
+ 	.unload			= fsl_dcu_unload,
+ 	.irq_handler		= fsl_dcu_drm_irq,
+-	.get_vblank_counter	= drm_vblank_no_hw_counter,
+ 	.enable_vblank		= fsl_dcu_drm_enable_vblank,
+ 	.disable_vblank		= fsl_dcu_drm_disable_vblank,
+ 	.gem_free_object_unlocked = drm_gem_cma_free_object,
+diff --git a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c
+index 7e2043f4348c..8cac70454b57 100644
+--- a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c
++++ b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c
+@@ -84,7 +84,6 @@ static struct drm_driver hibmc_driver = {
+ 	.desc			= "hibmc drm driver",
+ 	.major			= 1,
+ 	.minor			= 0,
+-	.get_vblank_counter	= drm_vblank_no_hw_counter,
+ 	.enable_vblank		= hibmc_enable_vblank,
+ 	.disable_vblank		= hibmc_disable_vblank,
+ 	.gem_free_object_unlocked = hibmc_gem_free_object,
+diff --git a/drivers/gpu/drm/hisilicon/kirin/kirin_drm_ade.c b/drivers/gpu/drm/hisilicon/kirin/kirin_drm_ade.c
+index 9a0678a33e0d..0624fab8046f 100644
+--- a/drivers/gpu/drm/hisilicon/kirin/kirin_drm_ade.c
++++ b/drivers/gpu/drm/hisilicon/kirin/kirin_drm_ade.c
+@@ -1025,7 +1025,6 @@ static int ade_drm_init(struct platform_device *pdev)
+ 			       IRQF_SHARED, dev->driver->name, acrtc);
+ 	if (ret)
+ 		return ret;
+-	dev->driver->get_vblank_counter = drm_vblank_no_hw_counter;
+ 	dev->driver->enable_vblank = ade_enable_vblank;
+ 	dev->driver->disable_vblank = ade_disable_vblank;
+ 
+diff --git a/drivers/gpu/drm/i915/i915_irq.c b/drivers/gpu/drm/i915/i915_irq.c
+index b6c886ac901b..c70deb793646 100644
+--- a/drivers/gpu/drm/i915/i915_irq.c
++++ b/drivers/gpu/drm/i915/i915_irq.c
+@@ -4232,7 +4232,6 @@ void intel_irq_init(struct drm_i915_private *dev_priv)
+ 	if (IS_GEN2(dev_priv)) {
+ 		/* Gen2 doesn't have a hardware frame counter */
+ 		dev->max_vblank_count = 0;
+-		dev->driver->get_vblank_counter = drm_vblank_no_hw_counter;
+ 	} else if (IS_G4X(dev_priv) || INTEL_INFO(dev_priv)->gen >= 5) {
+ 		dev->max_vblank_count = 0xffffffff; /* full 32 bit counter */
+ 		dev->driver->get_vblank_counter = g4x_get_vblank_counter;
+diff --git a/drivers/gpu/drm/imx/imx-drm-core.c b/drivers/gpu/drm/imx/imx-drm-core.c
+index f562cb7964b0..ed3fe2084b05 100644
+--- a/drivers/gpu/drm/imx/imx-drm-core.c
++++ b/drivers/gpu/drm/imx/imx-drm-core.c
+@@ -288,7 +288,6 @@ static struct drm_driver imx_drm_driver = {
+ 	.gem_prime_vmap		= drm_gem_cma_prime_vmap,
+ 	.gem_prime_vunmap	= drm_gem_cma_prime_vunmap,
+ 	.gem_prime_mmap		= drm_gem_cma_prime_mmap,
+-	.get_vblank_counter	= drm_vblank_no_hw_counter,
+ 	.enable_vblank		= imx_drm_enable_vblank,
+ 	.disable_vblank		= imx_drm_disable_vblank,
+ 	.ioctls			= imx_drm_ioctls,
+diff --git a/drivers/gpu/drm/mediatek/mtk_drm_drv.c b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
+index b5f88e6d078e..ef8675336465 100644
+--- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
+@@ -256,7 +256,6 @@ static struct drm_driver mtk_drm_driver = {
+ 	.driver_features = DRIVER_MODESET | DRIVER_GEM | DRIVER_PRIME |
+ 			   DRIVER_ATOMIC,
+ 
+-	.get_vblank_counter = drm_vblank_no_hw_counter,
+ 	.enable_vblank = mtk_drm_crtc_enable_vblank,
+ 	.disable_vblank = mtk_drm_crtc_disable_vblank,
+ 
+diff --git a/drivers/gpu/drm/meson/meson_drv.c b/drivers/gpu/drm/meson/meson_drv.c
+index 6f2fd82ed483..c0a59889c45f 100644
+--- a/drivers/gpu/drm/meson/meson_drv.c
++++ b/drivers/gpu/drm/meson/meson_drv.c
+@@ -129,7 +129,6 @@ static struct drm_driver meson_driver = {
+ 	/* Vblank */
+ 	.enable_vblank		= meson_enable_vblank,
+ 	.disable_vblank		= meson_disable_vblank,
+-	.get_vblank_counter	= drm_vblank_no_hw_counter,
+ 
+ 	/* IRQ */
+ 	.irq_handler		= meson_irq,
+diff --git a/drivers/gpu/drm/msm/msm_drv.c b/drivers/gpu/drm/msm/msm_drv.c
+index 70226eaa5cac..cb47f4a14215 100644
+--- a/drivers/gpu/drm/msm/msm_drv.c
++++ b/drivers/gpu/drm/msm/msm_drv.c
+@@ -816,7 +816,6 @@ static struct drm_driver msm_driver = {
+ 	.irq_preinstall     = msm_irq_preinstall,
+ 	.irq_postinstall    = msm_irq_postinstall,
+ 	.irq_uninstall      = msm_irq_uninstall,
+-	.get_vblank_counter = drm_vblank_no_hw_counter,
+ 	.enable_vblank      = msm_enable_vblank,
+ 	.disable_vblank     = msm_disable_vblank,
+ 	.gem_free_object    = msm_gem_free_object,
+diff --git a/drivers/gpu/drm/mxsfb/mxsfb_drv.c b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
+index ff6d6a6f842e..bde1d3eeb551 100644
+--- a/drivers/gpu/drm/mxsfb/mxsfb_drv.c
++++ b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
+@@ -344,7 +344,6 @@ static struct drm_driver mxsfb_driver = {
+ 	.irq_handler		= mxsfb_irq_handler,
+ 	.irq_preinstall		= mxsfb_irq_preinstall,
+ 	.irq_uninstall		= mxsfb_irq_preinstall,
+-	.get_vblank_counter	= drm_vblank_no_hw_counter,
+ 	.enable_vblank		= mxsfb_enable_vblank,
+ 	.disable_vblank		= mxsfb_disable_vblank,
+ 	.gem_free_object	= drm_gem_cma_free_object,
+diff --git a/drivers/gpu/drm/nouveau/nouveau_drm.c b/drivers/gpu/drm/nouveau/nouveau_drm.c
+index 468ed1d3bb26..d234a3b70bad 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_drm.c
++++ b/drivers/gpu/drm/nouveau/nouveau_drm.c
+@@ -983,7 +983,6 @@ driver_stub = {
+ 	.debugfs_cleanup = nouveau_drm_debugfs_cleanup,
+ #endif
+ 
+-	.get_vblank_counter = drm_vblank_no_hw_counter,
+ 	.enable_vblank = nouveau_display_vblank_enable,
+ 	.disable_vblank = nouveau_display_vblank_disable,
+ 	.get_scanout_position = nouveau_display_scanoutpos,
+diff --git a/drivers/gpu/drm/omapdrm/omap_drv.c b/drivers/gpu/drm/omapdrm/omap_drv.c
+index 3f2554235225..cac3f3ab01ed 100644
+--- a/drivers/gpu/drm/omapdrm/omap_drv.c
++++ b/drivers/gpu/drm/omapdrm/omap_drv.c
+@@ -727,7 +727,6 @@ static struct drm_driver omap_drm_driver = {
+ 		DRIVER_ATOMIC,
+ 	.open = dev_open,
+ 	.lastclose = dev_lastclose,
+-	.get_vblank_counter = drm_vblank_no_hw_counter,
+ 	.enable_vblank = omap_irq_enable_vblank,
+ 	.disable_vblank = omap_irq_disable_vblank,
+ #ifdef CONFIG_DEBUG_FS
+diff --git a/drivers/gpu/drm/rcar-du/rcar_du_drv.c b/drivers/gpu/drm/rcar-du/rcar_du_drv.c
+index c05e00872778..094da3ef49d1 100644
+--- a/drivers/gpu/drm/rcar-du/rcar_du_drv.c
++++ b/drivers/gpu/drm/rcar-du/rcar_du_drv.c
+@@ -259,7 +259,6 @@ static struct drm_driver rcar_du_driver = {
+ 	.driver_features	= DRIVER_GEM | DRIVER_MODESET | DRIVER_PRIME
+ 				| DRIVER_ATOMIC,
+ 	.lastclose		= rcar_du_lastclose,
+-	.get_vblank_counter	= drm_vblank_no_hw_counter,
+ 	.enable_vblank		= rcar_du_enable_vblank,
+ 	.disable_vblank		= rcar_du_disable_vblank,
+ 	.gem_free_object_unlocked = drm_gem_cma_free_object,
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_drv.c b/drivers/gpu/drm/rockchip/rockchip_drm_drv.c
+index b360e6251836..57c44cc156ab 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_drv.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_drv.c
+@@ -277,7 +277,6 @@ static struct drm_driver rockchip_drm_driver = {
+ 	.driver_features	= DRIVER_MODESET | DRIVER_GEM |
+ 				  DRIVER_PRIME | DRIVER_ATOMIC,
+ 	.lastclose		= rockchip_drm_lastclose,
+-	.get_vblank_counter	= drm_vblank_no_hw_counter,
+ 	.enable_vblank		= rockchip_drm_crtc_enable_vblank,
+ 	.disable_vblank		= rockchip_drm_crtc_disable_vblank,
+ 	.gem_vm_ops		= &drm_gem_cma_vm_ops,
+diff --git a/drivers/gpu/drm/shmobile/shmob_drm_drv.c b/drivers/gpu/drm/shmobile/shmob_drm_drv.c
+index 33cec3d42389..d6b0545d252d 100644
+--- a/drivers/gpu/drm/shmobile/shmob_drm_drv.c
++++ b/drivers/gpu/drm/shmobile/shmob_drm_drv.c
+@@ -256,7 +256,6 @@ static struct drm_driver shmob_drm_driver = {
+ 	.load			= shmob_drm_load,
+ 	.unload			= shmob_drm_unload,
+ 	.irq_handler		= shmob_drm_irq,
+-	.get_vblank_counter	= drm_vblank_no_hw_counter,
+ 	.enable_vblank		= shmob_drm_enable_vblank,
+ 	.disable_vblank		= shmob_drm_disable_vblank,
+ 	.gem_free_object_unlocked = drm_gem_cma_free_object,
+diff --git a/drivers/gpu/drm/sti/sti_drv.c b/drivers/gpu/drm/sti/sti_drv.c
+index 20fc0fbfa849..3114f125b863 100644
+--- a/drivers/gpu/drm/sti/sti_drv.c
++++ b/drivers/gpu/drm/sti/sti_drv.c
+@@ -188,7 +188,6 @@ static struct drm_driver sti_driver = {
+ 	.dumb_destroy = drm_gem_dumb_destroy,
+ 	.fops = &sti_driver_fops,
+ 
+-	.get_vblank_counter = drm_vblank_no_hw_counter,
+ 	.enable_vblank = sti_crtc_enable_vblank,
+ 	.disable_vblank = sti_crtc_disable_vblank,
+ 
+diff --git a/drivers/gpu/drm/sun4i/sun4i_drv.c b/drivers/gpu/drm/sun4i/sun4i_drv.c
+index fc6ef4066c59..99383c20a835 100644
+--- a/drivers/gpu/drm/sun4i/sun4i_drv.c
++++ b/drivers/gpu/drm/sun4i/sun4i_drv.c
+@@ -92,7 +92,6 @@ static struct drm_driver sun4i_drv_driver = {
+ 	/* Frame Buffer Operations */
+ 
+ 	/* VBlank Operations */
+-	.get_vblank_counter	= drm_vblank_no_hw_counter,
+ 	.enable_vblank		= sun4i_drv_enable_vblank,
+ 	.disable_vblank		= sun4i_drv_disable_vblank,
+ };
+diff --git a/drivers/gpu/drm/tilcdc/tilcdc_drv.c b/drivers/gpu/drm/tilcdc/tilcdc_drv.c
+index 372d86fbb093..d5bc98e283d9 100644
+--- a/drivers/gpu/drm/tilcdc/tilcdc_drv.c
++++ b/drivers/gpu/drm/tilcdc/tilcdc_drv.c
+@@ -557,7 +557,6 @@ static struct drm_driver tilcdc_driver = {
+ 			       DRIVER_PRIME | DRIVER_ATOMIC),
+ 	.lastclose          = tilcdc_lastclose,
+ 	.irq_handler        = tilcdc_irq,
+-	.get_vblank_counter = drm_vblank_no_hw_counter,
+ 	.enable_vblank      = tilcdc_enable_vblank,
+ 	.disable_vblank     = tilcdc_disable_vblank,
+ 	.gem_free_object_unlocked = drm_gem_cma_free_object,
+diff --git a/drivers/gpu/drm/vc4/vc4_drv.c b/drivers/gpu/drm/vc4/vc4_drv.c
+index a459745e96f7..3a8709d85da1 100644
+--- a/drivers/gpu/drm/vc4/vc4_drv.c
++++ b/drivers/gpu/drm/vc4/vc4_drv.c
+@@ -139,7 +139,6 @@ static struct drm_driver vc4_drm_driver = {
+ 
+ 	.enable_vblank = vc4_enable_vblank,
+ 	.disable_vblank = vc4_disable_vblank,
+-	.get_vblank_counter = drm_vblank_no_hw_counter,
+ 	.get_scanout_position = vc4_crtc_get_scanoutpos,
+ 	.get_vblank_timestamp = vc4_crtc_get_vblank_timestamp,
+ 
+diff --git a/drivers/gpu/drm/zte/zx_drm_drv.c b/drivers/gpu/drm/zte/zx_drm_drv.c
+index 5c6944a1e72c..afd713a954c6 100644
+--- a/drivers/gpu/drm/zte/zx_drm_drv.c
++++ b/drivers/gpu/drm/zte/zx_drm_drv.c
+@@ -71,7 +71,6 @@ static struct drm_driver zx_drm_driver = {
+ 	.driver_features = DRIVER_GEM | DRIVER_MODESET | DRIVER_PRIME |
+ 			   DRIVER_ATOMIC,
+ 	.lastclose = zx_drm_lastclose,
+-	.get_vblank_counter = drm_vblank_no_hw_counter,
+ 	.enable_vblank = zx_vou_enable_vblank,
+ 	.disable_vblank = zx_vou_disable_vblank,
+ 	.gem_free_object = drm_gem_cma_free_object,
+-- 
+2.12.2
+

@@ -1,0 +1,9 @@
+PKGNAME=linux-kernel-sunxi-nokvm-4.11.9
+PKGSEC=kernel
+PKGDEP=""
+BUILDDEP="bc dracut git"
+PKGDES="Linux Kernel version 4.11.9 optimized for Allwinner/sunXi SoCs, all ARMv7s, without KVM"
+
+ABSTRIP=no
+ABELFDEP=no
+ABRPMAUTOPROVONLY=yes

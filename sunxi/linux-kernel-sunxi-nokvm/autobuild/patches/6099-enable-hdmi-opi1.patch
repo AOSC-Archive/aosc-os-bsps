@@ -1,0 +1,35 @@
+--- linux-4.11.old/arch/arm/boot/dts/sun8i-h3-orangepi-one.dts	2017-05-05 22:44:44.612885217 +0800
++++ linux-4.11/arch/arm/boot/dts/sun8i-h3-orangepi-one.dts	2017-05-05 22:48:22.026080598 +0800
+@@ -91,6 +91,10 @@
+ 	};
+ };
+ 
++&de {
++	status = "okay";
++};
++
+ &ehci0 {
+ 	status = "okay";
+ };
+@@ -106,6 +110,10 @@
+ 	status = "okay";
+ };
+ 
++&hdmi {
++	status = "okay";
++};
++
+ &mmc0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&mmc0_pins_a>, <&mmc0_cd_pin>;
+@@ -148,6 +156,10 @@
+ 	status = "okay";
+ };
+ 
++&tcon0 {
++	status = "okay";
++};
++
+ &uart0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&uart0_pins_a>;

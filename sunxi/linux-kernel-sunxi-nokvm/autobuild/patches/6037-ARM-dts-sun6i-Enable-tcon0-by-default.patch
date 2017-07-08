@@ -1,0 +1,45 @@
+From 350c33413872f1498ae5c834a15a6798790251d9 Mon Sep 17 00:00:00 2001
+From: Chen-Yu Tsai <wens@csie.org>
+Date: Thu, 9 Mar 2017 11:03:03 +0800
+Subject: [PATCH 37/94] ARM: dts: sun6i: Enable tcon0 by default
+
+tcon0 contains a muxing register used to mux tcon output to downstream
+hdmi or mipi dsi encoders. tcon0 must be available for the mux to be
+configured.
+
+Whether the display subsystem is enabled or not is now solely controlled
+by the display-engine node.
+
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+---
+ arch/arm/boot/dts/sun6i-a31-hummingbird.dts | 1 -
+ arch/arm/boot/dts/sun6i-a31.dtsi            | 1 -
+ 2 files changed, 2 deletions(-)
+
+diff --git a/arch/arm/boot/dts/sun6i-a31-hummingbird.dts b/arch/arm/boot/dts/sun6i-a31-hummingbird.dts
+index f094eeb6c499..fb237ce60198 100644
+--- a/arch/arm/boot/dts/sun6i-a31-hummingbird.dts
++++ b/arch/arm/boot/dts/sun6i-a31-hummingbird.dts
+@@ -320,7 +320,6 @@
+ &tcon0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&lcd0_rgb888_pins>;
+-	status = "okay";
+ };
+ 
+ &tcon0_out {
+diff --git a/arch/arm/boot/dts/sun6i-a31.dtsi b/arch/arm/boot/dts/sun6i-a31.dtsi
+index 40f020824ccc..0ddcffab594e 100644
+--- a/arch/arm/boot/dts/sun6i-a31.dtsi
++++ b/arch/arm/boot/dts/sun6i-a31.dtsi
+@@ -265,7 +265,6 @@
+ 				      "tcon-ch0",
+ 				      "tcon-ch1";
+ 			clock-output-names = "tcon0-pixel-clock";
+-			status = "disabled";
+ 
+ 			ports {
+ 				#address-cells = <1>;
+-- 
+2.12.2
+

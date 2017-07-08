@@ -1,0 +1,56 @@
+From 0a90ef8f771cdb23c2a7648a46e4035b51d6615c Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Sun, 16 Apr 2017 23:35:58 +0800
+Subject: [PATCH 92/94] ARM: sun8i: h3: enable HDMI output for Orange Pi PC
+ board
+
+The Orange Pi PC board features a HDMI port that is connected to the
+HDMI controller of H3 SoC.
+
+Enable it.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm/boot/dts/sun8i-h3-orangepi-pc.dts | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/arch/arm/boot/dts/sun8i-h3-orangepi-pc.dts b/arch/arm/boot/dts/sun8i-h3-orangepi-pc.dts
+index d43978d3294e..b4b385fc583c 100644
+--- a/arch/arm/boot/dts/sun8i-h3-orangepi-pc.dts
++++ b/arch/arm/boot/dts/sun8i-h3-orangepi-pc.dts
+@@ -98,6 +98,10 @@
+ 	status = "okay";
+ };
+ 
++&de {
++	status = "okay";
++};
++
+ &ehci1 {
+ 	status = "okay";
+ };
+@@ -110,6 +114,10 @@
+ 	status = "okay";
+ };
+ 
++&hdmi {
++	status = "okay";
++};
++
+ &ir {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&ir_pins_a>;
+@@ -157,6 +165,10 @@
+ 	};
+ };
+ 
++&tcon0 {
++	status = "okay";
++};
++
+ &uart0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&uart0_pins_a>;
+-- 
+2.12.2
+

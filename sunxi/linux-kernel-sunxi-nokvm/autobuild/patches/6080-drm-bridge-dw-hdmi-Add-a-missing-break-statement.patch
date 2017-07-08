@@ -1,0 +1,31 @@
+From 17221063321add9ab14a26080669973a0ab0b8a1 Mon Sep 17 00:00:00 2001
+From: Dan Carpenter <dan.carpenter@oracle.com>
+Date: Thu, 6 Apr 2017 08:21:32 +0300
+Subject: [PATCH 80/94] drm: bridge: dw-hdmi: Add a missing break statement
+
+There was supposed to be a break before the next case statement.
+
+Fixes: def23aa7e982 ("drm: bridge: dw-hdmi: Switch to V4L bus format and encodings")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Acked-by: Neil Armstrong <narmstrong@baylibre.com>
+Signed-off-by: Neil Armstrong <narmstrong@baylibre.com>
+Link: http://patchwork.freedesktop.org/patch/msgid/20170406052132.GA26605@mwanda
+---
+ drivers/gpu/drm/bridge/synopsys/dw-hdmi.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+index 7dd669945b55..5dc5a5fa44f5 100644
+--- a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
++++ b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+@@ -1304,6 +1304,7 @@ static void hdmi_config_AVI(struct dw_hdmi *hdmi, struct drm_display_mode *mode)
+ 			frame.colorimetry = HDMI_COLORIMETRY_ITU_601;
+ 		frame.extended_colorimetry =
+ 				HDMI_EXTENDED_COLORIMETRY_XV_YCC_601;
++		break;
+ 	case V4L2_YCBCR_ENC_709:
+ 		if (hdmi->hdmi_data.enc_in_encoding == V4L2_YCBCR_ENC_XV709)
+ 			frame.colorimetry = HDMI_COLORIMETRY_EXTENDED;
+-- 
+2.12.2
+
