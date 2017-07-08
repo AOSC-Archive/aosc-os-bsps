@@ -2,7 +2,7 @@ KERNVER=4.11.9
 
 mkdir -p "$PKGDIR"/usr/lib/aosc-os-armel-sunxi-boot/
 mkdir -p "$PKGDIR"/usr/lib/aosc-os-armel-sunxi-boot/linux-kernel-${KERNVER}-aosc-sunxi-nokvm/modules
-ln -sfv linux-kernel-${KERNVER}-aosc-sunxi-nokvm "$PKGDIR"/usr/lib/aosc-os-armel-sunxi-boot/
+ln -sfv linux-kernel-${KERNVER}-aosc-sunxi-nokvm "$PKGDIR"/usr/lib/aosc-os-armel-sunxi-boot/linux-sunxi-nokvm
 for i in \
 	sun4i-a10-cubieboard
 do
