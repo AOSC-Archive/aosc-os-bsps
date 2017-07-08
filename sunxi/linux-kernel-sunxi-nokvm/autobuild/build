@@ -1,6 +1,6 @@
 OLDARCH=$ARCH
 unset ARCH
-cp -v autobuild/$OLDARCH/config "$SRCDIR"/.config
+cp -v autobuild/config "$SRCDIR"/.config
 SRCARCH=arm
 
 . autobuild/build-common/set-var
