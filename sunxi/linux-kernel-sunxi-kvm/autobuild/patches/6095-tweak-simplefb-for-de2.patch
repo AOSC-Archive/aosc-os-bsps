@@ -1,0 +1,13 @@
+--- linux-4.11.old/arch/arm/boot/dts/sun8i-h3.dtsi	2017-05-05 20:15:01.972667701 +0800
++++ linux-4.11/arch/arm/boot/dts/sun8i-h3.dtsi	2017-05-05 20:18:28.971613563 +0800
+@@ -61,8 +61,8 @@
+ 			compatible = "allwinner,simple-framebuffer",
+ 				     "simple-framebuffer";
+ 			allwinner,pipeline = "mixer0-lcd0-hdmi";
+-			clocks = <&ccu CLK_BUS_TCON0>, <&ccu CLK_BUS_DE>,
+-				 <&ccu CLK_BUS_HDMI>, <&ccu CLK_DE>,
++			clocks = <&ccu CLK_BUS_TCON0>, <&de2_clocks CLK_BUS_MIXER0>,
++				 <&ccu CLK_BUS_HDMI>, <&de2_clocks CLK_MIXER0>,
+ 				 <&ccu CLK_TCON0>, <&ccu CLK_HDMI>;
+ 			status = "disabled";
+ 		};

@@ -1,0 +1,72 @@
+From fedbfff0849df833370a7bb6d4c496f67bc90a86 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.xyz>
+Date: Sun, 6 Nov 2016 19:01:01 +0800
+Subject: [PATCH 03/10] ARM: dts: add panel and tcon nodes to Allwinner A33 Q8
+ tablet dts
+
+All A33 Q8 tablets features a LCD panel, with a resolution of either
+800x480 or 1024x600.
+
+Add "bone" device nodes to the device tree.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.xyz>
+---
+ arch/arm/boot/dts/sun8i-a33-q8-tablet.dts | 44 +++++++++++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
+
+diff --git a/arch/arm/boot/dts/sun8i-a33-q8-tablet.dts b/arch/arm/boot/dts/sun8i-a33-q8-tablet.dts
+index b0bc236..871a20c 100644
+--- a/arch/arm/boot/dts/sun8i-a33-q8-tablet.dts
++++ b/arch/arm/boot/dts/sun8i-a33-q8-tablet.dts
+@@ -47,4 +47,48 @@
+ / {
+ 	model = "Q8 A33 Tablet";
+ 	compatible = "allwinner,q8-a33", "allwinner,sun8i-a33";
++
++	panel: panel {
++		/* compatible should be set according to the panel */
++		pinctrl-names = "default";
++		pinctrl-0 = <&lcd_en_q8>;
++		backlight = <&backlight>;
++		enable-gpios = <&pio 7 7 GPIO_ACTIVE_HIGH>; /* PH7 */
++		power-supply = <&reg_dc1sw>;
++		status = "disabled";
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		port@0 {
++			reg = <0>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			panel_input: endpoint@0 {
++				reg = <0>;
++				remote-endpoint = <&tcon0_out_lcd>;
++			};
++		};
++	};
++};
++
++&tcon0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&lcd_rgb666_pins>;
++};
++
++&tcon0_out {
++	tcon0_out_lcd: endpoint@0 {
++		reg = <0>;
++		remote-endpoint = <&panel_input>;
++	};
++};
++
++&pio {
++	lcd_en_q8: lcd_en@0 {
++		allwinner,pins = "PH7";
++		allwinner,function = "gpio_out";
++		allwinner,drive = <SUN4I_PINCTRL_10_MA>;
++		allwinner,pull = <SUN4I_PINCTRL_NO_PULL>;
++	};
+ };
+-- 
+2.10.2
+

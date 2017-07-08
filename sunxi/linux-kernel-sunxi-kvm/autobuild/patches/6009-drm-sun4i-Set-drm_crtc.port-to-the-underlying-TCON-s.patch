@@ -1,0 +1,42 @@
+From f966e0fe8b97c8e44ea0bc9ca4a7f4e39fa231c9 Mon Sep 17 00:00:00 2001
+From: Chen-Yu Tsai <wens@csie.org>
+Date: Thu, 23 Feb 2017 16:05:34 +0800
+Subject: [PATCH 09/94] drm/sun4i: Set drm_crtc.port to the underlying TCON's
+ output port node
+
+The way drm_of_find_possible_crtcs works is it tries to match the
+remote-endpoint of the given node's various endpoints to all the
+crtc's .port field. Thus we need to set drm_crtc.port to the output
+port node of the underlying TCON.
+
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
+---
+ drivers/gpu/drm/sun4i/sun4i_crtc.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/drivers/gpu/drm/sun4i/sun4i_crtc.c b/drivers/gpu/drm/sun4i/sun4i_crtc.c
+index 4e2e89c3104f..de6f7da69746 100644
+--- a/drivers/gpu/drm/sun4i/sun4i_crtc.c
++++ b/drivers/gpu/drm/sun4i/sun4i_crtc.c
+@@ -19,6 +19,7 @@
+ #include <linux/clk-provider.h>
+ #include <linux/ioport.h>
+ #include <linux/of_address.h>
++#include <linux/of_graph.h>
+ #include <linux/of_irq.h>
+ #include <linux/regmap.h>
+ 
+@@ -136,5 +137,9 @@ struct sun4i_crtc *sun4i_crtc_init(struct drm_device *drm)
+ 
+ 	drm_crtc_helper_add(&scrtc->crtc, &sun4i_crtc_helper_funcs);
+ 
++	/* Set crtc.port to output port node of the tcon */
++	scrtc->crtc.port = of_graph_get_port_by_id(drv->tcon->dev->of_node,
++						   1);
++
+ 	return scrtc;
+ }
+-- 
+2.12.2
+

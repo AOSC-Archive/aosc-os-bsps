@@ -1,0 +1,34 @@
+From 2ff91b669ca31521213dc68661d9be14d8b83086 Mon Sep 17 00:00:00 2001
+From: LABBE Corentin <clabbe.montjoie@gmail.com>
+Date: Fri, 3 Jun 2016 09:30:54 +0200
+Subject: [PATCH] ARM: dts: sun8i-h3: add sun8i-emac rgmii pins
+
+This patch add pinctrl node for emac on H3.
+
+Signed-off-by: Corentin Labbe <clabbe.montjoie@gmail.com>
+---
+ arch/arm/boot/dts/sun8i-h3.dtsi | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/arch/arm/boot/dts/sun8i-h3.dtsi b/arch/arm/boot/dts/sun8i-h3.dtsi
+index bb993ac..c00ea9b 100644
+--- a/arch/arm/boot/dts/sun8i-h3.dtsi
++++ b/arch/arm/boot/dts/sun8i-h3.dtsi
+@@ -355,6 +355,17 @@
+ 				allwinner,pull = <SUN4I_PINCTRL_NO_PULL>;
+ 			};
+ 
++			emac_rgmii_pins: emac0@0 {
++				allwinner,pins = "PD0", "PD1", "PD2", "PD3",
++						"PD4", "PD5", "PD7",
++						"PD8", "PD9", "PD10",
++						"PD12", "PD13", "PD15",
++						"PD16", "PD17";
++				allwinner,function = "emac";
++				allwinner,drive = <SUN4I_PINCTRL_40_MA>;
++				allwinner,pull = <SUN4I_PINCTRL_NO_PULL>;
++			};
++
+ 			mmc0_pins_a: mmc0@0 {
+ 				allwinner,pins = "PF0", "PF1", "PF2", "PF3",
+ 						 "PF4", "PF5";

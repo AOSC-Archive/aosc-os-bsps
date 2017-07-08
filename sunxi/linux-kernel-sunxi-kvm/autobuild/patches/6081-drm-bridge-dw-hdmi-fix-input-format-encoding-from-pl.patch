@@ -1,0 +1,57 @@
+From b0ed536365a6ae48fba1cd7b36680eba1dd3805b Mon Sep 17 00:00:00 2001
+From: Neil Armstrong <narmstrong@baylibre.com>
+Date: Thu, 6 Apr 2017 11:34:04 +0200
+Subject: [PATCH 81/94] drm: bridge: dw-hdmi: fix input format/encoding from
+ plat_data
+
+The plat_data->input_bus_format and plat_data->input_bus_encoding
+are unsigned long and are always >=0, but the value 0 was still
+considered as RGB888 for input_bus_format and default color space
+for input_bus_encoding in the reworked code.
+
+This patch changes the if statement check for a non-zero value to
+either use the default input bus_format and/or bus_encoding for a zero
+value and the provided bus_format and/or bus_encoding for a
+non zero value.
+
+Thanks to Dan Carpenter for his bug report at [1].
+
+Tested on Amlogic P230 (with CSC enabled for YUV444 to RGB) and Rockchip
+RK3288 ACT8846 EVB Board (no CSC involved, direct RGB passthrough).
+
+[1] http://lkml.kernel.org/r/20170406052120.GA26578@mwanda
+
+Cc: Dan Carpenter <dan.carpenter@oracle.com>
+Fixes: def23aa7e982 ("drm: bridge: dw-hdmi: Switch to V4L bus format and encodings")
+Signed-off-by: Neil Armstrong <narmstrong@baylibre.com>
+Reviewed-by: Archit Taneja <architt@codeaurora.org>
+[narmstrong@baylibre.com: reworded commit message and added Fixes tag]
+Link: http://patchwork.freedesktop.org/patch/msgid/1491471244-24989-1-git-send-email-narmstrong@baylibre.com
+---
+ drivers/gpu/drm/bridge/synopsys/dw-hdmi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+index 5dc5a5fa44f5..3bc856cc6daa 100644
+--- a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
++++ b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+@@ -1654,14 +1654,14 @@ static int dw_hdmi_setup(struct dw_hdmi *hdmi, struct drm_display_mode *mode)
+ 	hdmi->hdmi_data.video_mode.mpixelrepetitioninput = 0;
+ 
+ 	/* TOFIX: Get input format from plat data or fallback to RGB888 */
+-	if (hdmi->plat_data->input_bus_format >= 0)
++	if (hdmi->plat_data->input_bus_format)
+ 		hdmi->hdmi_data.enc_in_bus_format =
+ 			hdmi->plat_data->input_bus_format;
+ 	else
+ 		hdmi->hdmi_data.enc_in_bus_format = MEDIA_BUS_FMT_RGB888_1X24;
+ 
+ 	/* TOFIX: Get input encoding from plat data or fallback to none */
+-	if (hdmi->plat_data->input_bus_encoding >= 0)
++	if (hdmi->plat_data->input_bus_encoding)
+ 		hdmi->hdmi_data.enc_in_encoding =
+ 			hdmi->plat_data->input_bus_encoding;
+ 	else
+-- 
+2.12.2
+

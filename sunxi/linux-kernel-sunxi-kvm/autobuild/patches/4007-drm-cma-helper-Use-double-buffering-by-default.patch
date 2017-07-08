@@ -1,0 +1,38 @@
+From 53b9311325cde0ee493f7b38a14f0bbccc68c096 Mon Sep 17 00:00:00 2001
+From: Jonathan Liu <net147@gmail.com>
+Date: Thu, 8 Sep 2016 20:38:31 +1000
+Subject: [PATCH 08/10] drm/cma-helper: Use double-buffering by default
+
+The Mali user-space fbdev driver reads the fb_var_screeninfo structure
+from the framebuffer using the FBIOGET_VSCREENINFO ioctl and if
+yres_virtual is not twice the yres, then eglInitialize succeeds
+but eglCreateWindowSurface fails with EGL_BAD_ALLOC (0x3003).
+
+This is because it uses the virtual resolution for double-buffering
+and issues a FBIOPAN_DISPLAY ioctl to swap the active framebuffer
+area.
+
+Signed-off-by: Jonathan Liu <net147@gmail.com>
+---
+ drivers/gpu/drm/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
+index cb5b138..93ffca5 100644
+--- a/drivers/gpu/drm/Kconfig
++++ b/drivers/gpu/drm/Kconfig
+@@ -109,9 +109,9 @@ config DRM_KMS_CMA_HELPER
+ config DRM_CMA_FBDEV_BUFFER_NUM
+ 	int "Cma Fbdev Buffer Number"
+ 	depends on DRM_KMS_CMA_HELPER
+-	default 1
++	default 2
+ 	help
+-	  Defines the buffer number of cma fbdev.  Default is one buffer.
++	  Defines the buffer number of cma fbdev.  Default is 2.
+ 	  For double buffer please set to 2 and 3 for triple buffer.
+ 
+ source "drivers/gpu/drm/i2c/Kconfig"
+-- 
+2.10.2
+

@@ -1,0 +1,47 @@
+From 18cd2bb7dda4d739c627bed5a3a56e1cbe3b3b20 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Sun, 16 Apr 2017 16:52:34 +0800
+Subject: [PATCH 61/94] clk: sunxi-ng: export CLK_PLL_DE for H3
+
+The CLK_PLL_DE is needed to be referenced in device tree for H3, for
+both forcing the parent of PLL_DE and input to the HDMI controller.
+
+So export it to the device tree binding header.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ drivers/clk/sunxi-ng/ccu-sun8i-h3.h      | 3 +--
+ include/dt-bindings/clock/sun8i-h3-ccu.h | 2 ++
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/clk/sunxi-ng/ccu-sun8i-h3.h b/drivers/clk/sunxi-ng/ccu-sun8i-h3.h
+index 78be712c7487..f554735e9b8e 100644
+--- a/drivers/clk/sunxi-ng/ccu-sun8i-h3.h
++++ b/drivers/clk/sunxi-ng/ccu-sun8i-h3.h
+@@ -33,9 +33,8 @@
+ #define CLK_PLL_PERIPH0_2X	10
+ #define CLK_PLL_GPU		11
+ #define CLK_PLL_PERIPH1		12
+-#define CLK_PLL_DE		13
+ 
+-/* The CPUX clock is exported */
++/* The PLL_DE and CPUX clocks is exported */
+ 
+ #define CLK_AXI			15
+ #define CLK_AHB1		16
+diff --git a/include/dt-bindings/clock/sun8i-h3-ccu.h b/include/dt-bindings/clock/sun8i-h3-ccu.h
+index efb7ba2bd515..dfe827248d6d 100644
+--- a/include/dt-bindings/clock/sun8i-h3-ccu.h
++++ b/include/dt-bindings/clock/sun8i-h3-ccu.h
+@@ -43,6 +43,8 @@
+ #ifndef _DT_BINDINGS_CLK_SUN8I_H3_H_
+ #define _DT_BINDINGS_CLK_SUN8I_H3_H_
+ 
++#define CLK_PLL_DE		13
++
+ #define CLK_CPUX		14
+ 
+ #define CLK_BUS_CE		20
+-- 
+2.12.2
+

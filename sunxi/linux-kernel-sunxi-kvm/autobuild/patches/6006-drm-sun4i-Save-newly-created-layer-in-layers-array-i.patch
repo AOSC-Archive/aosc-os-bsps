@@ -1,0 +1,33 @@
+From db61797c70217058abb4235ecb19fadaa7a24de9 Mon Sep 17 00:00:00 2001
+From: Chen-Yu Tsai <wens@csie.org>
+Date: Fri, 17 Feb 2017 11:13:29 +0800
+Subject: [PATCH 06/94] drm/sun4i: Save newly created layer in layers array in
+ sun4i_layers_init
+
+sun4i_layers_init allocates an array to store pointers to newly created
+layers returned by sun4i_layer_init_one(), but fails to actually store
+them. But it actually returns the empty array to unsuspecting users.
+
+Save the pointers in the array, so that they may be used later.
+
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
+---
+ drivers/gpu/drm/sun4i/sun4i_layer.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/gpu/drm/sun4i/sun4i_layer.c b/drivers/gpu/drm/sun4i/sun4i_layer.c
+index 92ecc967dcb1..41bc0f860f5c 100644
+--- a/drivers/gpu/drm/sun4i/sun4i_layer.c
++++ b/drivers/gpu/drm/sun4i/sun4i_layer.c
+@@ -183,6 +183,7 @@ struct sun4i_layer **sun4i_layers_init(struct drm_device *drm)
+ 				   SUN4I_BACKEND_ATTCTL_REG0_LAY_PIPESEL(plane->pipe));
+ 
+ 		layer->id = i;
++		layers[i] = layer;
+ 	};
+ 
+ 	return layers;
+-- 
+2.12.2
+

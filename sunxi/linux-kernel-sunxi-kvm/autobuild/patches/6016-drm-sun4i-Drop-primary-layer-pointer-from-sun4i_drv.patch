@@ -1,0 +1,97 @@
+From 521adaeafd9ddb59bf24b8be6724a8dcc24ccce0 Mon Sep 17 00:00:00 2001
+From: Chen-Yu Tsai <wens@csie.org>
+Date: Thu, 23 Feb 2017 16:05:38 +0800
+Subject: [PATCH 16/94] drm/sun4i: Drop primary layer pointer from sun4i_drv
+
+The current layer init code keeps a pointer to the primary plane layer
+in sun4i_drv. When we eventually support multiple display pipelines,
+this would force us to keep track of primary planes for all crtcs. And
+these pointers only get used at bind time.
+
+Instead, have the crtc init code iterate through the returned layers
+to find the primary and cursor layers. And drop the pointer from the
+sun4i_drv structure.
+
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
+---
+ drivers/gpu/drm/sun4i/sun4i_crtc.c  | 25 +++++++++++++++++++++----
+ drivers/gpu/drm/sun4i/sun4i_drv.h   |  1 -
+ drivers/gpu/drm/sun4i/sun4i_layer.c |  3 ---
+ 3 files changed, 21 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/gpu/drm/sun4i/sun4i_crtc.c b/drivers/gpu/drm/sun4i/sun4i_crtc.c
+index bcc1c9533d67..81dcd5eee003 100644
+--- a/drivers/gpu/drm/sun4i/sun4i_crtc.c
++++ b/drivers/gpu/drm/sun4i/sun4i_crtc.c
+@@ -143,7 +143,8 @@ struct sun4i_crtc *sun4i_crtc_init(struct drm_device *drm)
+ {
+ 	struct sun4i_drv *drv = drm->dev_private;
+ 	struct sun4i_crtc *scrtc;
+-	int ret;
++	struct drm_plane *primary = NULL, *cursor = NULL;
++	int ret, i;
+ 
+ 	scrtc = devm_kzalloc(drm->dev, sizeof(*scrtc), GFP_KERNEL);
+ 	if (!scrtc)
+@@ -154,12 +155,28 @@ struct sun4i_crtc *sun4i_crtc_init(struct drm_device *drm)
+ 	scrtc->layers = sun4i_layers_init(drm);
+ 	if (IS_ERR(scrtc->layers)) {
+ 		dev_err(drm->dev, "Couldn't create the planes\n");
+-		return ERR_CAST(scrtc->layers);
++		return NULL;
++	}
++
++	/* find primary and cursor planes for drm_crtc_init_with_planes */
++	for (i = 0; scrtc->layers[i]; i++) {
++		struct sun4i_layer *layer = scrtc->layers[i];
++
++		switch (layer->plane.type) {
++		case DRM_PLANE_TYPE_PRIMARY:
++			primary = &layer->plane;
++			break;
++		case DRM_PLANE_TYPE_CURSOR:
++			cursor = &layer->plane;
++			break;
++		default:
++			break;
++		}
+ 	}
+ 
+ 	ret = drm_crtc_init_with_planes(drm, &scrtc->crtc,
+-					drv->primary,
+-					NULL,
++					primary,
++					cursor,
+ 					&sun4i_crtc_funcs,
+ 					NULL);
+ 	if (ret) {
+diff --git a/drivers/gpu/drm/sun4i/sun4i_drv.h b/drivers/gpu/drm/sun4i/sun4i_drv.h
+index 7a3345b7b6d1..5df50126ff52 100644
+--- a/drivers/gpu/drm/sun4i/sun4i_drv.h
++++ b/drivers/gpu/drm/sun4i/sun4i_drv.h
+@@ -20,7 +20,6 @@ struct sun4i_drv {
+ 	struct sun4i_backend	*backend;
+ 	struct sun4i_tcon	*tcon;
+ 
+-	struct drm_plane	*primary;
+ 	struct drm_fbdev_cma	*fbdev;
+ };
+ 
+diff --git a/drivers/gpu/drm/sun4i/sun4i_layer.c b/drivers/gpu/drm/sun4i/sun4i_layer.c
+index 0b703fb02656..9c0baee25fae 100644
+--- a/drivers/gpu/drm/sun4i/sun4i_layer.c
++++ b/drivers/gpu/drm/sun4i/sun4i_layer.c
+@@ -127,9 +127,6 @@ static struct sun4i_layer *sun4i_layer_init_one(struct drm_device *drm,
+ 			     &sun4i_backend_layer_helper_funcs);
+ 	layer->drv = drv;
+ 
+-	if (plane->type == DRM_PLANE_TYPE_PRIMARY)
+-		drv->primary = &layer->plane;
+-
+ 	return layer;
+ }
+ 
+-- 
+2.12.2
+

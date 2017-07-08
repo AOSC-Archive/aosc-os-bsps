@@ -1,0 +1,519 @@
+From 47d5ea8fa85fb21332c77171d5b49802678f5fd7 Mon Sep 17 00:00:00 2001
+From: Jernej Skrabec <jernej.skrabec@siol.net>
+Date: Tue, 11 Apr 2017 21:46:33 +0200
+Subject: [PATCH 90/94] drm: sun4i: Add a glue for the DesignWare HDMI
+ controller in H3
+
+Allwinner H3 features a custom PHY paired with the DesignWare HDMI TX
+controller, with the PHY controlling also the scramble of the DesignWare
+controller.
+
+Add a glue driver for the controller and the glue.
+
+Signed-off-by: Jernej Skrabec <jernej.skrabec@siol.net>
+---
+ drivers/gpu/drm/sun4i/Kconfig         |   9 +
+ drivers/gpu/drm/sun4i/Makefile        |   2 +
+ drivers/gpu/drm/sun4i/dw_hdmi-sunxi.c | 463 ++++++++++++++++++++++++++++++++++
+ 3 files changed, 474 insertions(+)
+ create mode 100644 drivers/gpu/drm/sun4i/dw_hdmi-sunxi.c
+
+diff --git a/drivers/gpu/drm/sun4i/Kconfig b/drivers/gpu/drm/sun4i/Kconfig
+index 15557484520d..3b0fcd3f3cf2 100644
+--- a/drivers/gpu/drm/sun4i/Kconfig
++++ b/drivers/gpu/drm/sun4i/Kconfig
+@@ -32,3 +32,12 @@ config DRM_SUN4I_SUN8I_MIXER
+ 	  Allwinner Display Engine 2.0, which has a mixer to do some
+ 	  graphics mixture and feed graphics to TCON, If M is
+ 	  selected the module will be called sun8i-mixer.
++
++config DRM_DW_HDMI_SUNXI
++	tristate "Support for Allwinner version of DesignWare HDMI"
++	depends on DRM_SUN4I
++	select DRM_DW_HDMI
++	help
++	  Choose this option if you have an Allwinner SoC with the
++	  DesignWare HDMI controller with custom HDMI PHY. If M is
++	  selected the module will be called dw_hdmi-sunxi.
+diff --git a/drivers/gpu/drm/sun4i/Makefile b/drivers/gpu/drm/sun4i/Makefile
+index d81c9319dadf..c3d0ffca3e75 100644
+--- a/drivers/gpu/drm/sun4i/Makefile
++++ b/drivers/gpu/drm/sun4i/Makefile
+@@ -16,3 +16,5 @@ obj-$(CONFIG_DRM_SUN4I)		+= sun4i_tv.o
+ 
+ obj-$(CONFIG_DRM_SUN4I_BACKEND)		+= sun4i-backend.o
+ obj-$(CONFIG_DRM_SUN4I_SUN8I_MIXER)	+= sun8i-mixer.o
++
++obj-$(CONFIG_DRM_DW_HDMI_SUNXI)	+= dw_hdmi-sunxi.o
+diff --git a/drivers/gpu/drm/sun4i/dw_hdmi-sunxi.c b/drivers/gpu/drm/sun4i/dw_hdmi-sunxi.c
+new file mode 100644
+index 000000000000..51c1002fd199
+--- /dev/null
++++ b/drivers/gpu/drm/sun4i/dw_hdmi-sunxi.c
+@@ -0,0 +1,463 @@
++/*
++ * Copyright (c) 2017, Jernej Skrabec <jernej.skrabec@siol.net>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ */
++
++#include <linux/clk.h>
++#include <linux/component.h>
++#include <linux/delay.h>
++#include <linux/module.h>
++#include <linux/platform_device.h>
++#include <linux/reset.h>
++
++#include <drm/drm_of.h>
++#include <drm/drmP.h>
++#include <drm/drm_crtc_helper.h>
++#include <drm/drm_edid.h>
++#include <drm/bridge/dw_hdmi.h>
++
++#include "sun4i_crtc.h"
++#include "sun4i_tcon.h"
++
++#define SUNXI_HDMI_PHY_REG_POL        0x0000
++#define SUNXI_HDMI_PHY_REG_READ_EN    0x0010
++#define SUNXI_HDMI_PHY_REG_UNSCRAMBLE 0x0014
++#define SUNXI_HDMI_PHY_REG_CTRL       0x0020
++#define SUNXI_HDMI_PHY_REG_UNK1       0x0024
++#define SUNXI_HDMI_PHY_REG_UNK2       0x0028
++#define SUNXI_HDMI_PHY_REG_PLL        0x002c
++#define SUNXI_HDMI_PHY_REG_CLK        0x0030
++#define SUNXI_HDMI_PHY_REG_UNK3       0x0034
++#define SUNXI_HDMI_PHY_REG_STATUS     0x0038
++
++#define to_sunxi_hdmi(x)	container_of(x, struct sunxi_hdmi, x)
++
++struct sunxi_hdmi {
++	struct clk *clk_ddc;
++	struct clk *clk_hdmi;
++	struct device *dev;
++	struct drm_encoder encoder;
++	void __iomem *hdmi_phy_base;
++	struct dw_hdmi_plat_data plat_data;
++	struct reset_control *rst_ddc;
++	struct reset_control *rst_hdmi;
++};
++
++
++static void sunxi_setbits(void __iomem *reg, u32 set_val)
++{
++	u32 reg_val;
++
++	reg_val = readl(reg);
++	reg_val |= set_val;
++	writel(reg_val, reg);
++}
++
++static u32 dw_hdmi_sunxi_get_divider(int clk_khz)
++{
++	/*
++	 * Due to missing documentaion of HDMI PHY, we know correct
++	 * settings only for following four PHY dividers. Select one
++	 * based on clock speed.
++	 */
++	if (clk_khz <= 27000)
++		return 11;
++	else if (clk_khz <= 74250)
++		return 4;
++	else if (clk_khz <= 148500)
++		return 2;
++	else
++		return 1;
++}
++
++static void dw_hdmi_sunxi_encoder_disable(struct drm_encoder *encoder)
++{
++	struct sun4i_crtc *crtc = drm_crtc_to_sun4i_crtc(encoder->crtc);
++	struct sun4i_tcon *tcon = crtc->tcon;
++
++	DRM_DEBUG_DRIVER("Disabling HDMI Output\n");
++
++	sun4i_tcon_channel_disable(tcon, 1);
++}
++
++static void dw_hdmi_sunxi_encoder_enable(struct drm_encoder *encoder)
++{
++	struct sun4i_crtc *crtc = drm_crtc_to_sun4i_crtc(encoder->crtc);
++	struct sun4i_tcon *tcon = crtc->tcon;
++
++	DRM_DEBUG_DRIVER("Enabling HDMI Output\n");
++
++	sun4i_tcon_channel_enable(tcon, 1);
++}
++
++static void dw_hdmi_sunxi_encoder_mode_set(struct drm_encoder *encoder,
++					   struct drm_display_mode *mode,
++					   struct drm_display_mode *adj_mode)
++{
++	struct sunxi_hdmi *hdmi = to_sunxi_hdmi(encoder);
++	struct sun4i_crtc *crtc = drm_crtc_to_sun4i_crtc(encoder->crtc);
++	struct sun4i_tcon *tcon = crtc->tcon;
++	u32 div;
++
++	sun4i_tcon1_mode_set(tcon, mode);
++
++	div = dw_hdmi_sunxi_get_divider(mode->crtc_clock);
++	clk_set_rate(hdmi->clk_hdmi, mode->crtc_clock * 1000 * div);
++	clk_set_rate(tcon->sclk1, mode->crtc_clock * 1000);
++}
++
++static const struct drm_encoder_helper_funcs dw_hdmi_sunxi_encoder_helper_funcs = {
++	.mode_set   = dw_hdmi_sunxi_encoder_mode_set,
++	.enable     = dw_hdmi_sunxi_encoder_enable,
++	.disable    = dw_hdmi_sunxi_encoder_disable,
++};
++
++static int dw_hdmi_sunxi_phy_init(struct dw_hdmi *hdmi_data, void *data,
++				  struct drm_display_mode *mode)
++{
++	struct sunxi_hdmi *hdmi = (struct sunxi_hdmi *)data;
++	u32 div = dw_hdmi_sunxi_get_divider(mode->crtc_clock);
++	u32 tmp;
++
++	/*
++	 * Unfortunately, we don't know much about those magic
++	 * numbers. They are taken from Allwinner BSP driver.
++	 */
++	switch (div) {
++	case 1:
++		writel(0x30dc5fc0, hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_PLL);
++		writel(0x800863C0, hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_CLK);
++		mdelay(10);
++		writel(0x00000001, hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_UNK3);
++		sunxi_setbits(hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_PLL,
++			      BIT(25));
++		mdelay(200);
++		tmp = readl(hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_STATUS);
++		tmp = (tmp & 0x1f800) >> 11;
++		sunxi_setbits(hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_PLL,
++			      BIT(31) | BIT(30));
++		if (tmp < 0x3d)
++			sunxi_setbits(hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_PLL,
++				      tmp + 2);
++		else
++			sunxi_setbits(hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_PLL,
++				      0x3f);
++		mdelay(100);
++		writel(0x01FFFF7F, hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_CTRL);
++		writel(0x8063b000, hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_UNK1);
++		writel(0x0F8246B5, hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_UNK2);
++		break;
++	case 2:
++		writel(0x39dc5040, hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_PLL);
++		writel(0x80084381, hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_CLK);
++		mdelay(10);
++		writel(0x00000001, hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_UNK3);
++		sunxi_setbits(hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_PLL,
++			      BIT(25));
++		mdelay(100);
++		tmp = readl(hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_STATUS);
++		tmp = (tmp & 0x1f800) >> 11;
++		sunxi_setbits(hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_PLL,
++			      BIT(31) | BIT(30));
++		sunxi_setbits(hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_PLL, tmp);
++		writel(0x01FFFF7F, hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_CTRL);
++		writel(0x8063a800, hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_UNK1);
++		writel(0x0F81C485, hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_UNK2);
++		break;
++	case 4:
++		writel(0x39dc5040, hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_PLL);
++		writel(0x80084343, hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_CLK);
++		mdelay(10);
++		writel(0x00000001, hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_UNK3);
++		sunxi_setbits(hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_PLL,
++			      BIT(25));
++		mdelay(100);
++		tmp = readl(hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_STATUS);
++		tmp = (tmp & 0x1f800) >> 11;
++		sunxi_setbits(hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_PLL,
++			      BIT(31) | BIT(30));
++		sunxi_setbits(hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_PLL, tmp);
++		writel(0x01FFFF7F, hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_CTRL);
++		writel(0x8063b000, hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_UNK1);
++		writel(0x0F81C405, hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_UNK2);
++		break;
++	case 11:
++		writel(0x39dc5040, hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_PLL);
++		writel(0x8008430a, hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_CLK);
++		mdelay(10);
++		writel(0x00000001, hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_UNK3);
++		sunxi_setbits(hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_PLL,
++			      BIT(25));
++		mdelay(100);
++		tmp = readl(hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_STATUS);
++		tmp = (tmp & 0x1f800) >> 11;
++		sunxi_setbits(hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_PLL,
++			      BIT(31) | BIT(30));
++		sunxi_setbits(hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_PLL, tmp);
++		writel(0x01FFFF7F, hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_CTRL);
++		writel(0x8063b000, hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_UNK1);
++		writel(0x0F81C405, hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_UNK2);
++		break;
++	}
++
++	/*
++	 * Condition in original code is a bit weird. This is attempt
++	 * to make it more reasonable and it works. It could be that
++	 * bits and conditions are related and should be separated.
++	 */
++	if (!((mode->flags & DRM_MODE_FLAG_PHSYNC) &&
++	      (mode->flags & DRM_MODE_FLAG_PVSYNC))) {
++		sunxi_setbits(hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_POL, 0x300);
++	}
++
++	return 0;
++}
++
++static void dw_hdmi_sunxi_phy_disable(struct dw_hdmi *hdmi_data, void *data)
++{
++	struct sunxi_hdmi *hdmi = (struct sunxi_hdmi *)data;
++	u32 reg_val;
++
++	reg_val = readl(hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_CTRL);
++	reg_val &= ~(0xf << 12);
++	writel(reg_val, hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_CTRL);
++}
++
++static enum drm_connector_status dw_hdmi_sunxi_phy_read_hpd(struct dw_hdmi *hdmi_data,
++							    void *data)
++{
++	struct sunxi_hdmi *hdmi = (struct sunxi_hdmi *)data;
++	u32 reg_val = readl(hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_STATUS);
++
++	return !!(reg_val & (1 << 19)) ?
++		connector_status_connected : connector_status_disconnected;
++}
++
++static const struct dw_hdmi_phy_ops sunxi_dw_hdmi_phy_ops = {
++	.init = &dw_hdmi_sunxi_phy_init,
++	.disable = &dw_hdmi_sunxi_phy_disable,
++	.read_hpd = &dw_hdmi_sunxi_phy_read_hpd,
++	.poll_hpd = true,
++};
++
++static void dw_hdmi_sunxi_pre_init(void *data)
++{
++	struct sunxi_hdmi *hdmi = (struct sunxi_hdmi *)data;
++	u32 timeout = 20;
++	u32 tmp;
++
++	/*
++	 * HDMI PHY settings are taken as-is from Allwinner BSP code.
++	 * There is no documentation.
++	 */
++	writel(0, hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_CTRL);
++	sunxi_setbits(hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_CTRL, BIT(0));
++	udelay(5);
++	sunxi_setbits(hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_CTRL, BIT(16));
++	sunxi_setbits(hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_CTRL, BIT(1));
++	udelay(10);
++	sunxi_setbits(hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_CTRL, BIT(2));
++	udelay(5);
++	sunxi_setbits(hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_CTRL, BIT(3));
++	udelay(40);
++	sunxi_setbits(hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_CTRL, BIT(19));
++	udelay(100);
++	sunxi_setbits(hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_CTRL, BIT(18));
++	sunxi_setbits(hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_CTRL, 7 << 4);
++
++	/* Note that Allwinner code doesn't fail in case of timeout */
++	while (!(readl(hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_STATUS) & 0x80)) {
++		if (!timeout--) {
++			dev_warn(hdmi->dev, "HDMI PHY init timeout!\n");
++			break;
++		}
++		udelay(100);
++	}
++
++	sunxi_setbits(hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_CTRL, 0xf << 8);
++	sunxi_setbits(hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_CTRL, BIT(7));
++
++	writel(0x39dc5040, hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_PLL);
++	writel(0x80084343, hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_CLK);
++	mdelay(10);
++	writel(1, hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_UNK3);
++	sunxi_setbits(hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_PLL, BIT(25));
++	mdelay(100);
++	tmp = readl(hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_STATUS);
++	tmp = (tmp & 0x1f800) >> 11;
++	sunxi_setbits(hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_PLL,
++		      BIT(31) | BIT(30));
++	sunxi_setbits(hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_PLL, tmp);
++	writel(0x01FF0F7F, hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_CTRL);
++	writel(0x80639000, hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_UNK1);
++	writel(0x0F81C405, hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_UNK2);
++
++	/* enable read access to HDMI controller */
++	writel(0x54524545, hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_READ_EN);
++	/* descramble register offsets */
++	writel(0x42494E47, hdmi->hdmi_phy_base + SUNXI_HDMI_PHY_REG_UNSCRAMBLE);
++}
++
++static const struct drm_encoder_funcs dw_hdmi_sunxi_encoder_funcs = {
++	.destroy = drm_encoder_cleanup,
++};
++
++static int dw_hdmi_sunxi_bind(struct device *dev, struct device *master,
++			      void *data)
++{
++	struct platform_device *pdev = to_platform_device(dev);
++	struct dw_hdmi_plat_data *plat_data;
++	struct drm_device *drm = data;
++	struct drm_encoder *encoder;
++	struct sunxi_hdmi *hdmi;
++	struct resource *res;
++	int ret;
++
++	if (!pdev->dev.of_node)
++		return -ENODEV;
++
++	hdmi = devm_kzalloc(&pdev->dev, sizeof(*hdmi), GFP_KERNEL);
++	if (!hdmi)
++		return -ENOMEM;
++
++	plat_data = &hdmi->plat_data;
++	hdmi->dev = &pdev->dev;
++	encoder = &hdmi->encoder;
++
++	encoder->possible_crtcs = drm_of_find_possible_crtcs(drm, dev->of_node);
++	/*
++	 * If we failed to find the CRTC(s) which this encoder is
++	 * supposed to be connected to, it's because the CRTC has
++	 * not been registered yet.  Defer probing, and hope that
++	 * the required CRTC is added later.
++	 */
++	if (encoder->possible_crtcs == 0)
++		return -EPROBE_DEFER;
++
++	/* resource 0 is the memory region for the core controller */
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
++	hdmi->hdmi_phy_base = devm_ioremap_resource(dev, res);
++	if (IS_ERR(hdmi->hdmi_phy_base))
++		return PTR_ERR(hdmi->hdmi_phy_base);
++
++	hdmi->clk_hdmi = devm_clk_get(dev, "isfr");
++	if (IS_ERR(hdmi->clk_hdmi)) {
++		dev_err(dev, "Could not get hdmi clock\n");
++		return PTR_ERR(hdmi->clk_hdmi);
++	}
++
++	hdmi->clk_ddc = devm_clk_get(dev, "iddc");
++	if (IS_ERR(hdmi->clk_ddc)) {
++		dev_err(dev, "Could not get ddc clock\n");
++		return PTR_ERR(hdmi->clk_ddc);
++	}
++
++	hdmi->rst_hdmi = devm_reset_control_get(dev, "hdmi");
++	if (IS_ERR(hdmi->rst_hdmi)) {
++		dev_err(dev, "Could not get hdmi reset control\n");
++		return PTR_ERR(hdmi->rst_hdmi);
++	}
++
++	hdmi->rst_ddc = devm_reset_control_get(dev, "ddc");
++	if (IS_ERR(hdmi->rst_ddc)) {
++		dev_err(dev, "Could not get dw-hdmi reset control\n");
++		return PTR_ERR(hdmi->rst_ddc);
++	}
++
++	ret = clk_prepare_enable(hdmi->clk_ddc);
++	if (ret) {
++		dev_err(dev, "Cannot enable DDC clock: %d\n", ret);
++		return ret;
++	}
++
++	ret = reset_control_deassert(hdmi->rst_hdmi);
++	if (ret) {
++		dev_err(dev, "Could not deassert hdmi reset control\n");
++		goto err_ddc_clk;
++	}
++
++	ret = reset_control_deassert(hdmi->rst_ddc);
++	if (ret) {
++		dev_err(dev, "Could not deassert ddc reset control\n");
++		goto err_assert_hdmi_reset;
++	}
++
++	drm_encoder_helper_add(encoder, &dw_hdmi_sunxi_encoder_helper_funcs);
++	drm_encoder_init(drm, encoder, &dw_hdmi_sunxi_encoder_funcs,
++			 DRM_MODE_ENCODER_TMDS, NULL);
++
++	plat_data->pre_init = &dw_hdmi_sunxi_pre_init,
++	plat_data->pre_init_data = hdmi;
++	plat_data->phy_ops = &sunxi_dw_hdmi_phy_ops,
++	plat_data->phy_name = "sunxi_dw_hdmi_phy",
++	plat_data->phy_data = hdmi;
++
++	ret = dw_hdmi_bind(pdev, encoder, plat_data);
++
++	/*
++	 * If dw_hdmi_bind() fails we'll never call dw_hdmi_unbind(),
++	 * which would have called the encoder cleanup.  Do it manually.
++	 */
++	if (ret)
++		goto cleanup_encoder;
++
++	return 0;
++
++cleanup_encoder:
++	drm_encoder_cleanup(encoder);
++	reset_control_assert(hdmi->rst_ddc);
++err_assert_hdmi_reset:
++	reset_control_assert(hdmi->rst_hdmi);
++err_ddc_clk:
++	clk_disable_unprepare(hdmi->clk_ddc);
++
++	return ret;
++}
++
++static void dw_hdmi_sunxi_unbind(struct device *dev, struct device *master,
++				 void *data)
++{
++	/*TODO: disable ddc clock*/
++	return dw_hdmi_unbind(dev);
++}
++
++static const struct component_ops dw_hdmi_sunxi_ops = {
++	.bind	= dw_hdmi_sunxi_bind,
++	.unbind	= dw_hdmi_sunxi_unbind,
++};
++
++static int dw_hdmi_sunxi_probe(struct platform_device *pdev)
++{
++	return component_add(&pdev->dev, &dw_hdmi_sunxi_ops);
++}
++
++static int dw_hdmi_sunxi_remove(struct platform_device *pdev)
++{
++	component_del(&pdev->dev, &dw_hdmi_sunxi_ops);
++
++	return 0;
++}
++
++static const struct of_device_id dw_hdmi_sunxi_dt_ids[] = {
++	{ .compatible = "allwinner,sun8i-h3-dw-hdmi" },
++	{},
++};
++MODULE_DEVICE_TABLE(of, dw_hdmi_sunxi_dt_ids);
++
++struct platform_driver dw_hdmi_sunxi_pltfm_driver = {
++	.probe  = dw_hdmi_sunxi_probe,
++	.remove = dw_hdmi_sunxi_remove,
++	.driver = {
++		.name = "dwhdmi-sunxi",
++		.of_match_table = dw_hdmi_sunxi_dt_ids,
++	},
++};
++module_platform_driver(dw_hdmi_sunxi_pltfm_driver);
++
++MODULE_AUTHOR("Jernej Skrabec <jernej.skrabec@siol.net>");
++MODULE_DESCRIPTION("Allwinner DW HDMI driver");
++MODULE_LICENSE("GPL");
+-- 
+2.12.2
+

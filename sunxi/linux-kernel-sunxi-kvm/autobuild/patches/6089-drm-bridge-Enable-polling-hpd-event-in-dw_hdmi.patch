@@ -1,0 +1,49 @@
+From 73aa2e38bc03f151c41141b46f208844b6a617e2 Mon Sep 17 00:00:00 2001
+From: Jernej Skrabec <jernej.skrabec@siol.net>
+Date: Fri, 28 Apr 2017 16:44:28 +0200
+Subject: [PATCH 89/94] drm: bridge: Enable polling hpd event in dw_hdmi
+
+Some custom phys don't support hpd interrupts. Add support for polling
+such events.
+
+Signed-off-by: Jernej Skrabec <jernej.skrabec@siol.net>
+---
+ drivers/gpu/drm/bridge/synopsys/dw-hdmi.c | 7 ++++++-
+ include/drm/bridge/dw_hdmi.h              | 1 +
+ 2 files changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+index da0747c92dba..3da209d977e5 100644
+--- a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
++++ b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+@@ -1933,9 +1933,14 @@ static int dw_hdmi_bridge_attach(struct drm_bridge *bridge)
+ 	struct dw_hdmi *hdmi = bridge->driver_private;
+ 	struct drm_encoder *encoder = bridge->encoder;
+ 	struct drm_connector *connector = &hdmi->connector;
++	const struct dw_hdmi_phy_ops *phy_ops = hdmi->phy.ops;
+ 
+ 	connector->interlace_allowed = 1;
+-	connector->polled = DRM_CONNECTOR_POLL_HPD;
++	if (phy_ops && phy_ops->poll_hpd)
++		connector->polled = DRM_CONNECTOR_POLL_CONNECT |
++				    DRM_CONNECTOR_POLL_DISCONNECT;
++	else
++		connector->polled = DRM_CONNECTOR_POLL_HPD;
+ 
+ 	drm_connector_helper_add(connector, &dw_hdmi_connector_helper_funcs);
+ 
+diff --git a/include/drm/bridge/dw_hdmi.h b/include/drm/bridge/dw_hdmi.h
+index 15e215a542b6..575ba4d2774d 100644
+--- a/include/drm/bridge/dw_hdmi.h
++++ b/include/drm/bridge/dw_hdmi.h
+@@ -120,6 +120,7 @@ struct dw_hdmi_phy_ops {
+ 	void (*update_hpd)(struct dw_hdmi *hdmi, void *data,
+ 			   bool force, bool disabled, bool rxsense);
+ 	void (*setup_hpd)(struct dw_hdmi *hdmi, void *data);
++	bool poll_hpd;
+ };
+ 
+ struct dw_hdmi_plat_data {
+-- 
+2.12.2
+

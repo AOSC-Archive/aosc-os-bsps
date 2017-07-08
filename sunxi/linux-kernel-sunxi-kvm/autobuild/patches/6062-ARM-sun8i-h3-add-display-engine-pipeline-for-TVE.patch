@@ -1,0 +1,230 @@
+From f7bf25fb30602d85cd53e4750b396a2435177781 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Sun, 16 Apr 2017 16:54:52 +0800
+Subject: [PATCH 62/94] ARM: sun8i: h3: add display engine pipeline for TVE
+
+As we have already the support for the TV encoder on Allwinner H3, add
+the display engine pipeline device tree nodes to its DTSI file.
+
+The H5 pipeline has some differences and will be enabled later.
+
+The currently-unused mixer0 and tcon0 are also needed, for the
+completement of the pipeline.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm/boot/dts/sun8i-h3.dtsi | 191 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 191 insertions(+)
+
+diff --git a/arch/arm/boot/dts/sun8i-h3.dtsi b/arch/arm/boot/dts/sun8i-h3.dtsi
+index 27780b97c863..acbb287a6829 100644
+--- a/arch/arm/boot/dts/sun8i-h3.dtsi
++++ b/arch/arm/boot/dts/sun8i-h3.dtsi
+@@ -46,6 +46,8 @@
+ #include <dt-bindings/interrupt-controller/arm-gic.h>
+ #include <dt-bindings/pinctrl/sun4i-a10.h>
+ #include <dt-bindings/reset/sun8i-h3-ccu.h>
++#include <dt-bindings/clock/sun8i-de2.h>
++#include <dt-bindings/reset/sun8i-de2.h>
+ 
+ / {
+ 	interrupt-parent = <&gic>;
+@@ -79,6 +81,195 @@
+ 		};
+ 	};
+ 
++	de: display-engine {
++		compatible = "allwinner,sun8i-h3-display-engine";
++		allwinner,pipelines = <&de2_mixer0>,
++				      <&de2_mixer1>;
++		status = "disabled";
++	};
++
++	soc {
++		de2_clocks: clock@1000000 {
++			compatible = "allwinner,sun8i-a83t-de2-clk";
++			reg = <0x01000000 0x100000>;
++			clocks = <&ccu CLK_DE>,
++				 <&ccu CLK_BUS_DE>;
++			clock-names = "mod",
++				      "bus";
++			resets = <&ccu RST_BUS_DE>;
++			#clock-cells = <1>;
++			#reset-cells = <1>;
++			assigned-clocks = <&ccu CLK_DE>;
++			assigned-clock-parents = <&ccu CLK_PLL_DE>;
++			assigned-clock-rates = <432000000>;
++		};
++
++		de2_mixer0: mixer@1100000 {
++			compatible = "allwinner,sun8i-a83t-de2-mixer0";
++			reg = <0x01100000 0x100000>;
++			clocks = <&de2_clocks CLK_MIXER0>,
++				 <&de2_clocks CLK_BUS_MIXER0>;
++			clock-names = "mod",
++				      "bus";
++			resets = <&de2_clocks RST_MIXER0>;
++			status = "disabled";
++
++			ports {
++				#address-cells = <1>;
++				#size-cells = <0>;
++
++				mixer0_out: port@1 {
++					#address-cells = <1>;
++					#size-cells = <0>;
++					reg = <1>;
++
++					mixer0_out_tcon0: endpoint@0 {
++						reg = <0>;
++						remote-endpoint = <&tcon0_in_mixer0>;
++					};
++
++					mixer0_out_tcon1: endpoint@1 {
++						reg = <1>;
++						remote-endpoint = <&tcon1_in_mixer0>;
++					};
++				};
++			};
++		};
++
++		de2_mixer1: mixer@1200000 {
++			compatible = "allwinner,sun8i-a83t-de2-mixer1";
++			reg = <0x01200000 0x100000>;
++			clocks = <&de2_clocks CLK_MIXER1>,
++				 <&de2_clocks CLK_BUS_MIXER1>;
++			clock-names = "mod",
++				      "bus";
++			resets = <&de2_clocks RST_WB>;
++
++			ports {
++				#address-cells = <1>;
++				#size-cells = <0>;
++
++				mixer1_out: port@1 {
++					#address-cells = <1>;
++					#size-cells = <0>;
++					reg = <1>;
++
++					mixer1_out_tcon1: endpoint@0 {
++						reg = <0>;
++						remote-endpoint = <&tcon1_in_mixer1>;
++					};
++
++					mixer1_out_tcon0: endpoint@1 {
++						reg = <1>;
++						remote-endpoint = <&tcon0_in_mixer1>;
++					};
++				};
++			};
++		};
++
++		tcon0: lcd-controller@1c0c000 {
++			compatible = "allwinner,sun8i-a83t-tcon1";
++			reg = <0x01c0c000 0x1000>;
++			interrupts = <GIC_SPI 86 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&ccu CLK_BUS_TCON0>,
++				 <&ccu CLK_TCON0>;
++			clock-names = "ahb",
++				      "tcon-ch1";
++			resets = <&ccu RST_BUS_TCON0>;
++			reset-names = "lcd";
++			status = "disabled";
++
++			ports {
++				#address-cells = <1>;
++				#size-cells = <0>;
++
++				tcon0_in: port@0 {
++					#address-cells = <1>;
++					#size-cells = <0>;
++					reg = <0>;
++
++					tcon0_in_mixer0: endpoint@0 {
++						reg = <0>;
++						remote-endpoint = <&mixer0_out_tcon0>;
++					};
++
++					tcon0_in_mixer1: endpoint@1 {
++						reg = <1>;
++						remote-endpoint = <&mixer1_out_tcon0>;
++					};
++				};
++			};
++		};
++
++		tcon1: lcd-controller@1c0d000 {
++			compatible = "allwinner,sun8i-a83t-tcon1";
++			reg = <0x01c0d000 0x1000>;
++			interrupts = <GIC_SPI 87 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&ccu CLK_BUS_TCON1>,
++				 <&ccu CLK_TVE>;
++			clock-names = "ahb",
++				      "tcon-ch1";
++			resets = <&ccu RST_BUS_TCON1>;
++			reset-names = "lcd";
++			status = "disabled";
++
++			ports {
++				#address-cells = <1>;
++				#size-cells = <0>;
++
++				tcon1_in: port@0 {
++					#address-cells = <1>;
++					#size-cells = <0>;
++					reg = <0>;
++
++					tcon1_in_mixer1: endpoint@0 {
++						reg = <0>;
++						remote-endpoint = <&mixer1_out_tcon1>;
++					};
++
++					tcon1_in_mixer0: endpoint@1 {
++						reg = <1>;
++						remote-endpoint = <&mixer0_out_tcon1>;
++					};
++				};
++
++				tcon1_out: port@1 {
++					#address-cells = <1>;
++					#size-cells = <0>;
++					reg = <1>;
++
++					tcon1_out_tve0: endpoint@1 {
++						reg = <1>;
++						remote-endpoint = <&tve0_in_tcon1>;
++					};
++				};
++			};
++		};
++
++		tve0: tv-encoder@1e00000 {
++			compatible = "allwinner,sun8i-h3-tv-encoder";
++			reg = <0x01e00000 0x1000>;
++			clocks = <&ccu CLK_BUS_TVE>, <&ccu CLK_TVE>;
++			clock-names = "bus", "mod";
++			resets = <&ccu RST_BUS_TVE>;
++			status = "disabled";
++
++			assigned-clocks = <&ccu CLK_TVE>;
++			assigned-clock-parents = <&ccu CLK_PLL_DE>;
++			assigned-clock-rates = <216000000>;
++
++			port {
++				#address-cells = <1>;
++				#size-cells = <0>;
++
++				tve0_in_tcon1: endpoint@0 {
++					reg = <0>;
++					remote-endpoint = <&tcon1_out_tve0>;
++				};
++			};
++		};
++	};
++
+ 	timer {
+ 		compatible = "arm,armv7-timer";
+ 		interrupts = <GIC_PPI 13 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>,
+-- 
+2.12.2
+

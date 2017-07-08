@@ -1,0 +1,40 @@
+From 854a49f4d62ab467f3c90f98d29fc29d340ec90e Mon Sep 17 00:00:00 2001
+From: Chen-Yu Tsai <wens@csie.org>
+Date: Thu, 9 Mar 2017 18:05:26 +0800
+Subject: [PATCH 25/94] drm/sun4i: Use embedded tcon pointer to get the tcon's
+ output port node
+
+A pointer to the underlying tcon of the crtc was added to the sun4i_crtc
+structure in "drm/sun4i: Add backend and tcon pointers to sun4i_crtc".
+However the crtc init function was still using the copy from sun4i_drv
+to set drm_crtc.port. This was an oversight when the patches were
+reordered.
+
+Switch to using the embedded tcon pointer to get the tcon's ouptut port
+and assign it to drm_crtc.port.
+
+This makes it possible to remove the usage of sun4i_drv completely in
+subsequent patches.
+
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
+---
+ drivers/gpu/drm/sun4i/sun4i_crtc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/sun4i/sun4i_crtc.c b/drivers/gpu/drm/sun4i/sun4i_crtc.c
+index 7bbcedff9f07..5323e3485988 100644
+--- a/drivers/gpu/drm/sun4i/sun4i_crtc.c
++++ b/drivers/gpu/drm/sun4i/sun4i_crtc.c
+@@ -183,7 +183,7 @@ struct sun4i_crtc *sun4i_crtc_init(struct drm_device *drm)
+ 	drm_crtc_helper_add(&scrtc->crtc, &sun4i_crtc_helper_funcs);
+ 
+ 	/* Set crtc.port to output port node of the tcon */
+-	scrtc->crtc.port = of_graph_get_port_by_id(drv->tcon->dev->of_node,
++	scrtc->crtc.port = of_graph_get_port_by_id(scrtc->tcon->dev->of_node,
+ 						   1);
+ 
+ 	/* Set possible_crtcs to this crtc for overlay planes */
+-- 
+2.12.2
+

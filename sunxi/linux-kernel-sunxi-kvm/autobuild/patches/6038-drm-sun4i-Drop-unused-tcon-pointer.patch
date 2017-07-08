@@ -1,0 +1,31 @@
+From 5e96fa830eb5bc0b17cb05d14dc5c4b363f2cad5 Mon Sep 17 00:00:00 2001
+From: Chen-Yu Tsai <wens@csie.org>
+Date: Tue, 25 Apr 2017 14:19:36 +0800
+Subject: [PATCH 38/94] drm/sun4i: Drop unused tcon pointer
+
+The sun4i DRM driver now uses 2 lists to track backends and tcons.
+During the switch, the original tcon pointer was not removed.
+
+As it is now unused, remove it, so other new drivers can't accidentally
+use it.
+
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+---
+ drivers/gpu/drm/sun4i/sun4i_drv.h | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/sun4i/sun4i_drv.h b/drivers/gpu/drm/sun4i/sun4i_drv.h
+index 835bdb5cc0c2..250c29017ef5 100644
+--- a/drivers/gpu/drm/sun4i/sun4i_drv.h
++++ b/drivers/gpu/drm/sun4i/sun4i_drv.h
+@@ -20,7 +20,6 @@
+ struct sun4i_drv {
+ 	struct list_head	backend_list;
+ 	struct list_head	tcon_list;
+-	struct sun4i_tcon	*tcon;
+ 
+ 	struct drm_fbdev_cma	*fbdev;
+ };
+-- 
+2.12.2
+

@@ -1,0 +1,71 @@
+From cfce023394c904b4b203b611b2c4ae7b356c1562 Mon Sep 17 00:00:00 2001
+From: Chen-Yu Tsai <wens@csie.org>
+Date: Tue, 25 Apr 2017 14:38:31 +0800
+Subject: [PATCH 39/94] drm/sun4i: Set TCON clock inside sun4i_tconX_mode_set
+
+Currently we are configuring the TCON's dot clock or special clock
+directly from the encoder mode_set functions. Since we already
+provide mode_set helper functions for the TCON's 2 channels, we
+can set the respective clock from those helpers, and reduce the
+exposure of the TCON's internals.
+
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+---
+ drivers/gpu/drm/sun4i/sun4i_rgb.c  | 2 --
+ drivers/gpu/drm/sun4i/sun4i_tcon.c | 6 ++++++
+ drivers/gpu/drm/sun4i/sun4i_tv.c   | 2 --
+ 3 files changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/gpu/drm/sun4i/sun4i_rgb.c b/drivers/gpu/drm/sun4i/sun4i_rgb.c
+index 1147451eb993..51ece4c39d7e 100644
+--- a/drivers/gpu/drm/sun4i/sun4i_rgb.c
++++ b/drivers/gpu/drm/sun4i/sun4i_rgb.c
+@@ -175,8 +175,6 @@ static void sun4i_rgb_encoder_mode_set(struct drm_encoder *encoder,
+ 
+ 	sun4i_tcon0_mode_set(tcon, mode);
+ 
+-	clk_set_rate(tcon->dclk, mode->crtc_clock * 1000);
+-
+ 	/* FIXME: This seems to be board specific */
+ 	clk_set_phase(tcon->dclk, 120);
+ }
+diff --git a/drivers/gpu/drm/sun4i/sun4i_tcon.c b/drivers/gpu/drm/sun4i/sun4i_tcon.c
+index 8301389c411d..29fd829aa54c 100644
+--- a/drivers/gpu/drm/sun4i/sun4i_tcon.c
++++ b/drivers/gpu/drm/sun4i/sun4i_tcon.c
+@@ -131,6 +131,9 @@ void sun4i_tcon0_mode_set(struct sun4i_tcon *tcon,
+ 	u8 clk_delay;
+ 	u32 val = 0;
+ 
++	/* Configure the dot clock */
++	clk_set_rate(tcon->dclk, mode->crtc_clock * 1000);
++
+ 	/* Adjust clock delay */
+ 	clk_delay = sun4i_tcon_get_clk_delay(mode, 0);
+ 	regmap_update_bits(tcon->regs, SUN4I_TCON0_CTL_REG,
+@@ -206,6 +209,9 @@ void sun4i_tcon1_mode_set(struct sun4i_tcon *tcon,
+ 
+ 	WARN_ON(!tcon->quirks->has_channel_1);
+ 
++	/* Configure the dot clock */
++	clk_set_rate(tcon->sclk1, mode->crtc_clock * 1000);
++
+ 	/* Adjust clock delay */
+ 	clk_delay = sun4i_tcon_get_clk_delay(mode, 1);
+ 	regmap_update_bits(tcon->regs, SUN4I_TCON1_CTL_REG,
+diff --git a/drivers/gpu/drm/sun4i/sun4i_tv.c b/drivers/gpu/drm/sun4i/sun4i_tv.c
+index 49c49431a053..542da220818b 100644
+--- a/drivers/gpu/drm/sun4i/sun4i_tv.c
++++ b/drivers/gpu/drm/sun4i/sun4i_tv.c
+@@ -486,8 +486,6 @@ static void sun4i_tv_mode_set(struct drm_encoder *encoder,
+ 		      SUN4I_TVE_RESYNC_FIELD : 0));
+ 
+ 	regmap_write(tv->regs, SUN4I_TVE_SLAVE_REG, 0);
+-
+-	clk_set_rate(tcon->sclk1, mode->crtc_clock * 1000);
+ }
+ 
+ static struct drm_encoder_helper_funcs sun4i_tv_helper_funcs = {
+-- 
+2.12.2
+
