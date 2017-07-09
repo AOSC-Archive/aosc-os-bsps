@@ -6,7 +6,7 @@ ln -sfv linux-kernel-${KERNVER}-aosc-sunxi-nokvm "$PKGDIR"/usr/lib/aosc-os-armel
 for i in \
 	sun4i-a10-cubieboard \
 	sun5i-a13-licheepi-one \
-	sun5i-a13-q8-tablet \
+	sun5i-a13-q8-tablet
 do
 	mkdir -p "$PKGDIR"/usr/lib/aosc-os-armel-sunxi-boot/dtb-$i
 	ln -sfv ../dtbs-kernel-${KERNVER}-aosc-sunxi-nokvm/$i.dtb "$PKGDIR"/usr/lib/aosc-os-armel-sunxi-boot/dtb-$i/dtb.dtb
