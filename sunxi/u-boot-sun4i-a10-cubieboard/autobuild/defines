@@ -1,6 +1,7 @@
 PKGNAME=u-boot-sun4i-a10-cubieboard
 PKGDES="U-Boot for CubieTech Cubieboard"
 PKGSEC=embedded
+BUILDDEP="dtc"
 
 ABSTRIP=no
 ABELFDEP=no
