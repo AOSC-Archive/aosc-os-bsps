@@ -1,0 +1,8 @@
+PKGNAME=u-boot-sun8i-h3-orangepi-plus
+PKGDES="U-Boot for Xunlong Orange Pi Plus"
+PKGSEC=embedded
+BUILDDEP="dtc swig"
+
+ABSTRIP=no
+ABELFDEP=no
+ABRPMAUTOPROVONLY=yes
