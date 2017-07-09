@@ -18,5 +18,7 @@ find arch/arm/boot/dts/ -name '*.dtb' -exec cp {} "$PKGDIR"/usr/lib/aosc-os-arme
 export ARCH=$OLDARCH
 rm -rf "$PKGDIR"/usr/lib/firmware
 
+headers_extra=-sunxi-kvm
+
 . autobuild/build-common/ext-hdr
 . autobuild/build-common/gen-scripts
