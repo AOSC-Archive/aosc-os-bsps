@@ -1,0 +1,9 @@
+source autobuild/board
+
+PKGNAME=u-boot-${LINUX_BOARD}
+PKGDES="U-Boot for ${PRETTY_NAME}"
+PKGSEC=embedded
+
+ABSTRIP=no
+ABELFDEP=no
+ABRPMAUTOPROVONLY=yes
