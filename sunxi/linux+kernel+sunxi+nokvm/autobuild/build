@@ -4,7 +4,9 @@ mkdir -p "$PKGDIR"/usr/lib/aosc-os-armel-sunxi-boot/
 mkdir -p "$PKGDIR"/usr/lib/aosc-os-armel-sunxi-boot/linux-kernel-${KERNVER}-aosc-sunxi-nokvm/modules
 ln -sfv linux-kernel-${KERNVER}-aosc-sunxi-nokvm "$PKGDIR"/usr/lib/aosc-os-armel-sunxi-boot/linux-sunxi-nokvm
 for i in \
-	sun4i-a10-cubieboard
+	sun4i-a10-cubieboard \
+	sun5i-a13-licheepi-one \
+	sun5i-a13-q8-tablet \
 do
 	mkdir -p "$PKGDIR"/usr/lib/aosc-os-armel-sunxi-boot/dtb-$i
 	ln -sfv ../dtbs-kernel-${KERNVER}-aosc-sunxi-nokvm/$i.dtb "$PKGDIR"/usr/lib/aosc-os-armel-sunxi-boot/dtb-$i/dtb.dtb
