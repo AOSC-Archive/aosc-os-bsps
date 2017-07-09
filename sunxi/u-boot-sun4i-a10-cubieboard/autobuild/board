@@ -1,3 +1,0 @@
-UBOOT_BOARD=Cubieboard
-LINUX_BOARD=sun4i-a10-cubieboard
-PRETTY_NAME="CubieTech Cubieboard"

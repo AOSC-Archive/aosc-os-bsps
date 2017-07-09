@@ -1,7 +1,5 @@
-source autobuild/board
-
-PKGNAME=u-boot-${LINUX_BOARD}
-PKGDES="U-Boot for ${PRETTY_NAME}"
+PKGNAME=u-boot-sun4i-a10-cubieboard
+PKGDES="U-Boot for CubieTech Cubieboard"
 PKGSEC=embedded
 
 ABSTRIP=no

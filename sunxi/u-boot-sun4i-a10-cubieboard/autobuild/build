@@ -1,4 +1,5 @@
-source autobuild/board
+UBOOT_BOARD=Cubieboard
+LINUX_BOARD=sun4i-a10-cubieboard
 
 make ${UBOOT_BOARD}_defconfig
 make
