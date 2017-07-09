@@ -1,0 +1,8 @@
+PKGNAME=u-boot-sun7i-a20-bananapi-m1-plus
+PKGDES="U-Boot for Banana Pi M1+"
+PKGSEC=embedded
+BUILDDEP="dtc swig"
+
+ABSTRIP=no
+ABELFDEP=no
+ABRPMAUTOPROVONLY=yes

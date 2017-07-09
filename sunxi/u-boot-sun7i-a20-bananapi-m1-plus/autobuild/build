@@ -1,0 +1,9 @@
+UBOOT_BOARD=Bananapi # a dedicated config is not necessary because the only difference is Wi-Fi
+LINUX_BOARD=sun7i-a20-bananapi-m1-plus
+
+make ${UBOOT_BOARD}_defconfig
+make
+mkdir -p "$PKGDIR"/usr/lib/u-boot-${LINUX_BOARD}
+cp u-boot u-boot.bin u-boot.img u-boot-sunxi-with-spl.bin spl/sunxi-spl.bin "$PKGDIR"/usr/lib/u-boot-${LINUX_BOARD}
+mkdir -p "$PKGDIR"/usr/lib/aosc-os-armel-sunxi-boot/
+ln -sfv ../u-boot-${LINUX_BOARD} "$PKGDIR"/usr/lib/aosc-os-armel-sunxi-boot/
