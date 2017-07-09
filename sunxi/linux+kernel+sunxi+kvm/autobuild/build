@@ -1,0 +1,20 @@
+KERNVER=4.11.9
+
+mkdir -p "$PKGDIR"/usr/lib/aosc-os-armel-sunxi-boot/
+mkdir -p "$PKGDIR"/usr/lib/aosc-os-armel-sunxi-boot/linux-kernel-${KERNVER}-aosc-sunxi/modules
+ln -sfv linux-kernel-${KERNVER}-aosc-sunxi "$PKGDIR"/usr/lib/aosc-os-armel-sunxi-boot/linux-sunxi-kvm
+for i in \
+	sun7i-a20-bananapi-m1-plus \
+	sun7i-a20-cubietruck \
+	sun8i-a23-q8-tablet \
+	sun8i-a33-q8-tablet \
+	sun8i-h2-plus-orangepi-zero \
+	sun8i-h3-bananapi-m2-plus \
+	sun8i-h3-nanopi-neo \
+	sun8i-h3-orangepi-one \
+	sun8i-h3-orangepi-pc \
+	sun8i-h3-orangepi-plus
+do
+	mkdir -p "$PKGDIR"/usr/lib/aosc-os-armel-sunxi-boot/dtb-$i
+	ln -sfv ../dtbs-kernel-${KERNVER}-aosc-sunxi/$i.dtb "$PKGDIR"/usr/lib/aosc-os-armel-sunxi-boot/dtb-$i/dtb.dtb
+done
