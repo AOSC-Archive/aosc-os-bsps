@@ -6,4 +6,3 @@ PKGDES="The Linux Kernel optimized for Allwinner/sunXi SoCs, for all ARMv7s, but
 ABSTRIP=no
 ABELFDEP=no
 ABRPMAUTOPROVONLY=yes
-ABHOST=noarch
