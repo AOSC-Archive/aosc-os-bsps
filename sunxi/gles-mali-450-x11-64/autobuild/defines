@@ -1,0 +1,3 @@
+PKGNAME=gles-mali-450-x11
+PKGDES="Mali blobs from Rockchip for Mali-450 GPU"
+PKGSEC=x11
