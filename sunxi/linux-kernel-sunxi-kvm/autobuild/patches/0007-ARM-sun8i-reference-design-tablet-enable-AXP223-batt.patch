@@ -1,0 +1,34 @@
+From 0024da30ad0d938d17f5e8a5ae305b1a0908ef41 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Tue, 1 Aug 2017 21:45:44 +0800
+Subject: [PATCH 07/87] ARM: sun8i: reference-design-tablet: enable AXP223
+ battery
+
+All tablets that uses the reference design of Allwinner A23/A33 has a
+battery attached to the AXP223 PMIC.
+
+Enable it in reference design tablet DTSI file.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm/boot/dts/sun8i-reference-design-tablet.dtsi | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/arm/boot/dts/sun8i-reference-design-tablet.dtsi b/arch/arm/boot/dts/sun8i-reference-design-tablet.dtsi
+index d6bd15898db6..b0c406757ef6 100644
+--- a/arch/arm/boot/dts/sun8i-reference-design-tablet.dtsi
++++ b/arch/arm/boot/dts/sun8i-reference-design-tablet.dtsi
+@@ -125,6 +125,10 @@
+ 
+ #include "axp223.dtsi"
+ 
++&battery_power_supply {
++	status = "okay";
++};
++
+ &reg_aldo1 {
+ 	regulator-always-on;
+ 	regulator-min-microvolt = <3000000>;
+-- 
+2.13.5
+

@@ -1,0 +1,31 @@
+From 126bae561a640f484730199a099c5ca3eed833f8 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Sun, 20 Aug 2017 13:23:21 +0800
+Subject: [PATCH 61/87] dt-bindings: add compatible string for Allwinner V3s
+ SoC
+
+The compatible string for Allwinner V3s SoC used to be missing.
+
+Add it to the binding document.
+
+Fixes: b074fede01c0 ("arm: sunxi: add support for V3s SoC")
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ Documentation/devicetree/bindings/arm/sunxi.txt | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Documentation/devicetree/bindings/arm/sunxi.txt b/Documentation/devicetree/bindings/arm/sunxi.txt
+index d2c46449b4eb..f35c6ada5a65 100644
+--- a/Documentation/devicetree/bindings/arm/sunxi.txt
++++ b/Documentation/devicetree/bindings/arm/sunxi.txt
+@@ -14,6 +14,7 @@ using one of the following compatible strings:
+   allwinner,sun8i-a83t
+   allwinner,sun8i-h2-plus
+   allwinner,sun8i-h3
++  allwinner,sun8i-v3s
+   allwinner,sun9i-a80
+   allwinner,sun50i-a64
+   nextthing,gr8
+-- 
+2.13.5
+

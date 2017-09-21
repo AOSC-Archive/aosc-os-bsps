@@ -1,0 +1,50 @@
+From 1944f831356677f6c7563bc817ea7f5cd3fb3824 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Tue, 1 Aug 2017 21:52:35 +0800
+Subject: [PATCH 15/87] ARM: sun8i: a23/a33: add reserved-memory for Mali
+
+The current Mali driver doesn't work without reserved-memory node.
+
+Add such a node for it.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm/boot/dts/sun8i-a23-a33.dtsi | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/arch/arm/boot/dts/sun8i-a23-a33.dtsi b/arch/arm/boot/dts/sun8i-a23-a33.dtsi
+index a8b978d0f35b..38eaf73cdbfd 100644
+--- a/arch/arm/boot/dts/sun8i-a23-a33.dtsi
++++ b/arch/arm/boot/dts/sun8i-a23-a33.dtsi
+@@ -118,6 +118,20 @@
+ 		};
+ 	};
+ 
++	reserved-memory {
++		#address-cells = <1>;
++		#size-cells = <1>;
++		ranges;
++		
++		cma: linux,cma {
++			compatible = "shared-dma-pool";
++			reusable;
++			size = <0x4000000>;
++			alignment = <0x2000>;
++			linux,cma-default;
++		};
++	};
++
+ 	soc@01c00000 {
+ 		compatible = "simple-bus";
+ 		#address-cells = <1>;
+@@ -493,6 +507,7 @@
+ 			clock-names = "bus", "core";
+ 			resets = <&ccu RST_BUS_GPU>;
+ 			#cooling-cells = <2>;
++			memory-region = <&cma>;
+ 
+ 			assigned-clocks = <&ccu CLK_GPU>;
+ 			assigned-clock-rates = <384000000>;
+-- 
+2.13.5
+
