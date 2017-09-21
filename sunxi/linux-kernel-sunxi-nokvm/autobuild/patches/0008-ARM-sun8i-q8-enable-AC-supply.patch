@@ -1,0 +1,36 @@
+From 9b52c2b51992df2470f16ef97a6ef9dd53e2dd54 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Tue, 1 Aug 2017 21:46:40 +0800
+Subject: [PATCH 08/87] ARM: sun8i: q8: enable AC supply
+
+Q8 tablets usually come with an power-only barrel which is connected to
+the ACIN of AXP223 PMIC.
+
+Enable AC power supply in Q8 DTSI file.
+
+As some non-Q8 tablets are known to have only USB power supply, the AC
+supply is not enabled in reference design tablet DTSI file.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm/boot/dts/sun8i-q8-common.dtsi | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/arm/boot/dts/sun8i-q8-common.dtsi b/arch/arm/boot/dts/sun8i-q8-common.dtsi
+index c676940a96da..407ac24e7dd0 100644
+--- a/arch/arm/boot/dts/sun8i-q8-common.dtsi
++++ b/arch/arm/boot/dts/sun8i-q8-common.dtsi
+@@ -64,6 +64,10 @@
+ 	};
+ };
+ 
++&ac_power_supply {
++	status = "okay";
++};
++
+ &ehci0 {
+ 	status  = "okay";
+ };
+-- 
+2.13.5
+

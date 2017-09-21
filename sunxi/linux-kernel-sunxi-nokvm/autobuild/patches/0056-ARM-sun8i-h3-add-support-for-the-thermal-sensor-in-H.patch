@@ -1,0 +1,49 @@
+From bc389accb7386dda0bd1c807fb09fa1f0888a18e Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Wed, 29 Mar 2017 00:46:49 +0800
+Subject: [PATCH 56/87] ARM: sun8i: h3: add support for the thermal sensor in
+ H3
+
+As we have gained the support for the thermal sensor in H3, we can now
+add its device nodes to the device tree.
+
+Add them to the H3 device tree.
+
+The H5 thermal sensor has some differences, and will be added furtherly.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm/boot/dts/sun8i-h3.dtsi | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/arch/arm/boot/dts/sun8i-h3.dtsi b/arch/arm/boot/dts/sun8i-h3.dtsi
+index eb29c3c10b98..0ce5c11121ba 100644
+--- a/arch/arm/boot/dts/sun8i-h3.dtsi
++++ b/arch/arm/boot/dts/sun8i-h3.dtsi
+@@ -354,6 +354,23 @@
+ 		};
+ 	};
+ 
++	iio-hwmon {
++		compatible = "iio-hwmon";
++		io-channels = <&ths>;
++	};
++
++	soc {
++		ths: thermal-sensor@1c25000 {
++			compatible = "allwinner,sun8i-h3-ths";
++			reg = <0x01c25000 0x100>;
++			clocks = <&ccu CLK_BUS_THS>, <&ccu CLK_THS>;
++			clock-names = "bus", "mod";
++			resets = <&ccu RST_BUS_THS>;
++			#thermal-sensor-cells = <0>;
++			#io-channel-cells = <0>;
++		};
++	};
++
+ 	timer {
+ 		compatible = "arm,armv7-timer";
+ 		interrupts = <GIC_PPI 13 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>,
+-- 
+2.13.5
+
