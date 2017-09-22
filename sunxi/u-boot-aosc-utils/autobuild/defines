@@ -3,3 +3,4 @@ PKGDES="Utilities created by AOSC to ease boot setting of U-Boot-based embedded 
 PKGDEP="uboot-tools"
 PKGSEC=embedded
 
+ABHOST=noarch
