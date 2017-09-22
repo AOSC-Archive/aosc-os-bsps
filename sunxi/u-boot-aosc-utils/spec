@@ -1,0 +1,3 @@
+VER=0+git20170711
+GITSRC="https://github.com/AOSC-Dev/u-boot-aosc-utils"
+GITCO="62291c87fb7b6e76c6ee7737b309d9a0659506a8"

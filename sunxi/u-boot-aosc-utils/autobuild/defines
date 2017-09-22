@@ -1,0 +1,5 @@
+PKGNAME=u-boot-aosc-utils
+PKGDES="Utilities created by AOSC to ease boot setting of U-Boot-based embedded systems."
+PKGDEP="uboot-tools"
+PKGSEC=embedded
+

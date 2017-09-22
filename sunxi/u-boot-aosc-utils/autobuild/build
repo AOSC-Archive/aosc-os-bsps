@@ -1,0 +1,2 @@
+mkdir -p "$PKGDIR"/usr
+cp -r bin lib "$PKGDIR"/usr/
