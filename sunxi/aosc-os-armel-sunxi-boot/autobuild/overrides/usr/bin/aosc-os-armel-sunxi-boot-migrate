@@ -28,3 +28,5 @@ else
 	wget https://github.com/AOSC-Dev/u-boot-aosc-utils/raw/62291c87fb7b6e76c6ee7737b309d9a0659506a8/presets/sunxi -O /etc/default/u-boot
 fi
 update-u-boot
+echo "Cleaning up..."
+apt purge aosc-os-armel-sunxi-boot -y
