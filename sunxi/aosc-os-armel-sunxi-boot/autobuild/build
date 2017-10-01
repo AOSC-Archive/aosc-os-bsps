@@ -1,2 +1,1 @@
-mkdir -p $PKGDIR/usr/lib/aosc-os-armel-sunxi-boot
-cp -r linux-* dtb-* u-boot-* $PKGDIR/usr/lib/aosc-os-armel-sunxi-boot/
+mkdir -p $PKGDIR

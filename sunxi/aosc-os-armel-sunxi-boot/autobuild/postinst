@@ -1,4 +1,16 @@
 #! /bin/bash
-if [ -e /usr/bin/aosc-arm-flasher ]; then
-	aosc-arm-flasher autoflash aosc-os-armel-sunxi-boot
-fi
+echo << EOF
+==============================================================================
+                              PLEASE READ THIS
+==============================================================================
+The packages for AOSC OS sunxi 32-bit kernel and U-Boot have changed.
+
+Now the packages are natively built and splited.
+
+A script is provided in the aosc-os-armel-sunxi-boot transition package, in
+order to ease the migration.
+
+Please run the following command:
+aosc-os-armel-sunxi-boot-migrate
+==============================================================================
+EOF

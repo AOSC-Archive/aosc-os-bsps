@@ -1,9 +1,5 @@
 PKGNAME=aosc-os-armel-sunxi-boot
 PKGSEC=kernel
-PKGDES="Kernel and U-Boot for sunxi platform"
-PKGRECOM="aosc-os-arm-boot-flasher"
-
-ABSTRIP=no
-ABELFDEP=no
-ABRPMAUTOPROVONLY=yes
+PKGDES="Transition package"
+PKGEPOCH=1
 
