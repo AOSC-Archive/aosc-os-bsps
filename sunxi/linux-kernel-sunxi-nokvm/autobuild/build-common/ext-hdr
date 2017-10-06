@@ -15,6 +15,10 @@ rm -f "$objtree/debian/hdrsrcfiles" "$objtree/debian/hdrobjfiles"
 export ARCH=$OLDARCH
 rm -fr "$PKGDIR"/usr/src/linux-headers-${version}${headers_extra}/"$PKGDIR"
 
+# Hack for sunxi mali
+mkdir -p $destdir/mm/
+cp $srctree/mm/cma.h $destdir/mm/cma.h
+
 rm -rf "$PKGDIR"/usr/lib/modules/${version}${LOCALNAME}/{build,source}
 ln -sfv /usr/src/linux-headers-${version}${headers_extra} "$PKGDIR"/usr/lib/modules/${version}${LOCALNAME}/build
 ln -sfv /usr/src/linux-headers-${version}${headers_extra} "$PKGDIR"/usr/lib/modules/${version}${LOCALNAME}/source
