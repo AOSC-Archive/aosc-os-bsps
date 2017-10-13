@@ -1,4 +1,4 @@
-KERNVER=4.13.5
+KERNVER=4.13.6
 
 mkdir -p "$PKGDIR"/usr/lib/aosc-os-armel-sunxi-boot/
 mkdir -p "$PKGDIR"/usr/lib/aosc-os-armel-sunxi-boot/linux-kernel-${KERNVER}-aosc-sunxi/modules
@@ -13,7 +13,8 @@ for i in \
 	sun8i-h3-nanopi-neo \
 	sun8i-h3-orangepi-one \
 	sun8i-h3-orangepi-pc \
-	sun8i-h3-orangepi-plus
+	sun8i-h3-orangepi-plus \
+	sun8i-r40-bananapi-m2-ultra
 do
 	mkdir -p "$PKGDIR"/usr/lib/aosc-os-armel-sunxi-boot/dtb-$i
 	ln -sfv ../dtbs-kernel-${KERNVER}-aosc-sunxi/$i.dtb "$PKGDIR"/usr/lib/aosc-os-armel-sunxi-boot/dtb-$i/dtb.dtb

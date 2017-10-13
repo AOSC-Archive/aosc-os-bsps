@@ -1,8 +1,8 @@
-PKGNAME=linux-kernel-sunxi-kvm-4.13.5
+PKGNAME=linux-kernel-sunxi-kvm-4.13.6
 PKGSEC=kernel
 PKGDEP=""
 BUILDDEP="bc dracut git"
-PKGDES="Linux Kernel version 4.13.5 optimized for Allwinner/sunXi SoCs, for CPUs with ARMv7 Virtualization Extension"
+PKGDES="Linux Kernel version 4.13.6 optimized for Allwinner/sunXi SoCs, for CPUs with ARMv7 Virtualization Extension"
 
 ABSTRIP=no
 ABELFDEP=no
