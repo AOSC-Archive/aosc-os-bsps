@@ -1,4 +1,4 @@
-VER=4.14-rc6
-SRCTBL="https://git.kernel.org/torvalds/t/linux-${VER}.tar.gz"
+VER=4.14rc6
+SRCTBL="https://git.kernel.org/torvalds/t/linux-4.14-rc6.tar.gz"
 # Use this for stable kernel
 # SRCTBL="https://cdn.kernel.org/pub/linux/kernel/v${VER:0:1}.x/linux-${VER}.tar.xz"
