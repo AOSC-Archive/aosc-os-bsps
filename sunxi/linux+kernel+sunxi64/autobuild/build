@@ -2,7 +2,7 @@ KERNVER=4.14-rc6
 
 mkdir -p "$PKGDIR"/usr/lib/aosc-os-arm64-sunxi-boot/
 mkdir -p "$PKGDIR"/usr/lib/aosc-os-arm64-sunxi-boot/linux-kernel-${KERNVER}-aosc-sunxi64/modules
-ln -sfv linux-kernel-${KERNVER}-aosc-sunxi64 "$PKGDIR"/usr/lib/aosc-os-arm64-sunxi-boot/linux-sunxi64
+ln -sfv linux-kernel-${KERNVER}-aosc-sunxi64 "$PKGDIR"/usr/lib/aosc-os-arm64-sunxi-boot/linux-kernel-sunxi64
 for i in \
 	sun50i-a64-bananapi-m64 \
 	sun50i-a64-pine64 \
