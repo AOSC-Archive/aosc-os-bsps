@@ -1,0 +1,7 @@
+git clone https://github.com/apritzel/arm-trusted-firmware
+cd arm-trusted-firmware
+# This commit can shutdown CPU cores on H5
+git checkout 91f2402d941036a0db092d5375d0535c270b9121
+make PLAT=sun50iw1p1
+cp build/sun50iw1p1/release/bl31.bin ..
+cd ..

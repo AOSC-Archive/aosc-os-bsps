@@ -1,0 +1,11 @@
+UBOOT_BOARD=pine64_plus
+LINUX_BOARD=sun50i-a64-pine64-plus
+
+. autobuild/build-common/build-atf
+
+make ${UBOOT_BOARD}_defconfig
+make
+mkdir -p "$PKGDIR"/usr/lib/u-boot-${LINUX_BOARD}
+cp u-boot u-boot.bin u-boot.img u-boot-sunxi-with-spl.bin spl/sunxi-spl.bin "$PKGDIR"/usr/lib/u-boot-${LINUX_BOARD}
+mkdir -p "$PKGDIR"/usr/lib/aosc-os-arm64-sunxi-boot/
+ln -sfv ../u-boot-${LINUX_BOARD} "$PKGDIR"/usr/lib/aosc-os-arm64-sunxi-boot/
