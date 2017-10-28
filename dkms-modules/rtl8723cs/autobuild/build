@@ -1,0 +1,16 @@
+DATE=20171027
+REV=3fed0ea2451c513b826a83e0c4b6bb84bf1ec34a
+
+mkdir -p "$PKGDIR"/usr/src/
+git clone https://github.com/Icenowy/rtl8723cs "$PKGDIR"/usr/src/rtl8723cs-$DATE
+pushd "$PKGDIR"/usr/src/rtl8723cs-$DATE
+git checkout $REV
+rm -rf .git
+cat > dkms.conf << EOF
+PACKAGE_NAME="rtl8723cs"
+PACKAGE_VERSION="$DATE"
+BUILT_MODULE_NAME[0]="8723cs"
+DEST_MODULE_LOCATION[0]="/extra"
+AUTOINSTALL="yes"
+EOF
+popd
