@@ -1,6 +1,8 @@
 UBOOT_BOARD=pine64_plus
 LINUX_BOARD=sun50i-a64-pine64-plus
 
+unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
+
 ln -sv /usr/bin/ld.bfd ld
 export PATH="$PWD:$PATH"
 
