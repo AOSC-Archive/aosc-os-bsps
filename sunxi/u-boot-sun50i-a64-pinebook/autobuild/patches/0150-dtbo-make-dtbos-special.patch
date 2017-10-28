@@ -1,0 +1,44 @@
+From da0b3a946f1a5135297b92e5a18ff97ab10145d6 Mon Sep 17 00:00:00 2001
+From: Pantelis Antoniou <pantelis.antoniou@konsulko.com>
+Date: Mon, 4 Sep 2017 23:12:20 +0300
+Subject: [PATCH 150/256] dtbo: make dtbos special
+
+Special rule for dtbo generation
+
+Signed-off-by: Pantelis Antoniou <pantelis.antoniou@konsulko.com>
+Acked-by: Simon Glass <sjg@chromium.org>
+---
+ scripts/Makefile.lib | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index 9ce47b4d22..2a7ed70cf2 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -321,6 +321,23 @@ $(obj)/%.dtb: $(src)/%.dts FORCE
+ 
+ dtc-tmp = $(subst $(comma),_,$(dot-target).dts.tmp)
+ 
++# DTCO
++# ---------------------------------------------------------------------------
++
++quiet_cmd_dtco = DTCO    $@
++# Rule for objects only; does not put specific u-boot include at the end
++# No generation of assembly file either
++# Modified for U-Boot
++cmd_dtco = mkdir -p $(dir ${dtc-tmp}) ; \
++	$(CPP) $(dtc_cpp_flags) -x assembler-with-cpp -o $(dtc-tmp) - ; \
++	$(DTC) -@ -O dtb -o $@ -b 0 \
++		-i $(dir $<) $(DTC_FLAGS) \
++		-d $(depfile).dtc.tmp $(dtc-tmp) ; \
++	cat $(depfile).pre.tmp $(depfile).dtc.tmp > $(depfile)
++
++$(obj)/%.dtbo: $(src)/%.dts FORCE
++	$(call if_changed_dep,dtco)
++
+ # Fonts
+ # ---------------------------------------------------------------------------
+ 
+-- 
+2.13.6
+

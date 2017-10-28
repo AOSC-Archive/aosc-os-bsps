@@ -1,0 +1,42 @@
+From 0bfd4f81ae3d28e951111481e9af66ba1f7be671 Mon Sep 17 00:00:00 2001
+From: Vanessa Maegima <vanessa.maegima@nxp.com>
+Date: Tue, 29 Aug 2017 13:53:18 -0300
+Subject: [PATCH 198/256] pico-imx7d: Add "how to boot with NXP 4.1 Kernel"
+
+The NXP 4.1 kernel needs to boot with secure boot.
+
+Add information on how to enable secure boot mode.
+
+Signed-off-by: Vanessa Maegima <vanessa.maegima@nxp.com>
+---
+ board/technexion/pico-imx7d/README | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/board/technexion/pico-imx7d/README b/board/technexion/pico-imx7d/README
+index a2805ee080..8af4effa78 100644
+--- a/board/technexion/pico-imx7d/README
++++ b/board/technexion/pico-imx7d/README
+@@ -47,3 +47,20 @@ Remove power from the pico board.
+ Put pico board into normal boot mode.
+ 
+ Power up the board and the new updated U-Boot should boot from eMMC.
++
++Building U-Boot to boot with NXP 4.1 kernel:
++
++The NXP 4.1 kernel boots only in secure boot mode on mx7.
++
++Follow the next steps to enable secure boot:
++
++$ make mrproper
++$ make pico-imx7d_defconfig
++$ make menuconfig
++	-> ARM architecture
++	-> [*] Enable support for booting in non-secure mode
++	-> [*]   Boot in secure mode by default
++	-> Exit
++$ make
++
++Flash u-boot.imx using the imx_usb_loader tool.
+-- 
+2.13.6
+

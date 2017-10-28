@@ -1,0 +1,63 @@
+From 4950eb4a48623d8ad013c1f37097906ec52040d1 Mon Sep 17 00:00:00 2001
+From: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
+Date: Mon, 4 Sep 2017 10:47:54 +0800
+Subject: [PATCH 033/256] armv8: ls1088a: Enable PCIe in defconfigs
+
+Enabled PCIe support and PCI command feature.
+
+Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
+Reviewed-by: York Sun <york.sun@nxp.com>
+---
+ configs/ls1088aqds_qspi_defconfig | 4 ++++
+ configs/ls1088ardb_qspi_defconfig | 4 ++++
+ include/configs/ls1088a_common.h  | 4 ++++
+ 3 files changed, 12 insertions(+)
+
+diff --git a/configs/ls1088aqds_qspi_defconfig b/configs/ls1088aqds_qspi_defconfig
+index 6fff149fb6..4b0d604fa0 100644
+--- a/configs/ls1088aqds_qspi_defconfig
++++ b/configs/ls1088aqds_qspi_defconfig
+@@ -22,6 +22,10 @@ CONFIG_DM=y
+ CONFIG_SPI_FLASH=y
+ CONFIG_NETDEVICES=y
+ CONFIG_E1000=y
++CONFIG_PCI=y
++CONFIG_DM_PCI=y
++CONFIG_DM_PCI_COMPAT=y
++CONFIG_PCIE_LAYERSCAPE=y
+ CONFIG_SYS_NS16550=y
+ CONFIG_FSL_DSPI=y
+ CONFIG_EFI_LOADER_BOUNCE_BUFFER=y
+diff --git a/configs/ls1088ardb_qspi_defconfig b/configs/ls1088ardb_qspi_defconfig
+index 33e41247e6..2d5a134261 100644
+--- a/configs/ls1088ardb_qspi_defconfig
++++ b/configs/ls1088ardb_qspi_defconfig
+@@ -22,6 +22,10 @@ CONFIG_DM=y
+ CONFIG_SPI_FLASH=y
+ CONFIG_NETDEVICES=y
+ CONFIG_E1000=y
++CONFIG_PCI=y
++CONFIG_DM_PCI=y
++CONFIG_DM_PCI_COMPAT=y
++CONFIG_PCIE_LAYERSCAPE=y
+ CONFIG_SYS_NS16550=y
+ CONFIG_FSL_DSPI=y
+ CONFIG_EFI_LOADER_BOUNCE_BUFFER=y
+diff --git a/include/configs/ls1088a_common.h b/include/configs/ls1088a_common.h
+index c78ba5d6b6..84e9b140d0 100644
+--- a/include/configs/ls1088a_common.h
++++ b/include/configs/ls1088a_common.h
+@@ -44,6 +44,10 @@
+  */
+ #define CPU_RELEASE_ADDR		secondary_boot_func
+ 
++#ifdef CONFIG_PCI
++#define CONFIG_CMD_PCI
++#endif
++
+ /* Size of malloc() pool */
+ #define CONFIG_SYS_MALLOC_LEN		(CONFIG_ENV_SIZE + 2048 * 1024)
+ 
+-- 
+2.13.6
+

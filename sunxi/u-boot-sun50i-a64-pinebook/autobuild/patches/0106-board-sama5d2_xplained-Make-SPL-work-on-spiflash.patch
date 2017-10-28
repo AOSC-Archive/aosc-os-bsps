@@ -1,0 +1,56 @@
+From 23a19e03589c0b1c4daec082f33a1ecdbf5a4475 Mon Sep 17 00:00:00 2001
+From: Wenyou Yang <wenyou.yang@microchip.com>
+Date: Wed, 13 Sep 2017 14:58:50 +0800
+Subject: [PATCH 106/256] board: sama5d2_xplained: Make SPL work on spiflash
+
+Because before switching to a lower clock source, we must switch
+the clock source first instead of last. So before configuring the
+PMC_MCKR register, invoke at91_mck_init_down() first.
+
+As said in datasheet, the the size of SPL must not exceed the maximum
+size allowed(64Kbytes).
+
+Signed-off-by: Wenyou Yang <wenyou.yang@microchip.com>
+Reviewed-by: Simon Glass <sjg@chromium.org>
+---
+ board/atmel/sama5d2_xplained/sama5d2_xplained.c | 10 ++++++++++
+ include/configs/sama5d2_xplained.h              |  2 +-
+ 2 files changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/board/atmel/sama5d2_xplained/sama5d2_xplained.c b/board/atmel/sama5d2_xplained/sama5d2_xplained.c
+index 7e0cb4228f..5758653030 100644
+--- a/board/atmel/sama5d2_xplained/sama5d2_xplained.c
++++ b/board/atmel/sama5d2_xplained/sama5d2_xplained.c
+@@ -247,6 +247,16 @@ void at91_pmc_init(void)
+ 	struct at91_pmc *pmc = (struct at91_pmc *)ATMEL_BASE_PMC;
+ 	u32 tmp;
+ 
++	/*
++	 * while coming from the ROM code, we run on PLLA @ 492 MHz / 164 MHz
++	 * so we need to slow down and configure MCKR accordingly.
++	 * This is why we have a special flavor of the switching function.
++	 */
++	tmp = AT91_PMC_MCKR_PLLADIV_2 |
++	      AT91_PMC_MCKR_MDIV_3 |
++	      AT91_PMC_MCKR_CSS_MAIN;
++	at91_mck_init_down(tmp);
++
+ 	tmp = AT91_PMC_PLLAR_29 |
+ 	      AT91_PMC_PLLXR_PLLCOUNT(0x3f) |
+ 	      AT91_PMC_PLLXR_MUL(82) |
+diff --git a/include/configs/sama5d2_xplained.h b/include/configs/sama5d2_xplained.h
+index 891218d83e..aedd5684c4 100644
+--- a/include/configs/sama5d2_xplained.h
++++ b/include/configs/sama5d2_xplained.h
+@@ -61,7 +61,7 @@
+ /* SPL */
+ #define CONFIG_SPL_FRAMEWORK
+ #define CONFIG_SPL_TEXT_BASE		0x200000
+-#define CONFIG_SPL_MAX_SIZE		0x18000
++#define CONFIG_SPL_MAX_SIZE		0x10000
+ #define CONFIG_SPL_BSS_START_ADDR	0x20000000
+ #define CONFIG_SPL_BSS_MAX_SIZE		0x80000
+ #define CONFIG_SYS_SPL_MALLOC_START	0x20080000
+-- 
+2.13.6
+

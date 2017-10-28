@@ -1,0 +1,39 @@
+From 2d2531be861cb7ec25aa7980b1099ca4f5f46d86 Mon Sep 17 00:00:00 2001
+From: Anatolij Gustschin <agust@denx.de>
+Date: Tue, 1 Aug 2017 16:17:12 +0200
+Subject: [PATCH 088/256] spl: add newline in debug output
+
+With debug enabled, SPL output following these debug prints is on the
+same line and it is hard to read. Fix it.
+
+Signed-off-by: Anatolij Gustschin <agust@denx.de>
+Reviewed-by: Bin Meng <bmeng.cn@gmail.com>
+---
+ common/spl/spl.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/common/spl/spl.c b/common/spl/spl.c
+index 8b219ba690..ce9819e4db 100644
+--- a/common/spl/spl.c
++++ b/common/spl/spl.c
+@@ -158,7 +158,7 @@ int spl_parse_image_header(struct spl_image_info *spl_image,
+ 			spl_image->load_addr, spl_image->size);
+ #else
+ 		/* LEGACY image not supported */
+-		debug("Legacy boot image support not enabled, proceeding to other boot methods");
++		debug("Legacy boot image support not enabled, proceeding to other boot methods\n");
+ 		return -EINVAL;
+ #endif
+ 	} else {
+@@ -196,7 +196,7 @@ int spl_parse_image_header(struct spl_image_info *spl_image,
+ 		spl_set_header_raw_uboot(spl_image);
+ #else
+ 		/* RAW image not supported, proceed to other boot methods. */
+-		debug("Raw boot image support not enabled, proceeding to other boot methods");
++		debug("Raw boot image support not enabled, proceeding to other boot methods\n");
+ 		return -EINVAL;
+ #endif
+ 	}
+-- 
+2.13.6
+

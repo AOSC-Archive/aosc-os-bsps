@@ -1,0 +1,73 @@
+From 6c06f8dc4ab02890ef93b50dac129c2b43cc9ea3 Mon Sep 17 00:00:00 2001
+From: Masahiro Yamada <yamada.masahiro@socionext.com>
+Date: Sat, 26 Aug 2017 01:02:39 +0900
+Subject: [PATCH 084/256] linux/io.h: import generic ioread* / iowrite*
+ accessors from Linux
+
+Some drivers in Linux (ex. drivers/mtd/nand/denali.c) use
+ioread*/iowrite* accessors.  Import them to make drivers more
+synced.  I copied code from include/asm-generic/io.h of Linux.
+
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+---
+ include/linux/io.h | 44 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
+
+diff --git a/include/linux/io.h b/include/linux/io.h
+index a104b7e69f..bf1ddbbaa6 100644
+--- a/include/linux/io.h
++++ b/include/linux/io.h
+@@ -9,6 +9,50 @@
+ #include <linux/types.h>
+ #include <asm/io.h>
+ 
++static inline u8 ioread8(const volatile void __iomem *addr)
++{
++	return readb(addr);
++}
++
++static inline u16 ioread16(const volatile void __iomem *addr)
++{
++	return readw(addr);
++}
++
++static inline u32 ioread32(const volatile void __iomem *addr)
++{
++	return readl(addr);
++}
++
++#ifdef CONFIG_64BIT
++static inline u64 ioread64(const volatile void __iomem *addr)
++{
++	return readq(addr);
++}
++#endif /* CONFIG_64BIT */
++
++static inline void iowrite8(u8 value, volatile void __iomem *addr)
++{
++	writeb(value, addr);
++}
++
++static inline void iowrite16(u16 value, volatile void __iomem *addr)
++{
++	writew(value, addr);
++}
++
++static inline void iowrite32(u32 value, volatile void __iomem *addr)
++{
++	writel(value, addr);
++}
++
++#ifdef CONFIG_64BIT
++static inline void iowrite64(u64 value, volatile void __iomem *addr)
++{
++	writeq(value, addr);
++}
++#endif /* CONFIG_64BIT */
++
+ #ifndef CONFIG_HAVE_ARCH_IOREMAP
+ static inline void __iomem *ioremap(resource_size_t offset,
+ 				    resource_size_t size)
+-- 
+2.13.6
+

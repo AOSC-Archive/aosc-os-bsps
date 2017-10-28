@@ -1,0 +1,33 @@
+From a1d3480bc63103f6215925b9447512e933cc4f1a Mon Sep 17 00:00:00 2001
+From: Philipp Tomsich <philipp.tomsich@theobroma-systems.com>
+Date: Mon, 11 Sep 2017 22:04:24 +0200
+Subject: [PATCH 222/256] rockchip: gpio: convert to livetree
+
+Update the Rockchip GPIO-bank driver to support a live tree.
+
+Signed-off-by: Philipp Tomsich <philipp.tomsich@theobroma-systems.com>
+Reviewed-by: Simon Glass <sjg@chromium.org>
+Acked-by: Philipp Tomsich <philipp.tomsich@theobroma-systems.com>
+
+Version-changes: 2
+- use the dev_read_addr_ptr function in rk_gpio.c
+---
+ drivers/gpio/rk_gpio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/gpio/rk_gpio.c b/drivers/gpio/rk_gpio.c
+index 6f7366acba..a6b83b26a8 100644
+--- a/drivers/gpio/rk_gpio.c
++++ b/drivers/gpio/rk_gpio.c
+@@ -104,7 +104,7 @@ static int rockchip_gpio_probe(struct udevice *dev)
+ 	int ret;
+ 
+ 	/* This only supports RK3288 at present */
+-	priv->regs = (struct rockchip_gpio_regs *)devfdt_get_addr(dev);
++	priv->regs = dev_read_addr_ptr(dev);
+ 	ret = uclass_first_device_err(UCLASS_PINCTRL, &priv->pinctrl);
+ 	if (ret)
+ 		return ret;
+-- 
+2.13.6
+

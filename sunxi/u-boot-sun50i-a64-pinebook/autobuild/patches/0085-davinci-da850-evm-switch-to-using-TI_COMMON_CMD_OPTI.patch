@@ -1,0 +1,165 @@
+From f9268375044a27ebd8205f9a761541ce671bc656 Mon Sep 17 00:00:00 2001
+From: Adam Ford <aford173@gmail.com>
+Date: Fri, 25 Aug 2017 13:51:01 -0500
+Subject: [PATCH 085/256] davinci: da850-evm: switch to using
+ TI_COMMON_CMD_OPTIONS
+
+Like the OMAP-L138 LCDK before it, let's move the da850-evm and
+the variations to TI_COMMON_CMD_OPTIONS to cut back one some of the
+defconfig entries.
+
+Signed-off-by: Adam Ford <aford173@gmail.com>
+---
+ board/davinci/da8xxevm/Kconfig        |  4 ++--
+ configs/da850_am18xxevm_defconfig     | 20 +++++++++++---------
+ configs/da850evm_defconfig            | 20 ++++++++++----------
+ configs/da850evm_direct_nor_defconfig | 19 ++++++++++++++-----
+ 4 files changed, 37 insertions(+), 26 deletions(-)
+
+diff --git a/board/davinci/da8xxevm/Kconfig b/board/davinci/da8xxevm/Kconfig
+index 0935abfd42..d49d244672 100644
+--- a/board/davinci/da8xxevm/Kconfig
++++ b/board/davinci/da8xxevm/Kconfig
+@@ -22,6 +22,6 @@ config SYS_VENDOR
+ config SYS_CONFIG_NAME
+ 	default "omapl138_lcdk"
+ 
+-source "board/ti/common/Kconfig"
+-
+ endif
++
++source "board/ti/common/Kconfig"
+diff --git a/configs/da850_am18xxevm_defconfig b/configs/da850_am18xxevm_defconfig
+index cb3726d6f5..f187882814 100644
+--- a/configs/da850_am18xxevm_defconfig
++++ b/configs/da850_am18xxevm_defconfig
+@@ -1,6 +1,7 @@
+ CONFIG_ARM=y
+ CONFIG_ARCH_DAVINCI=y
+ CONFIG_TARGET_DA850EVM=y
++CONFIG_TI_COMMON_CMD_OPTIONS=y
+ CONFIG_SPL_LIBCOMMON_SUPPORT=y
+ CONFIG_SPL_LIBGENERIC_SUPPORT=y
+ CONFIG_SPL_SERIAL_SUPPORT=y
+@@ -17,23 +18,24 @@ CONFIG_BOARD_EARLY_INIT_F=y
+ CONFIG_SPL=y
+ CONFIG_SPL_BOARD_INIT=y
+ CONFIG_HUSH_PARSER=y
++# CONFIG_CMD_BOOTZ is not set
+ # CONFIG_CMD_IMLS is not set
+-CONFIG_CMD_ASKENV=y
+ CONFIG_CRC32_VERIFY=y
++# CONFIG_CMD_EEPROM is not set
+ # CONFIG_CMD_FLASH is not set
+-CONFIG_CMD_MMC=y
+-CONFIG_CMD_SF=y
+-CONFIG_CMD_SPI=y
++# CONFIG_CMD_GPIO is not set
++# CONFIG_CMD_GPT is not set
++# CONFIG_CMD_I2C is not set
++# CONFIG_CMD_PART is not set
+ # CONFIG_CMD_SETEXPR is not set
+-CONFIG_CMD_DHCP=y
+-CONFIG_CMD_MII=y
+-CONFIG_CMD_PING=y
+-CONFIG_CMD_EXT2=y
+-CONFIG_CMD_FAT=y
++# CONFIG_CMD_TIME is not set
++# CONFIG_CMD_EXT4 is not set
++# CONFIG_CMD_FS_GENERIC is not set
+ CONFIG_CMD_DIAG=y
+ CONFIG_ENV_IS_IN_SPI_FLASH=y
+ CONFIG_SPI_FLASH=y
+ CONFIG_SPI_FLASH_STMICRO=y
+ CONFIG_SPI_FLASH_WINBOND=y
+ CONFIG_SYS_NS16550=y
++# CONFIG_FAT_WRITE is not set
+ CONFIG_OF_LIBFDT=y
+diff --git a/configs/da850evm_defconfig b/configs/da850evm_defconfig
+index ac542358b5..b923ec3b56 100644
+--- a/configs/da850evm_defconfig
++++ b/configs/da850evm_defconfig
+@@ -1,6 +1,7 @@
+ CONFIG_ARM=y
+ CONFIG_ARCH_DAVINCI=y
+ CONFIG_TARGET_DA850EVM=y
++CONFIG_TI_COMMON_CMD_OPTIONS=y
+ CONFIG_SPL_LIBCOMMON_SUPPORT=y
+ CONFIG_SPL_LIBGENERIC_SUPPORT=y
+ CONFIG_SPL_SERIAL_SUPPORT=y
+@@ -18,24 +19,23 @@ CONFIG_SPL=y
+ CONFIG_SPL_BOARD_INIT=y
+ CONFIG_HUSH_PARSER=y
+ CONFIG_SYS_PROMPT="U-Boot > "
+-CONFIG_CMD_BOOTZ=y
+ # CONFIG_CMD_IMLS is not set
+-CONFIG_CMD_ASKENV=y
+ CONFIG_CRC32_VERIFY=y
++# CONFIG_CMD_EEPROM is not set
+ # CONFIG_CMD_FLASH is not set
+-CONFIG_CMD_MMC=y
+-CONFIG_CMD_SF=y
+-CONFIG_CMD_SPI=y
++# CONFIG_CMD_GPIO is not set
++# CONFIG_CMD_GPT is not set
++# CONFIG_CMD_I2C is not set
++# CONFIG_CMD_PART is not set
+ # CONFIG_CMD_SETEXPR is not set
+-CONFIG_CMD_DHCP=y
+-CONFIG_CMD_MII=y
+-CONFIG_CMD_PING=y
+-CONFIG_CMD_EXT2=y
+-CONFIG_CMD_FAT=y
++# CONFIG_CMD_TIME is not set
++# CONFIG_CMD_EXT4 is not set
++# CONFIG_CMD_FS_GENERIC is not set
+ CONFIG_CMD_DIAG=y
+ CONFIG_ENV_IS_IN_SPI_FLASH=y
+ CONFIG_SPI_FLASH=y
+ CONFIG_SPI_FLASH_STMICRO=y
+ CONFIG_SPI_FLASH_WINBOND=y
+ CONFIG_SYS_NS16550=y
++# CONFIG_FAT_WRITE is not set
+ CONFIG_OF_LIBFDT=y
+diff --git a/configs/da850evm_direct_nor_defconfig b/configs/da850evm_direct_nor_defconfig
+index 9c1ae37671..fc62c84877 100644
+--- a/configs/da850evm_direct_nor_defconfig
++++ b/configs/da850evm_direct_nor_defconfig
+@@ -1,6 +1,7 @@
+ CONFIG_ARM=y
+ CONFIG_ARCH_DAVINCI=y
+ CONFIG_TARGET_DA850EVM=y
++CONFIG_TI_COMMON_CMD_OPTIONS=y
+ CONFIG_SYS_EXTRA_OPTIONS="MAC_ADDR_IN_SPIFLASH,USE_NOR,DIRECT_NOR_BOOT"
+ CONFIG_BOOTDELAY=3
+ CONFIG_USE_BOOTARGS=y
+@@ -11,13 +12,21 @@ CONFIG_VERSION_VARIABLE=y
+ CONFIG_BOARD_EARLY_INIT_F=y
+ CONFIG_HUSH_PARSER=y
+ CONFIG_SYS_PROMPT="U-Boot > "
+-CONFIG_CMD_ASKENV=y
++# CONFIG_CMD_BOOTZ is not set
+ CONFIG_CRC32_VERIFY=y
+-CONFIG_CMD_SF=y
++# CONFIG_CMD_EEPROM is not set
++# CONFIG_CMD_GPIO is not set
++# CONFIG_CMD_GPT is not set
++# CONFIG_CMD_I2C is not set
++# CONFIG_CMD_MMC is not set
++# CONFIG_CMD_PART is not set
++# CONFIG_CMD_SPI is not set
+ # CONFIG_CMD_SETEXPR is not set
+-CONFIG_CMD_DHCP=y
+-CONFIG_CMD_MII=y
+-CONFIG_CMD_PING=y
++# CONFIG_CMD_TIME is not set
++# CONFIG_CMD_EXT2 is not set
++# CONFIG_CMD_EXT4 is not set
++# CONFIG_CMD_FAT is not set
++# CONFIG_CMD_FS_GENERIC is not set
+ CONFIG_CMD_DIAG=y
+ CONFIG_ENV_IS_IN_FLASH=y
+ # CONFIG_MMC is not set
+-- 
+2.13.6
+

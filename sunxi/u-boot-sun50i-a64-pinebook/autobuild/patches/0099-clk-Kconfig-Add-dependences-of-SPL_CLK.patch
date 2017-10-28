@@ -1,0 +1,29 @@
+From 0712b672d2a1f9a156c489b4dd7ce8354c2b3e1f Mon Sep 17 00:00:00 2001
+From: Wenyou Yang <wenyou.yang@microchip.com>
+Date: Mon, 31 Jul 2017 15:21:57 +0800
+Subject: [PATCH 099/256] clk: Kconfig: Add dependences of SPL_CLK
+
+The SPL_CLK config should depend on SPL && SPL_DM.
+
+Signed-off-by: Wenyou Yang <wenyou.yang@microchip.com>
+Reviewed-by: Simon Glass <sjg@chromium.org>
+---
+ drivers/clk/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/clk/Kconfig b/drivers/clk/Kconfig
+index 7765148876..baa60a52e6 100644
+--- a/drivers/clk/Kconfig
++++ b/drivers/clk/Kconfig
+@@ -12,7 +12,7 @@ config CLK
+ 
+ config SPL_CLK
+ 	bool "Enable clock support in SPL"
+-	depends on CLK && SPL_DM
++	depends on CLK && SPL && SPL_DM
+ 	help
+ 	  The clock subsystem adds a small amount of overhead to the image.
+ 	  If this is acceptable and you have a need to use clock drivers in
+-- 
+2.13.6
+

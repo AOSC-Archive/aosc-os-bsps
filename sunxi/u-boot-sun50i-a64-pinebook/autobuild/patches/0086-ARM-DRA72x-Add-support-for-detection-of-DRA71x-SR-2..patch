@@ -1,0 +1,130 @@
+From ba39608147c797cffb266579b5791649f0f8e60c Mon Sep 17 00:00:00 2001
+From: Vishal Mahaveer <vishalm@ti.com>
+Date: Sat, 26 Aug 2017 16:51:22 -0500
+Subject: [PATCH 086/256] ARM: DRA72x: Add support for detection of DRA71x SR
+ 2.1
+
+DRA71x processors are reduced pin and software compatible
+derivative of DRA72 processors. Add support for detection
+of SR2.1 version of DRA71x family of processors.
+
+Signed-off-by: Vishal Mahaveer <vishalm@ti.com>
+Reviewed-by: Lokesh Vutla <lokeshvutla@ti.com>
+---
+ arch/arm/include/asm/arch-omap5/omap.h | 1 +
+ arch/arm/include/asm/omap_common.h     | 1 +
+ arch/arm/mach-omap2/omap5/hw_data.c    | 2 ++
+ arch/arm/mach-omap2/omap5/hwinit.c     | 3 +++
+ arch/arm/mach-omap2/omap5/sdram.c      | 2 ++
+ board/ti/dra7xx/evm.c                  | 3 +++
+ 6 files changed, 12 insertions(+)
+
+diff --git a/arch/arm/include/asm/arch-omap5/omap.h b/arch/arm/include/asm/arch-omap5/omap.h
+index 87a3d23ecb..81feac704a 100644
+--- a/arch/arm/include/asm/arch-omap5/omap.h
++++ b/arch/arm/include/asm/arch-omap5/omap.h
+@@ -64,6 +64,7 @@
+ #define DRA752_CONTROL_ID_CODE_ES2_0		0x2B99002F
+ #define DRA722_CONTROL_ID_CODE_ES1_0		0x0B9BC02F
+ #define DRA722_CONTROL_ID_CODE_ES2_0		0x1B9BC02F
++#define DRA722_CONTROL_ID_CODE_ES2_1		0x2B9BC02F
+ 
+ /* UART */
+ #define UART1_BASE		(OMAP54XX_L4_PER_BASE + 0x6a000)
+diff --git a/arch/arm/include/asm/omap_common.h b/arch/arm/include/asm/omap_common.h
+index 8b296c9685..481e9389c4 100644
+--- a/arch/arm/include/asm/omap_common.h
++++ b/arch/arm/include/asm/omap_common.h
+@@ -776,6 +776,7 @@ static inline u8 is_dra76x(void)
+ #define DRA752_ES2_0	0x07520200
+ #define DRA722_ES1_0	0x07220100
+ #define DRA722_ES2_0	0x07220200
++#define DRA722_ES2_1	0x07220210
+ 
+ /*
+  * silicon device type
+diff --git a/arch/arm/mach-omap2/omap5/hw_data.c b/arch/arm/mach-omap2/omap5/hw_data.c
+index 147eafa71e..3bdb114bb6 100644
+--- a/arch/arm/mach-omap2/omap5/hw_data.c
++++ b/arch/arm/mach-omap2/omap5/hw_data.c
+@@ -762,6 +762,7 @@ void __weak hw_data_init(void)
+ 
+ 	case DRA722_ES1_0:
+ 	case DRA722_ES2_0:
++	case DRA722_ES2_1:
+ 	*prcm = &dra7xx_prcm;
+ 	*dplls_data = &dra72x_dplls;
+ 	*ctrl = &dra7xx_ctrl;
+@@ -797,6 +798,7 @@ void get_ioregs(const struct ctrl_ioregs **regs)
+ 		*regs = &ioregs_dra72x_es1;
+ 		break;
+ 	case DRA722_ES2_0:
++	case DRA722_ES2_1:
+ 		*regs = &ioregs_dra72x_es2;
+ 		break;
+ 
+diff --git a/arch/arm/mach-omap2/omap5/hwinit.c b/arch/arm/mach-omap2/omap5/hwinit.c
+index c520a633c4..14a35dd284 100644
+--- a/arch/arm/mach-omap2/omap5/hwinit.c
++++ b/arch/arm/mach-omap2/omap5/hwinit.c
+@@ -380,6 +380,9 @@ void init_omap_revision(void)
+ 	case DRA722_CONTROL_ID_CODE_ES2_0:
+ 		*omap_si_rev = DRA722_ES2_0;
+ 		break;
++	case DRA722_CONTROL_ID_CODE_ES2_1:
++		*omap_si_rev = DRA722_ES2_1;
++		break;
+ 	default:
+ 		*omap_si_rev = OMAP5430_SILICON_ID_INVALID;
+ 	}
+diff --git a/arch/arm/mach-omap2/omap5/sdram.c b/arch/arm/mach-omap2/omap5/sdram.c
+index 67ff63b9f6..8fb962e39d 100644
+--- a/arch/arm/mach-omap2/omap5/sdram.c
++++ b/arch/arm/mach-omap2/omap5/sdram.c
+@@ -482,6 +482,7 @@ void __weak emif_get_ext_phy_ctrl_const_regs(u32 emif_nr,
+ 		break;
+ 	case DRA762_ES1_0:
+ 	case DRA722_ES2_0:
++	case DRA722_ES2_1:
+ 		*regs = dra_ddr3_ext_phy_ctrl_const_base_666MHz_es2;
+ 		*size = ARRAY_SIZE(dra_ddr3_ext_phy_ctrl_const_base_666MHz_es2);
+ 		break;
+@@ -716,6 +717,7 @@ const struct read_write_regs *get_bug_regs(u32 *iterations)
+ 	case DRA752_ES2_0:
+ 	case DRA722_ES1_0:
+ 	case DRA722_ES2_0:
++	case DRA722_ES2_1:
+ 		bug_00339_regs_ptr = dra_bug_00339_regs;
+ 		*iterations = sizeof(dra_bug_00339_regs)/
+ 			     sizeof(dra_bug_00339_regs[0]);
+diff --git a/board/ti/dra7xx/evm.c b/board/ti/dra7xx/evm.c
+index bd871fa749..97aae016e1 100644
+--- a/board/ti/dra7xx/evm.c
++++ b/board/ti/dra7xx/evm.c
+@@ -293,6 +293,7 @@ void emif_get_reg_dump(u32 emif_nr, const struct emif_regs **regs)
+ 		break;
+ 	case DRA722_ES1_0:
+ 	case DRA722_ES2_0:
++	case DRA722_ES2_1:
+ 		if (ram_size < CONFIG_MAX_MEM_MAPPED)
+ 			*regs = &emif_1_regs_ddr3_666_mhz_1cs_dra_es1;
+ 		else
+@@ -357,6 +358,7 @@ void emif_get_dmm_regs(const struct dmm_lisa_map_regs **dmm_lisa_regs)
+ 		break;
+ 	case DRA722_ES1_0:
+ 	case DRA722_ES2_0:
++	case DRA722_ES2_1:
+ 	default:
+ 		if (ram_size < CONFIG_MAX_MEM_MAPPED)
+ 			*dmm_lisa_regs = &lisa_map_2G_x_2;
+@@ -755,6 +757,7 @@ void recalibrate_iodelay(void)
+ 	switch (omap_revision()) {
+ 	case DRA722_ES1_0:
+ 	case DRA722_ES2_0:
++	case DRA722_ES2_1:
+ 		pads = dra72x_core_padconf_array_common;
+ 		npads = ARRAY_SIZE(dra72x_core_padconf_array_common);
+ 		if (board_is_dra71x_evm()) {
+-- 
+2.13.6
+

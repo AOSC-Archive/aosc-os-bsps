@@ -1,0 +1,94 @@
+From 2ff50f5fa4009adf5e23a69a4269e6bb054edd79 Mon Sep 17 00:00:00 2001
+From: Simon Glass <sjg@chromium.org>
+Date: Tue, 5 Sep 2017 19:49:46 -0600
+Subject: [PATCH 186/256] dm: x86: Allow TSC timer to be used before DM is
+ ready
+
+With bootstage we need access to the timer before driver model is set up.
+To handle this, put the required state in global_data and provide a new
+function to set up the device, separate from the driver's probe() method.
+
+This will be used by the 'early' timer also.
+
+Signed-off-by: Simon Glass <sjg@chromium.org>
+Reviewed-by: Bin Meng <bmeng.cn@gmail.com>
+---
+ arch/x86/include/asm/global_data.h |  1 +
+ drivers/timer/tsc_timer.c          | 30 +++++++++++++++++++++++++-----
+ 2 files changed, 26 insertions(+), 5 deletions(-)
+
+diff --git a/arch/x86/include/asm/global_data.h b/arch/x86/include/asm/global_data.h
+index 93a80fe2b6..fcb6853a38 100644
+--- a/arch/x86/include/asm/global_data.h
++++ b/arch/x86/include/asm/global_data.h
+@@ -77,6 +77,7 @@ struct arch_global_data {
+ 	uint8_t x86_mask;
+ 	uint32_t x86_device;
+ 	uint64_t tsc_base;		/* Initial value returned by rdtsc() */
++	unsigned long clock_rate;	/* Clock rate of timer in Hz */
+ 	void *new_fdt;			/* Relocated FDT */
+ 	uint32_t bist;			/* Built-in self test value */
+ 	enum pei_boot_mode_t pei_boot_mode;
+diff --git a/drivers/timer/tsc_timer.c b/drivers/timer/tsc_timer.c
+index 77040afafe..9296de6543 100644
+--- a/drivers/timer/tsc_timer.c
++++ b/drivers/timer/tsc_timer.c
+@@ -331,17 +331,17 @@ static int tsc_timer_get_count(struct udevice *dev, u64 *count)
+ 	return 0;
+ }
+ 
+-static int tsc_timer_probe(struct udevice *dev)
++static void tsc_timer_ensure_setup(void)
+ {
+-	struct timer_dev_priv *uc_priv = dev_get_uclass_priv(dev);
+-
++	if (gd->arch.tsc_base)
++		return;
+ 	gd->arch.tsc_base = rdtsc();
+ 
+ 	/*
+ 	 * If there is no clock frequency specified in the device tree,
+ 	 * calibrate it by ourselves.
+ 	 */
+-	if (!uc_priv->clock_rate) {
++	if (!gd->arch.clock_rate) {
+ 		unsigned long fast_calibrate;
+ 
+ 		fast_calibrate = cpu_mhz_from_msr();
+@@ -351,12 +351,32 @@ static int tsc_timer_probe(struct udevice *dev)
+ 				panic("TSC frequency is ZERO");
+ 		}
+ 
+-		uc_priv->clock_rate = fast_calibrate * 1000000;
++		gd->arch.clock_rate = fast_calibrate * 1000000;
+ 	}
++}
++
++static int tsc_timer_probe(struct udevice *dev)
++{
++	struct timer_dev_priv *uc_priv = dev_get_uclass_priv(dev);
++
++	tsc_timer_ensure_setup();
++	uc_priv->clock_rate = gd->arch.clock_rate;
+ 
+ 	return 0;
+ }
+ 
++unsigned long notrace timer_early_get_rate(void)
++{
++	tsc_timer_ensure_setup();
++
++	return gd->arch.clock_rate;
++}
++
++u64 notrace timer_early_get_count(void)
++{
++	return rdtsc() - gd->arch.tsc_base;
++}
++
+ static const struct timer_ops tsc_timer_ops = {
+ 	.get_count = tsc_timer_get_count,
+ };
+-- 
+2.13.6
+

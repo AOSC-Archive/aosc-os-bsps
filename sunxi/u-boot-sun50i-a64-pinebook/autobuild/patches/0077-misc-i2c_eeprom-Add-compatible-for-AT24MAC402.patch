@@ -1,0 +1,31 @@
+From de6567522e7f5c9ad95030e9eeb45a4bb080d04a Mon Sep 17 00:00:00 2001
+From: Wenyou Yang <wenyou.yang@microchip.com>
+Date: Mon, 31 Jul 2017 11:25:31 +0800
+Subject: [PATCH 077/256] misc: i2c_eeprom: Add compatible for AT24MAC402
+
+Add the new compatible "atmel,24mac402" to accommodate AT24MAC402.
+The AT24MAC402 is a 2K Serial EEPROM and the 2-Kbit memory array
+is internally organized as 16 pages of 16 bytes of EEPROM each.
+The 48-bit EUI address in the AT24MAC402 are located in the extended
+memory block.
+
+Signed-off-by: Wenyou Yang <wenyou.yang@microchip.com>
+---
+ drivers/misc/i2c_eeprom.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/misc/i2c_eeprom.c b/drivers/misc/i2c_eeprom.c
+index b2de3dffc6..9a77c6e164 100644
+--- a/drivers/misc/i2c_eeprom.c
++++ b/drivers/misc/i2c_eeprom.c
+@@ -72,6 +72,7 @@ static const struct udevice_id i2c_eeprom_std_ids[] = {
+ 	{ .compatible = "atmel,24c04", .data = 4 },
+ 	{ .compatible = "atmel,24c08a", .data = 4 },
+ 	{ .compatible = "atmel,24c16a", .data = 4 },
++	{ .compatible = "atmel,24mac402", .data = 4 },
+ 	{ .compatible = "atmel,24c32", .data = 5 },
+ 	{ .compatible = "atmel,24c64", .data = 5 },
+ 	{ .compatible = "atmel,24c128", .data = 6 },
+-- 
+2.13.6
+

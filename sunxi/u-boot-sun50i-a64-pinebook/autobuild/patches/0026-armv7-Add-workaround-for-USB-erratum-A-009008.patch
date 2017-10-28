@@ -1,0 +1,98 @@
+From 83fa71189af3354cd09a56d61f3ed31ce082f51f Mon Sep 17 00:00:00 2001
+From: Ran Wang <ran.wang_1@nxp.com>
+Date: Mon, 4 Sep 2017 18:46:52 +0800
+Subject: [PATCH 026/256] armv7: Add workaround for USB erratum A-009008
+
+USB High Speed (HS) EYE Height Adjustment
+USB HS speed eye diagram fails with the default value at
+many corners, particularly at a high temperature
+
+Optimal eye at TXREFTUNE value to 0x9 is observed, change
+set the same value.
+
+Signed-off-by: Sriram Dash <sriram.dash@nxp.com>
+Signed-off-by: Suresh Gupta <suresh.gupta@nxp.com>
+Signed-off-by: Ran Wang <ran.wang_1@nxp.com>
+[YS: Reordered Kconfig options]
+Reviewed-by: York Sun <york.sun@nxp.com>
+---
+ arch/arm/cpu/armv7/ls102xa/Kconfig                |  6 ++++++
+ arch/arm/cpu/armv7/ls102xa/soc.c                  | 15 +++++++++++++++
+ arch/arm/include/asm/arch-ls102xa/immap_ls102xa.h |  4 ++++
+ 3 files changed, 25 insertions(+)
+
+diff --git a/arch/arm/cpu/armv7/ls102xa/Kconfig b/arch/arm/cpu/armv7/ls102xa/Kconfig
+index 90d99e6cc3..be30dd8442 100644
+--- a/arch/arm/cpu/armv7/ls102xa/Kconfig
++++ b/arch/arm/cpu/armv7/ls102xa/Kconfig
+@@ -2,6 +2,7 @@ config ARCH_LS1021A
+ 	bool
+ 	select SYS_FSL_ERRATUM_A008378
+ 	select SYS_FSL_ERRATUM_A008407
++	select SYS_FSL_ERRATUM_A009008
+ 	select SYS_FSL_ERRATUM_A009663
+ 	select SYS_FSL_ERRATUM_A009942
+ 	select SYS_FSL_ERRATUM_A010315
+@@ -58,6 +59,11 @@ config SYS_CCI400_OFFSET
+ 	  Offset for CCI400 base.
+ 	  CCI400 base addr = CCSRBAR + CCI400_OFFSET
+ 
++config SYS_FSL_ERRATUM_A009008
++	bool
++	help
++	  Workaround for USB PHY erratum A009008
++
+ config SYS_FSL_ERRATUM_A010315
+ 	bool "Workaround for PCIe erratum A010315"
+ 
+diff --git a/arch/arm/cpu/armv7/ls102xa/soc.c b/arch/arm/cpu/armv7/ls102xa/soc.c
+index c043b82ab7..eed06a3c7c 100644
+--- a/arch/arm/cpu/armv7/ls102xa/soc.c
++++ b/arch/arm/cpu/armv7/ls102xa/soc.c
+@@ -60,6 +60,18 @@ unsigned int get_soc_major_rev(void)
+ 	return major;
+ }
+ 
++static void erratum_a009008(void)
++{
++#ifdef CONFIG_SYS_FSL_ERRATUM_A009008
++	u32 __iomem *scfg = (u32 __iomem *)SCFG_BASE;
++
++	clrsetbits_be32(scfg + SCFG_USB3PRM1CR / 4,
++			0xF << 6,
++			SCFG_USB_TXVREFTUNE << 6);
++#endif /* CONFIG_SYS_FSL_ERRATUM_A009008 */
++}
++
++
+ void s_init(void)
+ {
+ }
+@@ -147,6 +159,9 @@ int arch_soc_init(void)
+ 	 */
+ 	out_be32(&scfg->eddrtqcfg, 0x63b20042);
+ 
++	/* Erratum */
++	erratum_a009008();
++
+ 	return 0;
+ }
+ 
+diff --git a/arch/arm/include/asm/arch-ls102xa/immap_ls102xa.h b/arch/arm/include/asm/arch-ls102xa/immap_ls102xa.h
+index 1415b0b6ff..28c1a98418 100644
+--- a/arch/arm/include/asm/arch-ls102xa/immap_ls102xa.h
++++ b/arch/arm/include/asm/arch-ls102xa/immap_ls102xa.h
+@@ -174,6 +174,10 @@ struct ccsr_gur {
+ #define SCFG_PMCINTECR_ETSECERRG1	0x00040000
+ #define SCFG_CLUSTERPMCR_WFIL2EN	0x80000000
+ 
++#define SCFG_BASE			0x01570000
++#define SCFG_USB3PRM1CR			0x070
++#define SCFG_USB_TXVREFTUNE		0x9
++
+ /* Supplemental Configuration Unit */
+ struct ccsr_scfg {
+ 	u32 dpslpcr;
+-- 
+2.13.6
+

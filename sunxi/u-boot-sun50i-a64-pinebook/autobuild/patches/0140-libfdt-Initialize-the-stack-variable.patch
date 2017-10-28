@@ -1,0 +1,32 @@
+From 18c991ca2bd72c30b7fb578cee8b5c7c835d383d Mon Sep 17 00:00:00 2001
+From: Tien Fong Chee <tien.fong.chee@intel.com>
+Date: Wed, 30 Aug 2017 13:15:42 +0800
+Subject: [PATCH 140/256] libfdt: Initialize the stack variable
+
+Report Coverity log:
+The code uses a variable that has not
+been initialized, leading to unpredictable
+or unintended results.
+
+Reported-by: Coverity (CID: 60519)
+Signed-off-by: Tien Fong Chee <tien.fong.chee@intel.com>
+---
+ lib/libfdt/fdt_wip.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/lib/libfdt/fdt_wip.c b/lib/libfdt/fdt_wip.c
+index 45fb964120..01adad0ee9 100644
+--- a/lib/libfdt/fdt_wip.c
++++ b/lib/libfdt/fdt_wip.c
+@@ -115,7 +115,7 @@ int fdt_find_regions(const void *fdt, char * const inc[], int inc_count,
+ 		     struct fdt_region region[], int max_regions,
+ 		     char *path, int path_len, int add_string_tab)
+ {
+-	int stack[FDT_MAX_DEPTH];
++	int stack[FDT_MAX_DEPTH] = { 0 };
+ 	char *end;
+ 	int nextoffset = 0;
+ 	uint32_t tag;
+-- 
+2.13.6
+

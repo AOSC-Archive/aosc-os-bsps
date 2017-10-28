@@ -1,0 +1,31 @@
+From d27c273908c3ca534093e93d7730fc55973a02bc Mon Sep 17 00:00:00 2001
+From: Philipp Tomsich <philipp.tomsich@theobroma-systems.com>
+Date: Mon, 11 Sep 2017 22:04:20 +0200
+Subject: [PATCH 218/256] rockchip: spi: Convert to livetree
+
+Update the Rockchip SPI driver to support a live device tree.
+
+Signed-off-by: Philipp Tomsich <philipp.tomsich@theobroma-systems.com>
+Reviewed-by: Simon Glass <sjg@chromium.org>
+Reviewed-by: Jagan Teki <jagan@openedev.com>
+Acked-by: Philipp Tomsich <philipp.tomsich@theobroma-systems.com>
+---
+ drivers/spi/rk_spi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/spi/rk_spi.c b/drivers/spi/rk_spi.c
+index c70d636277..b18db74e7e 100644
+--- a/drivers/spi/rk_spi.c
++++ b/drivers/spi/rk_spi.c
+@@ -184,7 +184,7 @@ static int rockchip_spi_ofdata_to_platdata(struct udevice *bus)
+ 	struct rockchip_spi_priv *priv = dev_get_priv(bus);
+ 	int ret;
+ 
+-	plat->base = devfdt_get_addr(bus);
++	plat->base = dev_read_addr(bus);
+ 
+ 	ret = clk_get_by_index(bus, 0, &priv->clk);
+ 	if (ret < 0) {
+-- 
+2.13.6
+

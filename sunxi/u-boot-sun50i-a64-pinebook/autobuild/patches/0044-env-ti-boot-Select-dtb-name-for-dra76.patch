@@ -1,0 +1,29 @@
+From 911d76c417054de556ffa1681b2783f9c5381bed Mon Sep 17 00:00:00 2001
+From: Lokesh Vutla <lokeshvutla@ti.com>
+Date: Mon, 21 Aug 2017 12:50:58 +0530
+Subject: [PATCH 044/256] env: ti: boot: Select dtb name for dra76
+
+Select dtb name for dra76-evm.
+
+Reviewed-by: Tom Rini <trini@konsulko.com>
+Signed-off-by: Lokesh Vutla <lokeshvutla@ti.com>
+---
+ include/environment/ti/boot.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/include/environment/ti/boot.h b/include/environment/ti/boot.h
+index a05f5ba9bd..8c253e5804 100644
+--- a/include/environment/ti/boot.h
++++ b/include/environment/ti/boot.h
+@@ -61,6 +61,8 @@
+ 			"setenv fdtfile dra72-evm.dtb; fi;" \
+ 		"if test $board_name = dra71x; then " \
+ 			"setenv fdtfile dra71-evm.dtb; fi;" \
++		"if test $board_name = dra76x; then " \
++			"setenv fdtfile dra76-evm.dtb; fi;" \
+ 		"if test $board_name = beagle_x15; then " \
+ 			"setenv fdtfile am57xx-beagle-x15.dtb; fi;" \
+ 		"if test $board_name = beagle_x15_revb1; then " \
+-- 
+2.13.6
+

@@ -1,0 +1,53 @@
+From 58fac52d2ffbac22dedcde5baa915d2c764a56d1 Mon Sep 17 00:00:00 2001
+From: "Andrew F. Davis" <afd@ti.com>
+Date: Mon, 31 Jul 2017 10:58:21 -0500
+Subject: [PATCH 074/256] ARM: k2g: Add FIT image handler for PMMC firmware
+
+The PMMC firmware should be bundled into a FIT image on HS
+devices to allow authentication/decryption, add a handler to
+process this PMMC firmware.
+
+Signed-off-by: Andrew F. Davis <afd@ti.com>
+---
+ board/ti/ks2_evm/board_k2g.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+
+diff --git a/board/ti/ks2_evm/board_k2g.c b/board/ti/ks2_evm/board_k2g.c
+index 15f0f54af6..f1c4ddcd30 100644
+--- a/board/ti/ks2_evm/board_k2g.c
++++ b/board/ti/ks2_evm/board_k2g.c
+@@ -13,6 +13,7 @@
+ #include <asm/arch/mmc_host_def.h>
+ #include <fdtdec.h>
+ #include <i2c.h>
++#include <remoteproc.h>
+ #include "mux-k2g.h"
+ #include "../common/board_detect.h"
+ 
+@@ -353,3 +354,23 @@ int get_num_eth_ports(void)
+ 	return sizeof(eth_priv_cfg) / sizeof(struct eth_priv_t);
+ }
+ #endif
++
++#ifdef CONFIG_TI_SECURE_DEVICE
++void board_pmmc_image_process(ulong pmmc_image, size_t pmmc_size)
++{
++	int id = getenv_ulong("dev_pmmc", 10, 0);
++	int ret;
++
++	if (!rproc_is_initialized())
++		rproc_init();
++
++	ret = rproc_load(id, pmmc_image, pmmc_size);
++	printf("Load Remote Processor %d with data@addr=0x%08lx %u bytes:%s\n",
++	       id, pmmc_image, pmmc_size, ret ? " Failed!" : " Success!");
++
++	if (!ret)
++		rproc_start(id);
++}
++
++U_BOOT_FIT_LOADABLE_HANDLER(IH_TYPE_PMMC, board_pmmc_image_process);
++#endif
+-- 
+2.13.6
+

@@ -1,0 +1,112 @@
+From cac73f20acc85327e677602229d40c2aa7047767 Mon Sep 17 00:00:00 2001
+From: Keng Soon Cheah <keng.soon.cheah@ni.com>
+Date: Thu, 24 Aug 2017 20:29:07 -0700
+Subject: [PATCH 089/256] serial: nulldev: Add nulldev serial driver
+
+Some device the serial console's initialization cannot run early during
+the boot process. Hence, nulldev serial device is helpful on that
+situation.
+
+For example, if the serial module was implemented in FPGA. Serial
+initialization is prohibited to run until the FPGA was programmed.
+
+This commit is to adding nulldev serial driver. This will allows the
+default console to be specified as a nulldev.
+
+Signed-off-by: Joe Hershberger <joe.hershberger@ni.com>
+Signed-off-by: Keng Soon Cheah <keng.soon.cheah@ni.com>
+Cc: Chen Yee Chew <chen.yee.chew@ni.com>
+---
+ drivers/serial/Kconfig          |  7 ++++++
+ drivers/serial/Makefile         |  1 +
+ drivers/serial/serial_nulldev.c | 48 +++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 56 insertions(+)
+ create mode 100644 drivers/serial/serial_nulldev.c
+
+diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
+index aeed538fa4..13b2550d3b 100644
+--- a/drivers/serial/Kconfig
++++ b/drivers/serial/Kconfig
+@@ -414,6 +414,13 @@ config MXC_UART
+ 	  If you have a machine based on a Motorola IMX CPU you
+ 	  can enable its onboard serial port by enabling this option.
+ 
++config NULLDEV_SERIAL
++	bool "Null serial device"
++	help
++	  Select this to enable null serial device support. A null serial
++	  device merely acts as a placeholder for a serial device and does
++	  nothing for all it's operation.
++
+ config PIC32_SERIAL
+ 	bool "Support for Microchip PIC32 on-chip UART"
+ 	depends on DM_SERIAL && MACH_PIC32
+diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
+index 72a6996a0a..7adcee3e10 100644
+--- a/drivers/serial/Makefile
++++ b/drivers/serial/Makefile
+@@ -49,6 +49,7 @@ obj-$(CONFIG_BCM283X_MU_SERIAL) += serial_bcm283x_mu.o
+ obj-$(CONFIG_MSM_SERIAL) += serial_msm.o
+ obj-$(CONFIG_MVEBU_A3700_UART) += serial_mvebu_a3700.o
+ obj-$(CONFIG_MPC8XX_CONS) += serial_mpc8xx.o
++obj-$(CONFIG_NULLDEV_SERIAL) += serial_nulldev.o
+ 
+ ifndef CONFIG_SPL_BUILD
+ obj-$(CONFIG_USB_TTY) += usbtty.o
+diff --git a/drivers/serial/serial_nulldev.c b/drivers/serial/serial_nulldev.c
+new file mode 100644
+index 0000000000..07683086db
+--- /dev/null
++++ b/drivers/serial/serial_nulldev.c
+@@ -0,0 +1,48 @@
++/*
++ * Copyright (c) 2015 National Instruments
++ *
++ * SPDX-License-Identifier:	GPL-2.0+
++ */
++
++#include <common.h>
++#include <dm.h>
++#include <serial.h>
++
++static int nulldev_serial_setbrg(struct udevice *dev, int baudrate)
++{
++	return 0;
++}
++
++static int nulldev_serial_getc(struct udevice *dev)
++{
++	return -EAGAIN;
++}
++
++static int nulldev_serial_input(struct udevice *dev)
++{
++	return 0;
++}
++
++static int nulldev_serial_putc(struct udevice *dev, const char ch)
++{
++	return 0;
++}
++
++static const struct udevice_id nulldev_serial_ids[] = {
++	{ .compatible = "nulldev-serial" },
++	{ }
++};
++
++
++const struct dm_serial_ops nulldev_serial_ops = {
++	.putc = nulldev_serial_putc,
++	.getc = nulldev_serial_getc,
++	.setbrg = nulldev_serial_setbrg,
++};
++
++U_BOOT_DRIVER(serial_nulldev) = {
++	.name	= "serial_nulldev",
++	.id	= UCLASS_SERIAL,
++	.of_match = nulldev_serial_ids,
++	.ops	= &nulldev_serial_ops,
++};
+-- 
+2.13.6
+

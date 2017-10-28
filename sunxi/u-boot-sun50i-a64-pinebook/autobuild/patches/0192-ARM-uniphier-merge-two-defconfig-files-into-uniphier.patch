@@ -1,0 +1,219 @@
+From 81b9bb5fcb5e8d42a7ccfeaf5afed9ff77014761 Mon Sep 17 00:00:00 2001
+From: Masahiro Yamada <yamada.masahiro@socionext.com>
+Date: Fri, 15 Sep 2017 21:43:20 +0900
+Subject: [PATCH 192/256] ARM: uniphier: merge two defconfig files into
+ uniphier_v7_defconfig
+
+The main difference between Pro4 and PXs2/LD6b is the Denali NAND
+IP version.  This is now distinguished by DT.  Merge the two defconfig
+files into uniphier_v7_defconfig.
+
+Update the README.uniphier too.
+
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+---
+ arch/arm/mach-uniphier/Kconfig                     | 21 +++++-----
+ configs/uniphier_pro4_defconfig                    | 49 ----------------------
+ ...r_pxs2_ld6b_defconfig => uniphier_v7_defconfig} |  4 +-
+ doc/README.uniphier                                | 33 ++++++++-------
+ 4 files changed, 31 insertions(+), 76 deletions(-)
+ delete mode 100644 configs/uniphier_pro4_defconfig
+ rename configs/{uniphier_pxs2_ld6b_defconfig => uniphier_v7_defconfig} (93%)
+
+diff --git a/arch/arm/mach-uniphier/Kconfig b/arch/arm/mach-uniphier/Kconfig
+index ee22112412..c8b5ab4d32 100644
+--- a/arch/arm/mach-uniphier/Kconfig
++++ b/arch/arm/mach-uniphier/Kconfig
+@@ -12,18 +12,14 @@ config ARCH_UNIPHIER_32BIT
+ 
+ choice
+         prompt "UniPhier SoC select"
+-        default ARCH_UNIPHIER_PRO4
++        default ARCH_UNIPHIER_V8_MULTI
+ 
+ config ARCH_UNIPHIER_LD4_SLD8
+ 	bool "UniPhier LD4/sLD8 SoCs"
+ 	select ARCH_UNIPHIER_32BIT
+ 
+-config ARCH_UNIPHIER_PRO4
+-	bool "UniPhier Pro4 SoC"
+-	select ARCH_UNIPHIER_32BIT
+-
+-config ARCH_UNIPHIER_PRO5_PXS2_LD6B
+-	bool "UniPhier Pro5/PXs2/LD6b SoCs"
++config ARCH_UNIPHIER_V7_MULTI
++	bool "UniPhier Pro4/Pro5/PXs2/LD6b SoCs"
+ 	select ARCH_UNIPHIER_32BIT
+ 
+ config ARCH_UNIPHIER_V8_MULTI
+@@ -44,19 +40,24 @@ config ARCH_UNIPHIER_SLD8
+ 	depends on ARCH_UNIPHIER_LD4_SLD8
+ 	default y
+ 
++config ARCH_UNIPHIER_PRO4
++	bool "Enable UniPhier Pro4 SoC support"
++	depends on ARCH_UNIPHIER_V7_MULTI
++	default y
++
+ config ARCH_UNIPHIER_PRO5
+ 	bool "Enable UniPhier Pro5 SoC support"
+-	depends on ARCH_UNIPHIER_PRO5_PXS2_LD6B
++	depends on ARCH_UNIPHIER_V7_MULTI
+ 	default y
+ 
+ config ARCH_UNIPHIER_PXS2
+ 	bool "Enable UniPhier Pxs2 SoC support"
+-	depends on ARCH_UNIPHIER_PRO5_PXS2_LD6B
++	depends on ARCH_UNIPHIER_V7_MULTI
+ 	default y
+ 
+ config ARCH_UNIPHIER_LD6B
+ 	bool "Enable UniPhier LD6b SoC support"
+-	depends on ARCH_UNIPHIER_PRO5_PXS2_LD6B
++	depends on ARCH_UNIPHIER_V7_MULTI
+ 	default y
+ 
+ config ARCH_UNIPHIER_LD11
+diff --git a/configs/uniphier_pro4_defconfig b/configs/uniphier_pro4_defconfig
+deleted file mode 100644
+index 7348675f80..0000000000
+--- a/configs/uniphier_pro4_defconfig
++++ /dev/null
+@@ -1,49 +0,0 @@
+-CONFIG_ARM=y
+-CONFIG_ARCH_UNIPHIER=y
+-CONFIG_SYS_TEXT_BASE=0x84000000
+-CONFIG_SYS_MALLOC_F_LEN=0x2000
+-CONFIG_SPL_MMC_SUPPORT=y
+-CONFIG_SPL_SERIAL_SUPPORT=y
+-CONFIG_SPL_NAND_SUPPORT=y
+-CONFIG_MICRO_SUPPORT_CARD=y
+-CONFIG_DEFAULT_DEVICE_TREE="uniphier-pro4-ref"
+-# CONFIG_ARCH_FIXUP_FDT_MEMORY is not set
+-CONFIG_SPL=y
+-CONFIG_SPL_NOR_SUPPORT=y
+-CONFIG_HUSH_PARSER=y
+-CONFIG_CMD_CONFIG=y
+-CONFIG_CMD_BOOTZ=y
+-# CONFIG_CMD_XIMG is not set
+-# CONFIG_CMD_ENV_EXISTS is not set
+-# CONFIG_CMD_FPGA is not set
+-CONFIG_CMD_GPIO=y
+-CONFIG_CMD_GPT=y
+-CONFIG_CMD_I2C=y
+-CONFIG_CMD_MMC=y
+-CONFIG_CMD_USB=y
+-CONFIG_CMD_TFTPPUT=y
+-CONFIG_CMD_PING=y
+-CONFIG_CMD_CACHE=y
+-CONFIG_CMD_TIME=y
+-# CONFIG_CMD_MISC is not set
+-CONFIG_CMD_FAT=y
+-CONFIG_CMD_FS_GENERIC=y
+-# CONFIG_SPL_DOS_PARTITION is not set
+-# CONFIG_SPL_EFI_PARTITION is not set
+-CONFIG_NET_RANDOM_ETHADDR=y
+-CONFIG_GPIO_UNIPHIER=y
+-CONFIG_MISC=y
+-CONFIG_I2C_EEPROM=y
+-CONFIG_SYS_EEPROM_PAGE_WRITE_DELAY_MS=10
+-CONFIG_MMC_UNIPHIER=y
+-CONFIG_NAND=y
+-CONFIG_NAND_DENALI=y
+-CONFIG_NAND_DENALI_DT=y
+-CONFIG_SYS_NAND_DENALI_64BIT=y
+-CONFIG_NAND_DENALI_SPARE_AREA_SKIP_BYTES=8
+-CONFIG_SPL_NAND_DENALI=y
+-CONFIG_USB=y
+-CONFIG_USB_XHCI_HCD=y
+-CONFIG_USB_EHCI_HCD=y
+-CONFIG_USB_EHCI_GENERIC=y
+-CONFIG_USB_STORAGE=y
+diff --git a/configs/uniphier_pxs2_ld6b_defconfig b/configs/uniphier_v7_defconfig
+similarity index 93%
+rename from configs/uniphier_pxs2_ld6b_defconfig
+rename to configs/uniphier_v7_defconfig
+index c242776d9c..3c25484939 100644
+--- a/configs/uniphier_pxs2_ld6b_defconfig
++++ b/configs/uniphier_v7_defconfig
+@@ -5,7 +5,7 @@ CONFIG_SYS_MALLOC_F_LEN=0x2000
+ CONFIG_SPL_MMC_SUPPORT=y
+ CONFIG_SPL_SERIAL_SUPPORT=y
+ CONFIG_SPL_NAND_SUPPORT=y
+-CONFIG_ARCH_UNIPHIER_PRO5_PXS2_LD6B=y
++CONFIG_ARCH_UNIPHIER_V7_MULTI=y
+ CONFIG_MICRO_SUPPORT_CARD=y
+ CONFIG_DEFAULT_DEVICE_TREE="uniphier-pxs2-vodka"
+ # CONFIG_ARCH_FIXUP_FDT_MEMORY is not set
+@@ -45,4 +45,6 @@ CONFIG_NAND_DENALI_SPARE_AREA_SKIP_BYTES=8
+ CONFIG_SPL_NAND_DENALI=y
+ CONFIG_USB=y
+ CONFIG_USB_XHCI_HCD=y
++CONFIG_USB_EHCI_HCD=y
++CONFIG_USB_EHCI_GENERIC=y
+ CONFIG_USB_STORAGE=y
+diff --git a/doc/README.uniphier b/doc/README.uniphier
+index fa1f9bcc96..e4fd9a3e3f 100644
+--- a/doc/README.uniphier
++++ b/doc/README.uniphier
+@@ -27,17 +27,17 @@ The following tables show <defconfig> and <device-tree> for each board.
+ 
+ 32bit SoC boards:
+ 
+- Board         | <defconfig>                  | <device-tree>
+----------------|------------------------------|------------------------------
+-LD4 reference  | uniphier_ld4_sld8_defconfig  | uniphier-ld4-ref (default)
+-sld8 reference | uniphier_ld4_sld8_defconfig  | uniphier-sld8-def
+-Pro4 reference | uniphier_pro4_defconfig      | uniphier-pro4-ref (default)
+-Pro4 Ace       | uniphier_pro4_defconfig      | uniphier-pro4-ace
+-Pro4 Sanji     | uniphier_pro4_defconfig      | uniphier-pro4-sanji
+-Pro5 4KBOX     | uniphier_pxs2_ld6b_defconfig | uniphier-pro5-4kbox
+-PXs2 Gentil    | uniphier_pxs2_ld6b_defconfig | uniphier-pxs2-gentil
+-PXs2 Vodka     | uniphier_pxs2_ld6b_defconfig | uniphier-pxs2-vodka (default)
+-LD6b reference | uniphier_pxs2_ld6b_defconfig | uniphier-ld6b-ref
++ Board         | <defconfig>                 | <device-tree>
++---------------|-----------------------------|------------------------------
++LD4 reference  | uniphier_ld4_sld8_defconfig | uniphier-ld4-ref (default)
++sld8 reference | uniphier_ld4_sld8_defconfig | uniphier-sld8-def
++Pro4 reference | uniphier_v7_defconfig       | uniphier-pro4-ref
++Pro4 Ace       | uniphier_v7_defconfig       | uniphier-pro4-ace
++Pro4 Sanji     | uniphier_v7_defconfig       | uniphier-pro4-sanji
++Pro5 4KBOX     | uniphier_v7_defconfig       | uniphier-pro5-4kbox
++PXs2 Gentil    | uniphier_v7_defconfig       | uniphier-pxs2-gentil
++PXs2 Vodka     | uniphier_v7_defconfig       | uniphier-pxs2-vodka (default)
++LD6b reference | uniphier_v7_defconfig       | uniphier-ld6b-ref
+ 
+ 64bit SoC boards:
+ 
+@@ -47,17 +47,18 @@ LD11 reference | uniphier_v8_defconfig | uniphier-ld11-ref
+ LD11 Global    | uniphier_v8_defconfig | uniphier-ld11-global
+ LD20 reference | uniphier_v8_defconfig | uniphier-ld20-ref (default)
+ LD20 Global    | uniphier_v8_defconfig | uniphier-ld20-global
++PXs3 reference | uniphier_v8_defconfig | uniphier-pxs3-ref
+ 
+ For example, to compile the source for PXs2 Vodka board, run the following:
+ 
+-    $ make uniphier_pxs2_ld6b_defconfig
++    $ make uniphier_v7_defconfig
+     $ make CROSS_COMPILE=arm-linux-gnueabihf- DEVICE_TREE=uniphier-pxs2-vodka
+ 
+ The device tree marked as (default) can be omitted.  `uniphier-pxs2-vodka` is
+-the default device tree for the configuration `uniphier_pxs2_ld6b_defconfig`,
+-so the following gives the same result.
++the default device tree for the configuration `uniphier_v7_defconfig`, so the
++following gives the same result.
+ 
+-    $ make uniphier_pxs2_ld6b_defconfig
++    $ make uniphier_v7_defconfig
+     $ make CROSS_COMPILE=arm-linux-gnueabihf-
+ 
+ 
+@@ -178,4 +179,4 @@ newer SoCs.  Even if it is, EA[25] is not connected on most of the boards.
+ 
+ --
+ Masahiro Yamada <yamada.masahiro@socionext.com>
+-Jul. 2017
++Sep. 2017
+-- 
+2.13.6
+

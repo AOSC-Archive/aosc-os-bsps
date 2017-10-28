@@ -1,0 +1,61 @@
+From 21d54ac353d76d46848cb7fae14a07775cc3bacf Mon Sep 17 00:00:00 2001
+From: Simon Glass <sjg@chromium.org>
+Date: Tue, 29 Aug 2017 14:15:49 -0600
+Subject: [PATCH 127/256] dtoc: Avoid very long lines in output
+
+Large arrays can result in lines with hundreds or thousands of characters
+which is not very editor-friendly. To avoid this, addjust the tool to
+group values 8 per line.
+
+Signed-off-by: Simon Glass <sjg@chromium.org>
+Tested-by: Kever Yang <kever.yang@rock-chips.com>
+---
+ tools/dtoc/dtb_platdata.py | 7 ++++++-
+ tools/dtoc/test_dtoc.py    | 6 ++++--
+ 2 files changed, 10 insertions(+), 3 deletions(-)
+
+diff --git a/tools/dtoc/dtb_platdata.py b/tools/dtoc/dtb_platdata.py
+index 4a1162a9fa..3243bccfe8 100644
+--- a/tools/dtoc/dtb_platdata.py
++++ b/tools/dtoc/dtb_platdata.py
+@@ -385,7 +385,12 @@ class DtbPlatdata(object):
+                 else:
+                     for val in prop.value:
+                         vals.append(get_value(prop.type, val))
+-                self.buf(', '.join(vals))
++
++                # Put 8 values per line to avoid very long lines.
++                for i in xrange(0, len(vals), 8):
++                    if i:
++                        self.buf(',\n\t\t')
++                    self.buf(', '.join(vals[i:i + 8]))
+                 self.buf('}')
+             else:
+                 self.buf(get_value(prop.type, prop.value))
+diff --git a/tools/dtoc/test_dtoc.py b/tools/dtoc/test_dtoc.py
+index 8b95c4124f..5040f23325 100644
+--- a/tools/dtoc/test_dtoc.py
++++ b/tools/dtoc/test_dtoc.py
+@@ -146,7 +146,8 @@ static struct dtd_sandbox_spl_test dtv_spl_test = {
+ \t.bytearray\t\t= {0x6, 0x0, 0x0},
+ \t.byteval\t\t= 0x5,
+ \t.intval\t\t\t= 0x1,
+-\t.longbytearray\t\t= {0x9, 0xa, 0xb, 0xc, 0xd, 0xe, 0xf, 0x10, 0x11},
++\t.longbytearray\t\t= {0x9, 0xa, 0xb, 0xc, 0xd, 0xe, 0xf, 0x10,
++\t\t0x11},
+ \t.stringval\t\t= "message",
+ \t.boolval\t\t= true,
+ \t.intarray\t\t= {0x2, 0x3, 0x4, 0x0},
+@@ -162,7 +163,8 @@ static struct dtd_sandbox_spl_test dtv_spl_test2 = {
+ \t.bytearray\t\t= {0x1, 0x23, 0x34},
+ \t.byteval\t\t= 0x8,
+ \t.intval\t\t\t= 0x3,
+-\t.longbytearray\t\t= {0x9, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0},
++\t.longbytearray\t\t= {0x9, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,
++\t\t0x0},
+ \t.stringval\t\t= "message2",
+ \t.intarray\t\t= {0x5, 0x0, 0x0, 0x0},
+ \t.stringarray\t\t= {"another", "multi-word", "message"},
+-- 
+2.13.6
+

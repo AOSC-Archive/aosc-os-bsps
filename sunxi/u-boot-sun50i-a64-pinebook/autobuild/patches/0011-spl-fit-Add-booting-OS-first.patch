@@ -1,0 +1,137 @@
+From c8bc3c0c9ff7ce649b2af1416919b50ecf504874 Mon Sep 17 00:00:00 2001
+From: York Sun <york.sun@nxp.com>
+Date: Tue, 15 Aug 2017 11:14:45 -0700
+Subject: [PATCH 011/256] spl: fit: Add booting OS first
+
+If CONFIG_SPL_OS_BOOT is enabled, boot OS if kernel image is found
+in FIT structure.
+
+Signed-off-by: York Sun <york.sun@nxp.com>
+Reviewed-by: Tom Rini <trini@konsulko.com>
+Reviewed-by: Simon Glass <sjg@chromium.org>
+---
+ common/spl/spl_fit.c         | 60 ++++++++++++++++++++++++++++++--------------
+ doc/uImage.FIT/multi_spl.its |  7 ++++++
+ 2 files changed, 48 insertions(+), 19 deletions(-)
+
+diff --git a/common/spl/spl_fit.c b/common/spl/spl_fit.c
+index 9449a225ff..49ccf1c17b 100644
+--- a/common/spl/spl_fit.c
++++ b/common/spl/spl_fit.c
+@@ -222,13 +222,16 @@ int spl_load_simple_fit(struct spl_image_info *spl_image,
+ 	ulong size;
+ 	unsigned long count;
+ 	struct spl_image_info image_info;
+-	int node, images, ret;
++	bool boot_os = false;
++	int node = -1;
++	int images, ret;
+ 	int base_offset, align_len = ARCH_DMA_MINALIGN - 1;
+ 	int index = 0;
+ 
+ 	/*
+-	 * Figure out where the external images start. This is the base for the
+-	 * data-offset properties in each image.
++	 * For FIT with external data, figure out where the external images
++	 * start. This is the base for the data-offset properties in each
++	 * image.
+ 	 */
+ 	size = fdt_totalsize(fit);
+ 	size = (size + 3) & ~3;
+@@ -247,6 +250,9 @@ int spl_load_simple_fit(struct spl_image_info *spl_image,
+ 	 *
+ 	 * In fact the FIT has its own load address, but we assume it cannot
+ 	 * be before CONFIG_SYS_TEXT_BASE.
++	 *
++	 * For FIT with data embedded, data is loaded as part of FIT image.
++	 * For FIT with external data, data is not loaded in this step.
+ 	 */
+ 	fit = (void *)((CONFIG_SYS_TEXT_BASE - size - info->bl_len -
+ 			align_len) & ~align_len);
+@@ -264,8 +270,17 @@ int spl_load_simple_fit(struct spl_image_info *spl_image,
+ 		return -1;
+ 	}
+ 
++#ifdef CONFIG_SPL_OS_BOOT
++	/* Find OS image first */
++	node = spl_fit_get_image_node(fit, images, FIT_KERNEL_PROP, 0);
++	if (node < 0)
++		debug("No kernel image.\n");
++	else
++		boot_os = true;
++#endif
+ 	/* find the U-Boot image */
+-	node = spl_fit_get_image_node(fit, images, "firmware", 0);
++	if (node < 0)
++		node = spl_fit_get_image_node(fit, images, "firmware", 0);
+ 	if (node < 0) {
+ 		debug("could not find firmware image, trying loadables...\n");
+ 		node = spl_fit_get_image_node(fit, images, "loadables", 0);
+@@ -287,24 +302,31 @@ int spl_load_simple_fit(struct spl_image_info *spl_image,
+ 	if (ret)
+ 		return ret;
+ 
++#ifdef CONFIG_SPL_OS_BOOT
++	if (!fit_image_get_os(fit, node, &spl_image->os))
++		debug("Image OS is %s\n", genimg_get_os_name(spl_image->os));
++#else
+ 	spl_image->os = IH_OS_U_BOOT;
++#endif
+ 
+-	/* Figure out which device tree the board wants to use */
+-	node = spl_fit_get_image_node(fit, images, FIT_FDT_PROP, 0);
+-	if (node < 0) {
+-		debug("%s: cannot find FDT node\n", __func__);
+-		return node;
+-	}
++	if (!boot_os) {
++		/* Figure out which device tree the board wants to use */
++		node = spl_fit_get_image_node(fit, images, FIT_FDT_PROP, 0);
++		if (node < 0) {
++			debug("%s: cannot find FDT node\n", __func__);
++			return node;
++		}
+ 
+-	/*
+-	 * Read the device tree and place it after the image.
+-	 * Align the destination address to ARCH_DMA_MINALIGN.
+-	 */
+-	image_info.load_addr = spl_image->load_addr + spl_image->size;
+-	ret = spl_load_fit_image(info, sector, fit, base_offset, node,
+-				 &image_info);
+-	if (ret < 0)
+-		return ret;
++		/*
++		 * Read the device tree and place it after the image.
++		 * Align the destination address to ARCH_DMA_MINALIGN.
++		 */
++		image_info.load_addr = spl_image->load_addr + spl_image->size;
++		ret = spl_load_fit_image(info, sector, fit, base_offset, node,
++					 &image_info);
++		if (ret < 0)
++			return ret;
++	}
+ 
+ 	/* Now check if there are more images for us to load */
+ 	for (; ; index++) {
+diff --git a/doc/uImage.FIT/multi_spl.its b/doc/uImage.FIT/multi_spl.its
+index e5551d42b7..d43563d87a 100644
+--- a/doc/uImage.FIT/multi_spl.its
++++ b/doc/uImage.FIT/multi_spl.its
+@@ -4,6 +4,13 @@
+  * (Bogus) example FIT image description file demonstrating the usage
+  * of multiple images loaded by the SPL.
+  * Several binaries will be loaded at their respective load addresses.
++ *
++ * For booting U-Boot, "firmware" is searched first. If not found, "loadables"
++ * is used to identify images to be loaded into memory. If falcon boot is
++ * enabled, "kernel" is searched first. If not found, it falls back to the
++ * same flow as booting U-Boot. Changing image type will result skipping
++ * specific image.
++ *
+  * Finally the one image specifying an entry point will be entered by the SPL.
+  */
+ 
+-- 
+2.13.6
+

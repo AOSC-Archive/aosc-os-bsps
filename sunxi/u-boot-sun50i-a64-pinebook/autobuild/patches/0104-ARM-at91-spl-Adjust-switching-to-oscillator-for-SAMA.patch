@@ -1,0 +1,73 @@
+From 3ceb5118c6d7b0e042b399ef03b375fcef93b34d Mon Sep 17 00:00:00 2001
+From: Wenyou Yang <wenyou.yang@microchip.com>
+Date: Wed, 13 Sep 2017 14:58:48 +0800
+Subject: [PATCH 104/256] ARM: at91: spl: Adjust switching to oscillator for
+ SAMA5D2
+
+As said in 29.5.7 section of SAMA5D2 datasheet, before switching to
+the crystal oscillator, a check must be carried out to ensure that
+the oscillator is present and that its freqency is valid.
+
+Signed-off-by: Wenyou Yang <wenyou.yang@microchip.com>
+Reviewed-by: Simon Glass <sjg@chromium.org>
+---
+ arch/arm/mach-at91/include/mach/at91_pmc.h |  2 ++
+ arch/arm/mach-at91/spl_atmel.c             | 18 +++++++++++++++++-
+ 2 files changed, 19 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/mach-at91/include/mach/at91_pmc.h b/arch/arm/mach-at91/include/mach/at91_pmc.h
+index 2875ff20b1..08ad1bf2d0 100644
+--- a/arch/arm/mach-at91/include/mach/at91_pmc.h
++++ b/arch/arm/mach-at91/include/mach/at91_pmc.h
+@@ -87,6 +87,8 @@ typedef struct at91_pmc {
+ 
+ #define AT91_PMC_MCFR_MAINRDY		0x00010000
+ #define AT91_PMC_MCFR_MAINF_MASK	0x0000FFFF
++#define AT91_PMC_MCFR_RCMEAS		0x00100000
++#define AT91_PMC_MCFR_CCSS_XTAL_OSC	0x01000000
+ 
+ #define AT91_PMC_MCKR_CSS_SLOW		0x00000000
+ #define AT91_PMC_MCKR_CSS_MAIN		0x00000001
+diff --git a/arch/arm/mach-at91/spl_atmel.c b/arch/arm/mach-at91/spl_atmel.c
+index b75c2ccefd..ce16ef3bdb 100644
+--- a/arch/arm/mach-at91/spl_atmel.c
++++ b/arch/arm/mach-at91/spl_atmel.c
+@@ -32,6 +32,20 @@ static void switch_to_main_crystal_osc(void)
+ 	while (!(readl(&pmc->sr) & AT91_PMC_IXR_MOSCS))
+ 		;
+ 
++#if defined(CONFIG_SAMA5D2)
++	/* Enable a measurement of the external oscillator */
++	tmp = readl(&pmc->mcfr);
++	tmp |= AT91_PMC_MCFR_CCSS_XTAL_OSC;
++	tmp |= AT91_PMC_MCFR_RCMEAS;
++	writel(tmp, &pmc->mcfr);
++
++	while (!(readl(&pmc->mcfr) & AT91_PMC_MCFR_MAINRDY))
++		;
++
++	if (!(readl(&pmc->mcfr) & AT91_PMC_MCFR_MAINF_MASK))
++		hang();
++#endif
++
+ 	tmp = readl(&pmc->mor);
+ 	tmp &= ~AT91_PMC_MOR_OSCBYPASS;
+ 	tmp &= ~AT91_PMC_MOR_KEY(0xff);
+@@ -47,11 +61,13 @@ static void switch_to_main_crystal_osc(void)
+ 	while (!(readl(&pmc->sr) & AT91_PMC_IXR_MOSCSELS))
+ 		;
+ 
++#if !defined(CONFIG_SAMA5D2)
+ 	/* Wait until MAINRDY field is set to make sure main clock is stable */
+ 	while (!(readl(&pmc->mcfr) & AT91_PMC_MAINRDY))
+ 		;
++#endif
+ 
+-#ifndef CONFIG_SAMA5D4
++#if !defined(CONFIG_SAMA5D4) && !defined(CONFIG_SAMA5D2)
+ 	tmp = readl(&pmc->mor);
+ 	tmp &= ~AT91_PMC_MOR_MOSCRCEN;
+ 	tmp &= ~AT91_PMC_MOR_KEY(0xff);
+-- 
+2.13.6
+

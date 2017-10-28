@@ -1,0 +1,138 @@
+From ea28e488f743520f7f83b341f28818c32dae1ee3 Mon Sep 17 00:00:00 2001
+From: Pantelis Antoniou <pantelis.antoniou@konsulko.com>
+Date: Mon, 4 Sep 2017 23:12:23 +0300
+Subject: [PATCH 153/256] test: overlay: Add unit test for stacked overlay
+
+Verify that stacked overlays work.
+
+Signed-off-by: Pantelis Antoniou <pantelis.antoniou@konsulko.com>
+Acked-by: Simon Glass <sjg@chromium.org>
+---
+ test/overlay/Makefile                     |  1 +
+ test/overlay/cmd_ut_overlay.c             | 34 ++++++++++++++++++++++++++++++-
+ test/overlay/test-fdt-overlay-stacked.dts | 21 +++++++++++++++++++
+ 3 files changed, 55 insertions(+), 1 deletion(-)
+ create mode 100644 test/overlay/test-fdt-overlay-stacked.dts
+
+diff --git a/test/overlay/Makefile b/test/overlay/Makefile
+index 907f085446..416645c884 100644
+--- a/test/overlay/Makefile
++++ b/test/overlay/Makefile
+@@ -13,3 +13,4 @@ DTC_FLAGS += -@
+ # DT overlays
+ obj-y += test-fdt-base.dtb.o
+ obj-y += test-fdt-overlay.dtb.o
++obj-y += test-fdt-overlay-stacked.dtb.o
+diff --git a/test/overlay/cmd_ut_overlay.c b/test/overlay/cmd_ut_overlay.c
+index 7106f42a62..24891ee829 100644
+--- a/test/overlay/cmd_ut_overlay.c
++++ b/test/overlay/cmd_ut_overlay.c
+@@ -20,6 +20,7 @@
+ 
+ extern u32 __dtb_test_fdt_base_begin;
+ extern u32 __dtb_test_fdt_overlay_begin;
++extern u32 __dtb_test_fdt_overlay_stacked_begin;
+ 
+ static int ut_fdt_getprop_u32_by_index(void *fdt, const char *path,
+ 				    const char *name, int index,
+@@ -201,6 +202,19 @@ static int fdt_overlay_local_phandles(struct unit_test_state *uts)
+ }
+ OVERLAY_TEST(fdt_overlay_local_phandles, 0);
+ 
++static int fdt_overlay_stacked(struct unit_test_state *uts)
++{
++	void *fdt = uts->priv;
++	u32 val = 0;
++
++	ut_assertok(ut_fdt_getprop_u32(fdt, "/new-local-node",
++				       "stacked-test-int-property", &val));
++	ut_asserteq(43, val);
++
++	return CMD_RET_SUCCESS;
++}
++OVERLAY_TEST(fdt_overlay_stacked, 0);
++
+ int do_ut_overlay(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
+ {
+ 	struct unit_test *tests = ll_entry_start(struct unit_test,
+@@ -210,7 +224,8 @@ int do_ut_overlay(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
+ 	struct unit_test *test;
+ 	void *fdt_base = &__dtb_test_fdt_base_begin;
+ 	void *fdt_overlay = &__dtb_test_fdt_overlay_begin;
+-	void *fdt_base_copy, *fdt_overlay_copy;
++	void *fdt_overlay_stacked = &__dtb_test_fdt_overlay_stacked_begin;
++	void *fdt_base_copy, *fdt_overlay_copy, *fdt_overlay_stacked_copy;
+ 
+ 	uts = calloc(1, sizeof(*uts));
+ 	if (!uts)
+@@ -228,6 +243,10 @@ int do_ut_overlay(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
+ 	if (!fdt_overlay_copy)
+ 		return -ENOMEM;
+ 
++	fdt_overlay_stacked_copy = malloc(FDT_COPY_SIZE);
++	if (!fdt_overlay_stacked_copy)
++		return -ENOMEM;
++
+ 	/*
+ 	 * Resize the FDT to 4k so that we have room to operate on
+ 	 *
+@@ -245,9 +264,21 @@ int do_ut_overlay(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
+ 	ut_assertok(fdt_open_into(fdt_overlay, fdt_overlay_copy,
+ 				  FDT_COPY_SIZE));
+ 
++	/*
++	 * Resize the stacked overlay to 4k so that we have room to operate on
++	 *
++	 * (and relocate it since the memory might be mapped
++	 * read-only)
++	 */
++	ut_assertok(fdt_open_into(fdt_overlay_stacked, fdt_overlay_stacked_copy,
++				  FDT_COPY_SIZE));
++
+ 	/* Apply the overlay */
+ 	ut_assertok(fdt_overlay_apply(fdt_base_copy, fdt_overlay_copy));
+ 
++	/* Apply the stacked overlay */
++	ut_assertok(fdt_overlay_apply(fdt_base_copy, fdt_overlay_stacked_copy));
++
+ 	if (argc == 1)
+ 		printf("Running %d environment tests\n", n_ents);
+ 
+@@ -263,6 +294,7 @@ int do_ut_overlay(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
+ 
+ 	printf("Failures: %d\n", uts->fail_count);
+ 
++	free(fdt_overlay_stacked_copy);
+ 	free(fdt_overlay_copy);
+ 	free(fdt_base_copy);
+ 	free(uts);
+diff --git a/test/overlay/test-fdt-overlay-stacked.dts b/test/overlay/test-fdt-overlay-stacked.dts
+new file mode 100644
+index 0000000000..9fb7c7b017
+--- /dev/null
++++ b/test/overlay/test-fdt-overlay-stacked.dts
+@@ -0,0 +1,21 @@
++/*
++ * Copyright (c) 2016 NextThing Co
++ * Copyright (c) 2016 Free Electrons
++ * Copyright (c) 2018 Konsulko Group
++ *
++ * SPDX-License-Identifier:	GPL-2.0+
++ */
++
++/dts-v1/;
++/plugin/;
++
++/ {
++	/* Test that we can reference an overlay symbol */
++	fragment@0 {
++		target = <&local>;
++
++		__overlay__ {
++			stacked-test-int-property = <43>;
++		};
++	};
++};
+-- 
+2.13.6
+

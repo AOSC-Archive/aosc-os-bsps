@@ -1,0 +1,32 @@
+From 0537e097c95eb9d4a51dc0cc20b8b07bb00fa451 Mon Sep 17 00:00:00 2001
+From: Lokesh Vutla <lokeshvutla@ti.com>
+Date: Mon, 21 Aug 2017 12:50:51 +0530
+Subject: [PATCH 037/256] arm: dra7: Kconfig: Select LP87565 related configs
+
+LP87565 is present on dra76-evm. Select it for
+TARGET_DRA7XX_EVM.
+
+Signed-off-by: Lokesh Vutla <lokeshvutla@ti.com>
+Reviewed-by: Tom Rini <trini@konsulko.com>
+---
+ arch/arm/mach-omap2/omap5/Kconfig | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/arm/mach-omap2/omap5/Kconfig b/arch/arm/mach-omap2/omap5/Kconfig
+index 30a9ff9c7b..8f58235baf 100644
+--- a/arch/arm/mach-omap2/omap5/Kconfig
++++ b/arch/arm/mach-omap2/omap5/Kconfig
+@@ -26,6 +26,10 @@ config TARGET_DRA7XX_EVM
+ 	select TI_I2C_BOARD_DETECT
+ 	select PHYS_64BIT
+ 	imply SCSI
++	imply DM_PMIC
++	imply PMIC_LP87565
++	imply DM_REGULATOR
++	imply DM_REGULATOR_LP87565
+ 
+ config TARGET_AM57XX_EVM
+ 	bool "AM57XX"
+-- 
+2.13.6
+

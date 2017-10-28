@@ -1,0 +1,45 @@
+From d1f2ee7021dc4a89f43e25f289747a27da0e930f Mon Sep 17 00:00:00 2001
+From: York Sun <york.sun@nxp.com>
+Date: Tue, 15 Aug 2017 11:14:42 -0700
+Subject: [PATCH 008/256] cmd: spl: Fix compiling warning
+
+Fix warning "cast from pointer to integer of different size".
+
+Signed-off-by: York Sun <york.sun@nxp.com>
+Reviewed-by: Tom Rini <trini@konsulko.com>
+---
+ cmd/spl.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/cmd/spl.c b/cmd/spl.c
+index ad033652d4..4d84492346 100644
+--- a/cmd/spl.c
++++ b/cmd/spl.c
+@@ -109,12 +109,12 @@ static int spl_export(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
+ 
+ 	c = find_cmd_tbl(argv[1], &cmd_spl_export_sub[0],
+ 		ARRAY_SIZE(cmd_spl_export_sub));
+-	if ((c) && ((int)c->cmd <= SPL_EXPORT_LAST)) {
++	if ((c) && ((long)c->cmd <= SPL_EXPORT_LAST)) {
+ 		argc -= 2;
+ 		argv += 2;
+-		if (call_bootm(argc, argv, subcmd_list[(int)c->cmd]))
++		if (call_bootm(argc, argv, subcmd_list[(long)c->cmd]))
+ 			return -1;
+-		switch ((int)c->cmd) {
++		switch ((long)c->cmd) {
+ #ifdef CONFIG_OF_LIBFDT
+ 		case SPL_EXPORT_FDT:
+ 			printf("Argument image is now in RAM: 0x%p\n",
+@@ -153,7 +153,7 @@ static int do_spl(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
+ 
+ 	c = find_cmd_tbl(argv[1], &cmd_spl_sub[0], ARRAY_SIZE(cmd_spl_sub));
+ 	if (c) {
+-		cmd = (int)c->cmd;
++		cmd = (long)c->cmd;
+ 		switch (cmd) {
+ 		case SPL_EXPORT:
+ 			argc--;
+-- 
+2.13.6
+

@@ -1,0 +1,61 @@
+From bf6d76b84ae13b463c0dca556118047e2d046f33 Mon Sep 17 00:00:00 2001
+From: Alison Chaiken <alison@peloton-tech.com>
+Date: Sat, 9 Sep 2017 23:47:12 -0700
+Subject: [PATCH 118/256] GPT: create block device for sandbox testing
+
+Provide a Python function that creates a small block device for the
+purpose of testing the cmd/gpt.c or cmd/part.c functions in the u-boot
+sandbox.
+
+Signed-off-by: Alison Chaiken <alison@peloton-tech.com>
+Reviewed-by: Simon Glass <sjg@chromium.org>
+---
+ board/sandbox/README.sandbox |  5 +++++
+ test/py/make_test_disk.py    | 19 +++++++++++++++++++
+ 2 files changed, 24 insertions(+)
+ create mode 100755 test/py/make_test_disk.py
+
+diff --git a/board/sandbox/README.sandbox b/board/sandbox/README.sandbox
+index 2e2c819384..9bc13e142b 100644
+--- a/board/sandbox/README.sandbox
++++ b/board/sandbox/README.sandbox
+@@ -337,6 +337,11 @@ $> lodev=`sudo losetup -P -f --show ./disk.raw`
+ $> sudo mkfs.vfat -n EFI -v ${lodev}p1
+ $> sudo mkfs.ext4 -L ROOT -v ${lodev}p2
+ 
++or utilize the device described in test/py/make_test_disk.py:
++
++   #!/usr/bin/python
++   import make_test_disk
++   make_test_disk.makeDisk()
+ 
+ Writing Sandbox Drivers
+ -----------------------
+diff --git a/test/py/make_test_disk.py b/test/py/make_test_disk.py
+new file mode 100755
+index 0000000000..5288295588
+--- /dev/null
++++ b/test/py/make_test_disk.py
+@@ -0,0 +1,19 @@
++# Copyright (c) 2017 Alison Chaiken
++#
++# SPDX-License-Identifier: GPL-2.0
++#
++# Create a block device for testing of 'gpt' and 'part' commands.
++
++import os
++
++def makeDisk():
++    if (os.path.exists("testdisk.raw")):
++        os.remove("testdisk.raw")
++    fd = os.open("testdisk.raw", os.O_RDWR|os.O_CREAT )
++    os.ftruncate(fd, 4194304)
++    os.close(fd)
++    os.spawnl(os.P_WAIT, "/sbin/sgdisk", "sgdisk", "-U",
++          "375a56f7-d6c9-4e81-b5f0-09d41ca89efe", "testdisk.raw")
++    os.spawnl(os.P_WAIT, "/sbin/sgdisk", "sgdisk", "--new=1:2048:2560", "testdisk.raw")
++    os.spawnl(os.P_WAIT, "/sbin/sgdisk", "sgdisk", "--new=2:4096:4608", "testdisk.raw")
++    os.spawnl(os.P_WAIT, "/sbin/gdisk", "sgdisk", "-l", "testdisk.raw")
+-- 
+2.13.6
+

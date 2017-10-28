@@ -1,0 +1,29 @@
+From 82f1205601da996d170f9e3a87f210e174fc0eba Mon Sep 17 00:00:00 2001
+From: "Andrew F. Davis" <afd@ti.com>
+Date: Mon, 31 Jul 2017 10:58:22 -0500
+Subject: [PATCH 075/256] configs: k2g_evm: Remove PMMC loading environment
+ commands
+
+The PMMC firmware should be bundled with the FIT image for HS devices,
+remove the steps that load and install this firmware outside of FIT.
+
+Signed-off-by: Andrew F. Davis <afd@ti.com>
+---
+ include/configs/k2g_evm.h | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/include/configs/k2g_evm.h b/include/configs/k2g_evm.h
+index 6341609858..1950740405 100644
+--- a/include/configs/k2g_evm.h
++++ b/include/configs/k2g_evm.h
+@@ -69,7 +69,6 @@
+ 	"run envboot; "							\
+ 	"run run_mon_hs; "						\
+ 	"run init_${boot}; "						\
+-	"run set_name_pmmc get_pmmc_${boot} run_pmmc; "			\
+ 	"run get_fit_${boot}; "						\
+ 	"bootm ${fit_loadaddr}#${name_fdt}"
+ #endif
+-- 
+2.13.6
+

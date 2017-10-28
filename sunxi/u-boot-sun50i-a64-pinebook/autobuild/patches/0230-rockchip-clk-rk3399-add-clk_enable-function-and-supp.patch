@@ -1,0 +1,53 @@
+From 2f01a2b2149c4c38467eeeddde09ac48d379aed3 Mon Sep 17 00:00:00 2001
+From: Philipp Tomsich <philipp.tomsich@theobroma-systems.com>
+Date: Tue, 12 Sep 2017 17:30:56 +0200
+Subject: [PATCH 230/256] rockchip: clk: rk3399: add clk_enable function and
+ support USB HOST0/1
+
+The generic ehci-driver (ehci-generic.c) will try to enable the clocks
+listed in the DTSI. If this fails (e.g. due to clk_enable not being
+implemented in a driver and -ENOSYS being returned by the clk-uclass),
+the driver will bail our and print an error message.
+
+This implements a minimal clk_enable for the RK3399 and supports the
+clocks mandatory for the EHCI controllers; as these are enabled by
+default we simply return success.
+
+Signed-off-by: Philipp Tomsich <philipp.tomsich@theobroma-systems.com>
+Reviewed-by: Simon Glass <sjg@chromium.org>
+---
+ drivers/clk/rockchip/clk_rk3399.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/drivers/clk/rockchip/clk_rk3399.c b/drivers/clk/rockchip/clk_rk3399.c
+index 7232806724..168c9ddba3 100644
+--- a/drivers/clk/rockchip/clk_rk3399.c
++++ b/drivers/clk/rockchip/clk_rk3399.c
+@@ -950,9 +950,24 @@ static ulong rk3399_clk_set_rate(struct clk *clk, ulong rate)
+ 	return ret;
+ }
+ 
++static int rk3399_clk_enable(struct clk *clk)
++{
++	switch (clk->id) {
++	case HCLK_HOST0:
++	case HCLK_HOST0_ARB:
++	case HCLK_HOST1:
++	case HCLK_HOST1_ARB:
++		return 0;
++	}
++
++	debug("%s: unsupported clk %ld\n", __func__, clk->id);
++	return -ENOENT;
++}
++
+ static struct clk_ops rk3399_clk_ops = {
+ 	.get_rate = rk3399_clk_get_rate,
+ 	.set_rate = rk3399_clk_set_rate,
++	.enable = rk3399_clk_enable,
+ };
+ 
+ static int rk3399_clk_probe(struct udevice *dev)
+-- 
+2.13.6
+

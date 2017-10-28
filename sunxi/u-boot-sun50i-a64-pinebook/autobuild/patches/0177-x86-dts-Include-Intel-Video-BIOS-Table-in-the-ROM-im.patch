@@ -1,0 +1,35 @@
+From 6c22379eaf8a07cf6f2619d828a0bebab5ddbc17 Mon Sep 17 00:00:00 2001
+From: Bin Meng <bmeng.cn@gmail.com>
+Date: Tue, 15 Aug 2017 22:41:55 -0700
+Subject: [PATCH 177/256] x86: dts: Include Intel Video BIOS Table in the ROM
+ image
+
+Now that binman is able to recognize the Video BIOS Table entry,
+add such one in the u-boot.dtsi.
+
+Signed-off-by: Bin Meng <bmeng.cn@gmail.com>
+Reviewed-by: Simon Glass <sjg@chromium.org>
+---
+ arch/x86/dts/u-boot.dtsi | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/arch/x86/dts/u-boot.dtsi b/arch/x86/dts/u-boot.dtsi
+index a4321d33de..7e37d4f394 100644
+--- a/arch/x86/dts/u-boot.dtsi
++++ b/arch/x86/dts/u-boot.dtsi
+@@ -67,6 +67,12 @@
+ 			pos = <CONFIG_VGA_BIOS_ADDR>;
+ 		};
+ #endif
++#ifdef CONFIG_HAVE_VBT
++		intel-vbt {
++			filename = CONFIG_VBT_FILE;
++			pos = <CONFIG_VBT_ADDR>;
++		};
++#endif
+ #ifdef CONFIG_HAVE_REFCODE
+ 		intel-refcode {
+ 			pos = <CONFIG_X86_REFCODE_ADDR>;
+-- 
+2.13.6
+

@@ -1,0 +1,29 @@
+From 60d7c50945d65185a5c86c4f52d4671fb59292e3 Mon Sep 17 00:00:00 2001
+From: Klaus Goger <klaus.goger@theobroma-systems.com>
+Date: Fri, 15 Sep 2017 14:46:04 +0200
+Subject: [PATCH 240/256] rockchip: puma_rk3399: increase serialno_str size
+
+Increase serialno_str to 17 bytes so it can hold the 16 bytes long serial
+nummer and the terminating null byte added by snprintf.
+
+Signed-off-by: Klaus Goger <klaus.goger@theobroma-systems.com>
+---
+ board/theobroma-systems/puma_rk3399/puma-rk3399.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/board/theobroma-systems/puma_rk3399/puma-rk3399.c b/board/theobroma-systems/puma_rk3399/puma-rk3399.c
+index c6f8eed0c9..45d56cd99e 100644
+--- a/board/theobroma-systems/puma_rk3399/puma-rk3399.c
++++ b/board/theobroma-systems/puma_rk3399/puma-rk3399.c
+@@ -107,7 +107,7 @@ static void setup_serial(void)
+ 	u8 low[cpuid_length/2], high[cpuid_length/2];
+ 	char cpuid_str[cpuid_length * 2 + 1];
+ 	u64 serialno;
+-	char serialno_str[16];
++	char serialno_str[17];
+ 
+ 	/* retrieve the device */
+ 	ret = uclass_get_device_by_driver(UCLASS_MISC,
+-- 
+2.13.6
+

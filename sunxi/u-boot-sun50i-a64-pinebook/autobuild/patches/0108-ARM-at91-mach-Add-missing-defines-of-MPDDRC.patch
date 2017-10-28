@@ -1,0 +1,31 @@
+From b5c13daca4f27e537f8d609f5b73b0f1bb4e7a8c Mon Sep 17 00:00:00 2001
+From: Wenyou Yang <wenyou.yang@microchip.com>
+Date: Wed, 13 Sep 2017 14:58:52 +0800
+Subject: [PATCH 108/256] ARM: at91: mach: Add missing defines of MPDDRC
+
+Add missing defines of Multiport DDR-SDRAM Controller (MPDDRC).
+
+Signed-off-by: Wenyou Yang <wenyou.yang@microchip.com>
+Reviewed-by: Simon Glass <sjg@chromium.org>
+---
+ arch/arm/mach-at91/include/mach/atmel_mpddrc.h | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/arm/mach-at91/include/mach/atmel_mpddrc.h b/arch/arm/mach-at91/include/mach/atmel_mpddrc.h
+index 803501f5cf..40e1cf0a0a 100644
+--- a/arch/arm/mach-at91/include/mach/atmel_mpddrc.h
++++ b/arch/arm/mach-at91/include/mach/atmel_mpddrc.h
+@@ -96,6 +96,10 @@ int ddr3_init(const unsigned int base,
+ #define ATMEL_MPDDRC_CR_DLL_RESET_ENABLED	(0x1 << 7)
+ #define ATMEL_MPDDRC_CR_DIC_DS			(0x1 << 8)
+ #define ATMEL_MPDDRC_CR_DIS_DLL			(0x1 << 9)
++#define ATMEL_MPDDRC_CR_ZQ_INIT			(0x0 << 10)
++#define ATMEL_MPDDRC_CR_ZQ_LONG			(0x1 << 10)
++#define ATMEL_MPDDRC_CR_ZQ_SHORT		(0x2 << 10)
++#define ATMEL_MPDDRC_CR_ZQ_RESET		(0x3 << 10)
+ #define ATMEL_MPDDRC_CR_OCD_DEFAULT		(0x7 << 12)
+ #define ATMEL_MPDDRC_CR_DQMS_SHARED		(0x1 << 16)
+ #define ATMEL_MPDDRC_CR_ENRDM_ON		(0x1 << 17)
+-- 
+2.13.6
+

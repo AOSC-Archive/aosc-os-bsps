@@ -1,0 +1,36 @@
+From 148a139d65b7fdb93326d7870b40c618d4601a8a Mon Sep 17 00:00:00 2001
+From: Philipp Tomsich <philipp.tomsich@theobroma-systems.com>
+Date: Mon, 11 Sep 2017 22:04:09 +0200
+Subject: [PATCH 207/256] bootstage: adjust Makefile to allow including
+ bootstage in SPL, but not in TPL
+
+For timing our bootstages on the RK3368, which has a minimal TPL
+(and where we consequently don't want to time the bootstages) and a
+full-featured SPL (where we can bootstage recording), we need to
+adjust the Makefile.
+
+Use the $(SPL_TPL_) macro in the Makefile for bootstage.o
+
+Signed-off-by: Philipp Tomsich <philipp.tomsich@theobroma-systems.com>
+Reviewed-by: Simon Glass <sjg@chromium.org>
+Acked-by: Philipp Tomsich <philipp.tomsich@theobroma-systems.com>
+---
+ common/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/common/Makefile b/common/Makefile
+index 1b56cf9a70..801ea3191f 100644
+--- a/common/Makefile
++++ b/common/Makefile
+@@ -63,7 +63,7 @@ obj-$(CONFIG_CMDLINE) += cli_readline.o cli_simple.o
+ 
+ endif # !CONFIG_SPL_BUILD
+ 
+-obj-$(CONFIG_$(SPL_)BOOTSTAGE) += bootstage.o
++obj-$(CONFIG_$(SPL_TPL_)BOOTSTAGE) += bootstage.o
+ 
+ ifdef CONFIG_SPL_BUILD
+ obj-$(CONFIG_SPL_DFU_SUPPORT) += dfu.o
+-- 
+2.13.6
+

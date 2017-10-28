@@ -1,0 +1,8 @@
+PKGNAME=u-boot-sun50i-a64-pinebook
+PKGDES="U-Boot for Pinebook"
+PKGSEC=embedded
+BUILDDEP="dtc swig"
+
+ABSTRIP=no
+ABELFDEP=no
+ABRPMAUTOPROVONLY=yes

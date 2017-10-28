@@ -1,0 +1,47 @@
+From c8c04eca30fa0d513885c6c07f3d2137b59ba121 Mon Sep 17 00:00:00 2001
+From: Lokesh Vutla <lokeshvutla@ti.com>
+Date: Mon, 21 Aug 2017 12:50:53 +0530
+Subject: [PATCH 039/256] board: ti: dra76-evm: Add epprom support
+
+The dra76-evm is a board based on TI's DRA76 processor
+Add eeprom support
+
+Reviewed-by: Tom Rini <trini@konsulko.com>
+Signed-off-by: Lokesh Vutla <lokeshvutla@ti.com>
+---
+ board/ti/dra7xx/evm.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/board/ti/dra7xx/evm.c b/board/ti/dra7xx/evm.c
+index 1c0a1eb052..ee6d5251d5 100644
+--- a/board/ti/dra7xx/evm.c
++++ b/board/ti/dra7xx/evm.c
+@@ -34,6 +34,7 @@
+ #include "mux_data.h"
+ #include "../common/board_detect.h"
+ 
++#define board_is_dra76x_evm()		board_ti_is("DRA76/7x")
+ #define board_is_dra74x_evm()		board_ti_is("5777xCPU")
+ #define board_is_dra72x_evm()		board_ti_is("DRA72x-T")
+ #define board_is_dra71x_evm()		board_ti_is("DRA79x,D")
+@@ -547,6 +548,8 @@ int board_late_init(void)
+ 			name = "dra71x";
+ 		else
+ 			name = "dra72x";
++	} else if (is_dra76x()) {
++		name = "dra76x";
+ 	} else {
+ 		name = "dra7xx";
+ 	}
+@@ -595,6 +598,8 @@ void do_board_detect(void)
+ 		bname = "DRA72x EVM";
+ 	} else if (board_is_dra71x_evm()) {
+ 		bname = "DRA71x EVM";
++	} else if (board_is_dra76x_evm()) {
++		bname = "DRA76x EVM";
+ 	} else {
+ 		/* If EEPROM is not populated */
+ 		if (is_dra72x())
+-- 
+2.13.6
+

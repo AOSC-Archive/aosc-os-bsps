@@ -1,0 +1,50 @@
+From d81a1de96e2636163783c342b8fda965e696e382 Mon Sep 17 00:00:00 2001
+From: Wenyou Yang <wenyou.yang@microchip.com>
+Date: Wed, 6 Sep 2017 13:08:14 +0800
+Subject: [PATCH 054/256] misc: Kconfig: Add SPL_I2C_EEPROM option
+
+This option is an SPL-variant of the I2C_EEPROM option to enable
+the driver for generic I2C-attached EEPROMs for SPL.
+
+Signed-off-by: Wenyou Yang <wenyou.yang@microchip.com>
+Reviewed-by: Simon Glass <sjg@chromium.org>
+---
+ drivers/misc/Kconfig  | 8 ++++++++
+ drivers/misc/Makefile | 2 +-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
+index 3d282d5b14..4133017e32 100644
+--- a/drivers/misc/Kconfig
++++ b/drivers/misc/Kconfig
+@@ -197,6 +197,14 @@ config I2C_EEPROM
+ 	help
+ 	  Enable a generic driver for EEPROMs attached via I2C.
+ 
++
++config SPL_I2C_EEPROM
++	bool "Enable driver for generic I2C-attached EEPROMs for SPL"
++	depends on MISC && SPL && SPL_DM
++	help
++	  This option is an SPL-variant of the I2C_EEPROM option.
++	  See the help of I2C_EEPROM for details.
++
+ if I2C_EEPROM
+ 
+ config SYS_I2C_EEPROM_ADDR
+diff --git a/drivers/misc/Makefile b/drivers/misc/Makefile
+index 10265c8fb4..21f7e6c6f5 100644
+--- a/drivers/misc/Makefile
++++ b/drivers/misc/Makefile
+@@ -20,7 +20,7 @@ obj-$(CONFIG_CROS_EC_SPI) += cros_ec_spi.o
+ endif
+ obj-$(CONFIG_FSL_IIM) += fsl_iim.o
+ obj-$(CONFIG_LED_STATUS_GPIO) += gpio_led.o
+-obj-$(CONFIG_I2C_EEPROM) += i2c_eeprom.o
++obj-$(CONFIG_$(SPL_)I2C_EEPROM) += i2c_eeprom.o
+ obj-$(CONFIG_FSL_MC9SDZ60) += mc9sdz60.o
+ obj-$(CONFIG_MXC_OCOTP) += mxc_ocotp.o
+ obj-$(CONFIG_MXS_OCOTP) += mxs_ocotp.o
+-- 
+2.13.6
+

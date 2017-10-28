@@ -1,0 +1,91 @@
+From c1853f6f7348d86faead6ffe30c25db9d7cef144 Mon Sep 17 00:00:00 2001
+From: Ran Wang <ran.wang_1@nxp.com>
+Date: Mon, 4 Sep 2017 18:46:53 +0800
+Subject: [PATCH 027/256] armv7: Add workaround for USB erratum A-009798
+
+The default setting for USB High Speed Squelch Threshold results
+in a threshold close to or lower than 100mV. This leads to Receive
+Compliance test failure for a 100mV threshold.
+
+Shift the threshold from ~100mV towards ~130mV by setting SQRXTUNE
+to 0x0 to pass USB High Speed Receiver Sensitivity Compliance test.
+
+Signed-off-by: Sriram Dash <sriram.dash@nxp.com>
+Signed-off-by: Rajesh Bhagat <rajesh.bhagat@nxp.com>
+Signed-off-by: Suresh Gupta <suresh.gupta@nxp.com>
+Signed-off-by: Ran Wang <ran.wang_1@nxp.com>
+[YS: Reordered Kconfig options]
+Reviewed-by: York Sun <york.sun@nxp.com>
+---
+ arch/arm/cpu/armv7/ls102xa/Kconfig                |  6 ++++++
+ arch/arm/cpu/armv7/ls102xa/soc.c                  | 10 ++++++++++
+ arch/arm/include/asm/arch-ls102xa/immap_ls102xa.h |  1 +
+ 3 files changed, 17 insertions(+)
+
+diff --git a/arch/arm/cpu/armv7/ls102xa/Kconfig b/arch/arm/cpu/armv7/ls102xa/Kconfig
+index be30dd8442..a9fc65ff11 100644
+--- a/arch/arm/cpu/armv7/ls102xa/Kconfig
++++ b/arch/arm/cpu/armv7/ls102xa/Kconfig
+@@ -4,6 +4,7 @@ config ARCH_LS1021A
+ 	select SYS_FSL_ERRATUM_A008407
+ 	select SYS_FSL_ERRATUM_A009008
+ 	select SYS_FSL_ERRATUM_A009663
++	select SYS_FSL_ERRATUM_A009798
+ 	select SYS_FSL_ERRATUM_A009942
+ 	select SYS_FSL_ERRATUM_A010315
+ 	select SYS_FSL_HAS_CCI400
+@@ -64,6 +65,11 @@ config SYS_FSL_ERRATUM_A009008
+ 	help
+ 	  Workaround for USB PHY erratum A009008
+ 
++config SYS_FSL_ERRATUM_A009798
++	bool
++	help
++	  Workaround for USB PHY erratum A009798
++
+ config SYS_FSL_ERRATUM_A010315
+ 	bool "Workaround for PCIe erratum A010315"
+ 
+diff --git a/arch/arm/cpu/armv7/ls102xa/soc.c b/arch/arm/cpu/armv7/ls102xa/soc.c
+index eed06a3c7c..4f94df79f8 100644
+--- a/arch/arm/cpu/armv7/ls102xa/soc.c
++++ b/arch/arm/cpu/armv7/ls102xa/soc.c
+@@ -71,6 +71,15 @@ static void erratum_a009008(void)
+ #endif /* CONFIG_SYS_FSL_ERRATUM_A009008 */
+ }
+ 
++static void erratum_a009798(void)
++{
++#ifdef CONFIG_SYS_FSL_ERRATUM_A009798
++	u32 __iomem *scfg = (u32 __iomem *)SCFG_BASE;
++
++	clrbits_be32(scfg + SCFG_USB3PRM1CR / 4,
++			SCFG_USB_SQRXTUNE_MASK << 23);
++#endif /* CONFIG_SYS_FSL_ERRATUM_A009798 */
++}
+ 
+ void s_init(void)
+ {
+@@ -161,6 +170,7 @@ int arch_soc_init(void)
+ 
+ 	/* Erratum */
+ 	erratum_a009008();
++	erratum_a009798();
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/include/asm/arch-ls102xa/immap_ls102xa.h b/arch/arm/include/asm/arch-ls102xa/immap_ls102xa.h
+index 28c1a98418..bc5125d833 100644
+--- a/arch/arm/include/asm/arch-ls102xa/immap_ls102xa.h
++++ b/arch/arm/include/asm/arch-ls102xa/immap_ls102xa.h
+@@ -177,6 +177,7 @@ struct ccsr_gur {
+ #define SCFG_BASE			0x01570000
+ #define SCFG_USB3PRM1CR			0x070
+ #define SCFG_USB_TXVREFTUNE		0x9
++#define SCFG_USB_SQRXTUNE_MASK		0x7
+ 
+ /* Supplemental Configuration Unit */
+ struct ccsr_scfg {
+-- 
+2.13.6
+

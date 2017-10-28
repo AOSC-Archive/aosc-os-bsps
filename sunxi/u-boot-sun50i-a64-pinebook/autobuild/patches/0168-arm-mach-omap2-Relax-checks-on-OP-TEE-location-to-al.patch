@@ -1,0 +1,38 @@
+From a1e4bc65e174f169b4dfaa5093e8f65b5228dc44 Mon Sep 17 00:00:00 2001
+From: Harinarayan Bhatta <harinarayan@ti.com>
+Date: Wed, 13 Sep 2017 13:27:44 -0500
+Subject: [PATCH 168/256] arm: mach-omap2: Relax checks on OP-TEE location to
+ allow pageable image
+
+When the OP-TEE image is built for secure paging the load address may be
+in SRAM, remove checks that prevent this.
+
+Signed-off-by: Harinarayan Bhatta <harinarayan@ti.com>
+Signed-off-by: Andrew F. Davis <afd@ti.com>
+Reviewed-by: Lokesh Vutla <lokeshvutla@ti.com>
+---
+ arch/arm/mach-omap2/sec-common.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
+
+diff --git a/arch/arm/mach-omap2/sec-common.c b/arch/arm/mach-omap2/sec-common.c
+index 2d54a3165e..52e1785b4a 100644
+--- a/arch/arm/mach-omap2/sec-common.c
++++ b/arch/arm/mach-omap2/sec-common.c
+@@ -305,12 +305,8 @@ int secure_tee_install(u32 addr)
+ 
+ 	if ((hdr->magic != OPTEE_MAGIC) ||
+ 	    (hdr->version != OPTEE_VERSION) ||
+-	    (hdr->init_load_addr_hi != 0) ||
+-	    (hdr->init_load_addr_lo < (sec_mem_start + sizeof(struct optee_header))) ||
+-	    (tee_file_size > size) ||
+-	    ((hdr->init_load_addr_lo + tee_file_size - 1) >
+-	     (sec_mem_start + size - 1))) {
+-		printf("Error in TEE header. Check load address and sizes\n");
++	    (tee_file_size > size)) {
++		printf("Error in TEE header. Check firewall and TEE sizes\n");
+ 		unmap_sysmem(hdr);
+ 		return CMD_RET_FAILURE;
+ 	}
+-- 
+2.13.6
+

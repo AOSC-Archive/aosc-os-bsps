@@ -1,0 +1,92 @@
+From db4fce8fcd87ba139a8c4fb0d9c57f3d70b6116c Mon Sep 17 00:00:00 2001
+From: Lokesh Vutla <lokeshvutla@ti.com>
+Date: Mon, 21 Aug 2017 12:50:50 +0530
+Subject: [PATCH 036/256] palmas: Add support for powering different ldos
+
+It is not necessary that ldo1 is used to power on mmc.
+So, add support for passing ldo registers for powering on mmc.
+
+Reviewed-by: Tom Rini <trini@konsulko.com>
+Signed-off-by: Lokesh Vutla <lokeshvutla@ti.com>
+---
+ arch/arm/mach-omap2/omap5/hwinit.c |  2 +-
+ board/ti/dra7xx/evm.c              |  2 +-
+ drivers/power/palmas.c             | 11 ++++-------
+ include/palmas.h                   |  2 +-
+ 4 files changed, 7 insertions(+), 10 deletions(-)
+
+diff --git a/arch/arm/mach-omap2/omap5/hwinit.c b/arch/arm/mach-omap2/omap5/hwinit.c
+index cb2a5ab7ea..85d3518e94 100644
+--- a/arch/arm/mach-omap2/omap5/hwinit.c
++++ b/arch/arm/mach-omap2/omap5/hwinit.c
+@@ -457,7 +457,7 @@ void v7_arch_cp15_set_acr(u32 acr, u32 cpu_midr, u32 cpu_rev_comb,
+ #if defined(CONFIG_PALMAS_POWER)
+ __weak void board_mmc_poweron_ldo(uint voltage)
+ {
+-	palmas_mmc1_poweron_ldo(voltage);
++	palmas_mmc1_poweron_ldo(LDO1_VOLTAGE, LDO1_CTRL, voltage);
+ }
+ 
+ void vmmc_pbias_config(uint voltage)
+diff --git a/board/ti/dra7xx/evm.c b/board/ti/dra7xx/evm.c
+index 6767fd2179..1c0a1eb052 100644
+--- a/board/ti/dra7xx/evm.c
++++ b/board/ti/dra7xx/evm.c
+@@ -720,7 +720,7 @@ void board_mmc_poweron_ldo(uint voltage)
+ 			voltage = 0xa;
+ 		lp873x_mmc1_poweron_ldo(voltage);
+ 	} else {
+-		palmas_mmc1_poweron_ldo(voltage);
++		palmas_mmc1_poweron_ldo(LDO1_VOLTAGE, LDO1_CTRL, voltage);
+ 	}
+ }
+ #endif
+diff --git a/drivers/power/palmas.c b/drivers/power/palmas.c
+index 4e9895987c..ddf777c26b 100644
+--- a/drivers/power/palmas.c
++++ b/drivers/power/palmas.c
+@@ -42,24 +42,21 @@ int lp873x_mmc1_poweron_ldo(uint voltage)
+ }
+ #endif
+ 
+-int palmas_mmc1_poweron_ldo(uint voltage)
++int palmas_mmc1_poweron_ldo(uint ldo_volt, uint ldo_ctrl, uint voltage)
+ {
+ 	u8 val = 0;
+ 
+ #if defined(CONFIG_DRA7XX)
+ 	int ret;
+-	/*
+-	 * Currently valid for the dra7xx_evm board:
+-	 * Set TPS659038 LDO1 to 3.0 V or 1.8V
+-	 */
+-	ret = palmas_i2c_write_u8(TPS65903X_CHIP_P1, LDO1_VOLTAGE, voltage);
++
++	ret = palmas_i2c_write_u8(TPS65903X_CHIP_P1, ldo_volt, voltage);
+ 	if (ret) {
+ 		printf("tps65903x: could not set LDO1 voltage.\n");
+ 		return ret;
+ 	}
+ 	/* TURN ON LDO1 */
+ 	val = RSC_MODE_SLEEP | RSC_MODE_ACTIVE;
+-	ret = palmas_i2c_write_u8(TPS65903X_CHIP_P1, LDO1_CTRL, val);
++	ret = palmas_i2c_write_u8(TPS65903X_CHIP_P1, ldo_ctrl, val);
+ 	if (ret) {
+ 		printf("tps65903x: could not turn on LDO1.\n");
+ 		return ret;
+diff --git a/include/palmas.h b/include/palmas.h
+index d676617344..404c2b3ca7 100644
+--- a/include/palmas.h
++++ b/include/palmas.h
+@@ -129,7 +129,7 @@ static inline int palmas_i2c_read_u8(u8 chip_no, u8 reg, u8 *val)
+ }
+ 
+ void palmas_init_settings(void);
+-int palmas_mmc1_poweron_ldo(uint voltage);
++int palmas_mmc1_poweron_ldo(uint ldo_volt, uint ldo_ctrl, uint voltage);
+ int lp873x_mmc1_poweron_ldo(uint voltage);
+ int twl603x_mmc1_set_ldo9(u8 vsel);
+ int twl603x_audio_power(u8 on);
+-- 
+2.13.6
+

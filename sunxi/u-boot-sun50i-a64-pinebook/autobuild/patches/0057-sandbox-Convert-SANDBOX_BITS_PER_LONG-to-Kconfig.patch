@@ -1,0 +1,70 @@
+From 226b50bbd87b0c4ebf913066dfadbe04306ce402 Mon Sep 17 00:00:00 2001
+From: Bin Meng <bmeng.cn@gmail.com>
+Date: Tue, 1 Aug 2017 16:33:34 -0700
+Subject: [PATCH 057/256] sandbox: Convert SANDBOX_BITS_PER_LONG to Kconfig
+
+Convert SANDBOX_BITS_PER_LONG to Kconfig and assign it a correct
+number depending on which host we are going to build and run.
+
+Signed-off-by: Bin Meng <bmeng.cn@gmail.com>
+Reviewed-by: Simon Glass <sjg@chromium.org>
+---
+ arch/sandbox/Kconfig         | 5 +++++
+ board/sandbox/README.sandbox | 7 +++----
+ scripts/config_whitelist.txt | 1 -
+ 3 files changed, 8 insertions(+), 5 deletions(-)
+
+diff --git a/arch/sandbox/Kconfig b/arch/sandbox/Kconfig
+index 7b07bff1da..87418e3986 100644
+--- a/arch/sandbox/Kconfig
++++ b/arch/sandbox/Kconfig
+@@ -35,4 +35,9 @@ config SANDBOX_64BIT
+ 
+ endchoice
+ 
++config SANDBOX_BITS_PER_LONG
++	int
++	default 32 if SANDBOX_32BIT
++	default 64 if SANDBOX_64BIT
++
+ endmenu
+diff --git a/board/sandbox/README.sandbox b/board/sandbox/README.sandbox
+index 9dc2eb09d1..2e2c819384 100644
+--- a/board/sandbox/README.sandbox
++++ b/board/sandbox/README.sandbox
+@@ -24,6 +24,9 @@ single board in board/sandbox.
+ CONFIG_SANDBOX_BIG_ENDIAN should be defined when running on big-endian
+ machines.
+ 
++By default sandbox builds and runs on 64-bit hosts. If you are going to build
++and run sandbox on a 32-bit host, select CONFIG_SANDBOX_32BIT.
++
+ Note that standalone/API support is not available at present.
+ 
+ 
+@@ -44,10 +47,6 @@ Note:
+       make sandbox_defconfig all NO_SDL=1
+       ./u-boot
+ 
+-   If you are building on a 32-bit machine you may get errors from __ffs.h
+-   about shifting more than the machine word size. Edit the config file
+-   include/configs/sandbox.h and change CONFIG_SANDBOX_BITS_PER_LONG to 32.
+-
+ U-Boot will start on your computer, showing a sandbox emulation of the serial
+ console:
+ 
+diff --git a/scripts/config_whitelist.txt b/scripts/config_whitelist.txt
+index 9ce0c3f039..0a9da46821 100644
+--- a/scripts/config_whitelist.txt
++++ b/scripts/config_whitelist.txt
+@@ -1951,7 +1951,6 @@ CONFIG_SAMSUNG
+ CONFIG_SAMSUNG_ONENAND
+ CONFIG_SANDBOX_ARCH
+ CONFIG_SANDBOX_BIG_ENDIAN
+-CONFIG_SANDBOX_BITS_PER_LONG
+ CONFIG_SANDBOX_SDL
+ CONFIG_SANDBOX_SPI_MAX_BUS
+ CONFIG_SANDBOX_SPI_MAX_CS
+-- 
+2.13.6
+

@@ -1,0 +1,64 @@
+From 7c3dc776b91a683b2f7dd40ed91361124a3a91c0 Mon Sep 17 00:00:00 2001
+From: Pantelis Antoniou <pantelis.antoniou@konsulko.com>
+Date: Mon, 4 Sep 2017 23:12:15 +0300
+Subject: [PATCH 145/256] fit: Do not throw away extra configuration on
+ fit_image_load()
+
+fit_image_load() threw away the extra configuration parts when
+loading. We need them around for applying extra overlays for
+building the boot fdt.
+
+Signed-off-by: Pantelis Antoniou <pantelis.antoniou@konsulko.com>
+Acked-by: Simon Glass <sjg@chromium.org>
+---
+ common/image-fit.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
+
+diff --git a/common/image-fit.c b/common/image-fit.c
+index 74e555754c..e75cb649a4 100644
+--- a/common/image-fit.c
++++ b/common/image-fit.c
+@@ -1653,6 +1653,7 @@ int fit_image_load(bootm_headers_t *images, ulong addr,
+ 	int cfg_noffset, noffset;
+ 	const char *fit_uname;
+ 	const char *fit_uname_config;
++	const char *fit_base_uname_config;
+ 	const void *fit;
+ 	const void *buf;
+ 	size_t size;
+@@ -1668,6 +1669,7 @@ int fit_image_load(bootm_headers_t *images, ulong addr,
+ 	fit = map_sysmem(addr, 0);
+ 	fit_uname = fit_unamep ? *fit_unamep : NULL;
+ 	fit_uname_config = fit_uname_configp ? *fit_uname_configp : NULL;
++	fit_base_uname_config = NULL;
+ 	prop_name = fit_get_image_type_property(image_type);
+ 	printf("## Loading %s from FIT Image at %08lx ...\n", prop_name, addr);
+ 
+@@ -1701,11 +1703,11 @@ int fit_image_load(bootm_headers_t *images, ulong addr,
+ 					BOOTSTAGE_SUB_NO_UNIT_NAME);
+ 			return -ENOENT;
+ 		}
+-		fit_uname_config = fdt_get_name(fit, cfg_noffset, NULL);
+-		printf("   Using '%s' configuration\n", fit_uname_config);
++		fit_base_uname_config = fdt_get_name(fit, cfg_noffset, NULL);
++		printf("   Using '%s' configuration\n", fit_base_uname_config);
+ 		if (image_type == IH_TYPE_KERNEL) {
+ 			/* Remember (and possibly verify) this config */
+-			images->fit_uname_cfg = fit_uname_config;
++			images->fit_uname_cfg = fit_base_uname_config;
+ 			if (IMAGE_ENABLE_VERIFY && images->verify) {
+ 				puts("   Verifying Hash Integrity ... ");
+ 				if (fit_config_verify(fit, cfg_noffset)) {
+@@ -1861,7 +1863,8 @@ int fit_image_load(bootm_headers_t *images, ulong addr,
+ 	if (fit_unamep)
+ 		*fit_unamep = (char *)fit_uname;
+ 	if (fit_uname_configp)
+-		*fit_uname_configp = (char *)fit_uname_config;
++		*fit_uname_configp = (char *)(fit_uname_config ? :
++					      fit_base_uname_config);
+ 
+ 	return noffset;
+ }
+-- 
+2.13.6
+

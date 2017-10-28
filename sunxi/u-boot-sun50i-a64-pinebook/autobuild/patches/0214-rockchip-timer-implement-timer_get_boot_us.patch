@@ -1,0 +1,129 @@
+From cc7ce94e02799c5caa6d9c89350152f00ba3eb90 Mon Sep 17 00:00:00 2001
+From: Philipp Tomsich <philipp.tomsich@theobroma-systems.com>
+Date: Mon, 11 Sep 2017 22:04:16 +0200
+Subject: [PATCH 214/256] rockchip: timer: implement timer_get_boot_us
+
+To make the Rockchip DM timer driver useful for the timing of
+bootstages, we need a few enhancements:
+ - This implements timer_get_boot_us.
+ - This avoids reinitialising the timer, if it has already been
+   set up (e.g. by our TPL and SPL stages). Now, we have a single
+   timebase ticking from TPL through the full U-Boot.
+ - This adds support for reading the timer even before the
+   device-model is ready: we find the timer via /chosen/tick-timer,
+   then read its address and clock-frequency, and finally read the
+   timeval directly).
+
+Signed-off-by: Philipp Tomsich <philipp.tomsich@theobroma-systems.com>
+Reviewed-by: Simon Glass <sjg@chromium.org>
+Acked-by: Philipp Tomsich <philipp.tomsich@theobroma-systems.com>
+---
+ drivers/timer/rockchip_timer.c | 72 +++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 67 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/timer/rockchip_timer.c b/drivers/timer/rockchip_timer.c
+index eb44965a19..3c0750697d 100644
+--- a/drivers/timer/rockchip_timer.c
++++ b/drivers/timer/rockchip_timer.c
+@@ -6,6 +6,7 @@
+ 
+ #include <common.h>
+ #include <dm.h>
++#include <dm/ofnode.h>
+ #include <mapmem.h>
+ #include <asm/arch/timer.h>
+ #include <dt-structs.h>
+@@ -25,17 +26,72 @@ struct rockchip_timer_priv {
+ 	struct rk_timer *timer;
+ };
+ 
+-static int rockchip_timer_get_count(struct udevice *dev, u64 *count)
++static inline int64_t rockchip_timer_get_curr_value(struct rk_timer *timer)
+ {
+-	struct rockchip_timer_priv *priv = dev_get_priv(dev);
+ 	uint64_t timebase_h, timebase_l;
+ 	uint64_t cntr;
+ 
+-	timebase_l = readl(&priv->timer->timer_curr_value0);
+-	timebase_h = readl(&priv->timer->timer_curr_value1);
++	timebase_l = readl(&timer->timer_curr_value0);
++	timebase_h = readl(&timer->timer_curr_value1);
+ 
+-	/* timers are down-counting */
+ 	cntr = timebase_h << 32 | timebase_l;
++	return cntr;
++}
++
++#if CONFIG_IS_ENABLED(BOOTSTAGE)
++ulong timer_get_boot_us(void)
++{
++	uint64_t  ticks = 0;
++	uint32_t  rate;
++	uint64_t  us;
++	int ret;
++
++	ret = dm_timer_init();
++
++	if (!ret) {
++		/* The timer is available */
++		rate = timer_get_rate(gd->timer);
++		timer_get_count(gd->timer, &ticks);
++#if !CONFIG_IS_ENABLED(OF_PLATDATA)
++	} else if (ret == -EAGAIN) {
++		/* We have been called so early that the DM is not ready,... */
++		ofnode node = offset_to_ofnode(-1);
++		struct rk_timer *timer = NULL;
++
++		/*
++		 * ... so we try to access the raw timer, if it is specified
++		 * via the tick-timer property in /chosen.
++		 */
++		node = ofnode_get_chosen_node("tick-timer");
++		if (!ofnode_valid(node)) {
++			debug("%s: no /chosen/tick-timer\n", __func__);
++			return 0;
++		}
++
++		timer = (struct rk_timer *)ofnode_get_addr(node);
++
++		/* This timer is down-counting */
++		ticks = ~0uLL - rockchip_timer_get_curr_value(timer);
++		if (ofnode_read_u32(node, "clock-frequency", &rate)) {
++			debug("%s: could not read clock-frequency\n", __func__);
++			return 0;
++		}
++#endif
++	} else {
++		return 0;
++	}
++
++	us = (ticks * 1000) / rate;
++	return us;
++}
++#endif
++
++static int rockchip_timer_get_count(struct udevice *dev, u64 *count)
++{
++	struct rockchip_timer_priv *priv = dev_get_priv(dev);
++	uint64_t cntr = rockchip_timer_get_curr_value(priv->timer);
++
++	/* timers are down-counting */
+ 	*count = ~0ull - cntr;
+ 	return 0;
+ }
+@@ -58,6 +114,12 @@ static int rockchip_timer_start(struct udevice *dev)
+ 	const uint32_t reload_val_l = reload_val & 0xffffffff;
+ 	const uint32_t reload_val_h = reload_val >> 32;
+ 
++	/* don't reinit, if the timer is already running and set up */
++	if ((readl(&priv->timer->timer_ctrl_reg) & 1) == 1 &&
++	    (readl(&priv->timer->timer_load_count0) == reload_val_l) &&
++	    (readl(&priv->timer->timer_load_count1) == reload_val_h))
++		return 0;
++
+ 	/* disable timer and reset all control */
+ 	writel(0, &priv->timer->timer_ctrl_reg);
+ 	/* write reload value */
+-- 
+2.13.6
+

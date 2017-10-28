@@ -1,0 +1,59 @@
+From 4f84cb980fdc25d7735fe114021b4a84ea601b9f Mon Sep 17 00:00:00 2001
+From: Andy Yan <andy.yan@rock-chips.com>
+Date: Thu, 17 Aug 2017 15:55:01 +0800
+Subject: [PATCH 079/256] armv8: mmu: remove unused macro definition
+
+Macro VA_BITS and PTE_BLOCK_BITS are not used
+in the code, so remove them.
+
+Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
+Reviewed-by: Philipp Tomsich <philipp.tomsich@theobroma-systems.com>
+Reviewed-by: York Sun <york.sun@nxp.com>
+---
+ arch/arm/include/asm/armv8/mmu.h | 9 ---------
+ scripts/config_whitelist.txt     | 2 --
+ 2 files changed, 11 deletions(-)
+
+diff --git a/arch/arm/include/asm/armv8/mmu.h b/arch/arm/include/asm/armv8/mmu.h
+index a34990368e..7752741028 100644
+--- a/arch/arm/include/asm/armv8/mmu.h
++++ b/arch/arm/include/asm/armv8/mmu.h
+@@ -8,15 +8,6 @@
+ #ifndef _ASM_ARMV8_MMU_H_
+ #define _ASM_ARMV8_MMU_H_
+ 
+-/***************************************************************/
+-/*
+- * The following definitions are related each other, shoud be
+- * calculated specifically.
+- */
+-
+-#define VA_BITS			CONFIG_SYS_VA_BITS
+-#define PTE_BLOCK_BITS		CONFIG_SYS_PTL2_BITS
+-
+ /*
+  * block/section address mask and size definitions.
+  */
+diff --git a/scripts/config_whitelist.txt b/scripts/config_whitelist.txt
+index 94fa9a86e1..a8178d1c19 100644
+--- a/scripts/config_whitelist.txt
++++ b/scripts/config_whitelist.txt
+@@ -4418,7 +4418,6 @@ CONFIG_SYS_PSDPAR
+ CONFIG_SYS_PSSR_VAL
+ CONFIG_SYS_PTCPAR
+ CONFIG_SYS_PTDPAR
+-CONFIG_SYS_PTL2_BITS
+ CONFIG_SYS_PTV
+ CONFIG_SYS_PUAPAR
+ CONFIG_SYS_QE_FMAN_FW_IN_MMC
+@@ -4793,7 +4792,6 @@ CONFIG_SYS_USE_SERIALFLASH
+ CONFIG_SYS_USE_SPIFLASH
+ CONFIG_SYS_USR_EXCEP
+ CONFIG_SYS_U_BOOT_OFFS
+-CONFIG_SYS_VA_BITS
+ CONFIG_SYS_VCXK_ACKNOWLEDGE_DDR
+ CONFIG_SYS_VCXK_ACKNOWLEDGE_PIN
+ CONFIG_SYS_VCXK_ACKNOWLEDGE_PORT
+-- 
+2.13.6
+

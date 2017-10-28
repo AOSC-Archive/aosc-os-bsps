@@ -1,0 +1,30 @@
+From f6230a00579d5ca5ba01ca158f5c369cf64e87eb Mon Sep 17 00:00:00 2001
+From: Philipp Tomsich <philipp.tomsich@theobroma-systems.com>
+Date: Tue, 12 Sep 2017 17:32:26 +0200
+Subject: [PATCH 233/256] rockchip: efuse: change to use dev_read_addr_ptr
+
+With the dev_read_addr_ptr function available, we can change the
+efuse driver to use it (and eliminate the explicit type-cast).
+
+Signed-off-by: Philipp Tomsich <philipp.tomsich@theobroma-systems.com>
+Reviewed-by: Simon Glass <sjg@chromium.org>
+---
+ drivers/misc/rockchip-efuse.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/misc/rockchip-efuse.c b/drivers/misc/rockchip-efuse.c
+index 2e3bc9137a..a2203bf37b 100644
+--- a/drivers/misc/rockchip-efuse.c
++++ b/drivers/misc/rockchip-efuse.c
+@@ -142,7 +142,7 @@ static int rockchip_efuse_ofdata_to_platdata(struct udevice *dev)
+ {
+ 	struct rockchip_efuse_platdata *plat = dev_get_platdata(dev);
+ 
+-	plat->base = (void *)dev_read_addr(dev);
++	plat->base = dev_read_addr_ptr(dev);
+ 	return 0;
+ }
+ 
+-- 
+2.13.6
+

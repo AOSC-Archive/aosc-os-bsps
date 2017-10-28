@@ -1,0 +1,71 @@
+From 2bf7c86ebbc06b0ad504db2cb483e55b9dfe73f1 Mon Sep 17 00:00:00 2001
+From: Masahiro Yamada <yamada.masahiro@socionext.com>
+Date: Fri, 15 Sep 2017 21:43:21 +0900
+Subject: [PATCH 193/256] ARM: uniphier: remove bit field macros from
+ sc64-regs.h
+
+Starting from PXs3, the bit fields of  RSTCTRL, CLKCTRL registers
+will change every SoC.  There is no more point to define bitfields
+in the common header file.
+
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+---
+ arch/arm/mach-uniphier/clk/clk-ld11.c |  2 +-
+ arch/arm/mach-uniphier/sc64-regs.h    | 18 ------------------
+ 2 files changed, 1 insertion(+), 19 deletions(-)
+
+diff --git a/arch/arm/mach-uniphier/clk/clk-ld11.c b/arch/arm/mach-uniphier/clk/clk-ld11.c
+index 0266e7e66b..a4b7419e54 100644
+--- a/arch/arm/mach-uniphier/clk/clk-ld11.c
++++ b/arch/arm/mach-uniphier/clk/clk-ld11.c
+@@ -40,7 +40,7 @@ void uniphier_ld11_clk_init(void)
+ 		int ch;
+ 
+ 		tmp = readl(SC_CLKCTRL4);
+-		tmp |= SC_CLKCTRL4_MIO | SC_CLKCTRL4_STDMAC;
++		tmp |= BIT(10) | BIT(8);	/* MIO, STDMAC */
+ 		writel(tmp, SC_CLKCTRL4);
+ 
+ 		for (ch = 0; ch < 3; ch++) {
+diff --git a/arch/arm/mach-uniphier/sc64-regs.h b/arch/arm/mach-uniphier/sc64-regs.h
+index d0a51f239c..80efb4e4e3 100644
+--- a/arch/arm/mach-uniphier/sc64-regs.h
++++ b/arch/arm/mach-uniphier/sc64-regs.h
+@@ -15,34 +15,16 @@
+ #define SC_RSTCTRL		(SC_BASE_ADDR | 0x2000)
+ #define SC_RSTCTRL3		(SC_BASE_ADDR | 0x2008)
+ #define SC_RSTCTRL4		(SC_BASE_ADDR | 0x200c)
+-#define   SC_RSTCTRL4_ETHER		(1 << 6)
+-#define   SC_RSTCTRL4_NAND		(1 << 0)
+ #define SC_RSTCTRL5		(SC_BASE_ADDR | 0x2010)
+ #define SC_RSTCTRL6		(SC_BASE_ADDR | 0x2014)
+ #define SC_RSTCTRL7		(SC_BASE_ADDR | 0x2018)
+-#define   SC_RSTCTRL7_UMCSB		(1 << 16)
+-#define   SC_RSTCTRL7_UMCA2		(1 << 10)
+-#define   SC_RSTCTRL7_UMCA1		(1 << 9)
+-#define   SC_RSTCTRL7_UMCA0		(1 << 8)
+-#define   SC_RSTCTRL7_UMC32		(1 << 2)
+-#define   SC_RSTCTRL7_UMC31		(1 << 1)
+-#define   SC_RSTCTRL7_UMC30		(1 << 0)
+ 
+ #define SC_CLKCTRL		(SC_BASE_ADDR | 0x2100)
+ #define SC_CLKCTRL3		(SC_BASE_ADDR | 0x2108)
+ #define SC_CLKCTRL4		(SC_BASE_ADDR | 0x210c)
+-#define   SC_CLKCTRL4_MIO		(1 << 10)
+-#define   SC_CLKCTRL4_STDMAC		(1 << 8)
+-#define   SC_CLKCTRL4_PERI		(1 << 7)
+-#define   SC_CLKCTRL4_ETHER		(1 << 6)
+-#define   SC_CLKCTRL4_NAND		(1 << 0)
+ #define SC_CLKCTRL5		(SC_BASE_ADDR | 0x2110)
+ #define SC_CLKCTRL6		(SC_BASE_ADDR | 0x2114)
+ #define SC_CLKCTRL7		(SC_BASE_ADDR | 0x2118)
+-#define   SC_CLKCTRL7_UMCSB		(1 << 16)
+-#define   SC_CLKCTRL7_UMC32		(1 << 2)
+-#define   SC_CLKCTRL7_UMC31		(1 << 1)
+-#define   SC_CLKCTRL7_UMC30		(1 << 0)
+ 
+ #define SC_CA72_GEARST		(SC_BASE_ADDR | 0x8000)
+ #define SC_CA72_GEARSET		(SC_BASE_ADDR | 0x8004)
+-- 
+2.13.6
+

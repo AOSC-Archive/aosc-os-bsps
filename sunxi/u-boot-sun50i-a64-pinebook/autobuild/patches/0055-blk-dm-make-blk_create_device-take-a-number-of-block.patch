@@ -1,0 +1,150 @@
+From 5fe7702eccf1bae5b10f0309cef03e02bfdfa6ef Mon Sep 17 00:00:00 2001
+From: Jean-Jacques Hiblot <jjhiblot@ti.com>
+Date: Fri, 9 Jun 2017 16:45:18 +0200
+Subject: [PATCH 055/256] blk: dm: make blk_create_device() take a number of
+ block instead of a size
+
+There is an overflow problem when taking the size instead of the number
+of blocks in blk_create_device(). This results in a wrong device size: the
+device apparent size is its real size  modulo 4GB.
+Using the number of blocks instead of the device size fixes the problem and
+is more coherent with the internals of the block layer.
+
+Signed-off-by: Jean-Jacques Hiblot <jjhiblot@ti.com>
+Reviewed-by: Simon Glass <sjg@chromium.org>
+---
+ drivers/block/blk-uclass.c | 8 ++++----
+ drivers/block/sandbox.c    | 2 +-
+ drivers/scsi/scsi.c        | 2 +-
+ include/blk.h              | 8 ++++----
+ test/dm/blk.c              | 6 +++---
+ 5 files changed, 13 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/block/blk-uclass.c b/drivers/block/blk-uclass.c
+index 3c5a87b60a..aee2a50d62 100644
+--- a/drivers/block/blk-uclass.c
++++ b/drivers/block/blk-uclass.c
+@@ -546,7 +546,7 @@ static int blk_claim_devnum(enum if_type if_type, int devnum)
+ 
+ int blk_create_device(struct udevice *parent, const char *drv_name,
+ 		      const char *name, int if_type, int devnum, int blksz,
+-		      lbaint_t size, struct udevice **devp)
++		      lbaint_t lba, struct udevice **devp)
+ {
+ 	struct blk_desc *desc;
+ 	struct udevice *dev;
+@@ -567,7 +567,7 @@ int blk_create_device(struct udevice *parent, const char *drv_name,
+ 	desc = dev_get_uclass_platdata(dev);
+ 	desc->if_type = if_type;
+ 	desc->blksz = blksz;
+-	desc->lba = size / blksz;
++	desc->lba = lba;
+ 	desc->part_type = PART_TYPE_UNKNOWN;
+ 	desc->bdev = dev;
+ 	desc->devnum = devnum;
+@@ -578,7 +578,7 @@ int blk_create_device(struct udevice *parent, const char *drv_name,
+ 
+ int blk_create_devicef(struct udevice *parent, const char *drv_name,
+ 		       const char *name, int if_type, int devnum, int blksz,
+-		       lbaint_t size, struct udevice **devp)
++		       lbaint_t lba, struct udevice **devp)
+ {
+ 	char dev_name[30], *str;
+ 	int ret;
+@@ -589,7 +589,7 @@ int blk_create_devicef(struct udevice *parent, const char *drv_name,
+ 		return -ENOMEM;
+ 
+ 	ret = blk_create_device(parent, drv_name, str, if_type, devnum,
+-				blksz, size, devp);
++				blksz, lba, devp);
+ 	if (ret) {
+ 		free(str);
+ 		return ret;
+diff --git a/drivers/block/sandbox.c b/drivers/block/sandbox.c
+index 34d1c638bc..98df6b33b6 100644
+--- a/drivers/block/sandbox.c
++++ b/drivers/block/sandbox.c
+@@ -129,7 +129,7 @@ int host_dev_bind(int devnum, char *filename)
+ 	}
+ 	ret = blk_create_device(gd->dm_root, "sandbox_host_blk", str,
+ 				IF_TYPE_HOST, devnum, 512,
+-				os_lseek(fd, 0, OS_SEEK_END), &dev);
++				os_lseek(fd, 0, OS_SEEK_END) / 512, &dev);
+ 	if (ret)
+ 		goto err_file;
+ 	ret = device_probe(dev);
+diff --git a/drivers/scsi/scsi.c b/drivers/scsi/scsi.c
+index 1a65a3f9b9..df998921f5 100644
+--- a/drivers/scsi/scsi.c
++++ b/drivers/scsi/scsi.c
+@@ -580,7 +580,7 @@ static int do_scsi_scan_one(struct udevice *dev, int id, int lun, bool verbose)
+ 	*/
+ 	snprintf(str, sizeof(str), "id%dlun%d", id, lun);
+ 	ret = blk_create_devicef(dev, "scsi_blk", str, IF_TYPE_SCSI, -1,
+-			bd.blksz, bd.blksz * bd.lba, &bdev);
++			bd.blksz, bd.lba, &bdev);
+ 	if (ret) {
+ 		debug("Can't create device\n");
+ 		return ret;
+diff --git a/include/blk.h b/include/blk.h
+index 27abfddb94..1965812a9d 100644
+--- a/include/blk.h
++++ b/include/blk.h
+@@ -315,12 +315,12 @@ int blk_next_device(struct udevice **devp);
+  * @devnum:	Device number, specific to the interface type, or -1 to
+  *		allocate the next available number
+  * @blksz:	Block size of the device in bytes (typically 512)
+- * @size:	Total size of the device in bytes
++ * @lba:	Total number of blocks of the device
+  * @devp:	the new device (which has not been probed)
+  */
+ int blk_create_device(struct udevice *parent, const char *drv_name,
+ 		      const char *name, int if_type, int devnum, int blksz,
+-		      lbaint_t size, struct udevice **devp);
++		      lbaint_t lba, struct udevice **devp);
+ 
+ /**
+  * blk_create_devicef() - Create a new named block device
+@@ -332,12 +332,12 @@ int blk_create_device(struct udevice *parent, const char *drv_name,
+  * @devnum:	Device number, specific to the interface type, or -1 to
+  *		allocate the next available number
+  * @blksz:	Block size of the device in bytes (typically 512)
+- * @size:	Total size of the device in bytes
++ * @lba:	Total number of blocks of the device
+  * @devp:	the new device (which has not been probed)
+  */
+ int blk_create_devicef(struct udevice *parent, const char *drv_name,
+ 		       const char *name, int if_type, int devnum, int blksz,
+-		       lbaint_t size, struct udevice **devp);
++		       lbaint_t lba, struct udevice **devp);
+ 
+ /**
+  * blk_prepare_device() - Prepare a block device for use
+diff --git a/test/dm/blk.c b/test/dm/blk.c
+index 923e8d95f0..30d1e6184d 100644
+--- a/test/dm/blk.c
++++ b/test/dm/blk.c
+@@ -23,9 +23,9 @@ static int dm_test_blk_base(struct unit_test_state *uts)
+ 
+ 	/* Create two, one the parent of the other */
+ 	ut_assertok(blk_create_device(gd->dm_root, "sandbox_host_blk", "test",
+-				      IF_TYPE_HOST, 1, 512, 1024, &blk));
++				      IF_TYPE_HOST, 1, 512, 2, &blk));
+ 	ut_assertok(blk_create_device(blk, "usb_storage_blk", "test",
+-				      IF_TYPE_USB, 3, 512, 1024, &usb_blk));
++				      IF_TYPE_USB, 3, 512, 2, &usb_blk));
+ 
+ 	/* Check we can find them */
+ 	ut_asserteq(-ENODEV, blk_get_device(IF_TYPE_HOST, 0, &dev));
+@@ -101,7 +101,7 @@ static int dm_test_blk_find(struct unit_test_state *uts)
+ 	struct udevice *blk, *dev;
+ 
+ 	ut_assertok(blk_create_device(gd->dm_root, "sandbox_host_blk", "test",
+-				      IF_TYPE_HOST, 1, 512, 1024, &blk));
++				      IF_TYPE_HOST, 1, 512, 2, &blk));
+ 	ut_asserteq(-ENODEV, blk_find_device(IF_TYPE_HOST, 0, &dev));
+ 	ut_assertok(blk_find_device(IF_TYPE_HOST, 1, &dev));
+ 	ut_asserteq_ptr(blk, dev);
+-- 
+2.13.6
+

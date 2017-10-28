@@ -1,0 +1,37 @@
+From 5c761ce58666b3a1695697498598f8bf3484a0c7 Mon Sep 17 00:00:00 2001
+From: Heinrich Schuchardt <xypron.glpk@gmx.de>
+Date: Wed, 13 Sep 2017 04:59:05 +0200
+Subject: [PATCH 156/256] checkpatch.pl: Add warning for new __packed additions
+
+While there are valid reasons to use __packed, often the answer is that
+you should be doing something else here instead.
+
+This reintroduces the changes of
+f503cc49a570 (Add warning for new __packed additions)
+
+Signed-off-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
+---
+ scripts/checkpatch.pl | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index 2287a0bca8..4142f5c837 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -5616,6 +5616,13 @@ sub process {
+ 			     "__packed is preferred over __attribute__((packed))\n" . $herecurr);
+ 		}
+ 
++# Check for new packed members, warn to use care
++		if ($realfile !~ m@\binclude/uapi/@ &&
++		    $line =~ /\b(__attribute__\s*\(\s*\(.*\bpacked|__packed)\b/) {
++			WARN("NEW_PACKED",
++			     "Adding new packed members is to be done with care\n" . $herecurr);
++		}
++
+ # Check for __attribute__ aligned, prefer __aligned
+ 		if ($realfile !~ m@\binclude/uapi/@ &&
+ 		    $line =~ /\b__attribute__\s*\(\s*\(.*aligned/) {
+-- 
+2.13.6
+

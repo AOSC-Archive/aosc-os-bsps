@@ -1,0 +1,163 @@
+From c247605510b9b27a73c6a166de8a46869b1b1222 Mon Sep 17 00:00:00 2001
+From: Keerthy <j-keerthy@ti.com>
+Date: Mon, 21 Aug 2017 12:50:54 +0530
+Subject: [PATCH 040/256] board: ti: dra76-evm: Add the pmic data
+
+dra76-evm uses lp8736 and tps65917 pmic for powering on
+various peripherals. Add data for these pmics and register
+for dra76-evm.
+
+Reviewed-by: Tom Rini <trini@konsulko.com>
+Signed-off-by: Keerthy <j-keerthy@ti.com>
+Signed-off-by: Lokesh Vutla <lokeshvutla@ti.com>
+---
+ arch/arm/include/asm/arch-omap5/clock.h |  9 ++++++
+ arch/arm/include/asm/omap_common.h      |  1 +
+ arch/arm/mach-omap2/omap5/hw_data.c     | 16 +++++++++++
+ board/ti/dra7xx/evm.c                   | 50 +++++++++++++++++++++++++++++++++
+ 4 files changed, 76 insertions(+)
+
+diff --git a/arch/arm/include/asm/arch-omap5/clock.h b/arch/arm/include/asm/arch-omap5/clock.h
+index dbe340d23e..ee2e78b99b 100644
+--- a/arch/arm/include/asm/arch-omap5/clock.h
++++ b/arch/arm/include/asm/arch-omap5/clock.h
+@@ -340,6 +340,9 @@
+ /* Offset is 0.73V for LP873x */
+ #define LP873X_BUCK_BASE_VOLT_UV		730000
+ 
++/* Offset is 0.73V for LP87565 */
++#define LP87565_BUCK_BASE_VOLT_UV		730000
++
+ /* TPS659038 */
+ #define TPS659038_I2C_SLAVE_ADDR		0x58
+ #define TPS659038_REG_ADDR_SMPS12		0x23
+@@ -353,6 +356,7 @@
+ #define TPS65917_REG_ADDR_SMPS1		0x23
+ #define TPS65917_REG_ADDR_SMPS2		0x27
+ #define TPS65917_REG_ADDR_SMPS3		0x2F
++#define TPS65917_REG_ADDR_SMPS4		0x33
+ 
+ /* LP873X */
+ #define LP873X_I2C_SLAVE_ADDR		0x60
+@@ -360,6 +364,11 @@
+ #define LP873X_REG_ADDR_BUCK1		0x7
+ #define LP873X_REG_ADDR_LDO1		0xA
+ 
++/* LP87565 */
++#define LP87565_I2C_SLAVE_ADDR		0x61
++#define LP87565_REG_ADDR_BUCK01		0xA
++#define LP87565_REG_ADDR_BUCK23		0xE
++
+ /* TPS */
+ #define TPS62361_I2C_SLAVE_ADDR		0x60
+ #define TPS62361_REG_ADDR_SET0		0x0
+diff --git a/arch/arm/include/asm/omap_common.h b/arch/arm/include/asm/omap_common.h
+index e335210406..d7e453e579 100644
+--- a/arch/arm/include/asm/omap_common.h
++++ b/arch/arm/include/asm/omap_common.h
+@@ -607,6 +607,7 @@ extern struct omap_sys_ctrl_regs const dra7xx_ctrl;
+ 
+ extern struct pmic_data tps659038;
+ extern struct pmic_data lp8733;
++extern struct pmic_data lp87565;
+ 
+ void hw_data_init(void);
+ 
+diff --git a/arch/arm/mach-omap2/omap5/hw_data.c b/arch/arm/mach-omap2/omap5/hw_data.c
+index 19a8d10cef..7aaf379357 100644
+--- a/arch/arm/mach-omap2/omap5/hw_data.c
++++ b/arch/arm/mach-omap2/omap5/hw_data.c
+@@ -306,6 +306,22 @@ struct pmic_data tps659038 = {
+ 	.gpio_en = 0,
+ };
+ 
++/* The LP87565*/
++struct pmic_data lp87565 = {
++	.base_offset = LP873X_BUCK_BASE_VOLT_UV,
++	.step = 5000, /* 5 mV represented in uV */
++	/*
++	 * Offset codes 0 - 0x13 Invalid.
++	 * Offset codes 0x14 0x17 give 10mV steps
++	 * Offset codes 0x17 through 0x9D give 5mV steps
++	 * So let us start with our operating range from .73V
++	 */
++	.start_code = 0x17,
++	.i2c_slave_addr = 0x60,
++	.pmic_bus_init  = gpi2c_init,
++	.pmic_write     = palmas_i2c_write_u8,
++};
++
+ /* The LP8732 and LP8733 are software-compatible, use common struct */
+ struct pmic_data lp8733 = {
+ 	.base_offset = LP873X_BUCK_BASE_VOLT_UV,
+diff --git a/board/ti/dra7xx/evm.c b/board/ti/dra7xx/evm.c
+index ee6d5251d5..8e79350111 100644
+--- a/board/ti/dra7xx/evm.c
++++ b/board/ti/dra7xx/evm.c
+@@ -357,6 +357,54 @@ struct vcores_data dra752_volts = {
+ 	.iva.abb_tx_done_mask = OMAP_ABB_IVA_TXDONE_MASK,
+ };
+ 
++struct vcores_data dra76x_volts = {
++	.mpu.value[OPP_NOM]	= VDD_MPU_DRA7_NOM,
++	.mpu.efuse.reg[OPP_NOM]	= STD_FUSE_OPP_VMIN_MPU_NOM,
++	.mpu.efuse.reg_bits	= DRA752_EFUSE_REGBITS,
++	.mpu.addr	= LP87565_REG_ADDR_BUCK01,
++	.mpu.pmic	= &lp87565,
++	.mpu.abb_tx_done_mask = OMAP_ABB_MPU_TXDONE_MASK,
++
++	.eve.value[OPP_NOM]	= VDD_EVE_DRA7_NOM,
++	.eve.value[OPP_OD]	= VDD_EVE_DRA7_OD,
++	.eve.value[OPP_HIGH]	= VDD_EVE_DRA7_HIGH,
++	.eve.efuse.reg[OPP_NOM]	= STD_FUSE_OPP_VMIN_DSPEVE_NOM,
++	.eve.efuse.reg[OPP_OD]	= STD_FUSE_OPP_VMIN_DSPEVE_OD,
++	.eve.efuse.reg[OPP_HIGH]	= STD_FUSE_OPP_VMIN_DSPEVE_HIGH,
++	.eve.efuse.reg_bits	= DRA752_EFUSE_REGBITS,
++	.eve.addr	= TPS65917_REG_ADDR_SMPS1,
++	.eve.pmic	= &tps659038,
++	.eve.abb_tx_done_mask = OMAP_ABB_EVE_TXDONE_MASK,
++
++	.gpu.value[OPP_NOM]	= VDD_GPU_DRA7_NOM,
++	.gpu.value[OPP_OD]	= VDD_GPU_DRA7_OD,
++	.gpu.value[OPP_HIGH]	= VDD_GPU_DRA7_HIGH,
++	.gpu.efuse.reg[OPP_NOM]	= STD_FUSE_OPP_VMIN_GPU_NOM,
++	.gpu.efuse.reg[OPP_OD]	= STD_FUSE_OPP_VMIN_GPU_OD,
++	.gpu.efuse.reg[OPP_HIGH]	= STD_FUSE_OPP_VMIN_GPU_HIGH,
++	.gpu.efuse.reg_bits	= DRA752_EFUSE_REGBITS,
++	.gpu.addr	= LP87565_REG_ADDR_BUCK23,
++	.gpu.pmic	= &lp87565,
++	.gpu.abb_tx_done_mask = OMAP_ABB_GPU_TXDONE_MASK,
++
++	.core.value[OPP_NOM]	= VDD_CORE_DRA7_NOM,
++	.core.efuse.reg[OPP_NOM]	= STD_FUSE_OPP_VMIN_CORE_NOM,
++	.core.efuse.reg_bits = DRA752_EFUSE_REGBITS,
++	.core.addr	= TPS65917_REG_ADDR_SMPS3,
++	.core.pmic	= &tps659038,
++
++	.iva.value[OPP_NOM]	= VDD_IVA_DRA7_NOM,
++	.iva.value[OPP_OD]	= VDD_IVA_DRA7_OD,
++	.iva.value[OPP_HIGH]	= VDD_IVA_DRA7_HIGH,
++	.iva.efuse.reg[OPP_NOM]	= STD_FUSE_OPP_VMIN_IVA_NOM,
++	.iva.efuse.reg[OPP_OD]	= STD_FUSE_OPP_VMIN_IVA_OD,
++	.iva.efuse.reg[OPP_HIGH]	= STD_FUSE_OPP_VMIN_IVA_HIGH,
++	.iva.efuse.reg_bits	= DRA752_EFUSE_REGBITS,
++	.iva.addr	= TPS65917_REG_ADDR_SMPS4,
++	.iva.pmic	= &tps659038,
++	.iva.abb_tx_done_mask = OMAP_ABB_IVA_TXDONE_MASK,
++};
++
+ struct vcores_data dra722_volts = {
+ 	.mpu.value[OPP_NOM]	= VDD_MPU_DRA7_NOM,
+ 	.mpu.efuse.reg[OPP_NOM]	= STD_FUSE_OPP_VMIN_MPU_NOM,
+@@ -622,6 +670,8 @@ void vcores_init(void)
+ 		*omap_vcores = &dra722_volts;
+ 	} else if (board_is_dra71x_evm()) {
+ 		*omap_vcores = &dra718_volts;
++	} else if (board_is_dra76x_evm()) {
++		*omap_vcores = &dra76x_volts;
+ 	} else {
+ 		/* If EEPROM is not populated */
+ 		if (is_dra72x())
+-- 
+2.13.6
+

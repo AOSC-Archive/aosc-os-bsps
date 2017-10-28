@@ -1,0 +1,90 @@
+From 91d3e90668009a9d0175f03fe0daf5285b78c6ba Mon Sep 17 00:00:00 2001
+From: Lokesh Vutla <lokeshvutla@ti.com>
+Date: Mon, 21 Aug 2017 12:50:49 +0530
+Subject: [PATCH 035/256] arm: omap5+: Add board specific ldo powering
+
+It is not necessary all omap5+ based uses the same PMIC
+to poweron mmc. So add support for enabling mmc based on board.
+
+Reviewed-by: Tom Rini <trini@konsulko.com>
+Signed-off-by: Lokesh Vutla <lokeshvutla@ti.com>
+---
+ arch/arm/include/asm/omap_mmc.h    |  1 +
+ arch/arm/mach-omap2/omap5/hwinit.c | 16 ++++++----------
+ board/ti/dra7xx/evm.c              | 13 +++++++++++++
+ 3 files changed, 20 insertions(+), 10 deletions(-)
+
+diff --git a/arch/arm/include/asm/omap_mmc.h b/arch/arm/include/asm/omap_mmc.h
+index f6eb51ee3c..fd33408622 100644
+--- a/arch/arm/include/asm/omap_mmc.h
++++ b/arch/arm/include/asm/omap_mmc.h
+@@ -174,4 +174,5 @@ int omap_mmc_init(int dev_index, uint host_caps_mask, uint f_max, int cd_gpio,
+ 		int wp_gpio);
+ 
+ void vmmc_pbias_config(uint voltage);
++void board_mmc_poweron_ldo(uint voltage);
+ #endif /* OMAP_MMC_H_ */
+diff --git a/arch/arm/mach-omap2/omap5/hwinit.c b/arch/arm/mach-omap2/omap5/hwinit.c
+index afe59e0b58..cb2a5ab7ea 100644
+--- a/arch/arm/mach-omap2/omap5/hwinit.c
++++ b/arch/arm/mach-omap2/omap5/hwinit.c
+@@ -455,10 +455,14 @@ void v7_arch_cp15_set_acr(u32 acr, u32 cpu_midr, u32 cpu_rev_comb,
+ }
+ 
+ #if defined(CONFIG_PALMAS_POWER)
++__weak void board_mmc_poweron_ldo(uint voltage)
++{
++	palmas_mmc1_poweron_ldo(voltage);
++}
++
+ void vmmc_pbias_config(uint voltage)
+ {
+ 	u32 value = 0;
+-	struct vcores_data const *vcores = *omap_vcores;
+ 
+ 	value = readl((*ctrl)->control_pbias);
+ 	value &= ~SDCARD_PWRDNZ;
+@@ -467,15 +471,7 @@ void vmmc_pbias_config(uint voltage)
+ 	value &= ~SDCARD_BIAS_PWRDNZ;
+ 	writel(value, (*ctrl)->control_pbias);
+ 
+-	if (vcores->core.pmic->i2c_slave_addr == 0x60) {
+-		if (voltage == LDO_VOLT_3V0)
+-			voltage = 0x19;
+-		else if (voltage == LDO_VOLT_1V8)
+-			voltage = 0xa;
+-		lp873x_mmc1_poweron_ldo(voltage);
+-	} else {
+-		palmas_mmc1_poweron_ldo(voltage);
+-	}
++	board_mmc_poweron_ldo(voltage);
+ 
+ 	value = readl((*ctrl)->control_pbias);
+ 	value |= SDCARD_BIAS_PWRDNZ;
+diff --git a/board/ti/dra7xx/evm.c b/board/ti/dra7xx/evm.c
+index 93d3d0b54e..6767fd2179 100644
+--- a/board/ti/dra7xx/evm.c
++++ b/board/ti/dra7xx/evm.c
+@@ -710,6 +710,19 @@ int board_mmc_init(bd_t *bis)
+ 	omap_mmc_init(1, 0, 0, -1, -1);
+ 	return 0;
+ }
++
++void board_mmc_poweron_ldo(uint voltage)
++{
++	if (board_is_dra71x_evm()) {
++		if (voltage == LDO_VOLT_3V0)
++			voltage = 0x19;
++		else if (voltage == LDO_VOLT_1V8)
++			voltage = 0xa;
++		lp873x_mmc1_poweron_ldo(voltage);
++	} else {
++		palmas_mmc1_poweron_ldo(voltage);
++	}
++}
+ #endif
+ 
+ #ifdef CONFIG_USB_DWC3
+-- 
+2.13.6
+

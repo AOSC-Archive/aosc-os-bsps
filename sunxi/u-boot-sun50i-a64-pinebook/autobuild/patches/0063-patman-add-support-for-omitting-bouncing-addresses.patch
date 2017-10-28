@@ -1,0 +1,125 @@
+From e11aa602abd3e8007dfd3ed23ebb829101abcfec Mon Sep 17 00:00:00 2001
+From: Chris Packham <judge.packham@gmail.com>
+Date: Fri, 1 Sep 2017 20:57:53 +1200
+Subject: [PATCH 063/256] patman: add support for omitting bouncing addresses
+
+Add support for reading a list of bouncing addresses from a in-tree file
+(doc/bounces) and from the ~/.patman config file. These addresses are
+stripped from the Cc list.
+
+Signed-off-by: Chris Packham <judge.packham@gmail.com>
+Reviewed-by: Simon Glass <sjg@chromium.org>
+Reviewed-by: Philipp Tomsich <philipp.tomsich@theobroma-systems.com <mailto:philipp.tomsich@theobroma-systems.com>>
+---
+ doc/bounces              |  3 +++
+ tools/patman/README      | 12 ++++++++++++
+ tools/patman/series.py   |  5 +++++
+ tools/patman/settings.py | 18 ++++++++++++++++++
+ 4 files changed, 38 insertions(+)
+ create mode 100644 doc/bounces
+
+diff --git a/doc/bounces b/doc/bounces
+new file mode 100644
+index 0000000000..d1c5f0d246
+--- /dev/null
++++ b/doc/bounces
+@@ -0,0 +1,3 @@
++# List of addresses picked up by patman/get_maintainer.pl that are known to
++# bounce. Addresses are listed one per line and need to match the author
++# information recorded in git.
+diff --git a/tools/patman/README b/tools/patman/README
+index e36857dede..8582ed6ba1 100644
+--- a/tools/patman/README
++++ b/tools/patman/README
+@@ -84,6 +84,18 @@ Aliases are recursive.
+ The checkpatch.pl in the U-Boot tools/ subdirectory will be located and
+ used. Failing that you can put it into your path or ~/bin/checkpatch.pl
+ 
++If you want to avoid sending patches to email addresses that are picked up
++by patman but are known to bounce you can add a [bounces] section to your
++.patman file. Unlike the [alias] section these are simple key: value pairs
++that are not recursive.
++
++>>>
++
++[bounces]
++gonefishing: Fred Bloggs <f.bloggs@napier.net>
++
++<<<
++
+ 
+ If you want to change the defaults for patman's command-line arguments,
+ you can add a [settings] section to your .patman file.  This can be used
+diff --git a/tools/patman/series.py b/tools/patman/series.py
+index d3947a7c2a..73ee394486 100644
+--- a/tools/patman/series.py
++++ b/tools/patman/series.py
+@@ -10,6 +10,7 @@ import os
+ 
+ import get_maintainer
+ import gitutil
++import settings
+ import terminal
+ 
+ # Series-xxx tags that we understand
+@@ -218,6 +219,7 @@ class Series(dict):
+         Return:
+             Filename of temp file created
+         """
++        col = terminal.Color()
+         # Look for commit tags (of the form 'xxx:' at the start of the subject)
+         fname = '/tmp/patman.%d' % os.getpid()
+         fd = open(fname, 'w')
+@@ -233,6 +235,9 @@ class Series(dict):
+                 cc += add_maintainers
+             elif add_maintainers:
+                 cc += get_maintainer.GetMaintainer(commit.patch)
++            for x in set(cc) & set(settings.bounces):
++                print(col.Color(col.YELLOW, 'Skipping "%s"' % x))
++            cc = set(cc) - set(settings.bounces)
+             cc = [m.encode('utf-8') if type(m) != str else m for m in cc]
+             all_ccs += cc
+             print(commit.patch, ', '.join(set(cc)), file=fd)
+diff --git a/tools/patman/settings.py b/tools/patman/settings.py
+index 5f207f5ef1..d735ff9ba3 100644
+--- a/tools/patman/settings.py
++++ b/tools/patman/settings.py
+@@ -269,6 +269,19 @@ def _ReadAliasFile(fname):
+         if bad_line:
+             print(bad_line)
+ 
++def _ReadBouncesFile(fname):
++    """Read in the bounces file if it exists
++
++    Args:
++        fname: Filename to read.
++    """
++    if os.path.exists(fname):
++        with open(fname) as fd:
++            for line in fd:
++                if line.startswith('#'):
++                    continue
++                bounces.add(line.strip())
++
+ def Setup(parser, project_name, config_fname=''):
+     """Set up the settings module by reading config files.
+ 
+@@ -293,10 +306,15 @@ def Setup(parser, project_name, config_fname=''):
+     for name, value in config.items('alias'):
+         alias[name] = value.split(',')
+ 
++    _ReadBouncesFile('doc/bounces')
++    for name, value in config.items('bounces'):
++        bounces.add(value)
++
+     _UpdateDefaults(parser, config)
+ 
+ # These are the aliases we understand, indexed by alias. Each member is a list.
+ alias = {}
++bounces = set()
+ 
+ if __name__ == "__main__":
+     import doctest
+-- 
+2.13.6
+

@@ -1,0 +1,34 @@
+From 8158a848fa4d506d46a5193daf13367f3839022a Mon Sep 17 00:00:00 2001
+From: Philipp Tomsich <philipp.tomsich@theobroma-systems.com>
+Date: Mon, 14 Aug 2017 19:05:31 +0200
+Subject: [PATCH 235/256] rockchip: timer: update for 32/64bit-aware
+ OF_PLATDATA
+
+With dtoc emitting fdt64_t for addresses (and region sizes), the array
+indices for accessing the reg[] array needs to be adjusted.  This
+adjusts the Rockchip DM timer driver to correctly handle OF_PLATDATA
+given this new structure layout.
+
+Signed-off-by: Philipp Tomsich <philipp.tomsich@theobroma-systems.com>
+Acked-by: Philipp Tomsich <philipp.tomsich@theobroma-systems.com>
+Reviewed-by: Simon Glass <sjg@chromium.org>
+---
+ drivers/timer/rockchip_timer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/timer/rockchip_timer.c b/drivers/timer/rockchip_timer.c
+index 460eb82f6c..07d14482d6 100644
+--- a/drivers/timer/rockchip_timer.c
++++ b/drivers/timer/rockchip_timer.c
+@@ -140,7 +140,7 @@ static int rockchip_timer_probe(struct udevice *dev)
+ 	struct rockchip_timer_priv *priv = dev_get_priv(dev);
+ 	struct rockchip_timer_plat *plat = dev_get_platdata(dev);
+ 
+-	priv->timer = map_sysmem(plat->dtd.reg[1], plat->dtd.reg[3]);
++	priv->timer = map_sysmem(plat->dtd.reg[0], plat->dtd.reg[1]);
+ 	uc_priv->clock_rate = plat->dtd.clock_frequency;
+ #endif
+ 
+-- 
+2.13.6
+

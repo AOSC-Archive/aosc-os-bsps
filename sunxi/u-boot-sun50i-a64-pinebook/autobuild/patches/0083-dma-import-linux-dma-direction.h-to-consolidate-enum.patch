@@ -1,0 +1,147 @@
+From b27af39935855c88ef2203dcfc1ff54e013237c4 Mon Sep 17 00:00:00 2001
+From: Masahiro Yamada <yamada.masahiro@socionext.com>
+Date: Sat, 26 Aug 2017 00:50:17 +0900
+Subject: [PATCH 083/256] dma: import linux/dma-direction.h to consolidate enum
+ dma_data_direction
+
+Import include/linux/dma-direction.h from Linux 4.13-rc7 and delete
+duplicated definitions of enum dma_data_direction.
+
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ arch/arm/include/asm/dma-mapping.h   |  8 ++------
+ arch/nds32/include/asm/dma-mapping.h |  6 +-----
+ arch/x86/include/asm/dma-mapping.h   |  8 ++------
+ drivers/ata/sata_dwc.c               |  1 +
+ drivers/ata/sata_dwc.h               |  7 -------
+ drivers/mmc/uniphier-sd.c            |  2 +-
+ include/linux/dma-direction.h        | 13 +++++++++++++
+ 7 files changed, 20 insertions(+), 25 deletions(-)
+ create mode 100644 include/linux/dma-direction.h
+
+diff --git a/arch/arm/include/asm/dma-mapping.h b/arch/arm/include/asm/dma-mapping.h
+index a5821f54e5..287466800e 100644
+--- a/arch/arm/include/asm/dma-mapping.h
++++ b/arch/arm/include/asm/dma-mapping.h
+@@ -8,13 +8,9 @@
+ #ifndef __ASM_ARM_DMA_MAPPING_H
+ #define __ASM_ARM_DMA_MAPPING_H
+ 
+-#define	dma_mapping_error(x, y)	0
++#include <linux/dma-direction.h>
+ 
+-enum dma_data_direction {
+-	DMA_BIDIRECTIONAL	= 0,
+-	DMA_TO_DEVICE		= 1,
+-	DMA_FROM_DEVICE		= 2,
+-};
++#define	dma_mapping_error(x, y)	0
+ 
+ static inline void *dma_alloc_coherent(size_t len, unsigned long *handle)
+ {
+diff --git a/arch/nds32/include/asm/dma-mapping.h b/arch/nds32/include/asm/dma-mapping.h
+index 25e5a1b6ec..a627306ed8 100644
+--- a/arch/nds32/include/asm/dma-mapping.h
++++ b/arch/nds32/include/asm/dma-mapping.h
+@@ -7,11 +7,7 @@
+ #ifndef __ASM_NDS_DMA_MAPPING_H
+ #define __ASM_NDS_DMA_MAPPING_H
+ 
+-enum dma_data_direction {
+-	DMA_BIDIRECTIONAL	= 0,
+-	DMA_TO_DEVICE		= 1,
+-	DMA_FROM_DEVICE		= 2,
+-};
++#include <linux/dma-direction.h>
+ 
+ static void *dma_alloc_coherent(size_t len, unsigned long *handle)
+ {
+diff --git a/arch/x86/include/asm/dma-mapping.h b/arch/x86/include/asm/dma-mapping.h
+index 7de4c08e36..43073ad252 100644
+--- a/arch/x86/include/asm/dma-mapping.h
++++ b/arch/x86/include/asm/dma-mapping.h
+@@ -8,13 +8,9 @@
+ #ifndef __ASM_X86_DMA_MAPPING_H
+ #define __ASM_X86_DMA_MAPPING_H
+ 
+-#define	dma_mapping_error(x, y)	0
++#include <linux/dma-direction.h>
+ 
+-enum dma_data_direction {
+-	DMA_BIDIRECTIONAL	= 0,
+-	DMA_TO_DEVICE		= 1,
+-	DMA_FROM_DEVICE		= 2,
+-};
++#define	dma_mapping_error(x, y)	0
+ 
+ static inline void *dma_alloc_coherent(size_t len, unsigned long *handle)
+ {
+diff --git a/drivers/ata/sata_dwc.c b/drivers/ata/sata_dwc.c
+index a226ca2dec..2f3b2ddb41 100644
+--- a/drivers/ata/sata_dwc.c
++++ b/drivers/ata/sata_dwc.c
+@@ -26,6 +26,7 @@
+ #include <command.h>
+ #include <pci.h>
+ #include <asm/processor.h>
++#include <linux/dma-direction.h>
+ #include <linux/errno.h>
+ #include <asm/io.h>
+ #include <malloc.h>
+diff --git a/drivers/ata/sata_dwc.h b/drivers/ata/sata_dwc.h
+index e2d9e0c1fc..17fb20cf43 100644
+--- a/drivers/ata/sata_dwc.h
++++ b/drivers/ata/sata_dwc.h
+@@ -401,13 +401,6 @@ struct ata_device {
+ #endif
+ };
+ 
+-enum dma_data_direction {
+-	DMA_BIDIRECTIONAL = 0,
+-	DMA_TO_DEVICE = 1,
+-	DMA_FROM_DEVICE = 2,
+-	DMA_NONE = 3,
+-};
+-
+ struct ata_link {
+ 	struct ata_port		*ap;
+ 	int			pmp;
+diff --git a/drivers/mmc/uniphier-sd.c b/drivers/mmc/uniphier-sd.c
+index e272b14153..721b75fdda 100644
+--- a/drivers/mmc/uniphier-sd.c
++++ b/drivers/mmc/uniphier-sd.c
+@@ -11,10 +11,10 @@
+ #include <mmc.h>
+ #include <dm.h>
+ #include <linux/compat.h>
++#include <linux/dma-direction.h>
+ #include <linux/io.h>
+ #include <linux/sizes.h>
+ #include <asm/unaligned.h>
+-#include <asm/dma-mapping.h>
+ 
+ DECLARE_GLOBAL_DATA_PTR;
+ 
+diff --git a/include/linux/dma-direction.h b/include/linux/dma-direction.h
+new file mode 100644
+index 0000000000..95b6a82f59
+--- /dev/null
++++ b/include/linux/dma-direction.h
+@@ -0,0 +1,13 @@
++#ifndef _LINUX_DMA_DIRECTION_H
++#define _LINUX_DMA_DIRECTION_H
++/*
++ * These definitions mirror those in pci.h, so they can be used
++ * interchangeably with their PCI_ counterparts.
++ */
++enum dma_data_direction {
++	DMA_BIDIRECTIONAL = 0,
++	DMA_TO_DEVICE = 1,
++	DMA_FROM_DEVICE = 2,
++	DMA_NONE = 3,
++};
++#endif
+-- 
+2.13.6
+

@@ -1,0 +1,29 @@
+From fa6365b7c7cf06f3de0aaf55d1c8cd1e5bb30151 Mon Sep 17 00:00:00 2001
+From: Tom Rini <trini@konsulko.com>
+Date: Tue, 12 Sep 2017 11:00:53 -0400
+Subject: [PATCH 067/256] Travis-CI: Update PATH
+
+We now can no longer re-use the provided path and need to give the
+full PATH we want used now.
+
+Signed-off-by: Tom Rini <trini@konsulko.com>
+---
+ .travis.yml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/.travis.yml b/.travis.yml
+index ea560b9360..4b7f8dd8e4 100644
+--- a/.travis.yml
++++ b/.travis.yml
+@@ -52,7 +52,7 @@ install:
+ 
+ env:
+   global:
+-    - PATH=/tmp/dtc:/tmp/qemu-install/bin:/tmp/uboot-test-hooks/bin:$PATH
++    - PATH=/tmp/dtc:/tmp/qemu-install/bin:/tmp/uboot-test-hooks/bin:/usr/bin:/bin
+     - PYTHONPATH=/tmp/uboot-test-hooks/py/travis-ci
+     - BUILD_DIR=build
+     - HOSTCC="cc"
+-- 
+2.13.6
+

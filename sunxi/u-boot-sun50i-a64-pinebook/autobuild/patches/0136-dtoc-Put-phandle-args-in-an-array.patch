@@ -1,0 +1,79 @@
+From bc79617fdfeb4afabb94774885447dd64d7bea6c Mon Sep 17 00:00:00 2001
+From: Simon Glass <sjg@chromium.org>
+Date: Tue, 29 Aug 2017 14:15:58 -0600
+Subject: [PATCH 136/256] dtoc: Put phandle args in an array
+
+We want to support more than one phandle argument. It makes sense to use
+an array for this rather than discrete struct members. Adjust the code to
+support this. Rename the member to 'arg' instead of 'id'.
+
+Signed-off-by: Simon Glass <sjg@chromium.org>
+Tested-by: Kever Yang <kever.yang@rock-chips.com>
+---
+ drivers/clk/clk-uclass.c   | 2 +-
+ include/dt-structs.h       | 4 ++--
+ tools/dtoc/dtb_platdata.py | 2 +-
+ tools/dtoc/test_dtoc.py    | 2 +-
+ 4 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/clk/clk-uclass.c b/drivers/clk/clk-uclass.c
+index 8b40326efa..83ba13374c 100644
+--- a/drivers/clk/clk-uclass.c
++++ b/drivers/clk/clk-uclass.c
+@@ -32,7 +32,7 @@ int clk_get_by_index_platdata(struct udevice *dev, int index,
+ 	ret = uclass_get_device(UCLASS_CLK, 0, &clk->dev);
+ 	if (ret)
+ 		return ret;
+-	clk->id = cells[0].id;
++	clk->id = cells[0].arg[0];
+ 
+ 	return 0;
+ }
+diff --git a/include/dt-structs.h b/include/dt-structs.h
+index 2ed997115a..9ab4e2524d 100644
+--- a/include/dt-structs.h
++++ b/include/dt-structs.h
+@@ -11,12 +11,12 @@
+ #if CONFIG_IS_ENABLED(OF_PLATDATA)
+ struct phandle_0_arg {
+ 	const void *node;
+-	int id[0];
++	int arg[0];
+ };
+ 
+ struct phandle_1_arg {
+ 	const void *node;
+-	int id;
++	int arg[1];
+ };
+ #include <generated/dt-structs.h>
+ #endif
+diff --git a/tools/dtoc/dtb_platdata.py b/tools/dtoc/dtb_platdata.py
+index c0a3ae692b..1920a59f82 100644
+--- a/tools/dtoc/dtb_platdata.py
++++ b/tools/dtoc/dtb_platdata.py
+@@ -467,7 +467,7 @@ class DtbPlatdata(object):
+                         id_num = fdt_util.fdt32_to_cpu(id_cell)
+                         target_node = self._fdt.phandle_to_node[phandle]
+                         name = conv_name_to_c(target_node.name)
+-                        vals.append('{&%s%s, %d}' % (VAL_PREFIX, name, id_num))
++                        vals.append('{&%s%s, {%d}}' % (VAL_PREFIX, name, id_num))
+                     for val in vals:
+                         self.buf('\n\t\t%s,' % val)
+                 else:
+diff --git a/tools/dtoc/test_dtoc.py b/tools/dtoc/test_dtoc.py
+index aa617a649c..fbae927cf8 100644
+--- a/tools/dtoc/test_dtoc.py
++++ b/tools/dtoc/test_dtoc.py
+@@ -253,7 +253,7 @@ U_BOOT_DEVICE(phandle_target) = {
+ 
+ static struct dtd_source dtv_phandle_source = {
+ \t.clocks\t\t\t= {
+-\t\t{&dtv_phandle_target, 1},},
++\t\t{&dtv_phandle_target, {1}},},
+ };
+ U_BOOT_DEVICE(phandle_source) = {
+ \t.name\t\t= "source",
+-- 
+2.13.6
+

@@ -1,0 +1,34 @@
+From be5f04e850e89639ffe7ec4d2dccd327eb354cde Mon Sep 17 00:00:00 2001
+From: Philipp Tomsich <philipp.tomsich@theobroma-systems.com>
+Date: Mon, 11 Sep 2017 22:04:15 +0200
+Subject: [PATCH 213/256] rockchip: mmc: convert to livetree
+
+Update the Rockchip-specific wrapper for the Designware driver to
+support a live device tree.
+
+Signed-off-by: Philipp Tomsich <philipp.tomsich@theobroma-systems.com>
+Reviewed-by: Simon Glass <sjg@chromium.org>
+Acked-by: Philipp Tomsich <philipp.tomsich@theobroma-systems.com>
+
+Version-changes: 2
+- use the dev_read_addr_ptr function in rockchip_dw_mmc.c
+---
+ drivers/mmc/rockchip_dw_mmc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/mmc/rockchip_dw_mmc.c b/drivers/mmc/rockchip_dw_mmc.c
+index e7fcf89f73..807dc9e72f 100644
+--- a/drivers/mmc/rockchip_dw_mmc.c
++++ b/drivers/mmc/rockchip_dw_mmc.c
+@@ -58,7 +58,7 @@ static int rockchip_dwmmc_ofdata_to_platdata(struct udevice *dev)
+ 	struct dwmci_host *host = &priv->host;
+ 
+ 	host->name = dev->name;
+-	host->ioaddr = (void *)devfdt_get_addr(dev);
++	host->ioaddr = dev_read_addr_ptr(dev);
+ 	host->buswidth = dev_read_u32_default(dev, "bus-width", 4);
+ 	host->get_mmc_clk = rockchip_dwmmc_get_mmc_clk;
+ 	host->priv = dev;
+-- 
+2.13.6
+

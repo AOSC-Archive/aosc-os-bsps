@@ -1,0 +1,46 @@
+From cd43b51600918a03216146c1bb4a73f4d7f04901 Mon Sep 17 00:00:00 2001
+From: Lokesh Vutla <lokeshvutla@ti.com>
+Date: Mon, 21 Aug 2017 12:50:57 +0530
+Subject: [PATCH 043/256] board: ti: dra76-evm: Add support for powering on mmc
+ ldo
+
+ldo4 is used to poweron mmc on dra76-evm. Enable it.
+
+Reviewed-by: Tom Rini <trini@konsulko.com>
+Signed-off-by: Lokesh Vutla <lokeshvutla@ti.com>
+---
+ board/ti/dra7xx/evm.c | 2 ++
+ include/palmas.h      | 4 ++++
+ 2 files changed, 6 insertions(+)
+
+diff --git a/board/ti/dra7xx/evm.c b/board/ti/dra7xx/evm.c
+index ad63abd759..87b7403070 100644
+--- a/board/ti/dra7xx/evm.c
++++ b/board/ti/dra7xx/evm.c
+@@ -837,6 +837,8 @@ void board_mmc_poweron_ldo(uint voltage)
+ 		else if (voltage == LDO_VOLT_1V8)
+ 			voltage = 0xa;
+ 		lp873x_mmc1_poweron_ldo(voltage);
++	} else if (board_is_dra76x_evm()) {
++		palmas_mmc1_poweron_ldo(LDO4_VOLTAGE, LDO4_CTRL, voltage);
+ 	} else {
+ 		palmas_mmc1_poweron_ldo(LDO1_VOLTAGE, LDO1_CTRL, voltage);
+ 	}
+diff --git a/include/palmas.h b/include/palmas.h
+index 404c2b3ca7..d366c98d22 100644
+--- a/include/palmas.h
++++ b/include/palmas.h
+@@ -38,6 +38,10 @@
+ #define LDO2_CTRL		0x52
+ #define LDO2_VOLTAGE		0x53
+ 
++/* LDO2 control/voltage */
++#define LDO4_CTRL		0x5e
++#define LDO4_VOLTAGE		0x5f
++
+ /* LDO9 control/voltage */
+ #define LDO9_CTRL		0x60
+ #define LDO9_VOLTAGE		0x61
+-- 
+2.13.6
+

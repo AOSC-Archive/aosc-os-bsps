@@ -1,0 +1,40 @@
+From f041176c4672f2885ff0843f5f7a27c892fcc42c Mon Sep 17 00:00:00 2001
+From: Philipp Tomsich <philipp.tomsich@theobroma-systems.com>
+Date: Mon, 11 Sep 2017 22:04:26 +0200
+Subject: [PATCH 224/256] rockchip: dts: rk3368-lion: add /chosen/tick-timer
+
+To support bootstage recording, we want to mark our DM timer as the
+tick-timer; this triggers the support for 'trying harder' to read the
+timer in the Rockchip DM timer driver, even if the device model isn't
+ready yet.
+
+Signed-off-by: Philipp Tomsich <philipp.tomsich@theobroma-systems.com>
+Reviewed-by: Simon Glass <sjg@chromium.org>
+Acked-by: Philipp Tomsich <philipp.tomsich@theobroma-systems.com>
+---
+ arch/arm/dts/rk3368-lion-u-boot.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/arm/dts/rk3368-lion-u-boot.dtsi b/arch/arm/dts/rk3368-lion-u-boot.dtsi
+index 6052e8a8d3..1ec7d254af 100644
+--- a/arch/arm/dts/rk3368-lion-u-boot.dtsi
++++ b/arch/arm/dts/rk3368-lion-u-boot.dtsi
+@@ -13,6 +13,7 @@
+ 	chosen {
+ 		stdout-path = "serial0:115200n8";
+ 		u-boot,spl-boot-order = &emmc, &sdmmc;
++		tick-timer = "/timer@ff810000";
+ 	};
+ 
+ };
+@@ -88,6 +89,7 @@
+ &timer0 {
+ 	u-boot,dm-pre-reloc;
+ 	clock-frequency = <24000000>;
++	status = "okay";
+ };
+ 
+ 
+-- 
+2.13.6
+

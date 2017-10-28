@@ -1,0 +1,177 @@
+From 93c94b889b3aa7e21e0f90f0c5a6dc7034b371aa Mon Sep 17 00:00:00 2001
+From: Simon Glass <sjg@chromium.org>
+Date: Tue, 29 Aug 2017 14:15:46 -0600
+Subject: [PATCH 124/256] fdt: Sync libfdt up to upstream
+
+Add upstream changes to U-Boot:
+
+- new pylibfdt functions
+- fdt_setprop_placeholder()
+
+Signed-off-by: Simon Glass <sjg@chromium.org>
+---
+ lib/libfdt/fdt_rw.c          | 20 ++++++++++++---
+ lib/libfdt/libfdt.h          | 31 +++++++++++++++++++++++
+ lib/libfdt/pylibfdt/libfdt.i | 58 ++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 106 insertions(+), 3 deletions(-)
+
+diff --git a/lib/libfdt/fdt_rw.c b/lib/libfdt/fdt_rw.c
+index 80a3212141..3dc775261f 100644
+--- a/lib/libfdt/fdt_rw.c
++++ b/lib/libfdt/fdt_rw.c
+@@ -228,8 +228,8 @@ int fdt_set_name(void *fdt, int nodeoffset, const char *name)
+ 	return 0;
+ }
+ 
+-int fdt_setprop(void *fdt, int nodeoffset, const char *name,
+-		const void *val, int len)
++int fdt_setprop_placeholder(void *fdt, int nodeoffset, const char *name,
++			    int len, void **prop_data)
+ {
+ 	struct fdt_property *prop;
+ 	int err;
+@@ -242,8 +242,22 @@ int fdt_setprop(void *fdt, int nodeoffset, const char *name,
+ 	if (err)
+ 		return err;
+ 
++	*prop_data = prop->data;
++	return 0;
++}
++
++int fdt_setprop(void *fdt, int nodeoffset, const char *name,
++		const void *val, int len)
++{
++	void *prop_data;
++	int err;
++
++	err = fdt_setprop_placeholder(fdt, nodeoffset, name, len, &prop_data);
++	if (err)
++		return err;
++
+ 	if (len)
+-		memcpy(prop->data, val, len);
++		memcpy(prop_data, val, len);
+ 	return 0;
+ }
+ 
+diff --git a/lib/libfdt/libfdt.h b/lib/libfdt/libfdt.h
+index f3f9cad184..6af94cb3f7 100644
+--- a/lib/libfdt/libfdt.h
++++ b/lib/libfdt/libfdt.h
+@@ -1405,6 +1405,37 @@ int fdt_setprop(void *fdt, int nodeoffset, const char *name,
+ 		const void *val, int len);
+ 
+ /**
++ * fdt_setprop _placeholder - allocate space for a property
++ * @fdt: pointer to the device tree blob
++ * @nodeoffset: offset of the node whose property to change
++ * @name: name of the property to change
++ * @len: length of the property value
++ * @prop_data: return pointer to property data
++ *
++ * fdt_setprop_placeholer() allocates the named property in the given node.
++ * If the property exists it is resized. In either case a pointer to the
++ * property data is returned.
++ *
++ * This function may insert or delete data from the blob, and will
++ * therefore change the offsets of some existing nodes.
++ *
++ * returns:
++ *	0, on success
++ *	-FDT_ERR_NOSPACE, there is insufficient free space in the blob to
++ *		contain the new property value
++ *	-FDT_ERR_BADOFFSET, nodeoffset did not point to FDT_BEGIN_NODE tag
++ *	-FDT_ERR_BADLAYOUT,
++ *	-FDT_ERR_BADMAGIC,
++ *	-FDT_ERR_BADVERSION,
++ *	-FDT_ERR_BADSTATE,
++ *	-FDT_ERR_BADSTRUCTURE,
++ *	-FDT_ERR_BADLAYOUT,
++ *	-FDT_ERR_TRUNCATED, standard meanings
++ */
++int fdt_setprop_placeholder(void *fdt, int nodeoffset, const char *name,
++			    int len, void **prop_data);
++
++/**
+  * fdt_setprop_u32 - set a property to a 32-bit integer
+  * @fdt: pointer to the device tree blob
+  * @nodeoffset: offset of the node whose property to change
+diff --git a/lib/libfdt/pylibfdt/libfdt.i b/lib/libfdt/pylibfdt/libfdt.i
+index 146f4b942a..5b1a8cf4d4 100644
+--- a/lib/libfdt/pylibfdt/libfdt.i
++++ b/lib/libfdt/pylibfdt/libfdt.i
+@@ -130,6 +130,23 @@ class Fdt:
+         self._fdt = bytearray(data)
+         check_err(fdt_check_header(self._fdt));
+ 
++    def subnode_offset(self, parentoffset, name, quiet=()):
++        """Get the offset of a named subnode
++
++        Args:
++            parentoffset: Offset of the parent node to check
++            name: Name of the required subnode, e.g. 'subnode@1'
++            quiet: Errors to ignore (empty to raise on all errors)
++
++        Returns:
++            The node offset of the found node, if any
++
++        Raises
++            FdtException if there is no node with that name, or other error
++        """
++        return check_err(fdt_subnode_offset(self._fdt, parentoffset, name),
++                         quiet)
++
+     def path_offset(self, path, quiet=()):
+         """Get the offset for a given path
+ 
+@@ -304,6 +321,47 @@ class Fdt:
+             return pdata
+         return bytearray(pdata[0])
+ 
++    def get_phandle(self, nodeoffset):
++        """Get the phandle of a node
++
++        Args:
++            nodeoffset: Node offset to check
++
++        Returns:
++            phandle of node, or 0 if the node has no phandle or another error
++            occurs
++        """
++        return fdt_get_phandle(self._fdt, nodeoffset)
++
++    def parent_offset(self, nodeoffset, quiet=()):
++        """Get the offset of a node's parent
++
++        Args:
++            nodeoffset: Node offset to check
++            quiet: Errors to ignore (empty to raise on all errors)
++
++        Returns:
++            The offset of the parent node, if any
++
++        Raises:
++            FdtException if no parent found or other error occurs
++        """
++        return check_err(fdt_parent_offset(self._fdt, nodeoffset), quiet)
++
++    def node_offset_by_phandle(self, phandle, quiet=()):
++        """Get the offset of a node with the given phandle
++
++        Args:
++            phandle: Phandle to search for
++            quiet: Errors to ignore (empty to raise on all errors)
++
++        Returns:
++            The offset of node with that phandle, if any
++
++        Raises:
++            FdtException if no node found or other error occurs
++        """
++        return check_err(fdt_node_offset_by_phandle(self._fdt, phandle), quiet)
+ 
+ class Property:
+     """Holds a device tree property name and value.
+-- 
+2.13.6
+

@@ -1,0 +1,192 @@
+From 6553581a8103f7f5e95d5ec961494227f36ba3d1 Mon Sep 17 00:00:00 2001
+From: Wenyou Yang <wenyou.yang@atmel.com>
+Date: Thu, 14 Sep 2017 11:07:40 +0800
+Subject: [PATCH 111/256] ARM: at91: Move CONFIG_AT91FAMILY option to Kconfig
+
+Move the CONFIG_AT91FAMILY option from include/mach/<soc>.h header
+file to Kconfig.
+
+Signed-off-by: Wenyou Yang <wenyou.yang@microchip.com>
+---
+ arch/arm/mach-at91/Kconfig                    | 3 +++
+ arch/arm/mach-at91/include/mach/at91rm9200.h  | 1 -
+ arch/arm/mach-at91/include/mach/at91sam9260.h | 5 -----
+ arch/arm/mach-at91/include/mach/at91sam9261.h | 5 -----
+ arch/arm/mach-at91/include/mach/at91sam9263.h | 5 -----
+ arch/arm/mach-at91/include/mach/at91sam9g45.h | 5 -----
+ arch/arm/mach-at91/include/mach/at91sam9rl.h  | 5 -----
+ arch/arm/mach-at91/include/mach/at91sam9x5.h  | 2 --
+ arch/arm/mach-at91/include/mach/sama5d2.h     | 5 -----
+ arch/arm/mach-at91/include/mach/sama5d3.h     | 5 -----
+ arch/arm/mach-at91/include/mach/sama5d4.h     | 5 -----
+ 11 files changed, 3 insertions(+), 43 deletions(-)
+
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index a70b956fbc..513963c7da 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -1,5 +1,8 @@
+ if ARCH_AT91
+ 
++config AT91FAMILY
++	def_bool y
++
+ choice
+ 	prompt "Atmel AT91 board select"
+ 	optional
+diff --git a/arch/arm/mach-at91/include/mach/at91rm9200.h b/arch/arm/mach-at91/include/mach/at91rm9200.h
+index d177bdcae5..d15fb7a292 100644
+--- a/arch/arm/mach-at91/include/mach/at91rm9200.h
++++ b/arch/arm/mach-at91/include/mach/at91rm9200.h
+@@ -6,7 +6,6 @@
+ #ifndef __AT91RM9200_H__
+ #define __AT91RM9200_H__
+ 
+-#define CONFIG_AT91FAMILY	/* it's a member of AT91 family */
+ #define CONFIG_ARCH_CPU_INIT	/* we need arch_cpu_init() for hw timers */
+ #define CONFIG_AT91_GPIO	/* and require always gpio features */
+ 
+diff --git a/arch/arm/mach-at91/include/mach/at91sam9260.h b/arch/arm/mach-at91/include/mach/at91sam9260.h
+index 1a4e84b050..24d5dbd68a 100644
+--- a/arch/arm/mach-at91/include/mach/at91sam9260.h
++++ b/arch/arm/mach-at91/include/mach/at91sam9260.h
+@@ -19,11 +19,6 @@
+ #define AT91SAM9260_H
+ 
+ /*
+- * defines to be used in other places
+- */
+-#define CONFIG_AT91FAMILY	/* it's a member of AT91 */
+-
+-/*
+  * Peripheral identifiers/interrupts.
+  */
+ #define ATMEL_ID_FIQ	0	/* Advanced Interrupt Controller (FIQ) */
+diff --git a/arch/arm/mach-at91/include/mach/at91sam9261.h b/arch/arm/mach-at91/include/mach/at91sam9261.h
+index 914a3b0460..06403ce225 100644
+--- a/arch/arm/mach-at91/include/mach/at91sam9261.h
++++ b/arch/arm/mach-at91/include/mach/at91sam9261.h
+@@ -19,11 +19,6 @@
+ #define AT91SAM9261_H
+ 
+ /*
+- * defines to be used in other places
+- */
+-#define CONFIG_AT91FAMILY	/* it's a member of AT91 */
+-
+-/*
+  * Peripheral identifiers/interrupts.
+  */
+ #define ATMEL_ID_FIQ	0	/* Advanced Interrupt Controller (FIQ) */
+diff --git a/arch/arm/mach-at91/include/mach/at91sam9263.h b/arch/arm/mach-at91/include/mach/at91sam9263.h
+index 71675abf82..be9a665db5 100644
+--- a/arch/arm/mach-at91/include/mach/at91sam9263.h
++++ b/arch/arm/mach-at91/include/mach/at91sam9263.h
+@@ -15,11 +15,6 @@
+ #define AT91SAM9263_H
+ 
+ /*
+- * defines to be used in other places
+- */
+-#define CONFIG_AT91FAMILY	/* it's a member of AT91 */
+-
+-/*
+  * Peripheral identifiers/interrupts.
+  */
+ #define ATMEL_ID_FIQ	0	/* Advanced Interrupt Controller (FIQ) */
+diff --git a/arch/arm/mach-at91/include/mach/at91sam9g45.h b/arch/arm/mach-at91/include/mach/at91sam9g45.h
+index 5c32e24ed0..96922c4e6b 100644
+--- a/arch/arm/mach-at91/include/mach/at91sam9g45.h
++++ b/arch/arm/mach-at91/include/mach/at91sam9g45.h
+@@ -13,11 +13,6 @@
+ #define AT91SAM9G45_H
+ 
+ /*
+- * defines to be used in other places
+- */
+-#define CONFIG_AT91FAMILY	/* it's a member of AT91 */
+-
+-/*
+  * Peripheral identifiers/interrupts.
+  */
+ #define ATMEL_ID_FIQ	0	/* Advanced Interrupt Controller (FIQ) */
+diff --git a/arch/arm/mach-at91/include/mach/at91sam9rl.h b/arch/arm/mach-at91/include/mach/at91sam9rl.h
+index 70bbf4edaa..8f9155c9ea 100644
+--- a/arch/arm/mach-at91/include/mach/at91sam9rl.h
++++ b/arch/arm/mach-at91/include/mach/at91sam9rl.h
+@@ -15,11 +15,6 @@
+ #define AT91SAM9RL_H
+ 
+ /*
+- * defines to be used in other places
+- */
+-#define CONFIG_AT91FAMILY	/* it's a member of AT91 */
+-
+-/*
+  * Peripheral identifiers/interrupts.
+  */
+ #define ATMEL_ID_FIQ	0	/* Advanced Interrupt Controller (FIQ) */
+diff --git a/arch/arm/mach-at91/include/mach/at91sam9x5.h b/arch/arm/mach-at91/include/mach/at91sam9x5.h
+index e7224e432d..f9710a172f 100644
+--- a/arch/arm/mach-at91/include/mach/at91sam9x5.h
++++ b/arch/arm/mach-at91/include/mach/at91sam9x5.h
+@@ -12,8 +12,6 @@
+ #ifndef __AT91SAM9X5_H__
+ #define __AT91SAM9X5_H__
+ 
+-#define CONFIG_AT91FAMILY	/* it's a member of AT91 family */
+-
+ /*
+  * Peripheral identifiers/interrupts.
+  */
+diff --git a/arch/arm/mach-at91/include/mach/sama5d2.h b/arch/arm/mach-at91/include/mach/sama5d2.h
+index 49283ed86b..a4ec0aac61 100644
+--- a/arch/arm/mach-at91/include/mach/sama5d2.h
++++ b/arch/arm/mach-at91/include/mach/sama5d2.h
+@@ -11,11 +11,6 @@
+ #define __SAMA5D2_H
+ 
+ /*
+- * definitions to be used in other places
+- */
+-#define CONFIG_AT91FAMILY	/* It's a member of AT91 */
+-
+-/*
+  * Peripheral identifiers/interrupts.
+  */
+ #define ATMEL_ID_FIQ		0	/* FIQ Interrupt ID */
+diff --git a/arch/arm/mach-at91/include/mach/sama5d3.h b/arch/arm/mach-at91/include/mach/sama5d3.h
+index d558f95141..0d32e3900f 100644
+--- a/arch/arm/mach-at91/include/mach/sama5d3.h
++++ b/arch/arm/mach-at91/include/mach/sama5d3.h
+@@ -14,11 +14,6 @@
+ #define SAMA5D3_H
+ 
+ /*
+- * defines to be used in other places
+- */
+-#define CONFIG_AT91FAMILY	/* it's a member of AT91 */
+-
+-/*
+  * Peripheral identifiers/interrupts.
+  */
+ #define ATMEL_ID_FIQ	0	/* Advanced Interrupt Controller (FIQ) */
+diff --git a/arch/arm/mach-at91/include/mach/sama5d4.h b/arch/arm/mach-at91/include/mach/sama5d4.h
+index 78cc2a7a0a..7e2657faeb 100644
+--- a/arch/arm/mach-at91/include/mach/sama5d4.h
++++ b/arch/arm/mach-at91/include/mach/sama5d4.h
+@@ -11,11 +11,6 @@
+ #define __SAMA5D4_H
+ 
+ /*
+- * defines to be used in other places
+- */
+-#define CONFIG_AT91FAMILY	/* It's a member of AT91 */
+-
+-/*
+  * Peripheral identifiers/interrupts.
+  */
+ #define ATMEL_ID_FIQ	0	/* FIQ Interrupt */
+-- 
+2.13.6
+

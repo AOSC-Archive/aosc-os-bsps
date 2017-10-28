@@ -1,0 +1,90 @@
+From 809ec9454fb36ae3c02cdee040f8c44ba08cd5ed Mon Sep 17 00:00:00 2001
+From: William Wu <william.wu@rock-chips.com>
+Date: Wed, 9 Aug 2017 11:36:28 +0800
+Subject: [PATCH 201/256] ARM: dts: rockchip: add USB nodes for evb-rv1108
+
+This patch adds USB OTG/EHCI/OHCI nodes for evb-rv1108 USB ports.
+
+Signed-off-by: William Wu <william.wu@rock-chips.com>
+Reviewed-by: Simon Glass <sjg@chromium.org>
+Acked-by: Philipp Tomsich <philipp.tomsich@theobroma-systems.com>
+---
+ arch/arm/dts/rv1108-evb.dts | 22 ++++++++++++++++++++++
+ arch/arm/dts/rv1108.dtsi    | 24 ++++++++++++++++++++++++
+ 2 files changed, 46 insertions(+)
+
+diff --git a/arch/arm/dts/rv1108-evb.dts b/arch/arm/dts/rv1108-evb.dts
+index 0128dd8b1d..2b221b6d61 100644
+--- a/arch/arm/dts/rv1108-evb.dts
++++ b/arch/arm/dts/rv1108-evb.dts
+@@ -20,6 +20,15 @@
+ 	chosen {
+ 		stdout-path = "serial2:1500000n8";
+ 	};
++
++	vcc5v0_otg: vcc5v0-otg-drv {
++		compatible = "regulator-fixed";
++		enable-active-high;
++		regulator-name = "vcc5v0_otg";
++		gpio = <&gpio0 RK_PB0 GPIO_ACTIVE_HIGH>;
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++	};
+ };
+ 
+ &gmac {
+@@ -52,3 +61,16 @@
+ &uart2 {
+ 	status = "okay";
+ };
++
++&usb20_otg {
++	vbus-supply = <&vcc5v0_otg>;
++	status = "okay";
++};
++
++&usb_host_ehci {
++	status = "okay";
++};
++
++&usb_host_ohci {
++	status = "okay";
++};
+diff --git a/arch/arm/dts/rv1108.dtsi b/arch/arm/dts/rv1108.dtsi
+index 77ca24e7f3..3153dfe658 100644
+--- a/arch/arm/dts/rv1108.dtsi
++++ b/arch/arm/dts/rv1108.dtsi
+@@ -175,6 +175,30 @@
+ 		status = "disabled";
+ 	};
+ 
++	usb_host_ehci: usb@30140000 {
++		compatible = "generic-ehci";
++		reg = <0x30140000 0x20000>;
++		interrupts = <GIC_SPI 15 IRQ_TYPE_LEVEL_HIGH>;
++		status = "disabled";
++	};
++
++	usb_host_ohci: usb@30160000 {
++		compatible = "generic-ohci";
++		reg = <0x30160000 0x20000>;
++		interrupts = <GIC_SPI 16 IRQ_TYPE_LEVEL_HIGH>;
++		status = "disabled";
++	};
++
++	usb20_otg: usb@30180000 {
++		compatible = "rockchip,rv1108-usb", "rockchip,rk3288-usb",
++			     "snps,dwc2";
++		reg = <0x30180000 0x40000>;
++		interrupts = <GIC_SPI 18 IRQ_TYPE_LEVEL_HIGH>;
++		hnp-srp-disable;
++		dr_mode = "otg";
++		status = "disabled";
++	};
++
+ 	sfc: sfc@301c0000 {
+ 		compatible = "rockchip,sfc";
+ 		reg = <0x301c0000 0x200>;
+-- 
+2.13.6
+

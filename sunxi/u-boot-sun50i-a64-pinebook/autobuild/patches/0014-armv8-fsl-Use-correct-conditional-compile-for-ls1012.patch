@@ -1,0 +1,33 @@
+From 5436c6a347918bf278d4cc9e5678f9bd94bdbcbc Mon Sep 17 00:00:00 2001
+From: Ran Wang <ran.wang_1@nxp.com>
+Date: Mon, 28 Aug 2017 10:40:33 +0800
+Subject: [PATCH 014/256] armv8: fsl: Use correct conditional compile for
+ ls1012a
+
+According current code base, CONFIG_LS1012A should be
+CONFIG_ARCH_LS1012A, or function fsl_fdt_disable(blob) will be
+wrongly called to disable all dwc3 USB nodes on LS1012A, which
+cause Linux USB function stop working at all.
+
+Signed-off-by: Ran Wang <ran.wang_1@nxp.com>
+Reviewed-by: York Sun <york.sun@nxp.com>
+---
+ arch/arm/cpu/armv8/fsl-layerscape/fdt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/cpu/armv8/fsl-layerscape/fdt.c b/arch/arm/cpu/armv8/fsl-layerscape/fdt.c
+index c9252751db..cae59da803 100644
+--- a/arch/arm/cpu/armv8/fsl-layerscape/fdt.c
++++ b/arch/arm/cpu/armv8/fsl-layerscape/fdt.c
+@@ -418,7 +418,7 @@ void ft_cpu_setup(void *blob, bd_t *bd)
+ #ifdef CONFIG_SYS_DPAA_FMAN
+ 	fdt_fixup_fman_firmware(blob);
+ #endif
+-#ifndef CONFIG_LS1012A
++#ifndef CONFIG_ARCH_LS1012A
+ 	fsl_fdt_disable_usb(blob);
+ #endif
+ #ifdef CONFIG_HAS_FEATURE_GIC64K_ALIGN
+-- 
+2.13.6
+

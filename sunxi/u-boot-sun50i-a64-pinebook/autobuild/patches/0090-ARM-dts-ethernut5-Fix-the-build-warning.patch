@@ -1,0 +1,34 @@
+From 3e9f8f2f5101ee66804c29683fba90b8e307a314 Mon Sep 17 00:00:00 2001
+From: Wenyou Yang <wenyou.yang@microchip.com>
+Date: Tue, 8 Aug 2017 08:50:33 +0800
+Subject: [PATCH 090/256] ARM: dts: ethernut5: Fix the build warning
+
+Fix the building warning as below:
+---8<----
+Warning (reg_format): "reg" property in /i2c-gpio-0/pcf8563@50 has invalid length (4 bytes) (#address-cells == 2, #size-cells == 1)
+Warning (avoid_default_addr_size): Relying on default #address-cells value for /i2c-gpio-0/pcf8563@50
+Warning (avoid_default_addr_size): Relying on default #size-cells value for /i2c-gpio-0/pcf8563@50
+--->8----
+
+Signed-off-by: Wenyou Yang <wenyou.yang@microchip.com>
+Reviewed-by: Tom Rini <trini@konsulko.com>
+---
+ arch/arm/dts/ethernut5.dts | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/arm/dts/ethernut5.dts b/arch/arm/dts/ethernut5.dts
+index e07715225f..5c24deaf4b 100644
+--- a/arch/arm/dts/ethernut5.dts
++++ b/arch/arm/dts/ethernut5.dts
+@@ -84,6 +84,8 @@
+ 	};
+ 
+ 	i2c-gpio-0 {
++		#address-cells = <1>;
++		#size-cells = <0>;
+ 		status = "okay";
+ 
+ 		pcf8563@50 {
+-- 
+2.13.6
+

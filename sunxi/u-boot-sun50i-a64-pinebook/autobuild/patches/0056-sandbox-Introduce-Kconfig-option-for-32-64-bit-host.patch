@@ -1,0 +1,43 @@
+From 98cff66027c44e6e15eb48dbb2300f388bcc172c Mon Sep 17 00:00:00 2001
+From: Bin Meng <bmeng.cn@gmail.com>
+Date: Tue, 1 Aug 2017 16:33:33 -0700
+Subject: [PATCH 056/256] sandbox: Introduce Kconfig option for 32/64 bit host
+
+It seems most of the time we are building and running sandbox on 64-bit host.
+But we do support 32-bit host as well. Introduce Kconfig option for this.
+
+Signed-off-by: Bin Meng <bmeng.cn@gmail.com>
+Reviewed-by: Simon Glass <sjg@chromium.org>
+---
+ arch/sandbox/Kconfig | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/arch/sandbox/Kconfig b/arch/sandbox/Kconfig
+index f7a6e1aef8..7b07bff1da 100644
+--- a/arch/sandbox/Kconfig
++++ b/arch/sandbox/Kconfig
+@@ -18,4 +18,21 @@ config SYS_CONFIG_NAME
+ 	default "sandbox_spl" if SANDBOX_SPL
+ 	default "sandbox" if !SANDBOX_SPL
+ 
++choice
++	prompt "Run sandbox on 32/64-bit host"
++	default SANDBOX_64BIT
++	help
++	  Sandbox can be built on 32-bit and 64-bit hosts.
++	  The default is to build on a 64-bit host and run
++	  on a 64-bit host. If you want to run sandbox on
++	  a 32-bit host, change it here.
++
++config SANDBOX_32BIT
++	bool "32-bit host"
++
++config SANDBOX_64BIT
++	bool "64-bit host"
++
++endchoice
++
+ endmenu
+-- 
+2.13.6
+

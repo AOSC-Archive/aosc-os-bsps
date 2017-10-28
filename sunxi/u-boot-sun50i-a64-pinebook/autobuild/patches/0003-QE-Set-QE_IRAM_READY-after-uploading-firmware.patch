@@ -1,0 +1,32 @@
+From a7a81756b8851b84de11c8e755b2e63d907336d4 Mon Sep 17 00:00:00 2001
+From: Zhao Qiang <qiang.zhao@nxp.com>
+Date: Mon, 14 Aug 2017 10:22:43 +0800
+Subject: [PATCH 003/256] QE: Set QE_IRAM_READY after uploading firmware
+
+QE_IRAM_READY should be set only after successfully uploading the
+firmware.
+
+Signed-off-by: Zhao Qiang <qiang.zhao@nxp.com>
+Reviewed-by: York Sun <york.sun@nxp.com>
+---
+ drivers/qe/qe.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/qe/qe.c b/drivers/qe/qe.c
+index 24e764dc7c..8151068432 100644
+--- a/drivers/qe/qe.c
++++ b/drivers/qe/qe.c
+@@ -225,8 +225,8 @@ void u_qe_init(void)
+ 		flush_cache((ulong)addr, cnt * 512);
+ 	}
+ #endif
+-	u_qe_upload_firmware(addr);
+-	out_be32(&qe_immr->iram.iready, QE_IRAM_READY);
++	if (!u_qe_upload_firmware(addr))
++		out_be32(&qe_immr->iram.iready, QE_IRAM_READY);
+ #ifdef CONFIG_SYS_QE_FMAN_FW_IN_MMC
+ 	free(addr);
+ #endif
+-- 
+2.13.6
+

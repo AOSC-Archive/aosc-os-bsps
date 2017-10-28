@@ -1,0 +1,43 @@
+From 919ccb9fe55febcc628e43dc1fea00ecc71e8bdf Mon Sep 17 00:00:00 2001
+From: Adam Ford <aford173@gmail.com>
+Date: Fri, 8 Sep 2017 17:01:17 -0500
+Subject: [PATCH 094/256] davinci: da850evm: Make EEPROM MAC code configurable
+
+There was a check for CONFIG_MAC_ADDR_IN_EEPROM and
+a check for CONFIG_MAC_ADDR_IN_SPIFLASH, however
+some of the EEPROM related code wasn't encapsulated
+inside the #if defined statement so the EEPROM code
+could get executed even when it wasn't explicitly
+enabled or wanted.
+
+Signed-off-by: Adam Ford <aford173@gmail.com>
+---
+ board/davinci/da8xxevm/da850evm.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/board/davinci/da8xxevm/da850evm.c b/board/davinci/da8xxevm/da850evm.c
+index c2d2e8e882..516d86df50 100644
+--- a/board/davinci/da8xxevm/da850evm.c
++++ b/board/davinci/da8xxevm/da850evm.c
+@@ -133,6 +133,8 @@ int misc_init_r(void)
+ 
+ 	enetaddr_found = eth_env_get_enetaddr("ethaddr", env_enetaddr);
+ 
++#endif
++
+ #ifdef CONFIG_MAC_ADDR_IN_SPIFLASH
+ 	int spi_mac_read;
+ 	uchar buff[6];
+@@ -167,7 +169,8 @@ int misc_init_r(void)
+ 					"with the MAC address in the environment\n");
+ 		printf("Default using MAC address from environment\n");
+ 	}
+-#endif
++
++#elif defined(CONFIG_MAC_ADDR_IN_EEPROM)
+ 	uint8_t enetaddr[8];
+ 	int eeprom_mac_read;
+ 
+-- 
+2.13.6
+

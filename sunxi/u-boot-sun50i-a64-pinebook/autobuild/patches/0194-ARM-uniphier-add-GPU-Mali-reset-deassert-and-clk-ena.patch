@@ -1,0 +1,80 @@
+From a184fb8e9671cc777b91eb3af3e36b5590870ddb Mon Sep 17 00:00:00 2001
+From: Masahiro Yamada <yamada.masahiro@socionext.com>
+Date: Fri, 15 Sep 2017 21:43:22 +0900
+Subject: [PATCH 194/256] ARM: uniphier: add GPU(Mali) reset deassert and clk
+ enable
+
+The driver for Linux is out of control of Socionext, so set up
+reset / clock in here.
+
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+---
+ arch/arm/mach-uniphier/clk/clk-ld20.c | 12 ++++++++++++
+ arch/arm/mach-uniphier/clk/clk-pxs3.c | 12 ++++++++++++
+ 2 files changed, 24 insertions(+)
+
+diff --git a/arch/arm/mach-uniphier/clk/clk-ld20.c b/arch/arm/mach-uniphier/clk/clk-ld20.c
+index 5bb560cafe..f79fb38535 100644
+--- a/arch/arm/mach-uniphier/clk/clk-ld20.c
++++ b/arch/arm/mach-uniphier/clk/clk-ld20.c
+@@ -4,14 +4,26 @@
+  * SPDX-License-Identifier:	GPL-2.0+
+  */
+ 
++#include <linux/bitops.h>
+ #include <linux/io.h>
+ 
+ #include "../init.h"
++#include "../sc64-regs.h"
+ 
+ #define SDCTRL_EMMC_HW_RESET	0x59810280
+ 
+ void uniphier_ld20_clk_init(void)
+ {
++	u32 tmp;
++
++	tmp = readl(SC_RSTCTRL6);
++	tmp |= BIT(8);			/* Mali */
++	writel(tmp, SC_RSTCTRL6);
++
++	tmp = readl(SC_CLKCTRL6);
++	tmp |= BIT(8);			/* Mali */
++	writel(tmp, SC_CLKCTRL6);
++
+ 	/* TODO: use "mmc-pwrseq-emmc" */
+ 	writel(1, SDCTRL_EMMC_HW_RESET);
+ }
+diff --git a/arch/arm/mach-uniphier/clk/clk-pxs3.c b/arch/arm/mach-uniphier/clk/clk-pxs3.c
+index 2dee857a18..3b9cc626f1 100644
+--- a/arch/arm/mach-uniphier/clk/clk-pxs3.c
++++ b/arch/arm/mach-uniphier/clk/clk-pxs3.c
+@@ -4,14 +4,26 @@
+  * SPDX-License-Identifier:	GPL-2.0+
+  */
+ 
++#include <linux/bitops.h>
+ #include <linux/io.h>
+ 
+ #include "../init.h"
++#include "../sc64-regs.h"
+ 
+ #define SDCTRL_EMMC_HW_RESET	0x59810280
+ 
+ void uniphier_pxs3_clk_init(void)
+ {
++	u32 tmp;
++
++	tmp = readl(SC_RSTCTRL6);
++	tmp |= BIT(8);			/* Mali */
++	writel(tmp, SC_RSTCTRL6);
++
++	tmp = readl(SC_CLKCTRL6);
++	tmp |= BIT(8);			/* Mali */
++	writel(tmp, SC_CLKCTRL6);
++
+ 	/* TODO: use "mmc-pwrseq-emmc" */
+ 	writel(1, SDCTRL_EMMC_HW_RESET);
+ }
+-- 
+2.13.6
+

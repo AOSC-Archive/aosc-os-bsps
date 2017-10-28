@@ -1,0 +1,75 @@
+From fc7c31891c40dd1aac2e71e9d1546727ca2b3556 Mon Sep 17 00:00:00 2001
+From: Pantelis Antoniou <pantelis.antoniou@konsulko.com>
+Date: Mon, 4 Sep 2017 23:12:11 +0300
+Subject: [PATCH 141/256] fdt: Introduce helper method
+ fdt_overlay_apply_verbose()
+
+Introduce fdt_overlay_apply_verbose, a method that applies an
+overlay but in the case of an error produces a helpful message.
+
+In addition if a base tree is found to be missing the __symbols__
+node the message will point out that the probable reason is that
+the base tree was miscompiled without the -@ option.
+
+Signed-off-by: Pantelis Antoniou <pantelis.antoniou@konsulko.com>
+Acked-by: Simon Glass <sjg@chromium.org>
+---
+ common/fdt_support.c  | 31 +++++++++++++++++++++++++++++++
+ include/fdt_support.h |  2 ++
+ 2 files changed, 33 insertions(+)
+
+diff --git a/common/fdt_support.c b/common/fdt_support.c
+index 916a448c11..f4f9543d54 100644
+--- a/common/fdt_support.c
++++ b/common/fdt_support.c
+@@ -1655,3 +1655,34 @@ int fdt_fixup_display(void *blob, const char *path, const char *display)
+ 	}
+ 	return toff;
+ }
++
++#ifdef CONFIG_OF_LIBFDT_OVERLAY
++/**
++ * fdt_overlay_apply_verbose - Apply an overlay with verbose error reporting
++ *
++ * @fdt: ptr to device tree
++ * @fdto: ptr to device tree overlay
++ *
++ * Convenience function to apply an overlay and display helpful messages
++ * in the case of an error
++ */
++int fdt_overlay_apply_verbose(void *fdt, void *fdto)
++{
++	int err;
++	bool has_symbols;
++
++	err = fdt_path_offset(fdt, "/__symbols__");
++	has_symbols = err >= 0;
++
++	err = fdt_overlay_apply(fdt, fdto);
++	if (err < 0) {
++		printf("failed on fdt_overlay_apply(): %s\n",
++				fdt_strerror(err));
++		if (!has_symbols) {
++			printf("base fdt does did not have a /__symbols__ node\n");
++			printf("make sure you've compiled with -@\n");
++		}
++	}
++	return err;
++}
++#endif
+diff --git a/include/fdt_support.h b/include/fdt_support.h
+index 5ef78cce6e..2bca4d7889 100644
+--- a/include/fdt_support.h
++++ b/include/fdt_support.h
+@@ -264,6 +264,8 @@ int arch_fixup_memory_node(void *blob);
+ int fdt_setup_simplefb_node(void *fdt, int node, u64 base_address, u32 width,
+ 			    u32 height, u32 stride, const char *format);
+ 
++int fdt_overlay_apply_verbose(void *fdt, void *fdto);
++
+ #endif /* ifdef CONFIG_OF_LIBFDT */
+ 
+ #ifdef USE_HOSTCC
+-- 
+2.13.6
+

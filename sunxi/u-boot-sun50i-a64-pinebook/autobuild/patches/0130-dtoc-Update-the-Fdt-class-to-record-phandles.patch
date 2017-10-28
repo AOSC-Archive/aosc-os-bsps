@@ -1,0 +1,40 @@
+From 09264e04330479fbe5bdb647619be4fd90735bfc Mon Sep 17 00:00:00 2001
+From: Simon Glass <sjg@chromium.org>
+Date: Tue, 29 Aug 2017 14:15:52 -0600
+Subject: [PATCH 130/256] dtoc: Update the Fdt class to record phandles
+
+Add a map from phandles to nodes. This can be used by clients of the the
+class instead of maintaining this themselves.
+
+Signed-off-by: Simon Glass <sjg@chromium.org>
+Tested-by: Kever Yang <kever.yang@rock-chips.com>
+---
+ tools/dtoc/fdt.py | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/tools/dtoc/fdt.py b/tools/dtoc/fdt.py
+index ffd42ce541..dbc338653b 100644
+--- a/tools/dtoc/fdt.py
++++ b/tools/dtoc/fdt.py
+@@ -212,6 +212,10 @@ class Node:
+         searching into subnodes so that the entire tree is built.
+         """
+         self.props = self._fdt.GetProps(self)
++        phandle = self.props.get('phandle')
++        if phandle:
++            val = fdt_util.fdt32_to_cpu(phandle.value)
++            self._fdt.phandle_to_node[val] = self
+ 
+         offset = libfdt.fdt_first_subnode(self._fdt.GetFdt(), self.Offset())
+         while offset >= 0:
+@@ -263,6 +267,7 @@ class Fdt:
+     def __init__(self, fname):
+         self._fname = fname
+         self._cached_offsets = False
++        self.phandle_to_node = {}
+         if self._fname:
+             self._fname = fdt_util.EnsureCompiled(self._fname)
+ 
+-- 
+2.13.6
+

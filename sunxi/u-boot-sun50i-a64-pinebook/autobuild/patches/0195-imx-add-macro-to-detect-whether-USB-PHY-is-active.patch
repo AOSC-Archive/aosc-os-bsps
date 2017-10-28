@@ -1,0 +1,38 @@
+From 7d289d6239b29171bf9503869f1a92c084cf1c35 Mon Sep 17 00:00:00 2001
+From: Stefan Agner <stefan.agner@toradex.com>
+Date: Wed, 13 Sep 2017 14:29:44 -0700
+Subject: [PATCH 195/256] imx: add macro to detect whether USB PHY is active
+
+This macro allows to detect whether the USB PHY is active. This
+is helpful to detect if the boot ROM has previously started the
+USB serial downloader.
+
+The idea is taken from the mfgtool support in the NXP U-Boot:
+http://git.freescale.com/git/cgit.cgi/imx/uboot-imx.git/commit/?h=imx_v2016.03_4.1.15_2.0.0_ga&id=a352ed3c5184b95c4c9f7468f5fbb5f43de5e412
+
+Signed-off-by: Stefan Agner <stefan.agner@toradex.com>
+Acked-by: Marcel Ziswiler <marcel.ziswiler@toradex.com>
+Tested-by: Fabio Estevam <fabio.estevam@nxp.com>
+Reviewed-by: Eric Nelson <eric@nelint.com>
+---
+ arch/arm/include/asm/arch-mx6/sys_proto.h | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/arch/arm/include/asm/arch-mx6/sys_proto.h b/arch/arm/include/asm/arch-mx6/sys_proto.h
+index 14f5d948c9..ba73943260 100644
+--- a/arch/arm/include/asm/arch-mx6/sys_proto.h
++++ b/arch/arm/include/asm/arch-mx6/sys_proto.h
+@@ -6,3 +6,10 @@
+  */
+ 
+ #include <asm/mach-imx/sys_proto.h>
++
++#define USBPHY_PWD		0x00000000
++
++#define USBPHY_PWD_RXPWDRX	(1 << 20) /* receiver block power down */
++
++#define is_usbotg_phy_active(void) (!(readl(USB_PHY0_BASE_ADDR + USBPHY_PWD) & \
++				   USBPHY_PWD_RXPWDRX))
+-- 
+2.13.6
+

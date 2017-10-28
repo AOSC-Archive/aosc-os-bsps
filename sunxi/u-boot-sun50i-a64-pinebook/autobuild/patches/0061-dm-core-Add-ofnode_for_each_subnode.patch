@@ -1,0 +1,128 @@
+From 3991f42ed2e38aff28ba3c24369bfbd90620bea7 Mon Sep 17 00:00:00 2001
+From: Simon Glass <sjg@chromium.org>
+Date: Sat, 5 Aug 2017 15:45:54 -0600
+Subject: [PATCH 061/256] dm: core: Add ofnode_for_each_subnode()
+
+Add a convenience macro to iterate over subnodes of a node. Make use of
+this where appropriate in the code.
+
+Signed-off-by: Simon Glass <sjg@chromium.org>
+---
+ arch/arm/mach-tegra/xusb-padctl-common.c |  8 ++------
+ drivers/core/ofnode.c                    |  9 +++++----
+ drivers/misc/cros_ec.c                   |  3 +--
+ drivers/power/pmic/pmic-uclass.c         |  4 +---
+ include/dm/ofnode.h                      | 24 ++++++++++++++++++++++++
+ 5 files changed, 33 insertions(+), 15 deletions(-)
+
+diff --git a/arch/arm/mach-tegra/xusb-padctl-common.c b/arch/arm/mach-tegra/xusb-padctl-common.c
+index 37b5b8fb5b..abc18c03a5 100644
+--- a/arch/arm/mach-tegra/xusb-padctl-common.c
++++ b/arch/arm/mach-tegra/xusb-padctl-common.c
+@@ -224,9 +224,7 @@ tegra_xusb_padctl_config_parse_dt(struct tegra_xusb_padctl *padctl,
+ 
+ 	config->name = ofnode_get_name(node);
+ 
+-	for (subnode = ofnode_first_subnode(node);
+-	     ofnode_valid(subnode);
+-	     subnode = ofnode_next_subnode(subnode)) {
++	ofnode_for_each_subnode(subnode, node) {
+ 		struct tegra_xusb_padctl_group *group;
+ 		int err;
+ 
+@@ -256,9 +254,7 @@ static int tegra_xusb_padctl_parse_dt(struct tegra_xusb_padctl *padctl,
+ 		return err;
+ 	}
+ 
+-	for (subnode = ofnode_first_subnode(node);
+-	     ofnode_valid(subnode);
+-	     subnode = ofnode_next_subnode(subnode)) {
++	ofnode_for_each_subnode(subnode, node) {
+ 		struct tegra_xusb_padctl_config *config = &padctl->config;
+ 
+ 		debug("%s: subnode=%s\n", __func__, ofnode_get_name(subnode));
+diff --git a/drivers/core/ofnode.c b/drivers/core/ofnode.c
+index 0685b689d8..c6ca13fabf 100644
+--- a/drivers/core/ofnode.c
++++ b/drivers/core/ofnode.c
+@@ -390,10 +390,11 @@ int ofnode_decode_display_timing(ofnode parent, int index,
+ 	if (!ofnode_valid(timings))
+ 		return -EINVAL;
+ 
+-	for (i = 0, node = ofnode_first_subnode(timings);
+-	     ofnode_valid(node) && i != index;
+-	     node = ofnode_first_subnode(node))
+-		i++;
++	i = 0;
++	ofnode_for_each_subnode(node, timings) {
++		if (i++ == index)
++			break;
++	}
+ 
+ 	if (!ofnode_valid(node))
+ 		return -EINVAL;
+diff --git a/drivers/misc/cros_ec.c b/drivers/misc/cros_ec.c
+index feaa5d8567..eefaaa53ad 100644
+--- a/drivers/misc/cros_ec.c
++++ b/drivers/misc/cros_ec.c
+@@ -1038,8 +1038,7 @@ int cros_ec_decode_ec_flash(struct udevice *dev, struct fdt_cros_ec *config)
+ 
+ 	config->flash_erase_value = ofnode_read_s32_default(flash_node,
+ 							    "erase-value", -1);
+-	for (node = ofnode_first_subnode(flash_node); ofnode_valid(node);
+-	     node = ofnode_next_subnode(node)) {
++	ofnode_for_each_subnode(node, flash_node) {
+ 		const char *name = ofnode_get_name(node);
+ 		enum ec_flash_region region;
+ 
+diff --git a/drivers/power/pmic/pmic-uclass.c b/drivers/power/pmic/pmic-uclass.c
+index 953bbe5026..64964e4e96 100644
+--- a/drivers/power/pmic/pmic-uclass.c
++++ b/drivers/power/pmic/pmic-uclass.c
+@@ -34,9 +34,7 @@ int pmic_bind_children(struct udevice *pmic, ofnode parent,
+ 	debug("%s for '%s' at node offset: %d\n", __func__, pmic->name,
+ 	      dev_of_offset(pmic));
+ 
+-	for (node = ofnode_first_subnode(parent);
+-	     ofnode_valid(node);
+-	     node = ofnode_next_subnode(node)) {
++	ofnode_for_each_subnode(node, parent) {
+ 		node_name = ofnode_get_name(node);
+ 
+ 		debug("* Found child node: '%s'\n", node_name);
+diff --git a/include/dm/ofnode.h b/include/dm/ofnode.h
+index de2769ed53..79374b8f91 100644
+--- a/include/dm/ofnode.h
++++ b/include/dm/ofnode.h
+@@ -628,4 +628,28 @@ int ofnode_read_resource(ofnode node, uint index, struct resource *res);
+ int ofnode_read_resource_byname(ofnode node, const char *name,
+ 				struct resource *res);
+ 
++/**
++ * ofnode_for_each_subnode() - iterate over all subnodes of a parent
++ *
++ * @node:       child node (ofnode, lvalue)
++ * @parent:     parent node (ofnode)
++ *
++ * This is a wrapper around a for loop and is used like so:
++ *
++ *	ofnode node;
++ *
++ *	ofnode_for_each_subnode(node, parent) {
++ *		Use node
++ *		...
++ *	}
++ *
++ * Note that this is implemented as a macro and @node is used as
++ * iterator in the loop. The parent variable can be a constant or even a
++ * literal.
++ */
++#define ofnode_for_each_subnode(node, parent) \
++	for (node = ofnode_first_subnode(parent); \
++	     ofnode_valid(node); \
++	     node = ofnode_next_subnode(node))
++
+ #endif
+-- 
+2.13.6
+

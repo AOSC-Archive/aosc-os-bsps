@@ -1,0 +1,68 @@
+From d69bb0ecbf9f73dc75096368653a796d5167b884 Mon Sep 17 00:00:00 2001
+From: Simon Glass <sjg@chromium.org>
+Date: Tue, 5 Sep 2017 19:49:49 -0600
+Subject: [PATCH 188/256] bootstage: Provide a separate record count setting
+ for SPL
+
+With SPL we often have limited memory and do not need very many bootstage
+records. Add a separate Kconfig option for SPL.
+
+Signed-off-by: Simon Glass <sjg@chromium.org>
+Reviewed-by: Bin Meng <bmeng.cn@gmail.com>
+---
+ common/Kconfig     | 7 +++++++
+ common/bootstage.c | 6 +++---
+ 2 files changed, 10 insertions(+), 3 deletions(-)
+
+diff --git a/common/Kconfig b/common/Kconfig
+index abd4146922..540cc9999b 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -53,6 +53,13 @@ config BOOTSTAGE_RECORD_COUNT
+ 	  This is the size of the bootstage record list and is the maximum
+ 	  number of bootstage records that can be recorded.
+ 
++config SPL_BOOTSTAGE_RECORD_COUNT
++	int "Number of boot stage records to store for SPL"
++	default 5
++	help
++	  This is the size of the bootstage record list and is the maximum
++	  number of bootstage records that can be recorded.
++
+ config BOOTSTAGE_FDT
+ 	bool "Store boot timing information in the OS device tree"
+ 	depends on BOOTSTAGE
+diff --git a/common/bootstage.c b/common/bootstage.c
+index efc99fc681..b866e66979 100644
+--- a/common/bootstage.c
++++ b/common/bootstage.c
+@@ -18,7 +18,7 @@
+ DECLARE_GLOBAL_DATA_PTR;
+ 
+ enum {
+-	RECORD_COUNT = CONFIG_BOOTSTAGE_RECORD_COUNT,
++	RECORD_COUNT = CONFIG_VAL(BOOTSTAGE_RECORD_COUNT),
+ };
+ 
+ struct bootstage_record {
+@@ -327,7 +327,7 @@ void bootstage_report(void)
+ 	}
+ 	if (data->rec_count > RECORD_COUNT)
+ 		printf("Overflowed internal boot id table by %d entries\n"
+-		       "- please increase CONFIG_BOOTSTAGE_RECORD_COUNT\n",
++		       "Please increase CONFIG_(SPL_)BOOTSTAGE_RECORD_COUNT\n",
+ 		       data->rec_count - RECORD_COUNT);
+ 
+ 	puts("\nAccumulated time:\n");
+@@ -456,7 +456,7 @@ int bootstage_unstash(const void *base, int size)
+ 
+ 	if (data->rec_count + hdr->count > RECORD_COUNT) {
+ 		debug("%s: Bootstage has %d records, we have space for %d\n"
+-			"- please increase CONFIG_BOOTSTAGE_RECORD_COUNT\n",
++			"Please increase CONFIG_(SPL_)BOOTSTAGE_RECORD_COUNT\n",
+ 		      __func__, hdr->count, RECORD_COUNT - data->rec_count);
+ 		return -ENOSPC;
+ 	}
+-- 
+2.13.6
+

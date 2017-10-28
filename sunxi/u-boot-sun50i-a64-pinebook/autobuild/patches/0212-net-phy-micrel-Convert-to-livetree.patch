@@ -1,0 +1,44 @@
+From b343837e90bf7eb1b7b7b5117cd6e101b72bda10 Mon Sep 17 00:00:00 2001
+From: Philipp Tomsich <philipp.tomsich@theobroma-systems.com>
+Date: Mon, 11 Sep 2017 22:04:14 +0200
+Subject: [PATCH 212/256] net: phy: micrel: Convert to livetree
+
+Update the Micrel KSZ90x1 driver for a live tree.
+
+Signed-off-by: Philipp Tomsich <philipp.tomsich@theobroma-systems.com>
+Acked-by: Joe Hershberger <joe.hershberger@ni.com>
+Reviewed-by: Simon Glass <sjg@chromium.org>
+---
+ drivers/net/phy/micrel_ksz90x1.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/phy/micrel_ksz90x1.c b/drivers/net/phy/micrel_ksz90x1.c
+index 0bb99e6bc6..b350a61aa6 100644
+--- a/drivers/net/phy/micrel_ksz90x1.c
++++ b/drivers/net/phy/micrel_ksz90x1.c
+@@ -9,11 +9,11 @@
+  * (C) Copyright 2017 Adaptrum, Inc.
+  * Written by Alexandru Gagniuc <alex.g@adaptrum.com> for Adaptrum, Inc.
+  */
++
+ #include <config.h>
+ #include <common.h>
+ #include <dm.h>
+ #include <errno.h>
+-#include <fdtdec.h>
+ #include <micrel.h>
+ #include <phy.h>
+ 
+@@ -120,8 +120,7 @@ static int ksz90x1_of_config_group(struct phy_device *phydev,
+ 		return -EOPNOTSUPP;
+ 
+ 	for (i = 0; i < ofcfg->grpsz; i++) {
+-		val[i] = fdtdec_get_uint(gd->fdt_blob, dev_of_offset(dev),
+-					 ofcfg->grp[i].name, -1);
++		val[i] = dev_read_u32_default(dev, ofcfg->grp[i].name, ~0);
+ 		offset = ofcfg->grp[i].off;
+ 		if (val[i] == -1) {
+ 			/* Default register value for KSZ9021 */
+-- 
+2.13.6
+

@@ -1,0 +1,54 @@
+From e203dcf23e9eabc2e4f3d0b079457cd1516f2081 Mon Sep 17 00:00:00 2001
+From: Stefan Agner <stefan.agner@toradex.com>
+Date: Wed, 13 Sep 2017 14:29:45 -0700
+Subject: [PATCH 196/256] imx_common: detect USB serial downloader reliably
+
+The current mechanism using SCR/GPR registers work well when
+the serial downloader boot mode has been selected explicitly
+(either via boot mode pins or using bmode command). However,
+in case the system entered boot ROM due to unbootable primary
+boot devices (e.g. empty eMMC), the SPL fails to detect that
+it has been downloaded through serial loader and tries to
+continue booting from eMMC:
+  Trying to boot from MMC1
+  mmc_load_image_raw_sector: mmc block read error
+  SPL: failed to boot from all boot devices
+  ### ERROR ### Please RESET the board ###
+
+The only known way to reliably detect USB serial downloader
+is by checking the USB PHY receiver block power state...
+
+Signed-off-by: Stefan Agner <stefan.agner@toradex.com>
+Acked-by: Marcel Ziswiler <marcel.ziswiler@toradex.com>
+Tested-by: Fabio Estevam <fabio.estevam@nxp.com>
+Reviewed-by: Eric Nelson <eric@nelint.com>
+---
+ arch/arm/mach-imx/spl.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/arch/arm/mach-imx/spl.c b/arch/arm/mach-imx/spl.c
+index 258578ac25..82ea6b85d6 100644
+--- a/arch/arm/mach-imx/spl.c
++++ b/arch/arm/mach-imx/spl.c
+@@ -31,6 +31,18 @@ u32 spl_boot_device(void)
+ 	if (((bmode >> 24) & 0x03) == 0x01) /* Serial Downloader */
+ 		return BOOT_DEVICE_BOARD;
+ 
++	/*
++	 * The above method does not detect that the boot ROM used
++	 * serial downloader in case the boot ROM decided to use the
++	 * serial downloader as a fall back (primary boot source failed).
++	 *
++	 * Infer that the boot ROM used the USB serial downloader by
++	 * checking whether the USB PHY is currently active... This
++	 * assumes that SPL did not (yet) initialize the USB PHY...
++	 */
++	if (is_usbotg_phy_active())
++		return BOOT_DEVICE_BOARD;
++
+ 	/* BOOT_CFG1[7:4] - see IMX6DQRM Table 8-8 */
+ 	switch ((reg & IMX6_BMODE_MASK) >> IMX6_BMODE_SHIFT) {
+ 	 /* EIM: See 8.5.1, Table 8-9 */
+-- 
+2.13.6
+

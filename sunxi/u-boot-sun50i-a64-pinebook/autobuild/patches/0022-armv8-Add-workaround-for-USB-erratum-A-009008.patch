@@ -1,0 +1,140 @@
+From 2ab1553f08b1cb4a76764b1a67f75f77554860e3 Mon Sep 17 00:00:00 2001
+From: Ran Wang <ran.wang_1@nxp.com>
+Date: Mon, 4 Sep 2017 18:46:48 +0800
+Subject: [PATCH 022/256] armv8: Add workaround for USB erratum A-009008
+
+USB High Speed (HS) EYE Height Adjustment
+USB HS speed eye diagram fails with the default value at
+many corners, particularly at a high temperature
+
+Optimal eye at TXREFTUNE value to 0x9 is observed, change
+set the same value.
+
+Signed-off-by: Ran Wang <ran.wang_1@nxp.com>
+[YS: Reordered Kconfig options]
+Reviewed-by: York Sun <york.sun@nxp.com>
+---
+ arch/arm/cpu/armv8/fsl-layerscape/Kconfig          |  6 ++++++
+ arch/arm/cpu/armv8/fsl-layerscape/soc.c            | 23 ++++++++++++++++++++++
+ .../include/asm/arch-fsl-layerscape/immap_lsch2.h  |  6 ++++++
+ .../include/asm/arch-fsl-layerscape/immap_lsch3.h  |  1 +
+ 4 files changed, 36 insertions(+)
+
+diff --git a/arch/arm/cpu/armv8/fsl-layerscape/Kconfig b/arch/arm/cpu/armv8/fsl-layerscape/Kconfig
+index 82d61600e1..64eadfd25a 100644
+--- a/arch/arm/cpu/armv8/fsl-layerscape/Kconfig
++++ b/arch/arm/cpu/armv8/fsl-layerscape/Kconfig
+@@ -16,6 +16,7 @@ config ARCH_LS1043A
+ 	select SYS_FSL_DDR_BE
+ 	select SYS_FSL_DDR_VER_50
+ 	select SYS_FSL_ERRATUM_A008850
++	select SYS_FSL_ERRATUM_A009008
+ 	select SYS_FSL_ERRATUM_A009660
+ 	select SYS_FSL_ERRATUM_A009663
+ 	select SYS_FSL_ERRATUM_A009929
+@@ -39,6 +40,7 @@ config ARCH_LS1046A
+ 	select SYS_FSL_ERRATUM_A008336
+ 	select SYS_FSL_ERRATUM_A008511
+ 	select SYS_FSL_ERRATUM_A008850
++	select SYS_FSL_ERRATUM_A009008
+ 	select SYS_FSL_ERRATUM_A009801
+ 	select SYS_FSL_ERRATUM_A009803
+ 	select SYS_FSL_ERRATUM_A009942
+@@ -100,6 +102,7 @@ config ARCH_LS2080A
+ 	select SYS_FSL_ERRATUM_A008511
+ 	select SYS_FSL_ERRATUM_A008514
+ 	select SYS_FSL_ERRATUM_A008585
++	select SYS_FSL_ERRATUM_A009008
+ 	select SYS_FSL_ERRATUM_A009635
+ 	select SYS_FSL_ERRATUM_A009663
+ 	select SYS_FSL_ERRATUM_A009801
+@@ -248,6 +251,9 @@ config LS_PPA_ESBC_HDR_SIZE
+ 
+ endmenu
+ 
++config SYS_FSL_ERRATUM_A009008
++	bool "Workaround for USB PHY erratum A009008"
++
+ config SYS_FSL_ERRATUM_A010315
+ 	bool "Workaround for PCIe erratum A010315"
+ 
+diff --git a/arch/arm/cpu/armv8/fsl-layerscape/soc.c b/arch/arm/cpu/armv8/fsl-layerscape/soc.c
+index a3b9f6baa4..b9e3a2075a 100644
+--- a/arch/arm/cpu/armv8/fsl-layerscape/soc.c
++++ b/arch/arm/cpu/armv8/fsl-layerscape/soc.c
+@@ -54,6 +54,27 @@ bool soc_has_aiop(void)
+ 	return false;
+ }
+ 
++static inline void set_usb_txvreftune(u32 __iomem *scfg, u32 offset)
++{
++	scfg_clrsetbits32(scfg + offset / 4,
++			0xF << 6,
++			SCFG_USB_TXVREFTUNE << 6);
++}
++
++static void erratum_a009008(void)
++{
++#ifdef CONFIG_SYS_FSL_ERRATUM_A009008
++	u32 __iomem *scfg = (u32 __iomem *)SCFG_BASE;
++#if defined(CONFIG_ARCH_LS1043A) || defined(CONFIG_ARCH_LS1046A)
++	set_usb_txvreftune(scfg, SCFG_USB3PRM1CR_USB1);
++	set_usb_txvreftune(scfg, SCFG_USB3PRM1CR_USB2);
++	set_usb_txvreftune(scfg, SCFG_USB3PRM1CR_USB3);
++#elif defined(CONFIG_ARCH_LS2080A)
++	set_usb_txvreftune(scfg, SCFG_USB3PRM1CR);
++#endif
++#endif /* CONFIG_SYS_FSL_ERRATUM_A009008 */
++}
++
+ #if defined(CONFIG_FSL_LSCH3)
+ /*
+  * This erratum requires setting a value to eddrtqcr1 to
+@@ -200,6 +221,7 @@ void fsl_lsch3_early_init_f(void)
+ #endif
+ 	erratum_a008514();
+ 	erratum_a008336();
++	erratum_a009008();
+ #ifdef CONFIG_CHAIN_OF_TRUST
+ 	/* In case of Secure Boot, the IBR configures the SMMU
+ 	* to allow only Secure transactions.
+@@ -478,6 +500,7 @@ void fsl_lsch2_early_init_f(void)
+ 	erratum_a009929();
+ 	erratum_a009660();
+ 	erratum_a010539();
++	erratum_a009008();
+ }
+ #endif
+ 
+diff --git a/arch/arm/include/asm/arch-fsl-layerscape/immap_lsch2.h b/arch/arm/include/asm/arch-fsl-layerscape/immap_lsch2.h
+index f169724379..4e77102d06 100644
+--- a/arch/arm/include/asm/arch-fsl-layerscape/immap_lsch2.h
++++ b/arch/arm/include/asm/arch-fsl-layerscape/immap_lsch2.h
+@@ -337,6 +337,12 @@ struct ccsr_gur {
+ #define SCFG_USBPWRFAULT_USB2_SHIFT	2
+ #define SCFG_USBPWRFAULT_USB1_SHIFT	0
+ 
++#define SCFG_BASE			0x01570000
++#define SCFG_USB3PRM1CR_USB1		0x070
++#define SCFG_USB3PRM1CR_USB2		0x07C
++#define SCFG_USB3PRM1CR_USB3		0x088
++#define SCFG_USB_TXVREFTUNE			0x9
++
+ #define SCFG_SNPCNFGCR_SECRDSNP		0x80000000
+ #define SCFG_SNPCNFGCR_SECWRSNP		0x40000000
+ #define SCFG_SNPCNFGCR_SATARDSNP	0x00800000
+diff --git a/arch/arm/include/asm/arch-fsl-layerscape/immap_lsch3.h b/arch/arm/include/asm/arch-fsl-layerscape/immap_lsch3.h
+index ffc5fa2636..6e4d243b07 100644
+--- a/arch/arm/include/asm/arch-fsl-layerscape/immap_lsch3.h
++++ b/arch/arm/include/asm/arch-fsl-layerscape/immap_lsch3.h
+@@ -133,6 +133,7 @@
+ #define SCFG_BASE		0x01fc0000
+ #define SCFG_USB3PRM1CR			0x000
+ #define SCFG_USB3PRM1CR_INIT		0x27672b2a
++#define SCFG_USB_TXVREFTUNE		0x9
+ #define SCFG_QSPICLKCTLR	0x10
+ 
+ #define TP_ITYP_AV		0x00000001	/* Initiator available */
+-- 
+2.13.6
+

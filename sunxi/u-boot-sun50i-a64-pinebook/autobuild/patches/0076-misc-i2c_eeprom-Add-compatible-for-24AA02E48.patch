@@ -1,0 +1,29 @@
+From 726406670741b5556e23207aeda95a1107abba2a Mon Sep 17 00:00:00 2001
+From: Wenyou Yang <wenyou.yang@microchip.com>
+Date: Mon, 31 Jul 2017 11:25:30 +0800
+Subject: [PATCH 076/256] misc: i2c_eeprom: Add compatible for 24AA02E48
+
+Add the new compatible "microchip,24aa02e48" to accommodate 24AA02E48,
+the 24AA02E48 is a 2K I2C Serial EEPROM with pre-programmed globally
+unique, 48-bit node address, and 8-byte page size.
+
+Signed-off-by: Wenyou Yang <wenyou.yang@microchip.com>
+---
+ drivers/misc/i2c_eeprom.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/misc/i2c_eeprom.c b/drivers/misc/i2c_eeprom.c
+index a14e83225b..b2de3dffc6 100644
+--- a/drivers/misc/i2c_eeprom.c
++++ b/drivers/misc/i2c_eeprom.c
+@@ -66,6 +66,7 @@ static int i2c_eeprom_std_probe(struct udevice *dev)
+ 
+ static const struct udevice_id i2c_eeprom_std_ids[] = {
+ 	{ .compatible = "i2c-eeprom", .data = 0 },
++	{ .compatible = "microchip,24aa02e48", .data = 3 },
+ 	{ .compatible = "atmel,24c01a", .data = 3 },
+ 	{ .compatible = "atmel,24c02", .data = 3 },
+ 	{ .compatible = "atmel,24c04", .data = 4 },
+-- 
+2.13.6
+
