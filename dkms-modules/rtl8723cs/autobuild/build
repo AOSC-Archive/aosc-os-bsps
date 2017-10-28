@@ -6,9 +6,8 @@ git clone https://github.com/Icenowy/rtl8723cs "$PKGDIR"/usr/src/rtl8723cs-$DATE
 pushd "$PKGDIR"/usr/src/rtl8723cs-$DATE
 git checkout $REV
 rm -rf .git
+sed -i 's/obj-$(CONFIG_RTL8723CS)/obj-m/g' Makefile
 cat > dkms.conf << EOF
-MAKE="'make' KVER=\${kernelver} KSRC=/lib/modules/\${kernelver}/build"
-CLEAN="make clean"
 PACKAGE_NAME="rtl8723cs"
 PACKAGE_VERSION="$DATE"
 BUILT_MODULE_NAME[0]="8723cs"
