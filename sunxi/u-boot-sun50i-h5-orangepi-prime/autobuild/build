@@ -1,5 +1,5 @@
 UBOOT_BOARD=orangepi_prime
-LINUX_BOARD=sun50i-a64-orangepi-prime
+LINUX_BOARD=sun50i-h5-orangepi-prime
 
 unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
 
