@@ -1,0 +1,67 @@
+From d4dc6e218ef516b1e1395a0eb452d1a9e06fd745 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Thu, 26 Oct 2017 11:14:46 +0800
+Subject: [PATCH 3/4] video: add an option for video simplefb via DT
+
+Add an option to indicate that the video driver should setup a SimpleFB
+node that passes the video framebuffer initialized by U-Boot to the
+operating system kernel.
+
+Currently only the Allwinner DE driver uses this option, and the
+definition of this option in the sunxi-common.h config header is
+converted to an imply of this option from CONFIG_VIDEO_SUNXI.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+Acked-by: Maxime Ripard <maxime.ripard@free-electrons.com>
+---
+ arch/arm/mach-sunxi/Kconfig    | 1 +
+ drivers/video/Kconfig          | 8 ++++++++
+ include/configs/sunxi-common.h | 3 ---
+ 3 files changed, 9 insertions(+), 3 deletions(-)
+
+diff --git a/arch/arm/mach-sunxi/Kconfig b/arch/arm/mach-sunxi/Kconfig
+index 3c29fc61f7..33869a3dde 100644
+--- a/arch/arm/mach-sunxi/Kconfig
++++ b/arch/arm/mach-sunxi/Kconfig
+@@ -615,6 +615,7 @@ config VIDEO_SUNXI
+ 	depends on !MACH_SUN9I
+ 	depends on !MACH_SUN50I
+ 	select VIDEO
++	imply VIDEO_DT_SIMPLEFB
+ 	default y
+ 	---help---
+ 	Say Y here to add support for using a cfb console on the HDMI, LCD
+diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
+index e6b7f11dc9..45a105db06 100644
+--- a/drivers/video/Kconfig
++++ b/drivers/video/Kconfig
+@@ -650,4 +650,12 @@ config VIDEO_SIMPLE
+ 	  before u-boot starts, and u-boot will simply render to the pre-
+ 	  allocated frame buffer surface.
+ 
++config VIDEO_DT_SIMPLEFB
++	bool "Enable SimpleFB support for passing framebuffer to OS"
++	help
++	  Enables the code to pass the framebuffer to the kernel as a
++	  simple framebuffer in the device tree.
++	  The video output is initialized by U-Boot, and kept by the
++	  kernel.
++
+ endmenu
+diff --git a/include/configs/sunxi-common.h b/include/configs/sunxi-common.h
+index 7d86b58417..4207398eb9 100644
+--- a/include/configs/sunxi-common.h
++++ b/include/configs/sunxi-common.h
+@@ -275,9 +275,6 @@ extern int soft_i2c_gpio_scl;
+  */
+ #define CONFIG_SUNXI_MAX_FB_SIZE (16 << 20)
+ 
+-/* Do we want to initialize a simple FB? */
+-#define CONFIG_VIDEO_DT_SIMPLEFB
+-
+ #define CONFIG_VIDEO_LOGO
+ #define CONFIG_VIDEO_STD_TIMINGS
+ #define CONFIG_I2C_EDID
+-- 
+2.13.6
+
