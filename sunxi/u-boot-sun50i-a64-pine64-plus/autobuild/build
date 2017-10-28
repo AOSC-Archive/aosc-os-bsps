@@ -1,6 +1,9 @@
 UBOOT_BOARD=pine64_plus
 LINUX_BOARD=sun50i-a64-pine64-plus
 
+ln -sv /usr/bin/ld.bfd ld
+export PATH="$PWD:$PATH"
+
 . autobuild/build-common/build-atf
 
 make ${UBOOT_BOARD}_defconfig
