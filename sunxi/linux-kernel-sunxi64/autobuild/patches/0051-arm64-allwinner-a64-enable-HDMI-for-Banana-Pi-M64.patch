@@ -1,0 +1,67 @@
+From 341504a842ce6be2292296426868a28a2ce89033 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Sat, 6 May 2017 20:20:56 +0800
+Subject: [PATCH 51/78] arm64: allwinner: a64: enable HDMI for Banana Pi M64
+
+BPi M64 board has a HDMI connector connected to the HDMI controller in
+A64 SoC, and the HDMI controller's HVCC pin is powered via DLDO1.
+
+Enable HDMI-related device nodes.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ .../boot/dts/allwinner/sun50i-a64-bananapi-m64.dts      | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-bananapi-m64.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-bananapi-m64.dts
+index 4a8d3f83a36e..01fbbf4bfbe1 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a64-bananapi-m64.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-bananapi-m64.dts
+@@ -66,6 +66,10 @@
+ 	};
+ };
+ 
++&de {
++	status = "okay";
++};
++
+ &ehci1 {
+ 	status = "okay";
+ };
+@@ -79,6 +83,11 @@
+ 	status = "okay";
+ };
+ 
++&hdmi {
++	hvcc-supply = <&reg_dldo1>;
++	status = "okay";
++};
++
+ &i2c1 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&i2c1_pins>;
+@@ -96,6 +105,10 @@
+ 	};
+ };
+ 
++&mixer1 {
++	status = "okay";
++};
++
+ &mmc0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&mmc0_pins>;
+@@ -247,6 +260,10 @@
+ 	regulator-name = "vcc-rtc";
+ };
+ 
++&tcon1 {
++	status = "okay";
++};
++
+ &uart0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&uart0_pins_a>;
+-- 
+2.13.6
+
