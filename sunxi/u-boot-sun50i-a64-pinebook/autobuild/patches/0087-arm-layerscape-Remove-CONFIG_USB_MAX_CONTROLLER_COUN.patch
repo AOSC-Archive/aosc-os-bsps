@@ -1,0 +1,208 @@
+From 90be2fe37e8e9a63266ff27ebe35c362353fe8e3 Mon Sep 17 00:00:00 2001
+From: Ran Wang <ran.wang_1@nxp.com>
+Date: Mon, 23 Oct 2017 10:09:23 +0800
+Subject: [PATCH 087/105] arm: layerscape: Remove
+ CONFIG_USB_MAX_CONTROLLER_COUNT
+
+Because COMFIG_DM_USB has been enabled and will not use it anymore.
+
+Signed-off-by: Ran Wang <ran.wang_1@nxp.com>
+Reviewed-by: Bin Meng <bmeng.cn@gmail.com>
+Reviewed-by: York Sun <york.sun@nxp.com>
+---
+ include/configs/ls1012afrdm.h | 5 -----
+ include/configs/ls1012aqds.h  | 3 ---
+ include/configs/ls1012ardb.h  | 4 ----
+ include/configs/ls1021aiot.h  | 3 ---
+ include/configs/ls1021aqds.h  | 3 ---
+ include/configs/ls1021atwr.h  | 3 ---
+ include/configs/ls1043aqds.h  | 3 ---
+ include/configs/ls1043ardb.h  | 5 -----
+ include/configs/ls1046aqds.h  | 3 ---
+ include/configs/ls1046ardb.h  | 5 -----
+ include/configs/ls2080aqds.h  | 5 -----
+ include/configs/ls2080ardb.h  | 5 -----
+ 12 files changed, 47 deletions(-)
+
+diff --git a/include/configs/ls1012afrdm.h b/include/configs/ls1012afrdm.h
+index 2e9c619bd5..efb4c00cd9 100644
+--- a/include/configs/ls1012afrdm.h
++++ b/include/configs/ls1012afrdm.h
+@@ -31,11 +31,6 @@
+        "kernel_load=0x96000000\0"              \
+        "kernel_size=0x2800000\0"
+ 
+-/*
+-* USB
+-*/
+-#define CONFIG_USB_MAX_CONTROLLER_COUNT         1
+-
+ #define CONFIG_CMD_MEMINFO
+ #define CONFIG_CMD_MEMTEST
+ #define CONFIG_SYS_MEMTEST_START	0x80000000
+diff --git a/include/configs/ls1012aqds.h b/include/configs/ls1012aqds.h
+index 70bf72c431..ffb512db45 100644
+--- a/include/configs/ls1012aqds.h
++++ b/include/configs/ls1012aqds.h
+@@ -118,9 +118,6 @@
+ #define CONFIG_EHCI_HCD_INIT_AFTER_RESET
+ #endif
+ 
+-/*XHCI Support - enabled by default*/
+-#define CONFIG_USB_MAX_CONTROLLER_COUNT         1
+-
+ /*  MMC  */
+ #ifdef CONFIG_MMC
+ #define CONFIG_FSL_ESDHC
+diff --git a/include/configs/ls1012ardb.h b/include/configs/ls1012ardb.h
+index 110fcc6323..0caa474636 100644
+--- a/include/configs/ls1012ardb.h
++++ b/include/configs/ls1012ardb.h
+@@ -19,10 +19,6 @@
+ #define CONFIG_SYS_MEMTEST_START	0x80000000
+ #define CONFIG_SYS_MEMTEST_END		0x9fffffff
+ 
+-/*
+-* USB
+-*/
+-#define CONFIG_USB_MAX_CONTROLLER_COUNT         1
+ 
+ /*
+  * I2C IO expander
+diff --git a/include/configs/ls1021aiot.h b/include/configs/ls1021aiot.h
+index 7c7f82f215..46bf55f891 100644
+--- a/include/configs/ls1021aiot.h
++++ b/include/configs/ls1021aiot.h
+@@ -19,9 +19,6 @@
+ #define CONFIG_SYS_INIT_RAM_ADDR	OCRAM_BASE_ADDR
+ #define CONFIG_SYS_INIT_RAM_SIZE	OCRAM_SIZE
+ 
+-/* XHCI Support - enabled by default */
+-#define CONFIG_USB_MAX_CONTROLLER_COUNT		1
+-
+ #define CONFIG_SYS_CLK_FREQ		100000000
+ #define CONFIG_DDR_CLK_FREQ		100000000
+ 
+diff --git a/include/configs/ls1021aqds.h b/include/configs/ls1021aqds.h
+index 8346e3658f..6669f2f960 100644
+--- a/include/configs/ls1021aqds.h
++++ b/include/configs/ls1021aqds.h
+@@ -404,9 +404,6 @@ unsigned long get_board_ddr_clk(void);
+ #define CONFIG_EHCI_HCD_INIT_AFTER_RESET
+ #endif
+ 
+-/*XHCI Support - enabled by default*/
+-#define CONFIG_USB_MAX_CONTROLLER_COUNT		1
+-
+ /*
+  * Video
+  */
+diff --git a/include/configs/ls1021atwr.h b/include/configs/ls1021atwr.h
+index 8ccc81642d..0f20e5e2cc 100644
+--- a/include/configs/ls1021atwr.h
++++ b/include/configs/ls1021atwr.h
+@@ -44,9 +44,6 @@
+ #define CONFIG_EHCI_HCD_INIT_AFTER_RESET
+ #endif
+ 
+-/* XHCI Support - enabled by default */
+-#define CONFIG_USB_MAX_CONTROLLER_COUNT        1
+-
+ #define CONFIG_SYS_CLK_FREQ		100000000
+ #define CONFIG_DDR_CLK_FREQ		100000000
+ 
+diff --git a/include/configs/ls1043aqds.h b/include/configs/ls1043aqds.h
+index 641ffc1400..8cc2abb2b6 100644
+--- a/include/configs/ls1043aqds.h
++++ b/include/configs/ls1043aqds.h
+@@ -370,9 +370,6 @@ unsigned long get_board_ddr_clk(void);
+ #endif
+ #endif
+ 
+-/* USB */
+-#define CONFIG_USB_MAX_CONTROLLER_COUNT		3
+-
+ /*
+  * Miscellaneous configurable options
+  */
+diff --git a/include/configs/ls1043ardb.h b/include/configs/ls1043ardb.h
+index 489f50c5b1..b4b4d5e178 100644
+--- a/include/configs/ls1043ardb.h
++++ b/include/configs/ls1043ardb.h
+@@ -284,11 +284,6 @@
+ #endif
+ #endif
+ 
+-/* USB */
+-#ifndef SPL_NO_USB
+-#define CONFIG_USB_MAX_CONTROLLER_COUNT		3
+-#endif
+-
+ /* SATA */
+ #ifndef SPL_NO_SATA
+ #define CONFIG_LIBATA
+diff --git a/include/configs/ls1046aqds.h b/include/configs/ls1046aqds.h
+index 7778f86881..586e9e9b6b 100644
+--- a/include/configs/ls1046aqds.h
++++ b/include/configs/ls1046aqds.h
+@@ -136,9 +136,6 @@ unsigned long get_board_ddr_clk(void);
+ #define CFG_LPUART_EN		0x2
+ #endif
+ 
+-/* USB */
+-#define CONFIG_USB_MAX_CONTROLLER_COUNT         3
+-
+ /* SATA */
+ #define CONFIG_LIBATA
+ #define CONFIG_SCSI_AHCI
+diff --git a/include/configs/ls1046ardb.h b/include/configs/ls1046ardb.h
+index 40ce8ff462..bb27dd058a 100644
+--- a/include/configs/ls1046ardb.h
++++ b/include/configs/ls1046ardb.h
+@@ -209,11 +209,6 @@
+ #endif
+ #endif
+ 
+-/* USB */
+-#ifndef SPL_NO_USB
+-#define CONFIG_USB_MAX_CONTROLLER_COUNT         3
+-#endif
+-
+ /* SATA */
+ #ifndef SPL_NO_SATA
+ #define CONFIG_LIBATA
+diff --git a/include/configs/ls2080aqds.h b/include/configs/ls2080aqds.h
+index 5dd1ff2065..f1968cc533 100644
+--- a/include/configs/ls2080aqds.h
++++ b/include/configs/ls2080aqds.h
+@@ -435,11 +435,6 @@ unsigned long get_board_ddr_clk(void);
+ 
+ #endif
+ 
+-/*
+- * USB
+- */
+-#define CONFIG_USB_MAX_CONTROLLER_COUNT		2
+-
+ #include <asm/fsl_secure_boot.h>
+ 
+ #endif /* __LS2_QDS_H */
+diff --git a/include/configs/ls2080ardb.h b/include/configs/ls2080ardb.h
+index eef78f21b6..48c3a5397f 100644
+--- a/include/configs/ls2080ardb.h
++++ b/include/configs/ls2080ardb.h
+@@ -333,11 +333,6 @@ unsigned long get_board_sys_clk(void);
+ 
+ #define CONFIG_MISC_INIT_R
+ 
+-/*
+- * USB
+- */
+-#define CONFIG_USB_MAX_CONTROLLER_COUNT         2
+-
+ #undef CONFIG_CMDLINE_EDITING
+ #include <config_distro_defaults.h>
+ 
+-- 
+2.13.6
+

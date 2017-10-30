@@ -1,0 +1,44 @@
+From 405835645a2db17152e6d6cdb4c9d1893f9501cc Mon Sep 17 00:00:00 2001
+From: Alexander Graf <agraf@suse.de>
+Date: Thu, 19 Oct 2017 23:23:50 +0200
+Subject: [PATCH 092/105] efi_loader: Disable env_save() call on boot
+
+With the introduction of EFI variable support, we also wanted to persist
+these EFI variables. However, the way it was implemented we ended up
+persisting all U-Boot environment variables on every EFI boot.
+
+That could potentially lead to unexpected side effects because variables
+that were not supposed to be written to persisted env get written. It also
+means we may end up writing the environment more often than we should.
+
+For this release, let's just disable EFI variable persistence and instead
+implement it properly for the next one.
+
+Reported-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
+Fixes: ad644e7c182 ("efi_loader: efi variable support")
+Signed-off-by: Alexander Graf <agraf@suse.de>
+Acked-by: Rob Clark <robdclark@gmail.com>
+Reviewed-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
+---
+ lib/efi_loader/efi_boottime.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/lib/efi_loader/efi_boottime.c b/lib/efi_loader/efi_boottime.c
+index f627340de4..743b84864f 100644
+--- a/lib/efi_loader/efi_boottime.c
++++ b/lib/efi_loader/efi_boottime.c
+@@ -1439,10 +1439,7 @@ static efi_status_t EFIAPI efi_exit_boot_services(void *image_handle,
+ 	/* Make sure that notification functions are not called anymore */
+ 	efi_tpl = TPL_HIGH_LEVEL;
+ 
+-#if defined(CONFIG_CMD_SAVEENV) && !defined(CONFIG_ENV_IS_NOWHERE)
+-	/* save any EFI variables that have been written: */
+-	env_save();
+-#endif
++	/* XXX Should persist EFI variables here */
+ 
+ 	board_quiesce_devices();
+ 
+-- 
+2.13.6
+

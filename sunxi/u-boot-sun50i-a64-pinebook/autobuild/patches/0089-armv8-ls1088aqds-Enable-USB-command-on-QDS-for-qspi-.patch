@@ -1,0 +1,34 @@
+From 18ed801e108130a86067a77b631f0875f371909b Mon Sep 17 00:00:00 2001
+From: Ran Wang <ran.wang_1@nxp.com>
+Date: Mon, 23 Oct 2017 10:09:25 +0800
+Subject: [PATCH 089/105] armv8: ls1088aqds: Enable USB command on QDS for
+ qspi-boot
+
+Signed-off-by: Amrita Kumari <amrita.kumari@nxp.com>
+Signed-off-by: Ashish Kumar <Ashish.Kumar@nxp.com>
+Signed-off-by: Ran Wang <ran.wang_1@nxp.com>
+Reviewed-by: Bin Meng <bmeng.cn@gmail.com>
+Reviewed-by: York Sun <york.sun@nxp.com>
+---
+ configs/ls1088aqds_qspi_defconfig | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/configs/ls1088aqds_qspi_defconfig b/configs/ls1088aqds_qspi_defconfig
+index b4e1c9895b..a75d403538 100644
+--- a/configs/ls1088aqds_qspi_defconfig
++++ b/configs/ls1088aqds_qspi_defconfig
+@@ -31,3 +31,11 @@ CONFIG_DM_SPI=y
+ CONFIG_FSL_DSPI=y
+ CONFIG_EFI_LOADER_BOUNCE_BUFFER=y
+ CONFIG_ENV_IS_IN_SPI_FLASH=y
++CONFIG_USB=y
++CONFIG_USB_GADGET=y
++CONFIG_CMD_USB=y
++CONFIG_DM_USB=y
++CONFIG_USB_XHCI_HCD=y
++CONFIG_USB_XHCI_DWC3=y
++CONFIG_USB_DWC3=y
++CONFIG_USB_STORAGE=y
+-- 
+2.13.6
+

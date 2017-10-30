@@ -1,0 +1,468 @@
+From af6715bfb44a26de93fafebe93872f12e9817f61 Mon Sep 17 00:00:00 2001
+From: Masahiro Yamada <yamada.masahiro@socionext.com>
+Date: Thu, 26 Oct 2017 21:24:17 +0900
+Subject: [PATCH 066/105] i2c: fti2c010: remove unused/unmaintained driver
+
+CONFIG_SYS_I2C_FTI2C010 is not enabled by anyone.
+
+Commit 2852709676c8 ("dm: i2c: Add a note to I2C drivers which need
+conversion") prompted to convert this driver to DM before June 2017,
+but not converted yet.
+
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+Acked-by: Heiko Schocher <hs@denx.de>
+---
+ drivers/i2c/Makefile   |   1 -
+ drivers/i2c/fti2c010.c | 340 -------------------------------------------------
+ drivers/i2c/fti2c010.h |  80 ------------
+ 3 files changed, 421 deletions(-)
+ delete mode 100644 drivers/i2c/fti2c010.c
+ delete mode 100644 drivers/i2c/fti2c010.h
+
+diff --git a/drivers/i2c/Makefile b/drivers/i2c/Makefile
+index 121e4e2990..3a8c61b485 100644
+--- a/drivers/i2c/Makefile
++++ b/drivers/i2c/Makefile
+@@ -20,7 +20,6 @@ obj-$(CONFIG_SYS_I2C_CADENCE) += i2c-cdns.o
+ obj-$(CONFIG_SYS_I2C_DAVINCI) += davinci_i2c.o
+ obj-$(CONFIG_SYS_I2C_DW) += designware_i2c.o
+ obj-$(CONFIG_SYS_I2C_FSL) += fsl_i2c.o
+-obj-$(CONFIG_SYS_I2C_FTI2C010) += fti2c010.o
+ obj-$(CONFIG_SYS_I2C_IHS) += ihs_i2c.o
+ obj-$(CONFIG_SYS_I2C_INTEL) += intel_i2c.o
+ obj-$(CONFIG_SYS_I2C_IMX_LPI2C) += imx_lpi2c.o
+diff --git a/drivers/i2c/fti2c010.c b/drivers/i2c/fti2c010.c
+deleted file mode 100644
+index 4da959fa53..0000000000
+--- a/drivers/i2c/fti2c010.c
++++ /dev/null
+@@ -1,340 +0,0 @@
+-/*
+- * Faraday I2C Controller
+- *
+- * (C) Copyright 2010 Faraday Technology
+- * Dante Su <dantesu@faraday-tech.com>
+- *
+- * SPDX-License-Identifier:	GPL-2.0+
+- *
+- * NOTE: This driver should be converted to driver model before June 2017.
+- * Please see doc/driver-model/i2c-howto.txt for instructions.
+- */
+-
+-#include <common.h>
+-#include <asm/io.h>
+-#include <i2c.h>
+-
+-#include "fti2c010.h"
+-
+-#ifndef CONFIG_SYS_I2C_SPEED
+-#define CONFIG_SYS_I2C_SPEED    5000
+-#endif
+-
+-#ifndef CONFIG_SYS_I2C_SLAVE
+-#define CONFIG_SYS_I2C_SLAVE    0
+-#endif
+-
+-#ifndef CONFIG_FTI2C010_CLOCK
+-#define CONFIG_FTI2C010_CLOCK   clk_get_rate("I2C")
+-#endif
+-
+-#ifndef CONFIG_FTI2C010_TIMEOUT
+-#define CONFIG_FTI2C010_TIMEOUT 10 /* ms */
+-#endif
+-
+-/* 7-bit dev address + 1-bit read/write */
+-#define I2C_RD(dev)             ((((dev) << 1) & 0xfe) | 1)
+-#define I2C_WR(dev)             (((dev) << 1) & 0xfe)
+-
+-struct fti2c010_chip {
+-	struct fti2c010_regs *regs;
+-};
+-
+-static struct fti2c010_chip chip_list[] = {
+-	{
+-		.regs = (struct fti2c010_regs *)CONFIG_FTI2C010_BASE,
+-	},
+-#ifdef CONFIG_FTI2C010_BASE1
+-	{
+-		.regs = (struct fti2c010_regs *)CONFIG_FTI2C010_BASE1,
+-	},
+-#endif
+-#ifdef CONFIG_FTI2C010_BASE2
+-	{
+-		.regs = (struct fti2c010_regs *)CONFIG_FTI2C010_BASE2,
+-	},
+-#endif
+-#ifdef CONFIG_FTI2C010_BASE3
+-	{
+-		.regs = (struct fti2c010_regs *)CONFIG_FTI2C010_BASE3,
+-	},
+-#endif
+-};
+-
+-static int fti2c010_reset(struct fti2c010_chip *chip)
+-{
+-	ulong ts;
+-	int ret = -1;
+-	struct fti2c010_regs *regs = chip->regs;
+-
+-	writel(CR_I2CRST, &regs->cr);
+-	for (ts = get_timer(0); get_timer(ts) < CONFIG_FTI2C010_TIMEOUT; ) {
+-		if (!(readl(&regs->cr) & CR_I2CRST)) {
+-			ret = 0;
+-			break;
+-		}
+-	}
+-
+-	if (ret)
+-		printf("fti2c010: reset timeout\n");
+-
+-	return ret;
+-}
+-
+-static int fti2c010_wait(struct fti2c010_chip *chip, uint32_t mask)
+-{
+-	int ret = -1;
+-	uint32_t stat, ts;
+-	struct fti2c010_regs *regs = chip->regs;
+-
+-	for (ts = get_timer(0); get_timer(ts) < CONFIG_FTI2C010_TIMEOUT; ) {
+-		stat = readl(&regs->sr);
+-		if ((stat & mask) == mask) {
+-			ret = 0;
+-			break;
+-		}
+-	}
+-
+-	return ret;
+-}
+-
+-static unsigned int set_i2c_bus_speed(struct fti2c010_chip *chip,
+-	unsigned int speed)
+-{
+-	struct fti2c010_regs *regs = chip->regs;
+-	unsigned int clk = CONFIG_FTI2C010_CLOCK;
+-	unsigned int gsr = 0;
+-	unsigned int tsr = 32;
+-	unsigned int div, rate;
+-
+-	for (div = 0; div < 0x3ffff; ++div) {
+-		/* SCLout = PCLK/(2*(COUNT + 2) + GSR) */
+-		rate = clk / (2 * (div + 2) + gsr);
+-		if (rate <= speed)
+-			break;
+-	}
+-
+-	writel(TGSR_GSR(gsr) | TGSR_TSR(tsr), &regs->tgsr);
+-	writel(CDR_DIV(div), &regs->cdr);
+-
+-	return rate;
+-}
+-
+-/*
+- * Initialization, must be called once on start up, may be called
+- * repeatedly to change the speed and slave addresses.
+- */
+-static void fti2c010_init(struct i2c_adapter *adap, int speed, int slaveaddr)
+-{
+-	struct fti2c010_chip *chip = chip_list + adap->hwadapnr;
+-
+-	if (adap->init_done)
+-		return;
+-
+-#ifdef CONFIG_SYS_I2C_INIT_BOARD
+-	/* Call board specific i2c bus reset routine before accessing the
+-	 * environment, which might be in a chip on that bus. For details
+-	 * about this problem see doc/I2C_Edge_Conditions.
+-	*/
+-	i2c_init_board();
+-#endif
+-
+-	/* master init */
+-
+-	fti2c010_reset(chip);
+-
+-	set_i2c_bus_speed(chip, speed);
+-
+-	/* slave init, don't care */
+-}
+-
+-/*
+- * Probe the given I2C chip address.  Returns 0 if a chip responded,
+- * not 0 on failure.
+- */
+-static int fti2c010_probe(struct i2c_adapter *adap, u8 dev)
+-{
+-	struct fti2c010_chip *chip = chip_list + adap->hwadapnr;
+-	struct fti2c010_regs *regs = chip->regs;
+-	int ret;
+-
+-	/* 1. Select slave device (7bits Address + 1bit R/W) */
+-	writel(I2C_WR(dev), &regs->dr);
+-	writel(CR_ENABLE | CR_TBEN | CR_START, &regs->cr);
+-	ret = fti2c010_wait(chip, SR_DT);
+-	if (ret)
+-		return ret;
+-
+-	/* 2. Select device register */
+-	writel(0, &regs->dr);
+-	writel(CR_ENABLE | CR_TBEN, &regs->cr);
+-	ret = fti2c010_wait(chip, SR_DT);
+-
+-	return ret;
+-}
+-
+-static void to_i2c_addr(u8 *buf, uint32_t addr, int alen)
+-{
+-	int i, shift;
+-
+-	if (!buf || alen <= 0)
+-		return;
+-
+-	/* MSB first */
+-	i = 0;
+-	shift = (alen - 1) * 8;
+-	while (alen-- > 0) {
+-		buf[i] = (u8)(addr >> shift);
+-		shift -= 8;
+-	}
+-}
+-
+-static int fti2c010_read(struct i2c_adapter *adap,
+-			u8 dev, uint addr, int alen, uchar *buf, int len)
+-{
+-	struct fti2c010_chip *chip = chip_list + adap->hwadapnr;
+-	struct fti2c010_regs *regs = chip->regs;
+-	int ret, pos;
+-	uchar paddr[4] = { 0 };
+-
+-	to_i2c_addr(paddr, addr, alen);
+-
+-	/*
+-	 * Phase A. Set register address
+-	 */
+-
+-	/* A.1 Select slave device (7bits Address + 1bit R/W) */
+-	writel(I2C_WR(dev), &regs->dr);
+-	writel(CR_ENABLE | CR_TBEN | CR_START, &regs->cr);
+-	ret = fti2c010_wait(chip, SR_DT);
+-	if (ret)
+-		return ret;
+-
+-	/* A.2 Select device register */
+-	for (pos = 0; pos < alen; ++pos) {
+-		uint32_t ctrl = CR_ENABLE | CR_TBEN;
+-
+-		writel(paddr[pos], &regs->dr);
+-		writel(ctrl, &regs->cr);
+-		ret = fti2c010_wait(chip, SR_DT);
+-		if (ret)
+-			return ret;
+-	}
+-
+-	/*
+-	 * Phase B. Get register data
+-	 */
+-
+-	/* B.1 Select slave device (7bits Address + 1bit R/W) */
+-	writel(I2C_RD(dev), &regs->dr);
+-	writel(CR_ENABLE | CR_TBEN | CR_START, &regs->cr);
+-	ret = fti2c010_wait(chip, SR_DT);
+-	if (ret)
+-		return ret;
+-
+-	/* B.2 Get register data */
+-	for (pos = 0; pos < len; ++pos) {
+-		uint32_t ctrl = CR_ENABLE | CR_TBEN;
+-		uint32_t stat = SR_DR;
+-
+-		if (pos == len - 1) {
+-			ctrl |= CR_NAK | CR_STOP;
+-			stat |= SR_ACK;
+-		}
+-		writel(ctrl, &regs->cr);
+-		ret = fti2c010_wait(chip, stat);
+-		if (ret)
+-			break;
+-		buf[pos] = (uchar)(readl(&regs->dr) & 0xFF);
+-	}
+-
+-	return ret;
+-}
+-
+-static int fti2c010_write(struct i2c_adapter *adap,
+-			u8 dev, uint addr, int alen, u8 *buf, int len)
+-{
+-	struct fti2c010_chip *chip = chip_list + adap->hwadapnr;
+-	struct fti2c010_regs *regs = chip->regs;
+-	int ret, pos;
+-	uchar paddr[4] = { 0 };
+-
+-	to_i2c_addr(paddr, addr, alen);
+-
+-	/*
+-	 * Phase A. Set register address
+-	 *
+-	 * A.1 Select slave device (7bits Address + 1bit R/W)
+-	 */
+-	writel(I2C_WR(dev), &regs->dr);
+-	writel(CR_ENABLE | CR_TBEN | CR_START, &regs->cr);
+-	ret = fti2c010_wait(chip, SR_DT);
+-	if (ret)
+-		return ret;
+-
+-	/* A.2 Select device register */
+-	for (pos = 0; pos < alen; ++pos) {
+-		uint32_t ctrl = CR_ENABLE | CR_TBEN;
+-
+-		writel(paddr[pos], &regs->dr);
+-		writel(ctrl, &regs->cr);
+-		ret = fti2c010_wait(chip, SR_DT);
+-		if (ret)
+-			return ret;
+-	}
+-
+-	/*
+-	 * Phase B. Set register data
+-	 */
+-	for (pos = 0; pos < len; ++pos) {
+-		uint32_t ctrl = CR_ENABLE | CR_TBEN;
+-
+-		if (pos == len - 1)
+-			ctrl |= CR_STOP;
+-		writel(buf[pos], &regs->dr);
+-		writel(ctrl, &regs->cr);
+-		ret = fti2c010_wait(chip, SR_DT);
+-		if (ret)
+-			break;
+-	}
+-
+-	return ret;
+-}
+-
+-static unsigned int fti2c010_set_bus_speed(struct i2c_adapter *adap,
+-			unsigned int speed)
+-{
+-	struct fti2c010_chip *chip = chip_list + adap->hwadapnr;
+-	int ret;
+-
+-	fti2c010_reset(chip);
+-	ret = set_i2c_bus_speed(chip, speed);
+-
+-	return ret;
+-}
+-
+-/*
+- * Register i2c adapters
+- */
+-U_BOOT_I2C_ADAP_COMPLETE(i2c_0, fti2c010_init, fti2c010_probe, fti2c010_read,
+-			fti2c010_write, fti2c010_set_bus_speed,
+-			CONFIG_SYS_I2C_SPEED, CONFIG_SYS_I2C_SLAVE,
+-			0)
+-#ifdef CONFIG_FTI2C010_BASE1
+-U_BOOT_I2C_ADAP_COMPLETE(i2c_1, fti2c010_init, fti2c010_probe, fti2c010_read,
+-			fti2c010_write, fti2c010_set_bus_speed,
+-			CONFIG_SYS_I2C_SPEED, CONFIG_SYS_I2C_SLAVE,
+-			1)
+-#endif
+-#ifdef CONFIG_FTI2C010_BASE2
+-U_BOOT_I2C_ADAP_COMPLETE(i2c_2, fti2c010_init, fti2c010_probe, fti2c010_read,
+-			fti2c010_write, fti2c010_set_bus_speed,
+-			CONFIG_SYS_I2C_SPEED, CONFIG_SYS_I2C_SLAVE,
+-			2)
+-#endif
+-#ifdef CONFIG_FTI2C010_BASE3
+-U_BOOT_I2C_ADAP_COMPLETE(i2c_3, fti2c010_init, fti2c010_probe, fti2c010_read,
+-			fti2c010_write, fti2c010_set_bus_speed,
+-			CONFIG_SYS_I2C_SPEED, CONFIG_SYS_I2C_SLAVE,
+-			3)
+-#endif
+diff --git a/drivers/i2c/fti2c010.h b/drivers/i2c/fti2c010.h
+deleted file mode 100644
+index b9d0eb74a6..0000000000
+--- a/drivers/i2c/fti2c010.h
++++ /dev/null
+@@ -1,80 +0,0 @@
+-/*
+- * Faraday I2C Controller
+- *
+- * (C) Copyright 2010 Faraday Technology
+- * Dante Su <dantesu@faraday-tech.com>
+- *
+- * SPDX-License-Identifier:	GPL-2.0+
+- */
+-
+-#ifndef __FTI2C010_H
+-#define __FTI2C010_H
+-
+-/*
+- * FTI2C010 registers
+- */
+-struct fti2c010_regs {
+-	uint32_t cr;  /* 0x00: control register */
+-	uint32_t sr;  /* 0x04: status register */
+-	uint32_t cdr; /* 0x08: clock division register */
+-	uint32_t dr;  /* 0x0c: data register */
+-	uint32_t sar; /* 0x10: slave address register */
+-	uint32_t tgsr;/* 0x14: time & glitch suppression register */
+-	uint32_t bmr; /* 0x18: bus monitor register */
+-	uint32_t rsvd[5];
+-	uint32_t revr;/* 0x30: revision register */
+-};
+-
+-/*
+- * control register
+- */
+-#define CR_ALIRQ      0x2000  /* arbitration lost interrupt (master) */
+-#define CR_SAMIRQ     0x1000  /* slave address match interrupt (slave) */
+-#define CR_STOPIRQ    0x800   /* stop condition interrupt (slave) */
+-#define CR_NAKRIRQ    0x400   /* NACK response interrupt (master) */
+-#define CR_DRIRQ      0x200   /* rx interrupt (both) */
+-#define CR_DTIRQ      0x100   /* tx interrupt (both) */
+-#define CR_TBEN       0x80    /* tx enable (both) */
+-#define CR_NAK        0x40    /* NACK (both) */
+-#define CR_STOP       0x20    /* stop (master) */
+-#define CR_START      0x10    /* start (master) */
+-#define CR_GCEN       0x8     /* general call support (slave) */
+-#define CR_SCLEN      0x4     /* enable clock out (master) */
+-#define CR_I2CEN      0x2     /* enable I2C (both) */
+-#define CR_I2CRST     0x1     /* reset I2C (both) */
+-#define CR_ENABLE     \
+-	(CR_ALIRQ | CR_NAKRIRQ | CR_DRIRQ | CR_DTIRQ | CR_SCLEN | CR_I2CEN)
+-
+-/*
+- * status register
+- */
+-#define SR_CLRAL      0x400    /* clear arbitration lost */
+-#define SR_CLRGC      0x200    /* clear general call */
+-#define SR_CLRSAM     0x100    /* clear slave address match */
+-#define SR_CLRSTOP    0x80     /* clear stop */
+-#define SR_CLRNAKR    0x40     /* clear NACK respond */
+-#define SR_DR         0x20     /* rx ready */
+-#define SR_DT         0x10     /* tx done */
+-#define SR_BB         0x8      /* bus busy */
+-#define SR_BUSY       0x4      /* chip busy */
+-#define SR_ACK        0x2      /* ACK/NACK received */
+-#define SR_RW         0x1      /* set when master-rx or slave-tx mode */
+-
+-/*
+- * clock division register
+- */
+-#define CDR_DIV(n)    ((n) & 0x3ffff)
+-
+-/*
+- * time & glitch suppression register
+- */
+-#define TGSR_GSR(n)   (((n) & 0x7) << 10)
+-#define TGSR_TSR(n)   ((n) & 0x3ff)
+-
+-/*
+- * bus monitor register
+- */
+-#define BMR_SCL       0x2      /* SCL is pull-up */
+-#define BMR_SDA       0x1      /* SDA is pull-up */
+-
+-#endif /* __FTI2C010_H */
+-- 
+2.13.6
+

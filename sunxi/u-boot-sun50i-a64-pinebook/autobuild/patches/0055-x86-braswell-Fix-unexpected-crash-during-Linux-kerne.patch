@@ -1,0 +1,268 @@
+From 4a5a7fcac24498aa1535a467f0739e2fda5b4324 Mon Sep 17 00:00:00 2001
+From: Bin Meng <bmeng.cn@gmail.com>
+Date: Wed, 18 Oct 2017 18:20:53 -0700
+Subject: [PATCH 055/105] x86: braswell: Fix unexpected crash during Linux
+ kernel boot
+
+It was observed that when booting Linux kernel on Intel Cherry Hill
+board, unexpected crash happens quite randomly. Sometimes kernel
+just oops, while sometimes kernel throws MCE errors and hangs:
+
+  mce: [Hardware Error]: Machine check events logged
+  mce: [Hardware Error]: CPU 0: Machine Check: 0 Bank 4: c400000000010151
+  mce: [Hardware Error]: TSC 0 ADDR 130f3f2c0
+  mce: [Hardware Error]: PROCESSOR 0:406c3 TIME 1508160686 SOCKET 0 APIC 0 microcode 363
+
+This looks like a hardware error per mcelog. After debugging, it
+seems turning off turbo mode on the processor does not expose this
+behavior, although U-Boot runs OK with turbo mode on. Suspect it is
+related to an errata of Braswell processor.
+
+To fix this, remove the Braswell cpu driver which does the turbo
+mode configuration, and switch to use the generic cpu-x86 driver.
+Also there is a configuration option in the FSP that turns on the
+turbo mode and that has been turned off too.
+
+Signed-off-by: Bin Meng <bmeng.cn@gmail.com>
+Reviewed-by: Simon Glass <sjg@chromium.org>
+---
+ arch/x86/cpu/braswell/Makefile |   2 +-
+ arch/x86/cpu/braswell/cpu.c    | 170 -----------------------------------------
+ arch/x86/dts/cherryhill.dts    |   9 +--
+ 3 files changed, 5 insertions(+), 176 deletions(-)
+ delete mode 100644 arch/x86/cpu/braswell/cpu.c
+
+diff --git a/arch/x86/cpu/braswell/Makefile b/arch/x86/cpu/braswell/Makefile
+index ddf6d2804a..4a639b83f5 100644
+--- a/arch/x86/cpu/braswell/Makefile
++++ b/arch/x86/cpu/braswell/Makefile
+@@ -4,4 +4,4 @@
+ # SPDX-License-Identifier:	GPL-2.0+
+ #
+ 
+-obj-y += braswell.o cpu.o early_uart.o fsp_configs.o
++obj-y += braswell.o early_uart.o fsp_configs.o
+diff --git a/arch/x86/cpu/braswell/cpu.c b/arch/x86/cpu/braswell/cpu.c
+deleted file mode 100644
+index 6ff9036597..0000000000
+--- a/arch/x86/cpu/braswell/cpu.c
++++ /dev/null
+@@ -1,170 +0,0 @@
+-/*
+- * Copyright (C) 2017, Bin Meng <bmeng.cn@gmail.com>
+- *
+- * SPDX-License-Identifier:	GPL-2.0+
+- *
+- * Derived from arch/x86/cpu/baytrail/cpu.c
+- */
+-
+-#include <common.h>
+-#include <cpu.h>
+-#include <dm.h>
+-#include <asm/cpu.h>
+-#include <asm/cpu_x86.h>
+-#include <asm/io.h>
+-#include <asm/lapic.h>
+-#include <asm/msr.h>
+-#include <asm/turbo.h>
+-
+-static const unsigned int braswell_bus_freq_table[] = {
+-	83333333,
+-	100000000,
+-	133333333,
+-	116666666,
+-	80000000,
+-	93333333,
+-	90000000,
+-	88900000,
+-	87500000
+-};
+-
+-static unsigned int braswell_bus_freq(void)
+-{
+-	msr_t clk_info = msr_read(MSR_BSEL_CR_OVERCLOCK_CONTROL);
+-
+-	if ((clk_info.lo & 0xf) < (ARRAY_SIZE(braswell_bus_freq_table)))
+-		return braswell_bus_freq_table[clk_info.lo & 0xf];
+-
+-	return 0;
+-}
+-
+-static unsigned long braswell_tsc_freq(void)
+-{
+-	msr_t platform_info;
+-	ulong bclk = braswell_bus_freq();
+-
+-	if (!bclk)
+-		return 0;
+-
+-	platform_info = msr_read(MSR_PLATFORM_INFO);
+-
+-	return bclk * ((platform_info.lo >> 8) & 0xff);
+-}
+-
+-static int braswell_get_info(struct udevice *dev, struct cpu_info *info)
+-{
+-	info->cpu_freq = braswell_tsc_freq();
+-	info->features = (1 << CPU_FEAT_L1_CACHE) | (1 << CPU_FEAT_MMU);
+-
+-	return 0;
+-}
+-
+-static int braswell_get_count(struct udevice *dev)
+-{
+-	int ecx = 0;
+-
+-	/*
+-	 * Use the algorithm described in Intel 64 and IA-32 Architectures
+-	 * Software Developer's Manual Volume 3 (3A, 3B & 3C): System
+-	 * Programming Guide, Jan-2015. Section 8.9.2: Hierarchical Mapping
+-	 * of CPUID Extended Topology Leaf.
+-	 */
+-	while (1) {
+-		struct cpuid_result leaf_b;
+-
+-		leaf_b = cpuid_ext(0xb, ecx);
+-
+-		/*
+-		 * Braswell doesn't have hyperthreading so just determine the
+-		 * number of cores by from level type (ecx[15:8] == * 2)
+-		 */
+-		if ((leaf_b.ecx & 0xff00) == 0x0200)
+-			return leaf_b.ebx & 0xffff;
+-
+-		ecx++;
+-	}
+-
+-	return 0;
+-}
+-
+-static void braswell_set_max_freq(void)
+-{
+-	msr_t perf_ctl;
+-	msr_t msr;
+-
+-	/* Enable speed step */
+-	msr = msr_read(MSR_IA32_MISC_ENABLES);
+-	msr.lo |= (1 << 16);
+-	msr_write(MSR_IA32_MISC_ENABLES, msr);
+-
+-	/* Enable Burst Mode */
+-	msr = msr_read(MSR_IA32_MISC_ENABLES);
+-	msr.hi = 0;
+-	msr_write(MSR_IA32_MISC_ENABLES, msr);
+-
+-	/*
+-	 * Set guaranteed ratio [21:16] from IACORE_TURBO_RATIOS to
+-	 * bits [15:8] of the PERF_CTL
+-	 */
+-	msr = msr_read(MSR_IACORE_TURBO_RATIOS);
+-	perf_ctl.lo = (msr.lo & 0x3f0000) >> 8;
+-
+-	/*
+-	 * Set guaranteed vid [22:16] from IACORE_TURBO_VIDS to
+-	 * bits [7:0] of the PERF_CTL
+-	 */
+-	msr = msr_read(MSR_IACORE_TURBO_VIDS);
+-	perf_ctl.lo |= (msr.lo & 0x7f0000) >> 16;
+-
+-	perf_ctl.hi = 0;
+-	msr_write(MSR_IA32_PERF_CTL, perf_ctl);
+-}
+-
+-static int braswell_probe(struct udevice *dev)
+-{
+-	debug("Init Braswell core\n");
+-
+-	/*
+-	 * On Braswell the turbo disable bit is actually scoped at the
+-	 * building-block level, not package. For non-BSP cores that are
+-	 * within a building block, enable turbo. The cores within the BSP's
+-	 * building block will just see it already enabled and move on.
+-	 */
+-	if (lapicid())
+-		turbo_enable();
+-
+-	/* Dynamic L2 shrink enable and threshold, clear SINGLE_PCTL bit 11 */
+-	msr_clrsetbits_64(MSR_PMG_CST_CONFIG_CONTROL, 0x3f080f, 0xe0008),
+-	msr_clrsetbits_64(MSR_POWER_MISC,
+-			  ENABLE_ULFM_AUTOCM_MASK | ENABLE_INDP_AUTOCM_MASK, 0);
+-
+-	/* Disable C1E */
+-	msr_clrsetbits_64(MSR_POWER_CTL, 2, 0);
+-	msr_setbits_64(MSR_POWER_MISC, 0x44);
+-
+-	/* Set this core to max frequency ratio */
+-	braswell_set_max_freq();
+-
+-	return 0;
+-}
+-
+-static const struct udevice_id braswell_ids[] = {
+-	{ .compatible = "intel,braswell-cpu" },
+-	{ }
+-};
+-
+-static const struct cpu_ops braswell_ops = {
+-	.get_desc	= cpu_x86_get_desc,
+-	.get_info	= braswell_get_info,
+-	.get_count	= braswell_get_count,
+-	.get_vendor	= cpu_x86_get_vendor,
+-};
+-
+-U_BOOT_DRIVER(cpu_x86_braswell_drv) = {
+-	.name		= "cpu_x86_braswell",
+-	.id		= UCLASS_CPU,
+-	.of_match	= braswell_ids,
+-	.bind		= cpu_x86_bind,
+-	.probe		= braswell_probe,
+-	.ops		= &braswell_ops,
+-};
+diff --git a/arch/x86/dts/cherryhill.dts b/arch/x86/dts/cherryhill.dts
+index 1ccb605991..840a669956 100644
+--- a/arch/x86/dts/cherryhill.dts
++++ b/arch/x86/dts/cherryhill.dts
+@@ -37,28 +37,28 @@
+ 
+ 		cpu@0 {
+ 			device_type = "cpu";
+-			compatible = "intel,braswell-cpu";
++			compatible = "cpu-x86";
+ 			reg = <0>;
+ 			intel,apic-id = <0>;
+ 		};
+ 
+ 		cpu@1 {
+ 			device_type = "cpu";
+-			compatible = "intel,braswell-cpu";
++			compatible = "cpu-x86";
+ 			reg = <1>;
+ 			intel,apic-id = <2>;
+ 		};
+ 
+ 		cpu@2 {
+ 			device_type = "cpu";
+-			compatible = "intel,braswell-cpu";
++			compatible = "cpu-x86";
+ 			reg = <2>;
+ 			intel,apic-id = <4>;
+ 		};
+ 
+ 		cpu@3 {
+ 			device_type = "cpu";
+-			compatible = "intel,braswell-cpu";
++			compatible = "cpu-x86";
+ 			reg = <3>;
+ 			intel,apic-id = <6>;
+ 		};
+@@ -194,7 +194,6 @@
+ 			fsp,pmic-i2c-bus = <0>;
+ 			fsp,enable-isp;
+ 			fsp,isp-pci-dev-config = <ISP_PCI_DEV_CONFIG_2>;
+-			fsp,turbo-mode;
+ 			fsp,pnp-settings = <PNP_SETTING_POWER_AND_PERF>;
+ 			fsp,sd-detect-chk;
+ 		};
+-- 
+2.13.6
+

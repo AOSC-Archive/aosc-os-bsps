@@ -1,0 +1,50 @@
+From 00687674a996c4bc51ac6c3b24c09ac3fc1bbaef Mon Sep 17 00:00:00 2001
+From: Masahiro Yamada <yamada.masahiro@socionext.com>
+Date: Thu, 26 Oct 2017 21:24:25 +0900
+Subject: [PATCH 074/105] exynos: remove CONFIG_CORE_COUNT
+
+This macro is defined, but not referenced by anyone.
+
+I did not touch config_whitelist.txt - the CONFIG will be dropped
+by the next re-sync.
+
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+Acked-by: Minkyu Kang <mk7.kang@samsung.com>
+---
+ include/configs/exynos5420-common.h | 5 -----
+ include/configs/exynos7420-common.h | 3 ---
+ 2 files changed, 8 deletions(-)
+
+diff --git a/include/configs/exynos5420-common.h b/include/configs/exynos5420-common.h
+index 79e6d13491..ae9ead53f6 100644
+--- a/include/configs/exynos5420-common.h
++++ b/include/configs/exynos5420-common.h
+@@ -43,11 +43,6 @@
+ #define CONFIG_LOWPOWER_FLAG		0x02020028
+ #define CONFIG_LOWPOWER_ADDR		0x0202002C
+ 
+-/*
+- * Number of CPUs available
+- */
+-#define CONFIG_CORE_COUNT		0x8
+-
+ #define CONFIG_USB_XHCI_EXYNOS
+ 
+ #endif	/* __CONFIG_EXYNOS5420_H */
+diff --git a/include/configs/exynos7420-common.h b/include/configs/exynos7420-common.h
+index 0aeec3900a..4e104718be 100644
+--- a/include/configs/exynos7420-common.h
++++ b/include/configs/exynos7420-common.h
+@@ -43,9 +43,6 @@
+ #define CONFIG_IRAM_END			(CONFIG_IRAM_BASE + CONFIG_IRAM_SIZE)
+ #define CPU_RELEASE_ADDR		secondary_boot_addr
+ 
+-/* Number of CPUs available */
+-#define CONFIG_CORE_COUNT		0x8
+-
+ /* select serial console configuration */
+ 
+ #define CONFIG_SYS_LOAD_ADDR		(CONFIG_SYS_SDRAM_BASE + 0x3E00000)
+-- 
+2.13.6
+

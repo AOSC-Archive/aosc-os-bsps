@@ -1,0 +1,48 @@
+From 819f1e081c527d2d02cdaeec0027384688cf5de0 Mon Sep 17 00:00:00 2001
+From: Maxime Ripard <maxime.ripard@free-electrons.com>
+Date: Thu, 19 Oct 2017 11:36:35 +0200
+Subject: [PATCH 046/105] sunxi: binman: Add U-Boot binary size check
+
+The U-Boot binary may trip over its actual allocated size in the storage.
+In such a case, the environment will not be readable anymore (because
+corrupted when the new image was flashed), and any attempt at using saveenv
+to reconstruct the environment will result in a corrupted U-Boot binary.
+
+Reviewed-by: Andre Przywara <andre.przywara@arm.com>
+Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
+---
+ arch/arm/dts/sunxi-u-boot.dtsi | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/arch/arm/dts/sunxi-u-boot.dtsi b/arch/arm/dts/sunxi-u-boot.dtsi
+index 5adfd9bca2..72e95afd78 100644
+--- a/arch/arm/dts/sunxi-u-boot.dtsi
++++ b/arch/arm/dts/sunxi-u-boot.dtsi
+@@ -1,5 +1,14 @@
+ #include <config.h>
+ 
++/*
++ * This is the maximum size the U-Boot binary can be, which is basically
++ * the start of the environment, minus the start of the U-Boot binary in
++ * the MMC. This makes the assumption that the MMC is using 512-bytes
++ * blocks, but devices using something other than that remains to be
++ * seen.
++ */
++#define UBOOT_MMC_MAX_SIZE	(CONFIG_ENV_OFFSET - (CONFIG_SYS_MMCSD_RAW_MODE_U_BOOT_SECTOR * 512))
++
+ / {
+ 	binman {
+ 		filename = "u-boot-sunxi-with-spl.bin";
+@@ -8,6 +17,9 @@
+ 			filename = "spl/sunxi-spl.bin";
+ 		};
+ 		u-boot-img {
++#ifdef CONFIG_MMC
++			size = <UBOOT_MMC_MAX_SIZE>;
++#endif
+ 			pos = <CONFIG_SPL_PAD_TO>;
+ 		};
+ 	};
+-- 
+2.13.6
+

@@ -1,0 +1,35 @@
+From 060fb80a42f2de3fca7f2cbba8da40bbe820593a Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Mon, 30 Oct 2017 12:33:33 +0800
+Subject: [PATCH 105/105] video: sunxi: de2: add support for LCD SimpleFB
+
+Add support for setting up SimpleFB for LCD display output in DE2
+SimpleFB setup code.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ drivers/video/sunxi/sunxi_de2.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/drivers/video/sunxi/sunxi_de2.c b/drivers/video/sunxi/sunxi_de2.c
+index 4dcff8398b..03d45d509a 100644
+--- a/drivers/video/sunxi/sunxi_de2.c
++++ b/drivers/video/sunxi/sunxi_de2.c
+@@ -361,6 +361,14 @@ int sunxi_simplefb_setup(void *blob)
+ 		pipeline = "mixer1-lcd1-tve";
+ 	}
+ 
++	ret = uclass_find_device_by_name(UCLASS_DISPLAY,
++					 "sunxi_lcd", &disp);
++	if (ret) {
++		debug("LCD not present\n");
++	} else if (device_active(disp)) {
++		pipeline = "mixer0-lcd0";
++	}
++
+ 	if (!pipeline) {
+ 		debug("No active display present\n");
+ 		return 0;
+-- 
+2.13.6
+

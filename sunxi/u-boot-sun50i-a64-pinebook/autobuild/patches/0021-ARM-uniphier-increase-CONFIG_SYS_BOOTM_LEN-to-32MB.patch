@@ -1,0 +1,31 @@
+From 571e050b45add2c4c57ab340c578d6bd06ac6c8b Mon Sep 17 00:00:00 2001
+From: Masahiro Yamada <yamada.masahiro@socionext.com>
+Date: Thu, 19 Oct 2017 19:17:51 +0900
+Subject: [PATCH 021/105] ARM: uniphier: increase CONFIG_SYS_BOOTM_LEN to 32MB
+
+The default value of CONFIG_SYS_BOOTM_LEN, 0x800000, causes error
+when uncompressing Image.gz out of FIT image.
+
+   Uncompressing Kernel Image ... Error: inflate() returned -5
+Image too large: increase CONFIG_SYS_BOOTM_LEN
+
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+---
+ include/configs/uniphier.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/include/configs/uniphier.h b/include/configs/uniphier.h
+index 515024c98e..5014828f8c 100644
+--- a/include/configs/uniphier.h
++++ b/include/configs/uniphier.h
+@@ -97,6 +97,7 @@
+ 
+ #define CONFIG_LOADADDR			0x84000000
+ #define CONFIG_SYS_LOAD_ADDR		CONFIG_LOADADDR
++#define CONFIG_SYS_BOOTM_LEN		(32 << 20)
+ 
+ #define CONFIG_CMDLINE_EDITING		/* add command line history	*/
+ 
+-- 
+2.13.6
+

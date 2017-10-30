@@ -1,0 +1,44 @@
+From e5fa2b368c1fee747a7638492e256bfd39d95ef5 Mon Sep 17 00:00:00 2001
+From: Masahiro Yamada <yamada.masahiro@socionext.com>
+Date: Thu, 26 Oct 2017 21:24:21 +0900
+Subject: [PATCH 070/105] sh7734: remove CONFIG_553MHZ_MODE
+
+This macro only appears in commented-out lines.  It is not referenced
+by anyone.
+
+I did not touch config_whitelist.txt - the CONFIG will be dropped
+by the next re-sync.
+
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+---
+ include/configs/ap_sh4a_4a.h | 1 -
+ include/configs/r0p7734.h    | 1 -
+ 2 files changed, 2 deletions(-)
+
+diff --git a/include/configs/ap_sh4a_4a.h b/include/configs/ap_sh4a_4a.h
+index ab3d40c892..717ec80f82 100644
+--- a/include/configs/ap_sh4a_4a.h
++++ b/include/configs/ap_sh4a_4a.h
+@@ -12,7 +12,6 @@
+ #define CONFIG_CPU_SH7734	1
+ #define CONFIG_AP_SH4A_4A	1
+ #define CONFIG_400MHZ_MODE	1
+-/* #define CONFIG_533MHZ_MODE	1 */
+ 
+ #define CONFIG_SYS_TEXT_BASE 0x8BFC0000
+ 
+diff --git a/include/configs/r0p7734.h b/include/configs/r0p7734.h
+index a31c6e20df..1fef8b5f92 100644
+--- a/include/configs/r0p7734.h
++++ b/include/configs/r0p7734.h
+@@ -12,7 +12,6 @@
+ #define CONFIG_CPU_SH7734	1
+ #define CONFIG_R0P7734		1
+ #define CONFIG_400MHZ_MODE	1
+-/* #define CONFIG_533MHZ_MODE	1 */
+ 
+ #define CONFIG_SYS_TEXT_BASE 0x8FFC0000
+ 
+-- 
+2.13.6
+

@@ -1,0 +1,215 @@
+From abddcd52ab4979a57dc90ce1b90f8121b43d91b2 Mon Sep 17 00:00:00 2001
+From: Bin Meng <bmeng.cn@gmail.com>
+Date: Fri, 13 Oct 2017 01:30:04 -0700
+Subject: [PATCH 009/105] x86: fsp: Consolidate Azalia header file
+
+So far there are two copies of Azalia struct defines with one in
+baytrail and the other one in braswell. This consolidates these
+two into one, put it in the common place, and remove the prefix
+pch_ to these structs to make their names more generic.
+
+This also corrects reset_wait_timer from us to ms.
+
+Signed-off-by: Bin Meng <bmeng.cn@gmail.com>
+Reviewed-by: Stefan Roese <sr@denx.de>
+---
+ arch/x86/cpu/baytrail/fsp_configs.c              | 13 ++++----
+ arch/x86/include/asm/arch-baytrail/fsp/azalia.h  | 39 ------------------------
+ arch/x86/include/asm/arch-braswell/fsp/fsp_vpd.h | 26 ----------------
+ arch/x86/include/asm/fsp/fsp_azalia.h            | 39 ++++++++++++++++++++++++
+ arch/x86/include/asm/fsp/fsp_support.h           |  1 +
+ 5 files changed, 46 insertions(+), 72 deletions(-)
+ delete mode 100644 arch/x86/include/asm/arch-baytrail/fsp/azalia.h
+ create mode 100644 arch/x86/include/asm/fsp/fsp_azalia.h
+
+diff --git a/arch/x86/cpu/baytrail/fsp_configs.c b/arch/x86/cpu/baytrail/fsp_configs.c
+index 45f9bf95da..926f26bb0b 100644
+--- a/arch/x86/cpu/baytrail/fsp_configs.c
++++ b/arch/x86/cpu/baytrail/fsp_configs.c
+@@ -8,13 +8,12 @@
+ 
+ #include <common.h>
+ #include <fdtdec.h>
+-#include <asm/arch/fsp/azalia.h>
+ #include <asm/fsp/fsp_support.h>
+ 
+ DECLARE_GLOBAL_DATA_PTR;
+ 
+ /* ALC262 Verb Table - 10EC0262 */
+-static const uint32_t verb_table_data13[] = {
++static const u32 verb_table_data13[] = {
+ 	/* Pin Complex (NID 0x11) */
+ 	0x01171cf0,
+ 	0x01171d11,
+@@ -94,7 +93,7 @@ static const uint32_t verb_table_data13[] = {
+  * Codec Address: CAd value (0/1/2)
+  * Codec Vendor: 0x10EC0262
+  */
+-static const struct pch_azalia_verb_table azalia_verb_table[] = {
++static const struct azalia_verb_table azalia_verb_table[] = {
+ 	{
+ 		{
+ 			0x10ec0262,
+@@ -108,16 +107,16 @@ static const struct pch_azalia_verb_table azalia_verb_table[] = {
+ 	}
+ };
+ 
+-const struct pch_azalia_config azalia_config = {
++const struct azalia_config azalia_config = {
+ 	.pme_enable = 1,
+ 	.docking_supported = 1,
+ 	.docking_attached = 0,
+ 	.hdmi_codec_enable = 1,
+ 	.azalia_v_ci_enable = 1,
+ 	.rsvdbits = 0,
+-	.azalia_verb_table_num = 1,
+-	.azalia_verb_table = azalia_verb_table,
+-	.reset_wait_timer_us = 300
++	.verb_table_num = 1,
++	.verb_table = azalia_verb_table,
++	.reset_wait_timer_ms = 300
+ };
+ 
+ /**
+diff --git a/arch/x86/include/asm/arch-baytrail/fsp/azalia.h b/arch/x86/include/asm/arch-baytrail/fsp/azalia.h
+deleted file mode 100644
+index d96a20fc8d..0000000000
+--- a/arch/x86/include/asm/arch-baytrail/fsp/azalia.h
++++ /dev/null
+@@ -1,39 +0,0 @@
+-/*
+- * Copyright (C) 2013, Intel Corporation
+- * Copyright (C) 2015 Google, Inc
+- *
+- * SPDX-License-Identifier:	Intel
+- */
+-
+-#ifndef _FSP_AZALIA_H_
+-#define _FSP_AZALIA_H_
+-
+-struct __packed pch_azalia_verb_table_header {
+-	uint32_t vendor_device_id;
+-	uint16_t sub_system_id;
+-	uint8_t revision_id;		/* 0xff applies to all steppings */
+-	uint8_t front_panel_support;
+-	uint16_t number_of_rear_jacks;
+-	uint16_t number_of_front_jacks;
+-};
+-
+-struct __packed pch_azalia_verb_table {
+-	struct pch_azalia_verb_table_header verb_table_header;
+-	const uint32_t *verb_table_data;
+-};
+-
+-struct __packed pch_azalia_config {
+-	uint8_t pme_enable:1;
+-	uint8_t docking_supported:1;
+-	uint8_t docking_attached:1;
+-	uint8_t hdmi_codec_enable:1;
+-	uint8_t azalia_v_ci_enable:1;
+-	uint8_t rsvdbits:3;
+-	/* number of verb tables provided by platform */
+-	uint8_t azalia_verb_table_num;
+-	const struct pch_azalia_verb_table *azalia_verb_table;
+-	/* delay timer after azalia reset */
+-	uint16_t reset_wait_timer_us;
+-};
+-
+-#endif
+diff --git a/arch/x86/include/asm/arch-braswell/fsp/fsp_vpd.h b/arch/x86/include/asm/arch-braswell/fsp/fsp_vpd.h
+index ecb01facd4..99c4c0aaca 100644
+--- a/arch/x86/include/asm/arch-braswell/fsp/fsp_vpd.h
++++ b/arch/x86/include/asm/arch-braswell/fsp/fsp_vpd.h
+@@ -29,32 +29,6 @@ struct __packed memory_upd {
+ 	u8 reserved[189];			/* Offset 0x0043 */
+ };
+ 
+-struct __packed azalia_verb_table_header {
+-	u32 vendor_device_id;
+-	u16 sub_system_id;
+-	u8 revision_id;
+-	u8 front_panel_support;
+-	u16 number_of_rear_jacks;
+-	u16 number_of_front_jacks;
+-};
+-
+-struct __packed azalia_verb_table {
+-	struct azalia_verb_table_header header;
+-	u32 *data;
+-};
+-
+-struct __packed azalia_config {
+-	u8 pme_enable:1;
+-	u8 docking_supported:1;
+-	u8 docking_attached:1;
+-	u8 hdmi_codec_enable:1;
+-	u8 azalia_v_ci_enable:1;
+-	u8 reserved:3;
+-	u8 verb_table_num;
+-	struct azalia_verb_table *verb_table;
+-	u16 reset_wait_timer_ms;
+-};
+-
+ struct gpio_family {
+ 	u32 confg;
+ 	u32 confg_changes;
+diff --git a/arch/x86/include/asm/fsp/fsp_azalia.h b/arch/x86/include/asm/fsp/fsp_azalia.h
+new file mode 100644
+index 0000000000..a1467bf991
+--- /dev/null
++++ b/arch/x86/include/asm/fsp/fsp_azalia.h
+@@ -0,0 +1,39 @@
++/*
++ * Copyright (C) 2013, Intel Corporation
++ * Copyright (C) 2015, Google, Inc
++ *
++ * SPDX-License-Identifier:	Intel
++ */
++
++#ifndef _FSP_AZALIA_H_
++#define _FSP_AZALIA_H_
++
++struct __packed azalia_verb_table_header {
++	u32 vendor_device_id;
++	u16 sub_system_id;
++	u8 revision_id;		/* 0xff applies to all steppings */
++	u8 front_panel_support;
++	u16 number_of_rear_jacks;
++	u16 number_of_front_jacks;
++};
++
++struct __packed azalia_verb_table {
++	struct azalia_verb_table_header header;
++	const u32 *data;
++};
++
++struct __packed azalia_config {
++	u8 pme_enable:1;
++	u8 docking_supported:1;
++	u8 docking_attached:1;
++	u8 hdmi_codec_enable:1;
++	u8 azalia_v_ci_enable:1;
++	u8 rsvdbits:3;
++	/* number of verb tables provided by platform */
++	u8 verb_table_num;
++	const struct azalia_verb_table *verb_table;
++	/* delay timer after azalia reset */
++	u16 reset_wait_timer_ms;
++};
++
++#endif
+diff --git a/arch/x86/include/asm/fsp/fsp_support.h b/arch/x86/include/asm/fsp/fsp_support.h
+index 97a50b0a73..df3add008c 100644
+--- a/arch/x86/include/asm/fsp/fsp_support.h
++++ b/arch/x86/include/asm/fsp/fsp_support.h
+@@ -15,6 +15,7 @@
+ #include "fsp_hob.h"
+ #include "fsp_infoheader.h"
+ #include "fsp_bootmode.h"
++#include "fsp_azalia.h"
+ #include <asm/arch/fsp/fsp_vpd.h>
+ #include <asm/arch/fsp/fsp_configs.h>
+ 
+-- 
+2.13.6
+

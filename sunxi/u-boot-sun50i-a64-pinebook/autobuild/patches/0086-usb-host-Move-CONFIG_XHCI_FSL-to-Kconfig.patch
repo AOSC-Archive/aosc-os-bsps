@@ -1,0 +1,203 @@
+From 420b0eba3c957d82c598fbb3dff8187ce5cf7313 Mon Sep 17 00:00:00 2001
+From: Ran Wang <ran.wang_1@nxp.com>
+Date: Mon, 23 Oct 2017 10:09:22 +0800
+Subject: [PATCH 086/105] usb: host: Move CONFIG_XHCI_FSL to Kconfig
+
+use Kconfig to select xhci accordingly.
+
+Signed-off-by: Ran Wang <ran.wang_1@nxp.com>
+Reviewed-by: Bin Meng <bmeng.cn@gmail.com>
+Reviewed-by: York Sun <york.sun@nxp.com>
+---
+ drivers/usb/host/Kconfig      | 6 ++++++
+ include/configs/ls1012afrdm.h | 1 -
+ include/configs/ls1012aqds.h  | 1 -
+ include/configs/ls1012ardb.h  | 1 -
+ include/configs/ls1021aiot.h  | 1 -
+ include/configs/ls1021aqds.h  | 1 -
+ include/configs/ls1021atwr.h  | 1 -
+ include/configs/ls1043aqds.h  | 1 -
+ include/configs/ls1043ardb.h  | 1 -
+ include/configs/ls1046aqds.h  | 1 -
+ include/configs/ls1046ardb.h  | 1 -
+ include/configs/ls2080aqds.h  | 1 -
+ include/configs/ls2080ardb.h  | 1 -
+ scripts/config_whitelist.txt  | 1 -
+ 14 files changed, 6 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
+index f5f19ed775..5264475fa5 100644
+--- a/drivers/usb/host/Kconfig
++++ b/drivers/usb/host/Kconfig
+@@ -71,6 +71,12 @@ config USB_XHCI_DRA7XX_INDEX
+ 	  Select the DRA7XX xHCI USB index.
+ 	  Current supported values: 0, 1.
+ 
++config USB_XHCI_FSL
++	bool "Support for NXP Layerscape on-chip xHCI USB controller"
++	default y if ARCH_LS1021A || FSL_LSCH3 || FSL_LSCH2
++	depends on !SPL_NO_USB
++	help
++	  Enables support for the on-chip xHCI controller on NXP Layerscape SoCs.
+ endif # USB_XHCI_HCD
+ 
+ config USB_EHCI_HCD
+diff --git a/include/configs/ls1012afrdm.h b/include/configs/ls1012afrdm.h
+index 2e5af9cc4e..2e9c619bd5 100644
+--- a/include/configs/ls1012afrdm.h
++++ b/include/configs/ls1012afrdm.h
+@@ -34,7 +34,6 @@
+ /*
+ * USB
+ */
+-#define CONFIG_USB_XHCI_FSL
+ #define CONFIG_USB_MAX_CONTROLLER_COUNT         1
+ 
+ #define CONFIG_CMD_MEMINFO
+diff --git a/include/configs/ls1012aqds.h b/include/configs/ls1012aqds.h
+index e0949d0b53..70bf72c431 100644
+--- a/include/configs/ls1012aqds.h
++++ b/include/configs/ls1012aqds.h
+@@ -119,7 +119,6 @@
+ #endif
+ 
+ /*XHCI Support - enabled by default*/
+-#define CONFIG_USB_XHCI_FSL
+ #define CONFIG_USB_MAX_CONTROLLER_COUNT         1
+ 
+ /*  MMC  */
+diff --git a/include/configs/ls1012ardb.h b/include/configs/ls1012ardb.h
+index 66ff004384..110fcc6323 100644
+--- a/include/configs/ls1012ardb.h
++++ b/include/configs/ls1012ardb.h
+@@ -22,7 +22,6 @@
+ /*
+ * USB
+ */
+-#define CONFIG_USB_XHCI_FSL
+ #define CONFIG_USB_MAX_CONTROLLER_COUNT         1
+ 
+ /*
+diff --git a/include/configs/ls1021aiot.h b/include/configs/ls1021aiot.h
+index 02bfbd0a7d..7c7f82f215 100644
+--- a/include/configs/ls1021aiot.h
++++ b/include/configs/ls1021aiot.h
+@@ -20,7 +20,6 @@
+ #define CONFIG_SYS_INIT_RAM_SIZE	OCRAM_SIZE
+ 
+ /* XHCI Support - enabled by default */
+-#define CONFIG_USB_XHCI_FSL
+ #define CONFIG_USB_MAX_CONTROLLER_COUNT		1
+ 
+ #define CONFIG_SYS_CLK_FREQ		100000000
+diff --git a/include/configs/ls1021aqds.h b/include/configs/ls1021aqds.h
+index 0046ded536..8346e3658f 100644
+--- a/include/configs/ls1021aqds.h
++++ b/include/configs/ls1021aqds.h
+@@ -405,7 +405,6 @@ unsigned long get_board_ddr_clk(void);
+ #endif
+ 
+ /*XHCI Support - enabled by default*/
+-#define CONFIG_USB_XHCI_FSL
+ #define CONFIG_USB_MAX_CONTROLLER_COUNT		1
+ 
+ /*
+diff --git a/include/configs/ls1021atwr.h b/include/configs/ls1021atwr.h
+index 0172c9015d..8ccc81642d 100644
+--- a/include/configs/ls1021atwr.h
++++ b/include/configs/ls1021atwr.h
+@@ -45,7 +45,6 @@
+ #endif
+ 
+ /* XHCI Support - enabled by default */
+-#define CONFIG_USB_XHCI_FSL
+ #define CONFIG_USB_MAX_CONTROLLER_COUNT        1
+ 
+ #define CONFIG_SYS_CLK_FREQ		100000000
+diff --git a/include/configs/ls1043aqds.h b/include/configs/ls1043aqds.h
+index 607c289d17..641ffc1400 100644
+--- a/include/configs/ls1043aqds.h
++++ b/include/configs/ls1043aqds.h
+@@ -371,7 +371,6 @@ unsigned long get_board_ddr_clk(void);
+ #endif
+ 
+ /* USB */
+-#define CONFIG_USB_XHCI_FSL
+ #define CONFIG_USB_MAX_CONTROLLER_COUNT		3
+ 
+ /*
+diff --git a/include/configs/ls1043ardb.h b/include/configs/ls1043ardb.h
+index 34be9960c1..489f50c5b1 100644
+--- a/include/configs/ls1043ardb.h
++++ b/include/configs/ls1043ardb.h
+@@ -286,7 +286,6 @@
+ 
+ /* USB */
+ #ifndef SPL_NO_USB
+-#define CONFIG_USB_XHCI_FSL
+ #define CONFIG_USB_MAX_CONTROLLER_COUNT		3
+ #endif
+ 
+diff --git a/include/configs/ls1046aqds.h b/include/configs/ls1046aqds.h
+index b0d41b401e..7778f86881 100644
+--- a/include/configs/ls1046aqds.h
++++ b/include/configs/ls1046aqds.h
+@@ -137,7 +137,6 @@ unsigned long get_board_ddr_clk(void);
+ #endif
+ 
+ /* USB */
+-#define CONFIG_USB_XHCI_FSL
+ #define CONFIG_USB_MAX_CONTROLLER_COUNT         3
+ 
+ /* SATA */
+diff --git a/include/configs/ls1046ardb.h b/include/configs/ls1046ardb.h
+index 32b08d8229..40ce8ff462 100644
+--- a/include/configs/ls1046ardb.h
++++ b/include/configs/ls1046ardb.h
+@@ -211,7 +211,6 @@
+ 
+ /* USB */
+ #ifndef SPL_NO_USB
+-#define CONFIG_USB_XHCI_FSL
+ #define CONFIG_USB_MAX_CONTROLLER_COUNT         3
+ #endif
+ 
+diff --git a/include/configs/ls2080aqds.h b/include/configs/ls2080aqds.h
+index d594cc1068..5dd1ff2065 100644
+--- a/include/configs/ls2080aqds.h
++++ b/include/configs/ls2080aqds.h
+@@ -438,7 +438,6 @@ unsigned long get_board_ddr_clk(void);
+ /*
+  * USB
+  */
+-#define CONFIG_USB_XHCI_FSL
+ #define CONFIG_USB_MAX_CONTROLLER_COUNT		2
+ 
+ #include <asm/fsl_secure_boot.h>
+diff --git a/include/configs/ls2080ardb.h b/include/configs/ls2080ardb.h
+index c368a56657..eef78f21b6 100644
+--- a/include/configs/ls2080ardb.h
++++ b/include/configs/ls2080ardb.h
+@@ -336,7 +336,6 @@ unsigned long get_board_sys_clk(void);
+ /*
+  * USB
+  */
+-#define CONFIG_USB_XHCI_FSL
+ #define CONFIG_USB_MAX_CONTROLLER_COUNT         2
+ 
+ #undef CONFIG_CMDLINE_EDITING
+diff --git a/scripts/config_whitelist.txt b/scripts/config_whitelist.txt
+index 76267495be..776c116669 100644
+--- a/scripts/config_whitelist.txt
++++ b/scripts/config_whitelist.txt
+@@ -5026,7 +5026,6 @@ CONFIG_USB_TTY
+ CONFIG_USB_TUSB_OMAP_DMA
+ CONFIG_USB_ULPI_TIMEOUT
+ CONFIG_USB_XHCI_EXYNOS
+-CONFIG_USB_XHCI_FSL
+ CONFIG_USB_XHCI_KEYSTONE
+ CONFIG_USB_XHCI_OMAP
+ CONFIG_USER_LOWLEVEL_INIT
+-- 
+2.13.6
+

@@ -1,0 +1,31 @@
+From b79372ae94fbc9e30d014ad8ce830d2062539eb9 Mon Sep 17 00:00:00 2001
+From: Heinrich Schuchardt <xypron.glpk@gmx.de>
+Date: Sat, 28 Oct 2017 07:34:15 +0200
+Subject: [PATCH 096/105] scripts/get_maintainer.pl: enable
+ find_maintainer_files
+
+Many MAINTAINERS files are in subdirectories.
+We should enable searching these.
+
+Reported-by: Walt Feasel <waltfeasel@gmail.com>
+Signed-off-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
+---
+ scripts/get_maintainer.pl | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/scripts/get_maintainer.pl b/scripts/get_maintainer.pl
+index 8b6037b73f..07800e62d1 100755
+--- a/scripts/get_maintainer.pl
++++ b/scripts/get_maintainer.pl
+@@ -59,7 +59,7 @@ my $from_filename = 0;
+ my $pattern_depth = 0;
+ my $version = 0;
+ my $help = 0;
+-my $find_maintainer_files = 0;
++my $find_maintainer_files = 1;
+ 
+ my $vcs_used = 0;
+ 
+-- 
+2.13.6
+

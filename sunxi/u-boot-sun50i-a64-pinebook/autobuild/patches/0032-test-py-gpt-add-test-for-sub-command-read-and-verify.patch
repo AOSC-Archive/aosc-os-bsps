@@ -1,0 +1,73 @@
+From 30ef7cbb819bc543ad2b03dcef90ee6124deee77 Mon Sep 17 00:00:00 2001
+From: Patrick Delaunay <patrick.delaunay@st.com>
+Date: Wed, 18 Oct 2017 15:11:04 +0200
+Subject: [PATCH 032/105] test/py: gpt: add test for sub-command read and
+ verify
+
+add sandbox test for some gpt sub-command
+- gpt read / part list : read the gpt partition created by sgdisk on host
+  test start, size, LBA and name output
+- gpt verify : verify the gpt partition create by sgdisk on host
+
+PS: persistent data test_gpt_disk_image.bin are udpated
+
+Acked-by: Stephen Warren <swarren@nvidia.com>
+Tested-by: Stephen Warren <swarren@nvidia.com>
+Signed-off-by: Patrick Delaunay <patrick.delaunay@st.com>
+---
+ test/py/tests/test_gpt.py | 31 +++++++++++++++++++++++++++++--
+ 1 file changed, 29 insertions(+), 2 deletions(-)
+
+diff --git a/test/py/tests/test_gpt.py b/test/py/tests/test_gpt.py
+index e58bf61eb1..5cfbf1fa1c 100644
+--- a/test/py/tests/test_gpt.py
++++ b/test/py/tests/test_gpt.py
+@@ -43,9 +43,9 @@ class GptTestDiskImage(object):
+             cmd = ('sgdisk', '-U', '375a56f7-d6c9-4e81-b5f0-09d41ca89efe',
+                 persistent)
+             u_boot_utils.run_and_log(u_boot_console, cmd)
+-            cmd = ('sgdisk', '--new=1:2048:2560', persistent)
++            cmd = ('sgdisk', '--new=1:2048:2560', '-c 1:part1', persistent)
+             u_boot_utils.run_and_log(u_boot_console, cmd)
+-            cmd = ('sgdisk', '--new=2:4096:4608', persistent)
++            cmd = ('sgdisk', '--new=2:4096:4608', '-c 2:part2', persistent)
+             u_boot_utils.run_and_log(u_boot_console, cmd)
+             cmd = ('sgdisk', '-l', persistent)
+             u_boot_utils.run_and_log(u_boot_console, cmd)
+@@ -68,6 +68,33 @@ def state_disk_image(u_boot_console):
+ 
+ @pytest.mark.boardspec('sandbox')
+ @pytest.mark.buildconfigspec('cmd_gpt')
++@pytest.mark.buildconfigspec('cmd_part')
++@pytest.mark.requiredtool('sgdisk')
++def test_gpt_read(state_disk_image, u_boot_console):
++    """Test the gpt read command."""
++
++    u_boot_console.run_command('host bind 0 ' + state_disk_image.path)
++    output = u_boot_console.run_command('gpt read host 0')
++    assert 'Start 1MiB, size 0MiB' in output
++    assert 'Block size 512, name part1' in output
++    assert 'Start 2MiB, size 0MiB' in output
++    assert 'Block size 512, name part2' in output
++    output = u_boot_console.run_command('part list host 0')
++    assert '0x00000800	0x00000a00	"part1"' in output
++    assert '0x00001000	0x00001200	"part2"' in output
++
++@pytest.mark.boardspec('sandbox')
++@pytest.mark.buildconfigspec('cmd_gpt')
++@pytest.mark.requiredtool('sgdisk')
++def test_gpt_verify(state_disk_image, u_boot_console):
++    """Test the gpt verify command."""
++
++    u_boot_console.run_command('host bind 0 ' + state_disk_image.path)
++    output = u_boot_console.run_command('gpt verify host 0')
++    assert 'Verify GPT: success!' in output
++
++@pytest.mark.boardspec('sandbox')
++@pytest.mark.buildconfigspec('cmd_gpt')
+ @pytest.mark.requiredtool('sgdisk')
+ def test_gpt_guid(state_disk_image, u_boot_console):
+     """Test the gpt guid command."""
+-- 
+2.13.6
+

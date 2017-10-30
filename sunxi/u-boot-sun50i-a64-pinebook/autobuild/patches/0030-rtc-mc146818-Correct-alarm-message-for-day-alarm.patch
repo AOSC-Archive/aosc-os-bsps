@@ -1,0 +1,29 @@
+From 6087be2ba60af08b586237337b2a3ed7fd4f2d21 Mon Sep 17 00:00:00 2001
+From: Bin Meng <bmeng.cn@gmail.com>
+Date: Tue, 17 Oct 2017 08:19:33 -0700
+Subject: [PATCH 030/105] rtc: mc146818: Correct alarm message for day alarm
+
+RTC_CONFIG_D register contains the day within the month to generate
+an alarm, not the month. This corrects the printf to indicate it.
+
+Signed-off-by: Bin Meng <bmeng.cn@gmail.com>
+---
+ drivers/rtc/mc146818.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/rtc/mc146818.c b/drivers/rtc/mc146818.c
+index 4df9eda086..21705c8478 100644
+--- a/drivers/rtc/mc146818.c
++++ b/drivers/rtc/mc146818.c
+@@ -100,7 +100,7 @@ static int mc146818_get(struct rtc_time *tmp)
+ #ifdef RTC_DEBUG
+ 	printf("Get RTC year: %02x mon/cent: %02x mday: %02x wday: %02x hr: %02x min: %02x sec: %02x\n",
+ 	       year, mon, mday, wday, hour, min, sec);
+-	printf("Alarms: month: %02x hour: %02x min: %02x sec: %02x\n",
++	printf("Alarms: mday: %02x hour: %02x min: %02x sec: %02x\n",
+ 	       mc146818_read8(RTC_CONFIG_D) & 0x3f,
+ 	       mc146818_read8(RTC_HOURS_ALARM),
+ 	       mc146818_read8(RTC_MINUTES_ALARM),
+-- 
+2.13.6
+

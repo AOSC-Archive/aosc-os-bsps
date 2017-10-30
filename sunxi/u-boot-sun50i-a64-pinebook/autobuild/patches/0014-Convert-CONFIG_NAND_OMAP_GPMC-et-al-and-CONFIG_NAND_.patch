@@ -1,0 +1,1925 @@
+From 0a9ef45158d586017839d4b6fccd7f8f16672156 Mon Sep 17 00:00:00 2001
+From: Adam Ford <aford173@gmail.com>
+Date: Mon, 16 Oct 2017 14:08:26 -0500
+Subject: [PATCH 014/105] Convert CONFIG_NAND_OMAP_GPMC et al and
+ CONFIG_NAND_MXC to Kconfig
+
+This converts the following to Kconfig:
+   CONFIG_NAND_MXC
+   CONFIG_NAND_OMAP_GPMC
+   CONFIG_NAND_OMAP_GPMC_PREFETCH
+   CONFIG_NAND_OMAP_ELM
+   CONFIG_SPL_NAND_AM33XX_BCH
+   CONFIG_SPL_NAND_SIMPLE
+   CONFIG_SYS_NAND_BUSWIDTH_16BIT
+
+Signed-off-by: Adam Ford <aford173@gmail.com>
+Reviewed-by: Heiko Schocher <hs@denx.de>
+[trini: Finish migration of CONFIG_SPL_NAND_SIMPLE, fix some build issues,
+        add CONFIG_NAND_MXC so we can do CONFIG_SYS_NAND_BUSWIDTH_16BIT]
+Signed-off-by: Tom Rini <trini@konsulko.com>
+---
+ arch/arm/mach-omap2/Kconfig                | 18 ++++++++++
+ configs/am335x_baltos_defconfig            |  2 +-
+ configs/am335x_evm_defconfig               |  1 +
+ configs/am335x_evm_nor_defconfig           |  1 +
+ configs/am335x_evm_usbspl_defconfig        |  1 +
+ configs/am335x_hs_evm_defconfig            |  1 +
+ configs/am335x_hs_evm_uart_defconfig       |  1 +
+ configs/am335x_shc_defconfig               |  1 +
+ configs/am335x_shc_ict_defconfig           |  1 +
+ configs/am335x_shc_netboot_defconfig       |  1 +
+ configs/am335x_shc_prompt_defconfig        |  1 +
+ configs/am335x_shc_sdboot_defconfig        |  1 +
+ configs/am335x_shc_sdboot_prompt_defconfig |  1 +
+ configs/am335x_sl50_defconfig              |  1 +
+ configs/am3517_crane_defconfig             |  3 ++
+ configs/am3517_evm_defconfig               |  3 ++
+ configs/apf27_defconfig                    |  4 ++-
+ configs/birdland_bav335a_defconfig         |  1 +
+ configs/birdland_bav335b_defconfig         |  1 +
+ configs/brppt1_mmc_defconfig               |  1 +
+ configs/brppt1_spi_defconfig               |  1 +
+ configs/brxre1_defconfig                   |  1 +
+ configs/cairo_defconfig                    |  1 +
+ configs/chiliboard_defconfig               |  2 +-
+ configs/cm_t3517_defconfig                 |  1 +
+ configs/cm_t35_defconfig                   |  2 ++
+ configs/cm_t43_defconfig                   |  1 +
+ configs/devkit3250_defconfig               |  2 ++
+ configs/devkit8000_defconfig               |  2 ++
+ configs/eco5pk_defconfig                   |  3 ++
+ configs/flea3_defconfig                    |  3 +-
+ configs/igep0032_defconfig                 |  2 ++
+ configs/igep00x0_defconfig                 |  2 ++
+ configs/m53evk_defconfig                   |  3 +-
+ configs/mcx_defconfig                      |  3 ++
+ configs/mt_ventoux_defconfig               |  3 ++
+ configs/mx31pdk_defconfig                  |  3 +-
+ configs/mx35pdk_defconfig                  |  3 +-
+ configs/mx53ard_defconfig                  |  3 +-
+ configs/omap3_beagle_defconfig             |  2 ++
+ configs/omap3_evm_defconfig                |  2 ++
+ configs/omap3_ha_defconfig                 |  3 ++
+ configs/omap3_logic_defconfig              |  2 ++
+ configs/omap3_overo_defconfig              |  2 ++
+ configs/omap3_pandora_defconfig            |  1 +
+ configs/omap3_zoom1_defconfig              |  1 +
+ configs/omapl138_lcdk_defconfig            |  2 ++
+ configs/pcm051_rev1_defconfig              |  1 +
+ configs/pcm051_rev3_defconfig              |  1 +
+ configs/pepper_defconfig                   |  1 +
+ configs/tao3530_defconfig                  |  3 ++
+ configs/ti816x_evm_defconfig               |  2 ++
+ configs/tricorder_defconfig                |  2 ++
+ configs/tricorder_flash_defconfig          |  2 ++
+ configs/twister_defconfig                  |  3 ++
+ configs/woodburn_defconfig                 |  3 +-
+ configs/woodburn_sd_defconfig              |  3 +-
+ drivers/mtd/nand/Kconfig                   | 55 +++++++++++++++++++++++++++++-
+ include/configs/am335x_evm.h               |  6 ----
+ include/configs/am335x_igep003x.h          |  1 -
+ include/configs/am3517_crane.h             |  4 ---
+ include/configs/am3517_evm.h               |  2 --
+ include/configs/am43xx_evm.h               |  5 ---
+ include/configs/apf27.h                    |  2 --
+ include/configs/baltos.h                   |  3 --
+ include/configs/bav335x.h                  |  5 ---
+ include/configs/brppt1.h                   |  3 --
+ include/configs/chiliboard.h               |  6 ----
+ include/configs/cm_t35.h                   |  2 --
+ include/configs/cm_t3517.h                 |  1 -
+ include/configs/cm_t43.h                   |  1 -
+ include/configs/da850evm.h                 |  1 -
+ include/configs/devkit3250.h               |  1 -
+ include/configs/devkit8000.h               |  1 -
+ include/configs/dra7xx_evm.h               |  6 ----
+ include/configs/flea3.h                    |  1 -
+ include/configs/imx27lite-common.h         |  1 -
+ include/configs/ipam390.h                  |  1 -
+ include/configs/m53evk.h                   |  1 -
+ include/configs/mcx.h                      |  4 ---
+ include/configs/mx31pdk.h                  |  1 -
+ include/configs/mx35pdk.h                  |  1 -
+ include/configs/mx53ard.h                  |  1 -
+ include/configs/omap3_beagle.h             |  2 --
+ include/configs/omap3_cairo.h              |  1 -
+ include/configs/omap3_evm.h                |  2 --
+ include/configs/omap3_igep00x0.h           |  2 --
+ include/configs/omap3_logic.h              |  3 --
+ include/configs/omap3_overo.h              |  1 -
+ include/configs/omap3_pandora.h            |  1 -
+ include/configs/omap3_zoom1.h              |  1 -
+ include/configs/omapl138_lcdk.h            |  2 --
+ include/configs/pengwyn.h                  |  2 --
+ include/configs/siemens-am33x-common.h     |  3 --
+ include/configs/tam3517-common.h           |  4 ---
+ include/configs/tao3530.h                  |  3 --
+ include/configs/tegra-common.h             |  1 -
+ include/configs/ti816x_evm.h               |  5 ---
+ include/configs/ti_am335x_common.h         |  4 ---
+ include/configs/ti_armv7_omap.h            |  1 -
+ include/configs/ti_omap3_common.h          |  1 -
+ include/configs/ti_omap4_common.h          |  4 ---
+ include/configs/ti_omap5_common.h          |  4 ---
+ include/configs/tricorder.h                |  2 --
+ include/configs/woodburn_common.h          |  1 -
+ scripts/config_whitelist.txt               |  6 ----
+ 106 files changed, 166 insertions(+), 128 deletions(-)
+
+diff --git a/arch/arm/mach-omap2/Kconfig b/arch/arm/mach-omap2/Kconfig
+index 7efef6b84b..abd1aa7fe1 100644
+--- a/arch/arm/mach-omap2/Kconfig
++++ b/arch/arm/mach-omap2/Kconfig
+@@ -11,6 +11,7 @@ config OMAP34XX
+ 	select ARM_ERRATA_621766
+ 	select ARM_ERRATA_725233
+ 	select USE_TINY_PRINTF
++	imply NAND_OMAP_GPMC
+ 	imply SPL_EXT_SUPPORT
+ 	imply SPL_FAT_SUPPORT
+ 	imply SPL_GPIO_SUPPORT
+@@ -30,6 +31,8 @@ config OMAP34XX
+ config OMAP44XX
+ 	bool "OMAP44XX SoC"
+ 	select USE_TINY_PRINTF
++	imply NAND_OMAP_ELM
++	imply NAND_OMAP_GPMC
+ 	imply SPL_DISPLAY_PRINT
+ 	imply SPL_EXT_SUPPORT
+ 	imply SPL_FAT_SUPPORT
+@@ -39,6 +42,7 @@ config OMAP44XX
+ 	imply SPL_LIBDISK_SUPPORT
+ 	imply SPL_LIBGENERIC_SUPPORT
+ 	imply SPL_MMC_SUPPORT
++	imply SPL_NAND_SIMPLE
+ 	imply SPL_NAND_SUPPORT
+ 	imply SPL_POWER_SUPPORT
+ 	imply SPL_SERIAL_SUPPORT
+@@ -49,6 +53,8 @@ config OMAP54XX
+ 	bool "OMAP54XX SoC"
+ 	select ARM_ERRATA_798870
+ 	select SYS_THUMB_BUILD
++	imply NAND_OMAP_ELM
++	imply NAND_OMAP_GPMC
+ 	imply SPL_DISPLAY_PRINT
+ 	imply SPL_ENV_SUPPORT
+ 	imply SPL_EXT_SUPPORT
+@@ -59,6 +65,8 @@ config OMAP54XX
+ 	imply SPL_LIBDISK_SUPPORT
+ 	imply SPL_LIBGENERIC_SUPPORT
+ 	imply SPL_MMC_SUPPORT
++	imply SPL_NAND_AM33XX_BCH
++	imply SPL_NAND_AM33XX_BCH
+ 	imply SPL_NAND_SUPPORT
+ 	imply SPL_POWER_SUPPORT
+ 	imply SPL_SERIAL_SUPPORT
+@@ -73,6 +81,8 @@ config TI814X
+ 
+ config TI816X
+ 	bool "TI816X SoC"
++	imply NAND_OMAP_ELM
++	imply NAND_OMAP_GPMC
+ 	help
+ 	  Support for AM335x SOC from Texas Instruments.
+ 	  The AM335x high performance SOC features a Cortex-A8
+@@ -80,8 +90,12 @@ config TI816X
+ 
+ config AM43XX
+ 	bool "AM43XX SoC"
++	imply NAND_OMAP_ELM
++	imply NAND_OMAP_GPMC
+ 	imply SPL_DM
+ 	imply SPL_DM_SEQ_ALIAS
++	imply SPL_NAND_AM33XX_BCH
++	imply SPL_NAND_SUPPORT
+ 	imply SPL_OF_CONTROL
+ 	imply SPL_OF_TRANSLATE
+ 	imply SPL_SEPARATE_BSS
+@@ -97,6 +111,10 @@ config AM43XX
+ 
+ config AM33XX
+ 	bool "AM33XX SoC"
++	imply NAND_OMAP_ELM
++	imply NAND_OMAP_GPMC
++	imply SPL_NAND_AM33XX_BCH
++	imply SPL_NAND_SUPPORT
+ 	imply SYS_I2C_OMAP24XX
+ 	imply SYS_THUMB_BUILD
+ 	imply USE_TINY_PRINTF
+diff --git a/configs/am335x_baltos_defconfig b/configs/am335x_baltos_defconfig
+index 35a9a1b7e8..5ff327b817 100644
+--- a/configs/am335x_baltos_defconfig
++++ b/configs/am335x_baltos_defconfig
+@@ -8,7 +8,6 @@ CONFIG_TARGET_AM335X_BALTOS=y
+ CONFIG_SPL_MMC_SUPPORT=y
+ CONFIG_SPL_SERIAL_SUPPORT=y
+ CONFIG_SPL_LIBDISK_SUPPORT=y
+-CONFIG_SPL_NAND_SUPPORT=y
+ CONFIG_SPL_WATCHDOG_SUPPORT=y
+ CONFIG_SPL_FAT_SUPPORT=y
+ CONFIG_FIT_VERBOSE=y
+@@ -48,6 +47,7 @@ CONFIG_CMD_UBI=y
+ CONFIG_ISO_PARTITION=y
+ CONFIG_MMC_OMAP_HS=y
+ CONFIG_NAND=y
++CONFIG_NAND_OMAP_GPMC_PREFETCH=y
+ CONFIG_PHYLIB=y
+ CONFIG_SYS_NS16550=y
+ CONFIG_OMAP3_SPI=y
+diff --git a/configs/am335x_evm_defconfig b/configs/am335x_evm_defconfig
+index 3e68dbdc45..f1bfe1a2b2 100644
+--- a/configs/am335x_evm_defconfig
++++ b/configs/am335x_evm_defconfig
+@@ -30,6 +30,7 @@ CONFIG_MISC=y
+ CONFIG_DM_MMC=y
+ CONFIG_MMC_OMAP_HS=y
+ CONFIG_NAND=y
++CONFIG_NAND_OMAP_GPMC_PREFETCH=y
+ CONFIG_SPI_FLASH=y
+ CONFIG_SPI_FLASH_WINBOND=y
+ CONFIG_PHYLIB=y
+diff --git a/configs/am335x_evm_nor_defconfig b/configs/am335x_evm_nor_defconfig
+index 6842bdb3fe..379c715fde 100644
+--- a/configs/am335x_evm_nor_defconfig
++++ b/configs/am335x_evm_nor_defconfig
+@@ -23,6 +23,7 @@ CONFIG_DFU_RAM=y
+ CONFIG_MMC_OMAP_HS=y
+ CONFIG_MTD_NOR_FLASH=y
+ CONFIG_NAND=y
++CONFIG_NAND_OMAP_GPMC_PREFETCH=y
+ CONFIG_SPI_FLASH=y
+ CONFIG_SPI_FLASH_WINBOND=y
+ CONFIG_PHYLIB=y
+diff --git a/configs/am335x_evm_usbspl_defconfig b/configs/am335x_evm_usbspl_defconfig
+index 5fa3a11f70..ebf952a1d5 100644
+--- a/configs/am335x_evm_usbspl_defconfig
++++ b/configs/am335x_evm_usbspl_defconfig
+@@ -27,6 +27,7 @@ CONFIG_DFU_NAND=y
+ CONFIG_DFU_RAM=y
+ CONFIG_MMC_OMAP_HS=y
+ CONFIG_NAND=y
++CONFIG_NAND_OMAP_GPMC_PREFETCH=y
+ CONFIG_SPI_FLASH=y
+ CONFIG_SPI_FLASH_WINBOND=y
+ CONFIG_PHYLIB=y
+diff --git a/configs/am335x_hs_evm_defconfig b/configs/am335x_hs_evm_defconfig
+index 6b7f446c56..35ba822073 100644
+--- a/configs/am335x_hs_evm_defconfig
++++ b/configs/am335x_hs_evm_defconfig
+@@ -35,6 +35,7 @@ CONFIG_MISC=y
+ CONFIG_DM_MMC=y
+ CONFIG_MMC_OMAP_HS=y
+ CONFIG_NAND=y
++CONFIG_NAND_OMAP_GPMC_PREFETCH=y
+ CONFIG_SPI_FLASH=y
+ CONFIG_SPI_FLASH_WINBOND=y
+ CONFIG_PHYLIB=y
+diff --git a/configs/am335x_hs_evm_uart_defconfig b/configs/am335x_hs_evm_uart_defconfig
+index 4f5c27f79d..4e5f64961e 100644
+--- a/configs/am335x_hs_evm_uart_defconfig
++++ b/configs/am335x_hs_evm_uart_defconfig
+@@ -37,6 +37,7 @@ CONFIG_MISC=y
+ CONFIG_DM_MMC=y
+ CONFIG_MMC_OMAP_HS=y
+ CONFIG_NAND=y
++CONFIG_NAND_OMAP_GPMC_PREFETCH=y
+ CONFIG_SPI_FLASH=y
+ CONFIG_SPI_FLASH_WINBOND=y
+ CONFIG_PHYLIB=y
+diff --git a/configs/am335x_shc_defconfig b/configs/am335x_shc_defconfig
+index 0906b668b4..6cf3bc2169 100644
+--- a/configs/am335x_shc_defconfig
++++ b/configs/am335x_shc_defconfig
+@@ -8,6 +8,7 @@ CONFIG_TARGET_AM335X_SHC=y
+ CONFIG_SPL_MMC_SUPPORT=y
+ CONFIG_SPL_SERIAL_SUPPORT=y
+ CONFIG_SPL_LIBDISK_SUPPORT=y
++# CONFIG_SPL_NAND_SUPPORT is not set
+ CONFIG_SPL_WATCHDOG_SUPPORT=y
+ CONFIG_SPL_FAT_SUPPORT=y
+ CONFIG_SERIES=y
+diff --git a/configs/am335x_shc_ict_defconfig b/configs/am335x_shc_ict_defconfig
+index 59b465d4ae..2bee7f330f 100644
+--- a/configs/am335x_shc_ict_defconfig
++++ b/configs/am335x_shc_ict_defconfig
+@@ -8,6 +8,7 @@ CONFIG_TARGET_AM335X_SHC=y
+ CONFIG_SPL_MMC_SUPPORT=y
+ CONFIG_SPL_SERIAL_SUPPORT=y
+ CONFIG_SPL_LIBDISK_SUPPORT=y
++# CONFIG_SPL_NAND_SUPPORT is not set
+ CONFIG_SPL_WATCHDOG_SUPPORT=y
+ CONFIG_SPL_FAT_SUPPORT=y
+ CONFIG_SHC_ICT=y
+diff --git a/configs/am335x_shc_netboot_defconfig b/configs/am335x_shc_netboot_defconfig
+index 7447895e31..5035ac59b9 100644
+--- a/configs/am335x_shc_netboot_defconfig
++++ b/configs/am335x_shc_netboot_defconfig
+@@ -8,6 +8,7 @@ CONFIG_TARGET_AM335X_SHC=y
+ CONFIG_SPL_MMC_SUPPORT=y
+ CONFIG_SPL_SERIAL_SUPPORT=y
+ CONFIG_SPL_LIBDISK_SUPPORT=y
++# CONFIG_SPL_NAND_SUPPORT is not set
+ CONFIG_SPL_WATCHDOG_SUPPORT=y
+ CONFIG_SPL_FAT_SUPPORT=y
+ CONFIG_SHC_NETBOOT=y
+diff --git a/configs/am335x_shc_prompt_defconfig b/configs/am335x_shc_prompt_defconfig
+index 94382faaab..89246e7979 100644
+--- a/configs/am335x_shc_prompt_defconfig
++++ b/configs/am335x_shc_prompt_defconfig
+@@ -8,6 +8,7 @@ CONFIG_TARGET_AM335X_SHC=y
+ CONFIG_SPL_MMC_SUPPORT=y
+ CONFIG_SPL_SERIAL_SUPPORT=y
+ CONFIG_SPL_LIBDISK_SUPPORT=y
++# CONFIG_SPL_NAND_SUPPORT is not set
+ CONFIG_SPL_WATCHDOG_SUPPORT=y
+ CONFIG_SPL_FAT_SUPPORT=y
+ CONFIG_SERIES=y
+diff --git a/configs/am335x_shc_sdboot_defconfig b/configs/am335x_shc_sdboot_defconfig
+index 8c90175393..829de18a91 100644
+--- a/configs/am335x_shc_sdboot_defconfig
++++ b/configs/am335x_shc_sdboot_defconfig
+@@ -8,6 +8,7 @@ CONFIG_TARGET_AM335X_SHC=y
+ CONFIG_SPL_MMC_SUPPORT=y
+ CONFIG_SPL_SERIAL_SUPPORT=y
+ CONFIG_SPL_LIBDISK_SUPPORT=y
++# CONFIG_SPL_NAND_SUPPORT is not set
+ CONFIG_SPL_WATCHDOG_SUPPORT=y
+ CONFIG_SPL_FAT_SUPPORT=y
+ CONFIG_SHC_SDBOOT=y
+diff --git a/configs/am335x_shc_sdboot_prompt_defconfig b/configs/am335x_shc_sdboot_prompt_defconfig
+index 8c90175393..829de18a91 100644
+--- a/configs/am335x_shc_sdboot_prompt_defconfig
++++ b/configs/am335x_shc_sdboot_prompt_defconfig
+@@ -8,6 +8,7 @@ CONFIG_TARGET_AM335X_SHC=y
+ CONFIG_SPL_MMC_SUPPORT=y
+ CONFIG_SPL_SERIAL_SUPPORT=y
+ CONFIG_SPL_LIBDISK_SUPPORT=y
++# CONFIG_SPL_NAND_SUPPORT is not set
+ CONFIG_SPL_WATCHDOG_SUPPORT=y
+ CONFIG_SPL_FAT_SUPPORT=y
+ CONFIG_SHC_SDBOOT=y
+diff --git a/configs/am335x_sl50_defconfig b/configs/am335x_sl50_defconfig
+index c63d922dad..ef27addb75 100644
+--- a/configs/am335x_sl50_defconfig
++++ b/configs/am335x_sl50_defconfig
+@@ -8,6 +8,7 @@ CONFIG_TARGET_AM335X_SL50=y
+ CONFIG_SPL_MMC_SUPPORT=y
+ CONFIG_SPL_SERIAL_SUPPORT=y
+ CONFIG_SPL_LIBDISK_SUPPORT=y
++# CONFIG_SPL_NAND_SUPPORT is not set
+ CONFIG_SPL_WATCHDOG_SUPPORT=y
+ CONFIG_SPL_FAT_SUPPORT=y
+ CONFIG_DISTRO_DEFAULTS=y
+diff --git a/configs/am3517_crane_defconfig b/configs/am3517_crane_defconfig
+index 252bbcb855..a1766d9f86 100644
+--- a/configs/am3517_crane_defconfig
++++ b/configs/am3517_crane_defconfig
+@@ -26,6 +26,9 @@ CONFIG_CMD_FAT=y
+ CONFIG_CMD_JFFS2=y
+ CONFIG_ENV_IS_IN_NAND=y
+ CONFIG_MMC_OMAP_HS=y
++CONFIG_NAND=y
++CONFIG_SYS_NAND_BUSWIDTH_16BIT=y
++CONFIG_SPL_NAND_SIMPLE=y
+ CONFIG_SYS_NS16550=y
+ CONFIG_USB=y
+ CONFIG_USB_STORAGE=y
+diff --git a/configs/am3517_evm_defconfig b/configs/am3517_evm_defconfig
+index 92577283f4..385ed46e30 100644
+--- a/configs/am3517_evm_defconfig
++++ b/configs/am3517_evm_defconfig
+@@ -33,6 +33,9 @@ CONFIG_OF_CONTROL=y
+ CONFIG_ENV_IS_IN_NAND=y
+ CONFIG_MMC_OMAP_HS=y
+ CONFIG_NAND=y
++CONFIG_NAND_OMAP_GPMC_PREFETCH=y
++CONFIG_SYS_NAND_BUSWIDTH_16BIT=y
++CONFIG_SPL_NAND_SIMPLE=y
+ CONFIG_SYS_NS16550=y
+ CONFIG_USB=y
+ CONFIG_USB_MUSB_HOST=y
+diff --git a/configs/apf27_defconfig b/configs/apf27_defconfig
+index e9a17730db..378402cc45 100644
+--- a/configs/apf27_defconfig
++++ b/configs/apf27_defconfig
+@@ -16,7 +16,6 @@ CONFIG_CMD_EEPROM=y
+ # CONFIG_CMD_FLASH is not set
+ CONFIG_CMD_I2C=y
+ CONFIG_CMD_MMC=y
+-CONFIG_CMD_NAND=y
+ CONFIG_CMD_NAND_TRIMFFS=y
+ CONFIG_CMD_NAND_LOCK_UNLOCK=y
+ CONFIG_CMD_DHCP=y
+@@ -31,4 +30,7 @@ CONFIG_CMD_FAT=y
+ CONFIG_CMD_UBI=y
+ CONFIG_ENV_IS_IN_NAND=y
+ CONFIG_MMC_MXC=y
++CONFIG_NAND=y
++CONFIG_NAND_MXC=y
++CONFIG_SYS_NAND_BUSWIDTH_16BIT=y
+ CONFIG_OF_LIBFDT=y
+diff --git a/configs/birdland_bav335a_defconfig b/configs/birdland_bav335a_defconfig
+index 764caf219c..61518f5ca6 100644
+--- a/configs/birdland_bav335a_defconfig
++++ b/configs/birdland_bav335a_defconfig
+@@ -8,6 +8,7 @@ CONFIG_TARGET_BAV335X=y
+ CONFIG_SPL_MMC_SUPPORT=y
+ CONFIG_SPL_SERIAL_SUPPORT=y
+ CONFIG_SPL_LIBDISK_SUPPORT=y
++# CONFIG_SPL_NAND_SUPPORT is not set
+ CONFIG_SPL_WATCHDOG_SUPPORT=y
+ CONFIG_SPL_FAT_SUPPORT=y
+ CONFIG_BAV_VERSION=1
+diff --git a/configs/birdland_bav335b_defconfig b/configs/birdland_bav335b_defconfig
+index e786d0651d..c7360c3113 100644
+--- a/configs/birdland_bav335b_defconfig
++++ b/configs/birdland_bav335b_defconfig
+@@ -8,6 +8,7 @@ CONFIG_TARGET_BAV335X=y
+ CONFIG_SPL_MMC_SUPPORT=y
+ CONFIG_SPL_SERIAL_SUPPORT=y
+ CONFIG_SPL_LIBDISK_SUPPORT=y
++# CONFIG_SPL_NAND_SUPPORT is not set
+ CONFIG_SPL_WATCHDOG_SUPPORT=y
+ CONFIG_SPL_FAT_SUPPORT=y
+ CONFIG_BAV_VERSION=2
+diff --git a/configs/brppt1_mmc_defconfig b/configs/brppt1_mmc_defconfig
+index 40e59a4f3b..c41a7b439f 100644
+--- a/configs/brppt1_mmc_defconfig
++++ b/configs/brppt1_mmc_defconfig
+@@ -7,6 +7,7 @@ CONFIG_AM33XX=y
+ CONFIG_TARGET_BRPPT1=y
+ CONFIG_SPL_MMC_SUPPORT=y
+ CONFIG_SPL_SERIAL_SUPPORT=y
++# CONFIG_SPL_NAND_SUPPORT is not set
+ CONFIG_SPL_WATCHDOG_SUPPORT=y
+ CONFIG_OF_BOARD_SETUP=y
+ CONFIG_SYS_EXTRA_OPTIONS="SERIAL1,CONS_INDEX=1,EMMC_BOOT"
+diff --git a/configs/brppt1_spi_defconfig b/configs/brppt1_spi_defconfig
+index 798dabdef8..25d8837ed2 100644
+--- a/configs/brppt1_spi_defconfig
++++ b/configs/brppt1_spi_defconfig
+@@ -7,6 +7,7 @@ CONFIG_AM33XX=y
+ CONFIG_TARGET_BRPPT1=y
+ CONFIG_SPL_MMC_SUPPORT=y
+ CONFIG_SPL_SERIAL_SUPPORT=y
++# CONFIG_SPL_NAND_SUPPORT is not set
+ CONFIG_SPL_SPI_FLASH_SUPPORT=y
+ CONFIG_SPL_SPI_SUPPORT=y
+ CONFIG_SPL_WATCHDOG_SUPPORT=y
+diff --git a/configs/brxre1_defconfig b/configs/brxre1_defconfig
+index e61188223a..0c2d7ed711 100644
+--- a/configs/brxre1_defconfig
++++ b/configs/brxre1_defconfig
+@@ -7,6 +7,7 @@ CONFIG_AM33XX=y
+ CONFIG_TARGET_BRXRE1=y
+ CONFIG_SPL_MMC_SUPPORT=y
+ CONFIG_SPL_SERIAL_SUPPORT=y
++# CONFIG_SPL_NAND_SUPPORT is not set
+ CONFIG_SYS_EXTRA_OPTIONS="SERIAL1,CONS_INDEX=1"
+ CONFIG_BOOTDELAY=-2
+ # CONFIG_CONSOLE_MUX is not set
+diff --git a/configs/cairo_defconfig b/configs/cairo_defconfig
+index fe86f4c090..bb7910706e 100644
+--- a/configs/cairo_defconfig
++++ b/configs/cairo_defconfig
+@@ -39,6 +39,7 @@ CONFIG_EFI_PARTITION=y
+ CONFIG_ENV_IS_IN_NAND=y
+ CONFIG_MMC_OMAP_HS=y
+ CONFIG_NAND=y
++CONFIG_SPL_NAND_SIMPLE=y
+ CONFIG_SYS_NS16550=y
+ CONFIG_OMAP3_SPI=y
+ CONFIG_FAT_WRITE=y
+diff --git a/configs/chiliboard_defconfig b/configs/chiliboard_defconfig
+index ee5f80bc60..d94b634a44 100644
+--- a/configs/chiliboard_defconfig
++++ b/configs/chiliboard_defconfig
+@@ -7,7 +7,6 @@ CONFIG_TARGET_CHILIBOARD=y
+ CONFIG_SPL_MMC_SUPPORT=y
+ CONFIG_SPL_SERIAL_SUPPORT=y
+ CONFIG_SPL_LIBDISK_SUPPORT=y
+-CONFIG_SPL_NAND_SUPPORT=y
+ CONFIG_SPL_WATCHDOG_SUPPORT=y
+ CONFIG_SPL_FAT_SUPPORT=y
+ CONFIG_BOOTDELAY=1
+@@ -38,6 +37,7 @@ CONFIG_ENV_IS_IN_MMC=y
+ CONFIG_DM_GPIO=y
+ CONFIG_MMC_OMAP_HS=y
+ CONFIG_NAND=y
++CONFIG_NAND_OMAP_GPMC_PREFETCH=y
+ CONFIG_PHYLIB=y
+ CONFIG_SYS_NS16550=y
+ CONFIG_OMAP3_SPI=y
+diff --git a/configs/cm_t3517_defconfig b/configs/cm_t3517_defconfig
+index 8eab8244c8..8e7c07206b 100644
+--- a/configs/cm_t3517_defconfig
++++ b/configs/cm_t3517_defconfig
+@@ -37,6 +37,7 @@ CONFIG_LED_STATUS_STATE=2
+ CONFIG_LED_STATUS_BOOT_ENABLE=y
+ CONFIG_LED_STATUS_BOOT=0
+ CONFIG_MMC_OMAP_HS=y
++CONFIG_NAND=y
+ CONFIG_SYS_NS16550=y
+ CONFIG_OMAP3_SPI=y
+ CONFIG_USB=y
+diff --git a/configs/cm_t35_defconfig b/configs/cm_t35_defconfig
+index 916851e7ae..1515c9253c 100644
+--- a/configs/cm_t35_defconfig
++++ b/configs/cm_t35_defconfig
+@@ -38,6 +38,8 @@ CONFIG_LED_STATUS_STATE=2
+ CONFIG_LED_STATUS_BOOT_ENABLE=y
+ CONFIG_LED_STATUS_BOOT=0
+ CONFIG_MMC_OMAP_HS=y
++CONFIG_NAND=y
++CONFIG_SPL_NAND_SIMPLE=y
+ CONFIG_SYS_NS16550=y
+ CONFIG_OMAP3_SPI=y
+ CONFIG_USB=y
+diff --git a/configs/cm_t43_defconfig b/configs/cm_t43_defconfig
+index ccf85cad4b..a621ff2530 100644
+--- a/configs/cm_t43_defconfig
++++ b/configs/cm_t43_defconfig
+@@ -7,6 +7,7 @@ CONFIG_TARGET_CM_T43=y
+ CONFIG_SPL_MMC_SUPPORT=y
+ CONFIG_SPL_SERIAL_SUPPORT=y
+ CONFIG_SPL_LIBDISK_SUPPORT=y
++# CONFIG_SPL_NAND_SUPPORT is not set
+ CONFIG_SPL_SPI_FLASH_SUPPORT=y
+ CONFIG_SPL_SPI_SUPPORT=y
+ CONFIG_SPL_FAT_SUPPORT=y
+diff --git a/configs/devkit3250_defconfig b/configs/devkit3250_defconfig
+index 86f604d096..2ad08ae713 100644
+--- a/configs/devkit3250_defconfig
++++ b/configs/devkit3250_defconfig
+@@ -33,6 +33,8 @@ CONFIG_SPL_DM=y
+ CONFIG_DM_GPIO=y
+ # CONFIG_MMC is not set
+ CONFIG_MTD_NOR_FLASH=y
++CONFIG_NAND=y
++CONFIG_SPL_NAND_SIMPLE=y
+ CONFIG_PHYLIB=y
+ CONFIG_DM_SERIAL=y
+ CONFIG_SYS_NS16550=y
+diff --git a/configs/devkit8000_defconfig b/configs/devkit8000_defconfig
+index e9eedf17a5..f42f433aa1 100644
+--- a/configs/devkit8000_defconfig
++++ b/configs/devkit8000_defconfig
+@@ -31,5 +31,7 @@ CONFIG_EFI_PARTITION=y
+ CONFIG_ENV_IS_IN_NAND=y
+ CONFIG_MMC_OMAP_HS=y
+ CONFIG_NAND=y
++CONFIG_SYS_NAND_BUSWIDTH_16BIT=y
++CONFIG_SPL_NAND_SIMPLE=y
+ CONFIG_SYS_NS16550=y
+ CONFIG_OF_LIBFDT=y
+diff --git a/configs/eco5pk_defconfig b/configs/eco5pk_defconfig
+index dced115a43..5e00e6147e 100644
+--- a/configs/eco5pk_defconfig
++++ b/configs/eco5pk_defconfig
+@@ -26,6 +26,9 @@ CONFIG_CMD_UBI=y
+ CONFIG_ENV_IS_IN_NAND=y
+ CONFIG_MMC_OMAP_HS=y
+ CONFIG_NAND=y
++CONFIG_NAND_OMAP_GPMC_PREFETCH=y
++CONFIG_SYS_NAND_BUSWIDTH_16BIT=y
++CONFIG_SPL_NAND_SIMPLE=y
+ CONFIG_SYS_NS16550=y
+ CONFIG_USB=y
+ CONFIG_USB_EHCI_HCD=y
+diff --git a/configs/flea3_defconfig b/configs/flea3_defconfig
+index 29da42cb37..04c52404a2 100644
+--- a/configs/flea3_defconfig
++++ b/configs/flea3_defconfig
+@@ -9,7 +9,6 @@ CONFIG_HUSH_PARSER=y
+ CONFIG_SYS_PROMPT="flea3 U-Boot > "
+ CONFIG_CMD_IMLS=y
+ CONFIG_CMD_I2C=y
+-CONFIG_CMD_NAND=y
+ CONFIG_CMD_SPI=y
+ # CONFIG_CMD_SETEXPR is not set
+ CONFIG_CMD_DHCP=y
+@@ -20,6 +19,8 @@ CONFIG_CMD_MTDPARTS=y
+ CONFIG_ENV_IS_IN_FLASH=y
+ # CONFIG_MMC is not set
+ CONFIG_MTD_NOR_FLASH=y
++CONFIG_NAND=y
++CONFIG_NAND_MXC=y
+ CONFIG_PHYLIB=y
+ CONFIG_PHY_MICREL=y
+ CONFIG_OF_LIBFDT=y
+diff --git a/configs/igep0032_defconfig b/configs/igep0032_defconfig
+index 3cff057807..b99b6dbe42 100644
+--- a/configs/igep0032_defconfig
++++ b/configs/igep0032_defconfig
+@@ -30,6 +30,8 @@ CONFIG_CMD_UBI=y
+ CONFIG_NET_RANDOM_ETHADDR=y
+ CONFIG_MMC_OMAP_HS=y
+ CONFIG_NAND=y
++CONFIG_SYS_NAND_BUSWIDTH_16BIT=y
++CONFIG_SPL_NAND_SIMPLE=y
+ CONFIG_SYS_NS16550=y
+ CONFIG_OMAP3_SPI=y
+ CONFIG_FAT_WRITE=y
+diff --git a/configs/igep00x0_defconfig b/configs/igep00x0_defconfig
+index 0445b977bb..0e2ab723c2 100644
+--- a/configs/igep00x0_defconfig
++++ b/configs/igep00x0_defconfig
+@@ -30,6 +30,8 @@ CONFIG_CMD_UBI=y
+ CONFIG_NET_RANDOM_ETHADDR=y
+ CONFIG_MMC_OMAP_HS=y
+ CONFIG_NAND=y
++CONFIG_SYS_NAND_BUSWIDTH_16BIT=y
++CONFIG_SPL_NAND_SIMPLE=y
+ CONFIG_MTD_UBI_FASTMAP=y
+ CONFIG_SYS_NS16550=y
+ CONFIG_OMAP3_SPI=y
+diff --git a/configs/m53evk_defconfig b/configs/m53evk_defconfig
+index 3c5b0c8501..41da15977f 100644
+--- a/configs/m53evk_defconfig
++++ b/configs/m53evk_defconfig
+@@ -24,7 +24,6 @@ CONFIG_CMD_GREPENV=y
+ # CONFIG_CMD_FLASH is not set
+ CONFIG_CMD_I2C=y
+ CONFIG_CMD_MMC=y
+-CONFIG_CMD_NAND=y
+ CONFIG_CMD_NAND_TRIMFFS=y
+ CONFIG_CMD_SATA=y
+ CONFIG_CMD_USB=y
+@@ -39,6 +38,8 @@ CONFIG_CMD_FAT=y
+ CONFIG_CMD_FS_GENERIC=y
+ CONFIG_CMD_UBI=y
+ CONFIG_ENV_IS_IN_NAND=y
++CONFIG_NAND=y
++CONFIG_NAND_MXC=y
+ CONFIG_PHYLIB=y
+ CONFIG_PHY_MICREL=y
+ CONFIG_USB=y
+diff --git a/configs/mcx_defconfig b/configs/mcx_defconfig
+index 2bfff28f12..7e72676ad3 100644
+--- a/configs/mcx_defconfig
++++ b/configs/mcx_defconfig
+@@ -35,6 +35,9 @@ CONFIG_CMD_UBI=y
+ CONFIG_ENV_IS_IN_NAND=y
+ CONFIG_MMC_OMAP_HS=y
+ CONFIG_NAND=y
++CONFIG_NAND_OMAP_GPMC_PREFETCH=y
++CONFIG_SYS_NAND_BUSWIDTH_16BIT=y
++CONFIG_SPL_NAND_SIMPLE=y
+ CONFIG_SYS_NS16550=y
+ CONFIG_USB=y
+ CONFIG_USB_EHCI_HCD=y
+diff --git a/configs/mt_ventoux_defconfig b/configs/mt_ventoux_defconfig
+index 55d39a01b4..ec0c8c19d5 100644
+--- a/configs/mt_ventoux_defconfig
++++ b/configs/mt_ventoux_defconfig
+@@ -32,6 +32,9 @@ CONFIG_CMD_UBI=y
+ CONFIG_ENV_IS_IN_NAND=y
+ CONFIG_MMC_OMAP_HS=y
+ CONFIG_NAND=y
++CONFIG_NAND_OMAP_GPMC_PREFETCH=y
++CONFIG_SYS_NAND_BUSWIDTH_16BIT=y
++CONFIG_SPL_NAND_SIMPLE=y
+ CONFIG_SYS_NS16550=y
+ CONFIG_USB=y
+ CONFIG_USB_EHCI_HCD=y
+diff --git a/configs/mx31pdk_defconfig b/configs/mx31pdk_defconfig
+index 5282aa4edc..3fcc0c0b5a 100644
+--- a/configs/mx31pdk_defconfig
++++ b/configs/mx31pdk_defconfig
+@@ -8,7 +8,6 @@ CONFIG_SPL_NAND_SUPPORT=y
+ CONFIG_BOOTDELAY=1
+ CONFIG_SPL=y
+ CONFIG_CMD_BOOTZ=y
+-CONFIG_CMD_NAND=y
+ CONFIG_CMD_SPI=y
+ # CONFIG_CMD_SETEXPR is not set
+ CONFIG_CMD_DHCP=y
+@@ -17,3 +16,5 @@ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
+ CONFIG_ENV_IS_IN_NAND=y
+ # CONFIG_MMC is not set
++CONFIG_NAND=y
++CONFIG_NAND_MXC=y
+diff --git a/configs/mx35pdk_defconfig b/configs/mx35pdk_defconfig
+index 4ef54ddcfc..2c3455f7e6 100644
+--- a/configs/mx35pdk_defconfig
++++ b/configs/mx35pdk_defconfig
+@@ -8,7 +8,6 @@ CONFIG_CMD_BOOTZ=y
+ CONFIG_CMD_IMLS=y
+ CONFIG_CMD_I2C=y
+ CONFIG_CMD_MMC=y
+-CONFIG_CMD_NAND=y
+ CONFIG_CMD_SPI=y
+ CONFIG_CMD_USB=y
+ # CONFIG_CMD_SETEXPR is not set
+@@ -24,6 +23,8 @@ CONFIG_EFI_PARTITION=y
+ # CONFIG_PARTITION_UUIDS is not set
+ CONFIG_ENV_IS_IN_FLASH=y
+ CONFIG_MTD_NOR_FLASH=y
++CONFIG_NAND=y
++CONFIG_NAND_MXC=y
+ CONFIG_USB=y
+ CONFIG_USB_EHCI_HCD=y
+ CONFIG_USB_STORAGE=y
+diff --git a/configs/mx53ard_defconfig b/configs/mx53ard_defconfig
+index 51941b9d2f..1d8e5bc7fe 100644
+--- a/configs/mx53ard_defconfig
++++ b/configs/mx53ard_defconfig
+@@ -9,10 +9,11 @@ CONFIG_HUSH_PARSER=y
+ CONFIG_CMD_BOOTZ=y
+ CONFIG_CMD_I2C=y
+ CONFIG_CMD_MMC=y
+-CONFIG_CMD_NAND=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_FAT=y
+ CONFIG_ENV_IS_IN_MMC=y
++CONFIG_NAND=y
++CONFIG_NAND_MXC=y
+ CONFIG_OF_LIBFDT=y
+diff --git a/configs/omap3_beagle_defconfig b/configs/omap3_beagle_defconfig
+index 9e7e1545d0..1dd1b31f2e 100644
+--- a/configs/omap3_beagle_defconfig
++++ b/configs/omap3_beagle_defconfig
+@@ -38,6 +38,8 @@ CONFIG_LED_STATUS_GREEN=2
+ CONFIG_LED_STATUS_CMD=y
+ CONFIG_MMC_OMAP_HS=y
+ CONFIG_NAND=y
++CONFIG_SYS_NAND_BUSWIDTH_16BIT=y
++CONFIG_SPL_NAND_SIMPLE=y
+ CONFIG_SYS_NS16550=y
+ CONFIG_OMAP3_SPI=y
+ CONFIG_USB=y
+diff --git a/configs/omap3_evm_defconfig b/configs/omap3_evm_defconfig
+index 8c5b2d7c94..55b1e8d46a 100644
+--- a/configs/omap3_evm_defconfig
++++ b/configs/omap3_evm_defconfig
+@@ -42,6 +42,8 @@ CONFIG_DM_GPIO=y
+ CONFIG_MMC_OMAP_HS=y
+ CONFIG_MTD=y
+ CONFIG_NAND=y
++CONFIG_SYS_NAND_BUSWIDTH_16BIT=y
++CONFIG_SPL_NAND_SIMPLE=y
+ CONFIG_DM_SERIAL=y
+ CONFIG_SYS_NS16550=y
+ CONFIG_OMAP3_SPI=y
+diff --git a/configs/omap3_ha_defconfig b/configs/omap3_ha_defconfig
+index af60ca84c2..7e05d968d3 100644
+--- a/configs/omap3_ha_defconfig
++++ b/configs/omap3_ha_defconfig
+@@ -24,6 +24,9 @@ CONFIG_CMD_FAT=y
+ CONFIG_CMD_MTDPARTS=y
+ CONFIG_ENV_IS_IN_NAND=y
+ CONFIG_MMC_OMAP_HS=y
++CONFIG_NAND=y
++CONFIG_SYS_NAND_BUSWIDTH_16BIT=y
++CONFIG_SPL_NAND_SIMPLE=y
+ CONFIG_SYS_NS16550=y
+ CONFIG_OMAP3_SPI=y
+ CONFIG_USB=y
+diff --git a/configs/omap3_logic_defconfig b/configs/omap3_logic_defconfig
+index bb7875f5a6..cdbebf8026 100644
+--- a/configs/omap3_logic_defconfig
++++ b/configs/omap3_logic_defconfig
+@@ -33,8 +33,10 @@ CONFIG_DM_MMC=y
+ CONFIG_MMC_OMAP_HS=y
+ CONFIG_MMC_OMAP36XX_PINS=y
+ CONFIG_NAND=y
++CONFIG_SYS_NAND_BUSWIDTH_16BIT=y
+ CONFIG_SYS_NAND_U_BOOT_LOCATIONS=y
+ CONFIG_SYS_NAND_U_BOOT_OFFS=0x80000
++CONFIG_SPL_NAND_SIMPLE=y
+ CONFIG_SYS_NS16550=y
+ CONFIG_OMAP3_SPI=y
+ CONFIG_USB=y
+diff --git a/configs/omap3_overo_defconfig b/configs/omap3_overo_defconfig
+index 4f6f32e210..237d5bdd11 100644
+--- a/configs/omap3_overo_defconfig
++++ b/configs/omap3_overo_defconfig
+@@ -41,6 +41,8 @@ CONFIG_EFI_PARTITION=y
+ CONFIG_ENV_IS_IN_NAND=y
+ CONFIG_MMC_OMAP_HS=y
+ CONFIG_NAND=y
++CONFIG_SYS_NAND_BUSWIDTH_16BIT=y
++CONFIG_SPL_NAND_SIMPLE=y
+ CONFIG_SYS_NS16550=y
+ CONFIG_OMAP3_SPI=y
+ CONFIG_USB=y
+diff --git a/configs/omap3_pandora_defconfig b/configs/omap3_pandora_defconfig
+index 2765f02d36..c34088d701 100644
+--- a/configs/omap3_pandora_defconfig
++++ b/configs/omap3_pandora_defconfig
+@@ -25,6 +25,7 @@ CONFIG_CMD_UBI=y
+ CONFIG_ENV_IS_IN_NAND=y
+ CONFIG_MMC_OMAP_HS=y
+ CONFIG_NAND=y
++CONFIG_SYS_NAND_BUSWIDTH_16BIT=y
+ CONFIG_SYS_NS16550=y
+ CONFIG_OMAP3_SPI=y
+ CONFIG_FAT_WRITE=y
+diff --git a/configs/omap3_zoom1_defconfig b/configs/omap3_zoom1_defconfig
+index e50de33d84..3afd7e9722 100644
+--- a/configs/omap3_zoom1_defconfig
++++ b/configs/omap3_zoom1_defconfig
+@@ -32,6 +32,7 @@ CONFIG_EFI_PARTITION=y
+ CONFIG_ENV_IS_IN_NAND=y
+ CONFIG_MMC_OMAP_HS=y
+ CONFIG_NAND=y
++CONFIG_SYS_NAND_BUSWIDTH_16BIT=y
+ CONFIG_SYS_NS16550=y
+ CONFIG_OMAP3_SPI=y
+ CONFIG_FAT_WRITE=y
+diff --git a/configs/omapl138_lcdk_defconfig b/configs/omapl138_lcdk_defconfig
+index 973c16fc09..8d6b12f5b7 100644
+--- a/configs/omapl138_lcdk_defconfig
++++ b/configs/omapl138_lcdk_defconfig
+@@ -27,8 +27,10 @@ CONFIG_CMD_UBI=y
+ CONFIG_ENV_IS_IN_NAND=y
+ CONFIG_NET_RANDOM_ETHADDR=y
+ CONFIG_NAND=y
++CONFIG_SYS_NAND_BUSWIDTH_16BIT=y
+ CONFIG_SYS_NAND_U_BOOT_LOCATIONS=y
+ CONFIG_SYS_NAND_U_BOOT_OFFS=0x28000
++CONFIG_SPL_NAND_SIMPLE=y
+ CONFIG_SPI_FLASH=y
+ CONFIG_SPI_FLASH_STMICRO=y
+ CONFIG_SPI_FLASH_WINBOND=y
+diff --git a/configs/pcm051_rev1_defconfig b/configs/pcm051_rev1_defconfig
+index 876241e159..273fc30705 100644
+--- a/configs/pcm051_rev1_defconfig
++++ b/configs/pcm051_rev1_defconfig
+@@ -8,6 +8,7 @@ CONFIG_TARGET_PCM051=y
+ CONFIG_SPL_MMC_SUPPORT=y
+ CONFIG_SPL_SERIAL_SUPPORT=y
+ CONFIG_SPL_LIBDISK_SUPPORT=y
++# CONFIG_SPL_NAND_SUPPORT is not set
+ CONFIG_SPL_WATCHDOG_SUPPORT=y
+ CONFIG_SPL_FAT_SUPPORT=y
+ CONFIG_SYS_EXTRA_OPTIONS="REV1"
+diff --git a/configs/pcm051_rev3_defconfig b/configs/pcm051_rev3_defconfig
+index 71702d77f3..f1ddaa6ae1 100644
+--- a/configs/pcm051_rev3_defconfig
++++ b/configs/pcm051_rev3_defconfig
+@@ -8,6 +8,7 @@ CONFIG_TARGET_PCM051=y
+ CONFIG_SPL_MMC_SUPPORT=y
+ CONFIG_SPL_SERIAL_SUPPORT=y
+ CONFIG_SPL_LIBDISK_SUPPORT=y
++# CONFIG_SPL_NAND_SUPPORT is not set
+ CONFIG_SPL_WATCHDOG_SUPPORT=y
+ CONFIG_SPL_FAT_SUPPORT=y
+ CONFIG_SYS_EXTRA_OPTIONS="REV3"
+diff --git a/configs/pepper_defconfig b/configs/pepper_defconfig
+index 0e7c35e015..a8826df519 100644
+--- a/configs/pepper_defconfig
++++ b/configs/pepper_defconfig
+@@ -8,6 +8,7 @@ CONFIG_TARGET_PEPPER=y
+ CONFIG_SPL_MMC_SUPPORT=y
+ CONFIG_SPL_SERIAL_SUPPORT=y
+ CONFIG_SPL_LIBDISK_SUPPORT=y
++# CONFIG_SPL_NAND_SUPPORT is not set
+ CONFIG_SPL_WATCHDOG_SUPPORT=y
+ CONFIG_SPL_FAT_SUPPORT=y
+ CONFIG_SYS_CONSOLE_INFO_QUIET=y
+diff --git a/configs/tao3530_defconfig b/configs/tao3530_defconfig
+index 3d4e2a1e8c..40982fc005 100644
+--- a/configs/tao3530_defconfig
++++ b/configs/tao3530_defconfig
+@@ -24,6 +24,9 @@ CONFIG_CMD_FAT=y
+ CONFIG_CMD_MTDPARTS=y
+ CONFIG_ENV_IS_IN_NAND=y
+ CONFIG_MMC_OMAP_HS=y
++CONFIG_NAND=y
++CONFIG_SYS_NAND_BUSWIDTH_16BIT=y
++CONFIG_SPL_NAND_SIMPLE=y
+ CONFIG_SYS_NS16550=y
+ CONFIG_OMAP3_SPI=y
+ CONFIG_USB=y
+diff --git a/configs/ti816x_evm_defconfig b/configs/ti816x_evm_defconfig
+index fa97ad6f4c..812b4995ef 100644
+--- a/configs/ti816x_evm_defconfig
++++ b/configs/ti816x_evm_defconfig
+@@ -40,6 +40,8 @@ CONFIG_DM_I2C=y
+ CONFIG_SYS_I2C_OMAP24XX=y
+ CONFIG_MMC_OMAP_HS=y
+ CONFIG_NAND=y
++CONFIG_NAND_OMAP_GPMC_PREFETCH=y
++CONFIG_SYS_NAND_BUSWIDTH_16BIT=y
+ CONFIG_SYS_NS16550=y
+ CONFIG_OMAP3_SPI=y
+ # CONFIG_USE_PRIVATE_LIBGCC is not set
+diff --git a/configs/tricorder_defconfig b/configs/tricorder_defconfig
+index 0d7334446c..00a5cc9340 100644
+--- a/configs/tricorder_defconfig
++++ b/configs/tricorder_defconfig
+@@ -34,6 +34,8 @@ CONFIG_LED_STATUS_BIT2=4
+ CONFIG_LED_STATUS_STATE2=2
+ CONFIG_LED_STATUS_CMD=y
+ CONFIG_MMC_OMAP_HS=y
++CONFIG_NAND=y
++CONFIG_SPL_NAND_SIMPLE=y
+ CONFIG_SYS_NS16550=y
+ CONFIG_BCH=y
+ CONFIG_OF_LIBFDT=y
+diff --git a/configs/tricorder_flash_defconfig b/configs/tricorder_flash_defconfig
+index 7ce7114523..0da1c35c81 100644
+--- a/configs/tricorder_flash_defconfig
++++ b/configs/tricorder_flash_defconfig
+@@ -33,6 +33,8 @@ CONFIG_LED_STATUS_BIT2=4
+ CONFIG_LED_STATUS_STATE2=2
+ CONFIG_LED_STATUS_CMD=y
+ CONFIG_MMC_OMAP_HS=y
++CONFIG_NAND=y
++CONFIG_SPL_NAND_SIMPLE=y
+ CONFIG_SYS_NS16550=y
+ CONFIG_BCH=y
+ CONFIG_OF_LIBFDT=y
+diff --git a/configs/twister_defconfig b/configs/twister_defconfig
+index 9933d64063..ed463f5d32 100644
+--- a/configs/twister_defconfig
++++ b/configs/twister_defconfig
+@@ -31,6 +31,9 @@ CONFIG_CMD_UBI=y
+ CONFIG_ENV_IS_IN_NAND=y
+ CONFIG_MMC_OMAP_HS=y
+ CONFIG_NAND=y
++CONFIG_NAND_OMAP_GPMC_PREFETCH=y
++CONFIG_SYS_NAND_BUSWIDTH_16BIT=y
++CONFIG_SPL_NAND_SIMPLE=y
+ CONFIG_SYS_NS16550=y
+ CONFIG_USB=y
+ CONFIG_USB_EHCI_HCD=y
+diff --git a/configs/woodburn_defconfig b/configs/woodburn_defconfig
+index 2c20f607b9..c2135e15aa 100644
+--- a/configs/woodburn_defconfig
++++ b/configs/woodburn_defconfig
+@@ -9,7 +9,6 @@ CONFIG_CMD_IMLS=y
+ CONFIG_CMD_GPIO=y
+ CONFIG_CMD_I2C=y
+ CONFIG_CMD_MMC=y
+-CONFIG_CMD_NAND=y
+ CONFIG_CMD_SPI=y
+ # CONFIG_CMD_SETEXPR is not set
+ CONFIG_CMD_DHCP=y
+@@ -24,5 +23,7 @@ CONFIG_EFI_PARTITION=y
+ # CONFIG_PARTITION_UUIDS is not set
+ CONFIG_ENV_IS_IN_FLASH=y
+ CONFIG_MTD_NOR_FLASH=y
++CONFIG_NAND=y
++CONFIG_NAND_MXC=y
+ CONFIG_PHYLIB=y
+ CONFIG_PHY_MICREL=y
+diff --git a/configs/woodburn_sd_defconfig b/configs/woodburn_sd_defconfig
+index b5670ad01c..9b1b376efd 100644
+--- a/configs/woodburn_sd_defconfig
++++ b/configs/woodburn_sd_defconfig
+@@ -19,7 +19,6 @@ CONFIG_CMD_IMLS=y
+ CONFIG_CMD_GPIO=y
+ CONFIG_CMD_I2C=y
+ CONFIG_CMD_MMC=y
+-CONFIG_CMD_NAND=y
+ CONFIG_CMD_SPI=y
+ # CONFIG_CMD_SETEXPR is not set
+ CONFIG_CMD_DHCP=y
+@@ -35,5 +34,7 @@ CONFIG_EFI_PARTITION=y
+ # CONFIG_SPL_PARTITION_UUIDS is not set
+ CONFIG_ENV_IS_IN_FLASH=y
+ CONFIG_MTD_NOR_FLASH=y
++CONFIG_NAND=y
++CONFIG_NAND_MXC=y
+ CONFIG_PHYLIB=y
+ CONFIG_PHY_MICREL=y
+diff --git a/drivers/mtd/nand/Kconfig b/drivers/mtd/nand/Kconfig
+index 85b26d6088..794410a152 100644
+--- a/drivers/mtd/nand/Kconfig
++++ b/drivers/mtd/nand/Kconfig
+@@ -43,6 +43,34 @@ config NAND_DENALI_SPARE_AREA_SKIP_BYTES
+ 	  of OOB area before last ECC sector data starts.  This is potentially
+ 	  used to preserve the bad block marker in the OOB area.
+ 
++config NAND_OMAP_GPMC
++	bool "Support OMAP GPMC NAND controller"
++	depends on ARCH_OMAP2PLUS
++	help
++	  Enables omap_gpmc.c driver for OMAPx and AMxxxx platforms.
++	  GPMC controller is used for parallel NAND flash devices, and can
++	  do ECC calculation (not ECC error detection) for HAM1, BCH4, BCH8
++	  and BCH16 ECC algorithms.
++
++config NAND_OMAP_GPMC_PREFETCH
++	bool "Enable GPMC Prefetch"
++	depends on NAND_OMAP_GPMC
++	help
++	  On OMAP platforms that use the GPMC controller
++	  (CONFIG_NAND_OMAP_GPMC_PREFETCH), this options enables the code that
++	  uses the prefetch mode to speed up read operations.
++
++config NAND_OMAP_ELM
++	bool "Enable ELM driver for OMAPxx and AMxx platforms."
++	depends on NAND_OMAP_GPMC && !OMAP34XX
++	help
++	  ELM controller is used for ECC error detection (not ECC calculation)
++	  of BCH4, BCH8 and BCH16 ECC algorithms.
++	  Some legacy platforms like OMAP3xx do not have in-built ELM h/w engine,
++	  thus such SoC platforms need to depend on software library for ECC error
++	  detection. However ECC calculation on such plaforms would still be
++	  done by GPMC controller.
++
+ config NAND_VF610_NFC
+ 	bool "Support for Freescale NFC for VF610"
+ 	select SYS_NAND_SELF_INIT
+@@ -112,6 +140,14 @@ config NAND_ARASAN
+ 	  controller. This uses the hardware ECC for read and
+ 	  write operations.
+ 
++config NAND_MXC
++	bool "MXC NAND support"
++	depends on CPU_ARM926EJS || CPU_ARM1136 || MX5
++	imply CMD_NAND
++	help
++	  This enables the NAND driver for the NAND flash controller on the
++	  i.MX27 / i.MX31 / i.MX5 rocessors.
++
+ config NAND_MXS
+ 	bool "MXS NAND support"
+ 	depends on MX6 || MX7
+@@ -134,7 +170,7 @@ comment "Generic NAND options"
+ # option (mxc_nand, ndfc, omap_gpmc).
+ config SYS_NAND_BUSWIDTH_16BIT
+ 	bool "Use 16-bit NAND interface"
+-	depends on NAND_VF610_NFC
++	depends on NAND_VF610_NFC || NAND_OMAP_GPMC || NAND_MXC || ARCH_DAVINCI
+ 	help
+ 	  Indicates that NAND device has 16-bit wide data-bus. In absence of this
+ 	  config, bus-width of NAND device is assumed to be either 8-bit and later
+@@ -175,12 +211,29 @@ config SYS_NAND_U_BOOT_OFFS_REDUND
+ 	Set the offset from the start of the nand where the redundant u-boot
+ 	should be loaded from.
+ 
++config SPL_NAND_AM33XX_BCH
++	bool "Enables SPL-NAND driver which supports ELM based"
++	depends on NAND_OMAP_GPMC && !OMAP34XX
++	default y
++        help
++	  Hardware ECC correction. This is useful for platforms which have ELM
++	  hardware engine and use NAND boot mode.
++	  Some legacy platforms like OMAP3xx do not have in-built ELM h/w engine,
++	  so those platforms should use CONFIG_SPL_NAND_SIMPLE for enabling
++          SPL-NAND driver with software ECC correction support.
++
+ config SPL_NAND_DENALI
+ 	bool "Support Denali NAND controller for SPL"
+ 	help
+ 	  This is a small implementation of the Denali NAND controller
+ 	  for use on SPL.
+ 
++config SPL_NAND_SIMPLE
++	bool "Use simple SPL NAND driver"
++	depends on !SPL_NAND_AM33XX_BCH
++	help
++	  Support for NAND boot using simple NAND drivers that
++	  expose the cmd_ctrl() interface.
+ endif
+ 
+ endif   # if NAND
+diff --git a/include/configs/am335x_evm.h b/include/configs/am335x_evm.h
+index 96294679bf..0e08264858 100644
+--- a/include/configs/am335x_evm.h
++++ b/include/configs/am335x_evm.h
+@@ -202,9 +202,6 @@
+ #define CONFIG_SYS_NAND_OOBSIZE		64
+ #define CONFIG_SYS_NAND_BLOCK_SIZE	(128*1024)
+ /* NAND: driver related configs */
+-#define CONFIG_NAND_OMAP_GPMC
+-#define CONFIG_NAND_OMAP_GPMC_PREFETCH
+-#define CONFIG_NAND_OMAP_ELM
+ #define CONFIG_SYS_NAND_BAD_BLOCK_POS	NAND_LARGE_BADBLOCK_POS
+ #define CONFIG_SYS_NAND_ECCPOS		{ 2, 3, 4, 5, 6, 7, 8, 9, \
+ 					 10, 11, 12, 13, 14, 15, 16, 17, \
+@@ -232,9 +229,6 @@
+ 					"-(NAND.file-system)"
+ #define CONFIG_SYS_NAND_U_BOOT_OFFS	0x000c0000
+ /* NAND: SPL related configs */
+-#ifdef CONFIG_SPL_NAND_SUPPORT
+-#define CONFIG_SPL_NAND_AM33XX_BCH
+-#endif
+ #ifdef CONFIG_SPL_OS_BOOT
+ #define CONFIG_SYS_NAND_SPL_KERNEL_OFFS	0x00200000 /* kernel offset */
+ #endif
+diff --git a/include/configs/am335x_igep003x.h b/include/configs/am335x_igep003x.h
+index 9b14603918..2400eee390 100644
+--- a/include/configs/am335x_igep003x.h
++++ b/include/configs/am335x_igep003x.h
+@@ -113,7 +113,6 @@
+ #define CONFIG_PHY_SMSC
+ 
+ /* NAND support */
+-#define CONFIG_NAND_OMAP_ELM
+ #define CONFIG_SYS_NAND_ONFI_DETECTION	1
+ 
+ #define CONFIG_MTD_PARTITIONS
+diff --git a/include/configs/am3517_crane.h b/include/configs/am3517_crane.h
+index db75fe547a..400a06eeb2 100644
+--- a/include/configs/am3517_crane.h
++++ b/include/configs/am3517_crane.h
+@@ -205,8 +205,6 @@
+ /* Monitor at start of flash */
+ #define CONFIG_SYS_MONITOR_BASE		CONFIG_SYS_FLASH_BASE
+ 
+-#define CONFIG_NAND_OMAP_GPMC
+-
+ #define CONFIG_SYS_ENV_SECT_SIZE	(128 << 10)	/* 128 KiB sector */
+ #define CONFIG_ENV_OFFSET		0x260000
+ #define CONFIG_ENV_ADDR			0x260000
+@@ -235,7 +233,6 @@
+ 
+ /* Defines for SPL */
+ #define CONFIG_SPL_FRAMEWORK
+-#define CONFIG_SPL_NAND_SIMPLE
+ #define CONFIG_SPL_TEXT_BASE		0x40200800
+ #define CONFIG_SPL_MAX_SIZE		(SRAM_SCRATCH_SPACE_ADDR - \
+ 					 CONFIG_SPL_TEXT_BASE)
+@@ -251,7 +248,6 @@
+ #define CONFIG_SPL_NAND_ECC
+ 
+ /* NAND boot config */
+-#define CONFIG_SYS_NAND_BUSWIDTH_16BIT
+ #define CONFIG_SYS_NAND_5_ADDR_CYCLE
+ #define CONFIG_SYS_NAND_PAGE_COUNT	64
+ #define CONFIG_SYS_NAND_PAGE_SIZE	2048
+diff --git a/include/configs/am3517_evm.h b/include/configs/am3517_evm.h
+index 43fcfb2593..f4d2a2e0ce 100644
+--- a/include/configs/am3517_evm.h
++++ b/include/configs/am3517_evm.h
+@@ -73,10 +73,8 @@
+ 
+ /* Board NAND Info. */
+ #ifdef CONFIG_NAND
+-#define CONFIG_NAND_OMAP_GPMC_PREFETCH
+ #define CONFIG_SYS_NAND_ADDR		NAND_BASE	/* physical address */
+ 							/* to access nand */
+-#define CONFIG_SYS_NAND_BUSWIDTH_16BIT
+ #define CONFIG_SYS_NAND_5_ADDR_CYCLE
+ #define CONFIG_SYS_NAND_PAGE_COUNT	64
+ #define CONFIG_SYS_NAND_PAGE_SIZE	2048
+diff --git a/include/configs/am43xx_evm.h b/include/configs/am43xx_evm.h
+index 743f953602..159954d7de 100644
+--- a/include/configs/am43xx_evm.h
++++ b/include/configs/am43xx_evm.h
+@@ -256,8 +256,6 @@
+ 					 CONFIG_SYS_NAND_PAGE_SIZE)
+ #define CONFIG_SYS_NAND_5_ADDR_CYCLE
+ /* NAND: driver related configs */
+-#define CONFIG_NAND_OMAP_GPMC
+-#define CONFIG_NAND_OMAP_ELM
+ #define CONFIG_SYS_NAND_ONFI_DETECTION
+ #define CONFIG_NAND_OMAP_ECCSCHEME	OMAP_ECC_BCH16_CODE_HW
+ #define CONFIG_SYS_NAND_BAD_BLOCK_POS	NAND_LARGE_BADBLOCK_POS
+@@ -299,9 +297,6 @@
+ 					"-(NAND.file-system)"
+ #define CONFIG_SYS_NAND_U_BOOT_OFFS	0x00180000
+ /* NAND: SPL related configs */
+-#ifdef CONFIG_SPL_NAND_SUPPORT
+-#define CONFIG_SPL_NAND_AM33XX_BCH
+-#endif
+ /* NAND: SPL falcon mode configs */
+ #ifdef CONFIG_SPL_OS_BOOT
+ #define CONFIG_SYS_NAND_SPL_KERNEL_OFFS	0x00300000 /* kernel offset */
+diff --git a/include/configs/apf27.h b/include/configs/apf27.h
+index c8eacdd7f8..99a96d9767 100644
+--- a/include/configs/apf27.h
++++ b/include/configs/apf27.h
+@@ -192,7 +192,6 @@
+ /*
+  * NAND
+  */
+-#define CONFIG_NAND_MXC
+ 
+ #define CONFIG_MXC_NAND_REGS_BASE	0xD8000000
+ #define CONFIG_SYS_NAND_BASE		CONFIG_MXC_NAND_REGS_BASE
+@@ -200,7 +199,6 @@
+ 
+ #define CONFIG_MXC_NAND_HWECC
+ #define CONFIG_SYS_NAND_LARGEPAGE
+-#define CONFIG_SYS_NAND_BUSWIDTH_16BIT
+ #define CONFIG_SYS_NAND_PAGE_SIZE	2048
+ #define CONFIG_SYS_NAND_BLOCK_SIZE	(128 * 1024)
+ #define CONFIG_SYS_NAND_PAGE_COUNT	CONFIG_SYS_NAND_BLOCK_SIZE / \
+diff --git a/include/configs/baltos.h b/include/configs/baltos.h
+index 44af4d3dee..6435e5d9c9 100644
+--- a/include/configs/baltos.h
++++ b/include/configs/baltos.h
+@@ -242,9 +242,6 @@
+ #define CONFIG_SPL_NET_VCI_STRING	"AM335x U-Boot SPL"*/
+ 
+ #ifdef CONFIG_NAND
+-#define CONFIG_NAND_OMAP_GPMC
+-#define CONFIG_NAND_OMAP_GPMC_PREFETCH
+-#define CONFIG_NAND_OMAP_ELM
+ #define CONFIG_SYS_NAND_5_ADDR_CYCLE
+ #define CONFIG_SYS_NAND_PAGE_COUNT	(CONFIG_SYS_NAND_BLOCK_SIZE / \
+ 					 CONFIG_SYS_NAND_PAGE_SIZE)
+diff --git a/include/configs/bav335x.h b/include/configs/bav335x.h
+index 062c99c7ab..e7770b69db 100644
+--- a/include/configs/bav335x.h
++++ b/include/configs/bav335x.h
+@@ -355,8 +355,6 @@ DEFAULT_LINUX_BOOT_ENV \
+ #define CONFIG_SYS_NAND_OOBSIZE		64
+ #define CONFIG_SYS_NAND_BLOCK_SIZE	(128*1024)
+ /* NAND: driver related configs */
+-#define CONFIG_NAND_OMAP_GPMC
+-#define CONFIG_NAND_OMAP_ELM
+ #define CONFIG_SYS_NAND_BAD_BLOCK_POS	NAND_LARGE_BADBLOCK_POS
+ #define CONFIG_SYS_NAND_ECCPOS	{ \
+ 	2, 3, 4, 5, 6, 7, 8, 9, \
+@@ -389,9 +387,6 @@ DEFAULT_LINUX_BOOT_ENV \
+ #define CONFIG_ENV_OFFSET_REDUND	0x001e0000
+ #define CONFIG_SYS_ENV_SECT_SIZE	CONFIG_SYS_NAND_BLOCK_SIZE
+ /* NAND: SPL related configs */
+-#ifdef CONFIG_SPL_NAND_SUPPORT
+-#define CONFIG_SPL_NAND_AM33XX_BCH
+-#endif
+ #ifdef CONFIG_SPL_OS_BOOT
+ #define CONFIG_SYS_NAND_SPL_KERNEL_OFFS	0x00200000 /* kernel offset */
+ #endif
+diff --git a/include/configs/brppt1.h b/include/configs/brppt1.h
+index 07a173ff14..2af575a138 100644
+--- a/include/configs/brppt1.h
++++ b/include/configs/brppt1.h
+@@ -71,7 +71,6 @@
+ #endif /* CONFIG_SPL_OS_BOOT */
+ 
+ #ifdef CONFIG_NAND
+-#define CONFIG_SPL_NAND_AM33XX_BCH	/* OMAP4 and later ELM support */
+ #define CONFIG_SPL_NAND_BASE
+ #define CONFIG_SPL_NAND_DRIVERS
+ #define CONFIG_SPL_NAND_ECC
+@@ -184,9 +183,7 @@ MMCARGS
+  */
+ #define CONFIG_SYS_MAX_NAND_DEVICE	1
+ #define CONFIG_SYS_NAND_BASE		0x8000000
+-#define CONFIG_NAND_OMAP_GPMC
+ /* don't change OMAP_ELM, ECCSCHEME. ROM code only supports this */
+-#define CONFIG_NAND_OMAP_ELM
+ #define CONFIG_NAND_OMAP_ECCSCHEME	OMAP_ECC_BCH8_CODE_HW
+ #define CONFIG_SYS_NAND_5_ADDR_CYCLE
+ #define CONFIG_SYS_NAND_BLOCK_SIZE	(128*1024)
+diff --git a/include/configs/chiliboard.h b/include/configs/chiliboard.h
+index b7887d90d4..80d4e49f6d 100644
+--- a/include/configs/chiliboard.h
++++ b/include/configs/chiliboard.h
+@@ -135,9 +135,6 @@
+ #define CONFIG_SYS_NAND_OOBSIZE		64
+ #define CONFIG_SYS_NAND_BLOCK_SIZE	(128*1024)
+ /* NAND: driver related configs */
+-#define CONFIG_NAND_OMAP_GPMC
+-#define CONFIG_NAND_OMAP_GPMC_PREFETCH
+-#define CONFIG_NAND_OMAP_ELM
+ #define CONFIG_SYS_NAND_BAD_BLOCK_POS	NAND_LARGE_BADBLOCK_POS
+ #define CONFIG_SYS_NAND_ECCPOS		{ 2, 3, 4, 5, 6, 7, 8, 9, \
+ 					 10, 11, 12, 13, 14, 15, 16, 17, \
+@@ -165,9 +162,6 @@
+ 					"-(NAND.file-system)"
+ #define CONFIG_SYS_NAND_U_BOOT_OFFS	0x000c0000
+ /* NAND: SPL related configs */
+-#ifdef CONFIG_SPL_NAND_SUPPORT
+-#define CONFIG_SPL_NAND_AM33XX_BCH
+-#endif
+ 
+ /* USB configuration */
+ #define CONFIG_USB_MUSB_DSPS
+diff --git a/include/configs/cm_t35.h b/include/configs/cm_t35.h
+index 6e7dcc66de..d0b990cb04 100644
+--- a/include/configs/cm_t35.h
++++ b/include/configs/cm_t35.h
+@@ -104,7 +104,6 @@
+ /*
+  * Board NAND Info.
+  */
+-#define CONFIG_NAND_OMAP_GPMC
+ #define CONFIG_SYS_NAND_ADDR		NAND_BASE	/* physical address */
+ 							/* to access nand */
+ #define CONFIG_SYS_NAND_BASE		NAND_BASE	/* physical address */
+@@ -240,7 +239,6 @@
+ 
+ /* Defines for SPL */
+ #define CONFIG_SPL_FRAMEWORK
+-#define CONFIG_SPL_NAND_SIMPLE
+ 
+ #define CONFIG_SYS_MMCSD_FS_BOOT_PARTITION	1
+ #define CONFIG_SPL_FS_LOAD_PAYLOAD_NAME	"u-boot.img"
+diff --git a/include/configs/cm_t3517.h b/include/configs/cm_t3517.h
+index b44777fc98..4a31944e4b 100644
+--- a/include/configs/cm_t3517.h
++++ b/include/configs/cm_t3517.h
+@@ -107,7 +107,6 @@
+ /*
+  * Board NAND Info.
+  */
+-#define CONFIG_NAND_OMAP_GPMC
+ #define CONFIG_SYS_NAND_ADDR		NAND_BASE	/* physical address */
+ 							/* to access nand */
+ #define CONFIG_SYS_NAND_BASE		NAND_BASE	/* physical address */
+diff --git a/include/configs/cm_t43.h b/include/configs/cm_t43.h
+index bbc455a244..7012a95fd7 100644
+--- a/include/configs/cm_t43.h
++++ b/include/configs/cm_t43.h
+@@ -25,7 +25,6 @@
+ #endif
+ 
+ /* NAND support */
+-#define CONFIG_NAND_OMAP_ELM
+ #define CONFIG_SYS_NAND_ONFI_DETECTION
+ #define CONFIG_SYS_NAND_5_ADDR_CYCLE
+ #define CONFIG_SYS_NAND_PAGE_SIZE	2048
+diff --git a/include/configs/da850evm.h b/include/configs/da850evm.h
+index 821b1fe534..1250112662 100644
+--- a/include/configs/da850evm.h
++++ b/include/configs/da850evm.h
+@@ -214,7 +214,6 @@
+ #define CONFIG_SPL_NAND_BASE
+ #define CONFIG_SPL_NAND_DRIVERS
+ #define CONFIG_SPL_NAND_ECC
+-#define CONFIG_SPL_NAND_SIMPLE
+ #define CONFIG_SPL_NAND_LOAD
+ #endif
+ 
+diff --git a/include/configs/devkit3250.h b/include/configs/devkit3250.h
+index 4ad4570caa..526a81a382 100644
+--- a/include/configs/devkit3250.h
++++ b/include/configs/devkit3250.h
+@@ -179,7 +179,6 @@
+ /* SPL will use serial */
+ 
+ /* SPL loads an image from NAND */
+-#define CONFIG_SPL_NAND_SIMPLE
+ #define CONFIG_SPL_NAND_RAW_ONLY
+ #define CONFIG_SPL_NAND_DRIVERS
+ 
+diff --git a/include/configs/devkit8000.h b/include/configs/devkit8000.h
+index bd325e1305..2c2d608160 100644
+--- a/include/configs/devkit8000.h
++++ b/include/configs/devkit8000.h
+@@ -187,7 +187,6 @@
+ #define CONFIG_SPL_TEXT_BASE		0x40200000 /*CONFIG_SYS_SRAM_START*/
+ 
+ /* NAND boot config */
+-#define CONFIG_SYS_NAND_BUSWIDTH_16BIT
+ #define CONFIG_SYS_NAND_5_ADDR_CYCLE
+ #define CONFIG_SYS_NAND_PAGE_COUNT	64
+ #define CONFIG_SYS_NAND_PAGE_SIZE	2048
+diff --git a/include/configs/dra7xx_evm.h b/include/configs/dra7xx_evm.h
+index 3333e5efc5..f8bffe68f2 100644
+--- a/include/configs/dra7xx_evm.h
++++ b/include/configs/dra7xx_evm.h
+@@ -162,13 +162,10 @@
+ #define CONFIG_SYS_NAND_PAGE_SIZE	2048
+ #define CONFIG_SYS_NAND_OOBSIZE		64
+ #define CONFIG_SYS_NAND_BLOCK_SIZE	(128*1024)
+-#define CONFIG_SYS_NAND_BUSWIDTH_16BIT
+ #define CONFIG_SYS_NAND_PAGE_COUNT	(CONFIG_SYS_NAND_BLOCK_SIZE / \
+ 					 CONFIG_SYS_NAND_PAGE_SIZE)
+ #define CONFIG_SYS_NAND_5_ADDR_CYCLE
+ /* NAND: driver related configs */
+-#define CONFIG_NAND_OMAP_GPMC
+-#define CONFIG_NAND_OMAP_ELM
+ #define CONFIG_SYS_NAND_ONFI_DETECTION
+ #define CONFIG_NAND_OMAP_ECCSCHEME	OMAP_ECC_BCH8_CODE_HW
+ #define CONFIG_SYS_NAND_BAD_BLOCK_POS	NAND_LARGE_BADBLOCK_POS
+@@ -195,9 +192,6 @@
+ 					"-(NAND.file-system)"
+ #define CONFIG_SYS_NAND_U_BOOT_OFFS	0x000c0000
+ /* NAND: SPL related configs */
+-#ifdef CONFIG_SPL_NAND_SUPPORT
+-#define CONFIG_SPL_NAND_AM33XX_BCH
+-#endif
+ /* NAND: SPL falcon mode configs */
+ #ifdef CONFIG_SPL_OS_BOOT
+ #define CONFIG_SYS_NAND_SPL_KERNEL_OFFS	0x00200000 /* kernel offset */
+diff --git a/include/configs/flea3.h b/include/configs/flea3.h
+index 3560611081..df8169e410 100644
+--- a/include/configs/flea3.h
++++ b/include/configs/flea3.h
+@@ -162,7 +162,6 @@
+ /*
+  * NAND FLASH driver setup
+  */
+-#define CONFIG_NAND_MXC
+ #define CONFIG_MXC_NAND_REGS_BASE	(NFC_BASE_ADDR)
+ #define CONFIG_SYS_MAX_NAND_DEVICE	1
+ #define CONFIG_SYS_NAND_BASE		(NFC_BASE_ADDR)
+diff --git a/include/configs/imx27lite-common.h b/include/configs/imx27lite-common.h
+index 7c680954cb..962856e101 100644
+--- a/include/configs/imx27lite-common.h
++++ b/include/configs/imx27lite-common.h
+@@ -125,7 +125,6 @@
+ /*
+  * NAND
+  */
+-#define CONFIG_NAND_MXC
+ #define CONFIG_MXC_NAND_REGS_BASE	0xd8000000
+ #define CONFIG_SYS_MAX_NAND_DEVICE	1
+ #define CONFIG_SYS_NAND_BASE		0xd8000000
+diff --git a/include/configs/ipam390.h b/include/configs/ipam390.h
+index 1899732e5f..2bb7d079f6 100644
+--- a/include/configs/ipam390.h
++++ b/include/configs/ipam390.h
+@@ -176,7 +176,6 @@
+ #define CONFIG_SPL_NAND_BASE
+ #define CONFIG_SPL_NAND_DRIVERS
+ #define CONFIG_SPL_NAND_ECC
+-#define CONFIG_SPL_NAND_SIMPLE
+ #define CONFIG_SPL_NAND_LOAD
+ 
+ /*
+diff --git a/include/configs/m53evk.h b/include/configs/m53evk.h
+index dcc12dd604..8b5f169733 100644
+--- a/include/configs/m53evk.h
++++ b/include/configs/m53evk.h
+@@ -75,7 +75,6 @@
+ #ifdef CONFIG_CMD_NAND
+ #define CONFIG_SYS_MAX_NAND_DEVICE	1
+ #define CONFIG_SYS_NAND_BASE		NFC_BASE_ADDR_AXI
+-#define CONFIG_NAND_MXC
+ #define CONFIG_MXC_NAND_REGS_BASE	NFC_BASE_ADDR_AXI
+ #define CONFIG_MXC_NAND_IP_REGS_BASE	NFC_BASE_ADDR
+ #define CONFIG_SYS_NAND_LARGEPAGE
+diff --git a/include/configs/mcx.h b/include/configs/mcx.h
+index 2a77430e7c..b4b8c4367e 100644
+--- a/include/configs/mcx.h
++++ b/include/configs/mcx.h
+@@ -239,9 +239,6 @@
+  */
+ 
+ /* **** PISMO SUPPORT *** */
+-#define CONFIG_SYS_NAND_BUSWIDTH_16BIT
+-#define CONFIG_NAND_OMAP_GPMC
+-#define CONFIG_NAND_OMAP_GPMC_PREFETCH
+ 
+ /* Redundant Environment */
+ #define CONFIG_SYS_ENV_SECT_SIZE	(128 << 10)	/* 128 KiB */
+@@ -268,7 +265,6 @@
+ 
+ /* Defines for SPL */
+ #define CONFIG_SPL_FRAMEWORK
+-#define CONFIG_SPL_NAND_SIMPLE
+ 
+ #define CONFIG_SPL_NAND_BASE
+ #define CONFIG_SPL_NAND_DRIVERS
+diff --git a/include/configs/mx31pdk.h b/include/configs/mx31pdk.h
+index 3867f7a091..a9bfec2c49 100644
+--- a/include/configs/mx31pdk.h
++++ b/include/configs/mx31pdk.h
+@@ -122,7 +122,6 @@
+ /*
+  * NAND driver
+  */
+-#define CONFIG_NAND_MXC
+ #define CONFIG_MXC_NAND_REGS_BASE      NFC_BASE_ADDR
+ #define CONFIG_SYS_MAX_NAND_DEVICE     1
+ #define CONFIG_SYS_NAND_BASE           NFC_BASE_ADDR
+diff --git a/include/configs/mx35pdk.h b/include/configs/mx35pdk.h
+index f16bfb98e4..18695d2686 100644
+--- a/include/configs/mx35pdk.h
++++ b/include/configs/mx35pdk.h
+@@ -182,7 +182,6 @@
+ /*
+  * NAND FLASH driver setup
+  */
+-#define CONFIG_NAND_MXC
+ #define CONFIG_MXC_NAND_REGS_BASE	(NFC_BASE_ADDR)
+ #define CONFIG_SYS_MAX_NAND_DEVICE	1
+ #define CONFIG_SYS_NAND_BASE		(NFC_BASE_ADDR)
+diff --git a/include/configs/mx53ard.h b/include/configs/mx53ard.h
+index 2417a1ab9c..d1d5ae523f 100644
+--- a/include/configs/mx53ard.h
++++ b/include/configs/mx53ard.h
+@@ -27,7 +27,6 @@
+ 
+ #define CONFIG_SYS_MAX_NAND_DEVICE	1
+ #define CONFIG_SYS_NAND_BASE		NFC_BASE_ADDR_AXI
+-#define CONFIG_NAND_MXC
+ #define CONFIG_MXC_NAND_REGS_BASE	NFC_BASE_ADDR_AXI
+ #define CONFIG_MXC_NAND_IP_REGS_BASE	NFC_BASE_ADDR
+ #define CONFIG_SYS_NAND_LARGEPAGE
+diff --git a/include/configs/omap3_beagle.h b/include/configs/omap3_beagle.h
+index 06232bdfea..399ed07855 100644
+--- a/include/configs/omap3_beagle.h
++++ b/include/configs/omap3_beagle.h
+@@ -68,7 +68,6 @@
+ /*
+  * Board NAND Info.
+  */
+-#define CONFIG_NAND_OMAP_GPMC
+ #define CONFIG_SYS_MAX_NAND_DEVICE	1		/* Max number of NAND */
+ 							/* devices */
+ 
+@@ -245,7 +244,6 @@
+ /* Defines for SPL */
+ 
+ /* NAND boot config */
+-#define CONFIG_SYS_NAND_BUSWIDTH_16BIT
+ #define CONFIG_SYS_NAND_5_ADDR_CYCLE
+ #define CONFIG_SYS_NAND_PAGE_COUNT	64
+ #define CONFIG_SYS_NAND_PAGE_SIZE	2048
+diff --git a/include/configs/omap3_cairo.h b/include/configs/omap3_cairo.h
+index 417d45b582..f9a7e0ca8a 100644
+--- a/include/configs/omap3_cairo.h
++++ b/include/configs/omap3_cairo.h
+@@ -57,7 +57,6 @@
+ /*
+  * Board NAND Info.
+  */
+-#define CONFIG_NAND_OMAP_GPMC
+ #define CONFIG_SYS_MAX_NAND_DEVICE	1		/* Max number of NAND */
+ 							/* devices */
+ #define CONFIG_EXTRA_ENV_SETTINGS \
+diff --git a/include/configs/omap3_evm.h b/include/configs/omap3_evm.h
+index 3618d0ec1a..4adc66e2ab 100644
+--- a/include/configs/omap3_evm.h
++++ b/include/configs/omap3_evm.h
+@@ -48,10 +48,8 @@
+ 
+ /* NAND */
+ #if defined(CONFIG_NAND)
+-#define CONFIG_NAND_OMAP_GPMC
+ #define CONFIG_SYS_FLASH_BASE		NAND_BASE
+ #define CONFIG_SYS_MAX_NAND_DEVICE      1
+-#define CONFIG_SYS_NAND_BUSWIDTH_16BIT
+ #define CONFIG_SYS_NAND_5_ADDR_CYCLE
+ #define CONFIG_SYS_NAND_PAGE_COUNT      64
+ #define CONFIG_SYS_NAND_PAGE_SIZE       2048
+diff --git a/include/configs/omap3_igep00x0.h b/include/configs/omap3_igep00x0.h
+index 5118b93446..123de88711 100644
+--- a/include/configs/omap3_igep00x0.h
++++ b/include/configs/omap3_igep00x0.h
+@@ -119,7 +119,6 @@
+ #define CONFIG_SYS_ONENAND_BLOCK_SIZE	(128*1024)
+ 
+ /* NAND config */
+-#define CONFIG_SYS_NAND_BUSWIDTH_16BIT
+ #define CONFIG_SYS_NAND_5_ADDR_CYCLE
+ #define CONFIG_SYS_NAND_PAGE_COUNT	64
+ #define CONFIG_SYS_NAND_PAGE_SIZE	2048
+@@ -136,7 +135,6 @@
+ #define CONFIG_SYS_NAND_ECCSIZE		512
+ #define CONFIG_SYS_NAND_ECCBYTES	14
+ #define CONFIG_NAND_OMAP_ECCSCHEME	OMAP_ECC_BCH8_CODE_HW_DETECTION_SW
+-#define CONFIG_NAND_OMAP_GPMC
+ 
+ /* UBI configuration */
+ #define CONFIG_SPL_UBI			1
+diff --git a/include/configs/omap3_logic.h b/include/configs/omap3_logic.h
+index f7db79d11c..5f8f9d7854 100644
+--- a/include/configs/omap3_logic.h
++++ b/include/configs/omap3_logic.h
+@@ -63,13 +63,10 @@
+ 
+ /* Board NAND Info. */
+ #ifdef CONFIG_NAND
+-#define CONFIG_NAND_OMAP_GPMC
+-
+ #define CONFIG_SYS_NAND_ADDR		NAND_BASE /* physical address */
+ 						  /* to access nand */
+ #define CONFIG_SYS_MAX_NAND_DEVICE	1	  /* Max number of */
+ 						  /* NAND devices */
+-#define CONFIG_SYS_NAND_BUSWIDTH_16BIT
+ #define CONFIG_SYS_NAND_5_ADDR_CYCLE
+ #define CONFIG_SYS_NAND_PAGE_COUNT	64
+ #define CONFIG_SYS_NAND_PAGE_SIZE	2048
+diff --git a/include/configs/omap3_overo.h b/include/configs/omap3_overo.h
+index cb92bd9c08..8257afbe61 100644
+--- a/include/configs/omap3_overo.h
++++ b/include/configs/omap3_overo.h
+@@ -191,7 +191,6 @@
+ #define CONFIG_SYS_INIT_RAM_SIZE	0x800
+ 
+ /* NAND boot config */
+-#define CONFIG_SYS_NAND_BUSWIDTH_16BIT
+ #define CONFIG_SYS_NAND_MAX_ECCPOS  56
+ #define CONFIG_SYS_NAND_5_ADDR_CYCLE
+ #define CONFIG_SYS_NAND_PAGE_COUNT	64
+diff --git a/include/configs/omap3_pandora.h b/include/configs/omap3_pandora.h
+index 7d5e926d1b..659bf0776f 100644
+--- a/include/configs/omap3_pandora.h
++++ b/include/configs/omap3_pandora.h
+@@ -48,7 +48,6 @@
+  */
+ #define CONFIG_SYS_NAND_ADDR		NAND_BASE	/* physical address */
+ 							/* to access nand */
+-#define CONFIG_SYS_NAND_BUSWIDTH_16BIT
+ #define CONFIG_NAND_OMAP_ECCSCHEME	OMAP_ECC_HAM1_CODE_SW
+ #define CONFIG_SYS_NAND_PAGE_SIZE	2048
+ #define CONFIG_SYS_NAND_OOBSIZE		64
+diff --git a/include/configs/omap3_zoom1.h b/include/configs/omap3_zoom1.h
+index cbbe7d4e2f..ed40a4b9e3 100644
+--- a/include/configs/omap3_zoom1.h
++++ b/include/configs/omap3_zoom1.h
+@@ -73,7 +73,6 @@
+ #define CONFIG_SYS_NAND_BASE		NAND_BASE	/* physical address */
+ 							/* to access nand at */
+ 							/* CS0 */
+-#define CONFIG_SYS_NAND_BUSWIDTH_16BIT
+ 
+ /* Environment information */
+ 
+diff --git a/include/configs/omapl138_lcdk.h b/include/configs/omapl138_lcdk.h
+index 58b683a481..5dba7d279a 100644
+--- a/include/configs/omapl138_lcdk.h
++++ b/include/configs/omapl138_lcdk.h
+@@ -160,7 +160,6 @@
+ #define	CONFIG_SYS_NAND_USE_FLASH_BBT
+ #define CONFIG_SYS_NAND_4BIT_HW_ECC_OOBFIRST
+ #define	CONFIG_SYS_NAND_PAGE_2K
+-#define	CONFIG_SYS_NAND_BUSWIDTH_16BIT
+ #define CONFIG_SYS_NAND_CS		3
+ #define CONFIG_SYS_NAND_BASE		DAVINCI_ASYNC_EMIF_DATA_CE3_BASE
+ #define CONFIG_SYS_NAND_MASK_CLE	0x10
+@@ -192,7 +191,6 @@
+ #define CONFIG_SPL_NAND_BASE
+ #define CONFIG_SPL_NAND_DRIVERS
+ #define CONFIG_SPL_NAND_ECC
+-#define CONFIG_SPL_NAND_SIMPLE
+ #define CONFIG_SPL_NAND_LOAD
+ #endif
+ 
+diff --git a/include/configs/pengwyn.h b/include/configs/pengwyn.h
+index 242a13912b..570c375cdc 100644
+--- a/include/configs/pengwyn.h
++++ b/include/configs/pengwyn.h
+@@ -113,8 +113,6 @@
+ /* SPL */
+ 
+ /* NAND support */
+-#define CONFIG_NAND_OMAP_GPMC
+-#define CONFIG_NAND_OMAP_ELM
+ 
+ /* NAND Configuration. */
+ #define CONFIG_SYS_NAND_5_ADDR_CYCLE
+diff --git a/include/configs/siemens-am33x-common.h b/include/configs/siemens-am33x-common.h
+index 1997c2dd5a..7ef95faca4 100644
+--- a/include/configs/siemens-am33x-common.h
++++ b/include/configs/siemens-am33x-common.h
+@@ -115,7 +115,6 @@
+ #define CONFIG_SPL_SPI_LOAD
+ #define CONFIG_SYS_SPI_U_BOOT_OFFS	0x20000
+ 
+-#define CONFIG_SPL_NAND_AM33XX_BCH
+ #define CONFIG_SPL_NAND_BASE
+ #define CONFIG_SPL_NAND_DRIVERS
+ #define CONFIG_SPL_NAND_ECC
+@@ -501,8 +500,6 @@
+ 					"512k(mtdoops),"	\
+ 					"-(configuration)"
+ 
+-#define CONFIG_NAND_OMAP_GPMC
+-#define CONFIG_NAND_OMAP_ELM
+ #define CONFIG_SYS_NAND_BASE		(0x08000000)	/* physical address */
+ 							/* to access nand at */
+ 							/* CS0 */
+diff --git a/include/configs/tam3517-common.h b/include/configs/tam3517-common.h
+index ba8483f0bf..80828272f2 100644
+--- a/include/configs/tam3517-common.h
++++ b/include/configs/tam3517-common.h
+@@ -123,7 +123,6 @@
+  */
+ 
+ /* **** PISMO SUPPORT *** */
+-#define CONFIG_NAND_OMAP_GPMC
+ 
+ /* Redundant Environment */
+ #define CONFIG_SYS_ENV_SECT_SIZE	(128 << 10)	/* 128 KiB */
+@@ -155,7 +154,6 @@
+ /* Defines for SPL */
+ #define CONFIG_SPL_FRAMEWORK
+ #define CONFIG_SPL_CONSOLE
+-#define CONFIG_SPL_NAND_SIMPLE
+ #define CONFIG_SPL_NAND_SOFTECC
+ #define CONFIG_SPL_NAND_WORKSPACE	0x8f07f000 /* below BSS */
+ 
+@@ -186,7 +184,6 @@
+ #define CONFIG_SYS_MMCSD_RAW_MODE_ARGS_SECTORS	0x80	/* 64KiB */
+ 
+ /* NAND boot config */
+-#define CONFIG_SYS_NAND_BUSWIDTH_16BIT
+ #define CONFIG_SYS_NAND_PAGE_COUNT	64
+ #define CONFIG_SYS_NAND_PAGE_SIZE	2048
+ #define CONFIG_SYS_NAND_OOBSIZE		64
+@@ -199,7 +196,6 @@
+ #define CONFIG_SYS_NAND_ECCSIZE		256
+ #define CONFIG_SYS_NAND_ECCBYTES	3
+ #define CONFIG_NAND_OMAP_ECCSCHEME	OMAP_ECC_HAM1_CODE_SW
+-#define CONFIG_NAND_OMAP_GPMC_PREFETCH
+ 
+ #define CONFIG_SYS_NAND_U_BOOT_START	CONFIG_SYS_TEXT_BASE
+ 
+diff --git a/include/configs/tao3530.h b/include/configs/tao3530.h
+index f19a230b7a..8ca50dc078 100644
+--- a/include/configs/tao3530.h
++++ b/include/configs/tao3530.h
+@@ -79,7 +79,6 @@
+ /*
+  * Board NAND Info.
+  */
+-#define CONFIG_NAND_OMAP_GPMC
+ #define CONFIG_SYS_NAND_ADDR		NAND_BASE	/* physical address */
+ 							/* to access nand */
+ #define CONFIG_SYS_NAND_BASE		NAND_BASE	/* physical address */
+@@ -88,7 +87,6 @@
+ 
+ #define CONFIG_SYS_MAX_NAND_DEVICE	1		/* Max number of NAND */
+ 							/* devices */
+-#define CONFIG_SYS_NAND_BUSWIDTH_16BIT
+ /* Environment information */
+ 
+ #define CONFIG_EXTRA_ENV_SETTINGS \
+@@ -214,7 +212,6 @@
+ 
+ /* Defines for SPL */
+ #define CONFIG_SPL_FRAMEWORK
+-#define CONFIG_SPL_NAND_SIMPLE
+ 
+ #define CONFIG_SYS_MMCSD_FS_BOOT_PARTITION	1
+ #define CONFIG_SPL_FS_LOAD_PAYLOAD_NAME	"u-boot.img"
+diff --git a/include/configs/tegra-common.h b/include/configs/tegra-common.h
+index 430c9a7623..3cdd9741b2 100644
+--- a/include/configs/tegra-common.h
++++ b/include/configs/tegra-common.h
+@@ -86,7 +86,6 @@
+ 
+ /* Defines for SPL */
+ #define CONFIG_SPL_FRAMEWORK
+-#define CONFIG_SPL_NAND_SIMPLE
+ #define CONFIG_SPL_MAX_FOOTPRINT	(CONFIG_SYS_TEXT_BASE - \
+ 						CONFIG_SPL_TEXT_BASE)
+ #define CONFIG_SYS_SPL_MALLOC_SIZE	0x00010000
+diff --git a/include/configs/ti816x_evm.h b/include/configs/ti816x_evm.h
+index 1898a82356..ddeef6007d 100644
+--- a/include/configs/ti816x_evm.h
++++ b/include/configs/ti816x_evm.h
+@@ -66,19 +66,15 @@
+ #define CONFIG_SYS_MAX_NAND_DEVICE	1
+ 
+ /* NAND: SPL related configs */
+-#define CONFIG_SPL_NAND_AM33XX_BCH
+ 
+ /* NAND: device related configs */
+ #define CONFIG_SYS_NAND_5_ADDR_CYCLE
+-#define CONFIG_SYS_NAND_BUSWIDTH_16BIT
+ #define CONFIG_SYS_NAND_PAGE_COUNT	(CONFIG_SYS_NAND_BLOCK_SIZE / \
+ 					 CONFIG_SYS_NAND_PAGE_SIZE)
+ #define CONFIG_SYS_NAND_PAGE_SIZE	2048
+ #define CONFIG_SYS_NAND_OOBSIZE		64
+ #define CONFIG_SYS_NAND_BLOCK_SIZE	(128*1024)
+ /* NAND: driver related configs */
+-#define CONFIG_NAND_OMAP_GPMC_PREFETCH
+-#define CONFIG_NAND_OMAP_ELM
+ #define CONFIG_SYS_NAND_BAD_BLOCK_POS	NAND_LARGE_BADBLOCK_POS
+ #define CONFIG_SYS_NAND_ECCPOS		{ 2, 3, 4, 5, 6, 7, 8, 9, \
+ 					 10, 11, 12, 13, 14, 15, 16, 17, \
+@@ -111,7 +107,6 @@
+ 
+ /* SPL */
+ /* Defines for SPL */
+-#define CONFIG_SPL_NAND_AM33XX_BCH	/* ELM support */
+ #define CONFIG_SPL_TEXT_BASE    0x40400000
+ #define CONFIG_SPL_MAX_SIZE		(SRAM_SCRATCH_SPACE_ADDR - \
+ 					 CONFIG_SPL_TEXT_BASE)
+diff --git a/include/configs/ti_am335x_common.h b/include/configs/ti_am335x_common.h
+index bf44121a0f..66cacdf347 100644
+--- a/include/configs/ti_am335x_common.h
++++ b/include/configs/ti_am335x_common.h
+@@ -74,10 +74,6 @@
+  * s_init when we have SPL used.
+  */
+ 
+-#ifdef CONFIG_NAND
+-#define CONFIG_SPL_NAND_AM33XX_BCH	/* ELM support */
+-#endif
+-
+ /* Now bring in the rest of the common code. */
+ #include <configs/ti_armv7_omap.h>
+ 
+diff --git a/include/configs/ti_armv7_omap.h b/include/configs/ti_armv7_omap.h
+index 306f503d9e..da5fc8108f 100644
+--- a/include/configs/ti_armv7_omap.h
++++ b/include/configs/ti_armv7_omap.h
+@@ -21,7 +21,6 @@
+  * access CS0 at is 0x8000000.
+  */
+ #ifdef CONFIG_NAND
+-#define CONFIG_NAND_OMAP_GPMC
+ #ifndef CONFIG_SYS_NAND_BASE
+ #define CONFIG_SYS_NAND_BASE		0x8000000
+ #endif
+diff --git a/include/configs/ti_omap3_common.h b/include/configs/ti_omap3_common.h
+index 531bffca8c..72c4b184d9 100644
+--- a/include/configs/ti_omap3_common.h
++++ b/include/configs/ti_omap3_common.h
+@@ -61,7 +61,6 @@
+ 					 (64 << 20))
+ 
+ #ifdef CONFIG_NAND
+-#define CONFIG_SPL_NAND_SIMPLE
+ #define CONFIG_SYS_NAND_BASE		0x30000000
+ #endif
+ 
+diff --git a/include/configs/ti_omap4_common.h b/include/configs/ti_omap4_common.h
+index 018e4c2512..8994400de9 100644
+--- a/include/configs/ti_omap4_common.h
++++ b/include/configs/ti_omap4_common.h
+@@ -142,10 +142,6 @@
+ #define CONFIG_SYS_SPL_ARGS_ADDR	(CONFIG_SYS_SDRAM_BASE + \
+ 					 (128 << 20))
+ 
+-#ifdef CONFIG_NAND
+-#define CONFIG_SPL_NAND_AM33XX_BCH	/* ELM support */
+-#endif
+-
+ #ifdef CONFIG_SPL_BUILD
+ /* No need for i2c in SPL mode as we will use SRI2C for PMIC access on OMAP4 */
+ #undef CONFIG_SYS_I2C
+diff --git a/include/configs/ti_omap5_common.h b/include/configs/ti_omap5_common.h
+index 73c1d8f66e..539164177b 100644
+--- a/include/configs/ti_omap5_common.h
++++ b/include/configs/ti_omap5_common.h
+@@ -103,10 +103,6 @@
+ #define CONFIG_SYS_SPL_ARGS_ADDR	(CONFIG_SYS_SDRAM_BASE + \
+ 					 (128 << 20))
+ 
+-#ifdef CONFIG_NAND
+-#define CONFIG_SPL_NAND_AM33XX_BCH	/* ELM support */
+-#endif
+-
+ #ifdef CONFIG_SPL_BUILD
+ #undef CONFIG_TIMER
+ #endif
+diff --git a/include/configs/tricorder.h b/include/configs/tricorder.h
+index 33071ef507..8e245e9182 100644
+--- a/include/configs/tricorder.h
++++ b/include/configs/tricorder.h
+@@ -82,7 +82,6 @@
+ 						"2m(fdt)," \
+ 						"-(ubi)"
+ 
+-#define CONFIG_NAND_OMAP_GPMC
+ #define CONFIG_SYS_NAND_ADDR		NAND_BASE	/* physical address */
+ 							/* to access nand */
+ #define CONFIG_SYS_NAND_BASE		NAND_BASE	/* physical address */
+@@ -244,7 +243,6 @@
+ 
+ /* Defines for SPL */
+ #define CONFIG_SPL_FRAMEWORK
+-#define CONFIG_SPL_NAND_SIMPLE
+ 
+ #define CONFIG_SPL_NAND_BASE
+ #define CONFIG_SPL_NAND_DRIVERS
+diff --git a/include/configs/woodburn_common.h b/include/configs/woodburn_common.h
+index 15b21ef32b..8ea5e48483 100644
+--- a/include/configs/woodburn_common.h
++++ b/include/configs/woodburn_common.h
+@@ -171,7 +171,6 @@
+ /*
+  * NAND FLASH driver setup
+  */
+-#define CONFIG_NAND_MXC
+ #define CONFIG_NAND_MXC_V1_1
+ #define CONFIG_MXC_NAND_REGS_BASE	(NFC_BASE_ADDR)
+ #define CONFIG_SYS_MAX_NAND_DEVICE	1
+diff --git a/scripts/config_whitelist.txt b/scripts/config_whitelist.txt
+index 3037d6125b..65cee0fb70 100644
+--- a/scripts/config_whitelist.txt
++++ b/scripts/config_whitelist.txt
+@@ -1548,13 +1548,9 @@ CONFIG_NAND_KMETER1
+ CONFIG_NAND_LPC32XX_MLC
+ CONFIG_NAND_LPC32XX_SLC
+ CONFIG_NAND_MODE_REG
+-CONFIG_NAND_MXC
+ CONFIG_NAND_MXC_V1_1
+ CONFIG_NAND_NDFC
+ CONFIG_NAND_OMAP_ECCSCHEME
+-CONFIG_NAND_OMAP_ELM
+-CONFIG_NAND_OMAP_GPMC
+-CONFIG_NAND_OMAP_GPMC_PREFETCH
+ CONFIG_NAND_OMAP_GPMC_WSCFG
+ CONFIG_NAND_SECBOOT
+ CONFIG_NAND_SPL
+@@ -2177,7 +2173,6 @@ CONFIG_SPL_MMC_LOAD
+ CONFIG_SPL_MMC_MINIMAL
+ CONFIG_SPL_MPC83XX_WAIT_FOR_NAND
+ CONFIG_SPL_MXS_PSWITCH_WAIT
+-CONFIG_SPL_NAND_AM33XX_BCH
+ CONFIG_SPL_NAND_BASE
+ CONFIG_SPL_NAND_BOOT
+ CONFIG_SPL_NAND_DRIVERS
+@@ -2186,7 +2181,6 @@ CONFIG_SPL_NAND_INIT
+ CONFIG_SPL_NAND_LOAD
+ CONFIG_SPL_NAND_MINIMAL
+ CONFIG_SPL_NAND_RAW_ONLY
+-CONFIG_SPL_NAND_SIMPLE
+ CONFIG_SPL_NAND_SOFTECC
+ CONFIG_SPL_NAND_WORKSPACE
+ CONFIG_SPL_NO_CPU_SUPPORT_CODE
+-- 
+2.13.6
+

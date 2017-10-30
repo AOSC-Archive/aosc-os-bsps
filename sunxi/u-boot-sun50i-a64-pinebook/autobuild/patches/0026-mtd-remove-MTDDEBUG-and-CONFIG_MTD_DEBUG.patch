@@ -1,0 +1,97 @@
+From 8b7f4b9cc1f31292e5690336f529eca493df3df5 Mon Sep 17 00:00:00 2001
+From: Masahiro Yamada <yamada.masahiro@socionext.com>
+Date: Wed, 18 Oct 2017 00:10:49 +0900
+Subject: [PATCH 026/105] mtd: remove MTDDEBUG() and CONFIG_MTD_DEBUG
+
+All users of this macro have been converted.  Remove MTDDEBUG and
+related CONFIG options.
+
+ubifs_dbg_msg_key() is kept.  It is silent unless DEBUG is defined.
+
+I am not touching scripts/config_whitelist.txt.  The deprecated options
+will be dropped by the next resync.
+
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+---
+ fs/ubifs/debug.h                  |  7 -------
+ include/configs/woodburn_common.h |  4 ----
+ include/linux/mtd/mtd.h           | 24 ------------------------
+ 3 files changed, 35 deletions(-)
+
+diff --git a/fs/ubifs/debug.h b/fs/ubifs/debug.h
+index 807ce1b733..98140834f9 100644
+--- a/fs/ubifs/debug.h
++++ b/fs/ubifs/debug.h
+@@ -187,19 +187,12 @@ struct ubifs_global_debug_info {
+ 		 ##__VA_ARGS__)
+ 
+ #define DBG_KEY_BUF_LEN 48
+-#if defined CONFIG_MTD_DEBUG
+ #define ubifs_dbg_msg_key(type, key, fmt, ...) do {                            \
+ 	char __tmp_key_buf[DBG_KEY_BUF_LEN];                                   \
+ 	pr_debug("UBIFS DBG " type ": " fmt "%s\n",                            \
+ 		 ##__VA_ARGS__,                                                \
+ 		 dbg_snprintf_key(c, key, __tmp_key_buf, DBG_KEY_BUF_LEN));    \
+ } while (0)
+-#else
+-#define ubifs_dbg_msg_key(type, key, fmt, ...) do {                            \
+-	pr_debug("UBIFS DBG\n");                                               \
+-} while (0)
+-
+-#endif
+ 
+ #endif
+ 
+diff --git a/include/configs/woodburn_common.h b/include/configs/woodburn_common.h
+index 8ea5e48483..67c936721d 100644
+--- a/include/configs/woodburn_common.h
++++ b/include/configs/woodburn_common.h
+@@ -178,10 +178,6 @@
+ #define CONFIG_MXC_NAND_HWECC
+ #define CONFIG_SYS_NAND_LARGEPAGE
+ 
+-#if 0
+-#define CONFIG_MTD_DEBUG
+-#define CONFIG_MTD_DEBUG_VERBOSE	7
+-#endif
+ #define CONFIG_SYS_NAND_ONFI_DETECTION
+ 
+ /*
+diff --git a/include/linux/mtd/mtd.h b/include/linux/mtd/mtd.h
+index 3e1694b3a5..4bde251322 100644
+--- a/include/linux/mtd/mtd.h
++++ b/include/linux/mtd/mtd.h
+@@ -442,30 +442,6 @@ static inline void mtd_erase_callback(struct erase_info *instr)
+ }
+ #endif
+ 
+-#ifdef __UBOOT__
+-/*
+- * Debugging macro and defines
+- */
+-#define MTD_DEBUG_LEVEL0	(0)	/* Quiet   */
+-#define MTD_DEBUG_LEVEL1	(1)	/* Audible */
+-#define MTD_DEBUG_LEVEL2	(2)	/* Loud    */
+-#define MTD_DEBUG_LEVEL3	(3)	/* Noisy   */
+-
+-#ifdef CONFIG_MTD_DEBUG
+-#define MTDDEBUG(n, args...)				\
+-	do {						\
+-		if (n <= CONFIG_MTD_DEBUG_VERBOSE)	\
+-			printk(KERN_INFO args);		\
+-	} while(0)
+-#else /* CONFIG_MTD_DEBUG */
+-#define MTDDEBUG(n, args...)				\
+-	do {						\
+-		if (0)					\
+-			printk(KERN_INFO args);		\
+-	} while(0)
+-#endif /* CONFIG_MTD_DEBUG */
+-#endif
+-
+ static inline int mtd_is_bitflip(int err) {
+ 	return err == -EUCLEAN;
+ }
+-- 
+2.13.6
+

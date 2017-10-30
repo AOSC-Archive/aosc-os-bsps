@@ -1,0 +1,44 @@
+From 4c9f4c5ee4ac15a285f3ceb25752432990084dc1 Mon Sep 17 00:00:00 2001
+From: Bin Meng <bmeng.cn@gmail.com>
+Date: Wed, 18 Oct 2017 18:20:58 -0700
+Subject: [PATCH 060/105] x86: braswell: cherryhill: Update dts for SPI lock
+ down
+
+Intel Braswell FSP requires SPI controller settings to be locked down,
+let's do this in the chrryhill.dts and remove previous Kconfig option.
+
+Signed-off-by: Bin Meng <bmeng.cn@gmail.com>
+Reviewed-by: Simon Glass <sjg@chromium.org>
+---
+ arch/x86/cpu/braswell/Kconfig | 4 ----
+ arch/x86/dts/cherryhill.dts   | 1 +
+ 2 files changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/arch/x86/cpu/braswell/Kconfig b/arch/x86/cpu/braswell/Kconfig
+index 616f228788..31ac279c56 100644
+--- a/arch/x86/cpu/braswell/Kconfig
++++ b/arch/x86/cpu/braswell/Kconfig
+@@ -31,8 +31,4 @@ config FSP_ADDR
+ 	hex
+ 	default 0xfff20000
+ 
+-config FSP_LOCKDOWN_SPI
+-	bool
+-	default y
+-
+ endif
+diff --git a/arch/x86/dts/cherryhill.dts b/arch/x86/dts/cherryhill.dts
+index 840a669956..41e72f3eb6 100644
+--- a/arch/x86/dts/cherryhill.dts
++++ b/arch/x86/dts/cherryhill.dts
+@@ -143,6 +143,7 @@
+ 				#address-cells = <1>;
+ 				#size-cells = <0>;
+ 				compatible = "intel,ich9-spi";
++				intel,spi-lock-down;
+ 
+ 				spi-flash@0 {
+ 					#address-cells = <1>;
+-- 
+2.13.6
+

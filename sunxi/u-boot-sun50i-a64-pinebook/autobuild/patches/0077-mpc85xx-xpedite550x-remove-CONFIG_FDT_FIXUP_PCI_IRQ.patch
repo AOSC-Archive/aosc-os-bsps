@@ -1,0 +1,30 @@
+From a28b90b78715e165f3d52f09f056724f2a6e3d25 Mon Sep 17 00:00:00 2001
+From: Masahiro Yamada <yamada.masahiro@socionext.com>
+Date: Thu, 26 Oct 2017 21:24:28 +0900
+Subject: [PATCH 077/105] mpc85xx: xpedite550x: remove CONFIG_FDT_FIXUP_PCI_IRQ
+
+This macro is defined, but not referenced by anyone.
+
+I did not touch config_whitelist.txt - the CONFIG will be dropped
+by the next re-sync.
+
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+---
+ include/configs/xpedite550x.h | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/include/configs/xpedite550x.h b/include/configs/xpedite550x.h
+index b433224041..6c0981b113 100644
+--- a/include/configs/xpedite550x.h
++++ b/include/configs/xpedite550x.h
+@@ -204,7 +204,6 @@ extern unsigned long get_board_ddr_clk(unsigned long dummy);
+ #define CONFIG_LOADS_ECHO		1	/* echo on for serial download */
+ #define CONFIG_SYS_LOADS_BAUD_CHANGE	1	/* allow baudrate change */
+ 
+-#define CONFIG_FDT_FIXUP_PCI_IRQ	1
+ 
+ /*
+  * I2C
+-- 
+2.13.6
+

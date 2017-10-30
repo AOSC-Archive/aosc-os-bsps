@@ -1,0 +1,39 @@
+From 6af5520fe13d81ccd4ec4f7234a8d7a2426c2bd6 Mon Sep 17 00:00:00 2001
+From: Masahiro Yamada <yamada.masahiro@socionext.com>
+Date: Thu, 19 Oct 2017 19:37:59 +0900
+Subject: [PATCH 039/105] doc: verified-boot: fix crypto algorithm examples
+
+As you see in crypto_algos in common/image-sig.c, the algorithm
+should be either "rsa2048" or "rsa4096".  "rs2048" is a typo.
+
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+Reviewed-by: Simon Glass <sjg@chromium.org>
+---
+ doc/uImage.FIT/signature.txt | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/doc/uImage.FIT/signature.txt b/doc/uImage.FIT/signature.txt
+index a57cdab339..2ece4c47de 100644
+--- a/doc/uImage.FIT/signature.txt
++++ b/doc/uImage.FIT/signature.txt
+@@ -85,7 +85,7 @@ allow the signer to operate. These should be added to the .its file.
+ Signature nodes sit at the same level as hash nodes and are called
+ signature@1, signature@2, etc.
+ 
+-- algo: Algorithm name (e.g. "sha1,rs2048")
++- algo: Algorithm name (e.g. "sha1,rsa2048")
+ 
+ - key-name-hint: Name of key to use for signing. The keys will normally be in
+ a single directory (parameter -k to mkimage). For a given key <name>, its
+@@ -139,7 +139,7 @@ public key in U-Boot's control FDT (using CONFIG_OF_CONTROL).
+ Public keys should be stored as sub-nodes in a /signature node. Required
+ properties are:
+ 
+-- algo: Algorithm name (e.g. "sha1,rs2048")
++- algo: Algorithm name (e.g. "sha1,rsa2048")
+ 
+ Optional properties are:
+ 
+-- 
+2.13.6
+

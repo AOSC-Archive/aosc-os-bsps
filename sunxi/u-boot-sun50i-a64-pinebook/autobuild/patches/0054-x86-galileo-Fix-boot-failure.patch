@@ -1,0 +1,42 @@
+From 7995dd3782f90e1939969a4ead800a5e98e2d197 Mon Sep 17 00:00:00 2001
+From: Bin Meng <bmeng.cn@gmail.com>
+Date: Wed, 18 Oct 2017 18:20:52 -0700
+Subject: [PATCH 054/105] x86: galileo: Fix boot failure
+
+With latest codes on mainstream master, Intel Galileo board does not
+boot unfortunately. Git biset leads to b383d6c0 "bootstage: Convert
+to use malloc()".
+
+Disable bootstage support to make it boot again. The root cause needs
+to be investigated however.
+
+Fixes: b383d6c0 ("bootstage: Convert to use malloc()")
+Signed-off-by: Bin Meng <bmeng.cn@gmail.com>
+---
+ configs/galileo_defconfig | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/configs/galileo_defconfig b/configs/galileo_defconfig
+index c1849e38bb..f91890c744 100644
+--- a/configs/galileo_defconfig
++++ b/configs/galileo_defconfig
+@@ -6,8 +6,6 @@ CONFIG_GENERATE_PIRQ_TABLE=y
+ CONFIG_GENERATE_MP_TABLE=y
+ CONFIG_GENERATE_ACPI_TABLE=y
+ CONFIG_FIT=y
+-CONFIG_BOOTSTAGE=y
+-CONFIG_BOOTSTAGE_REPORT=y
+ CONFIG_USE_BOOTARGS=y
+ CONFIG_BOOTARGS="root=/dev/sdb3 init=/sbin/init rootwait ro"
+ CONFIG_SYS_CONSOLE_INFO_QUIET=y
+@@ -25,7 +23,6 @@ CONFIG_CMD_DHCP=y
+ # CONFIG_CMD_NFS is not set
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_TIME=y
+-CONFIG_CMD_BOOTSTAGE=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_EXT4=y
+ CONFIG_CMD_EXT4_WRITE=y
+-- 
+2.13.6
+

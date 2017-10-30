@@ -1,0 +1,43 @@
+From d17207ea83475597d122bfd8ed7f48ab6acedc63 Mon Sep 17 00:00:00 2001
+From: Michal Oleszczyk <oleszczyk.m@gmail.com>
+Date: Tue, 17 Oct 2017 14:06:33 +0200
+Subject: [PATCH 029/105] chiliboard config: use CONFIG_DEFAULT_FDT_FILE as env
+ variable
+
+Remove hardcoded ftd file name from environment variables.
+Use CONFIG_DEFAULT_FDT_FILE macro instead.
+
+Signed-off-by: Michal Oleszczyk <m.oleszczyk@grinn-global.com>
+---
+ configs/chiliboard_defconfig | 1 +
+ include/configs/chiliboard.h | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/configs/chiliboard_defconfig b/configs/chiliboard_defconfig
+index d94b634a44..06f2b9dae4 100644
+--- a/configs/chiliboard_defconfig
++++ b/configs/chiliboard_defconfig
+@@ -11,6 +11,7 @@ CONFIG_SPL_WATCHDOG_SUPPORT=y
+ CONFIG_SPL_FAT_SUPPORT=y
+ CONFIG_BOOTDELAY=1
+ CONFIG_SYS_CONSOLE_INFO_QUIET=y
++CONFIG_DEFAULT_FDT_FILE="am335x-chiliboard.dtb"
+ CONFIG_SPL=y
+ CONFIG_SPL_I2C_SUPPORT=y
+ CONFIG_SPL_POWER_SUPPORT=y
+diff --git a/include/configs/chiliboard.h b/include/configs/chiliboard.h
+index 80d4e49f6d..ff66518231 100644
+--- a/include/configs/chiliboard.h
++++ b/include/configs/chiliboard.h
+@@ -45,7 +45,7 @@
+ 	"boot_fdt=try\0" \
+ 	"console=ttyO0,115200n8\0" \
+ 	"image=zImage\0" \
+-	"fdt_file=am335x-chiliboard.dtb\0" \
++	"fdt_file=" CONFIG_DEFAULT_FDT_FILE "\0" \
+ 	"ip_dyn=yes\0" \
+ 	"optargs=\0" \
+ 	"loadbootscript=" \
+-- 
+2.13.6
+

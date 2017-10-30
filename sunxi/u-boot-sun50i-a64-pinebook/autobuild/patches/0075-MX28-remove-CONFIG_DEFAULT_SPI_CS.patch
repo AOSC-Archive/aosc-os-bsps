@@ -1,0 +1,43 @@
+From eac89575af7c2aba21861229d06e2f36c5c9866e Mon Sep 17 00:00:00 2001
+From: Masahiro Yamada <yamada.masahiro@socionext.com>
+Date: Thu, 26 Oct 2017 21:24:26 +0900
+Subject: [PATCH 075/105] MX28: remove CONFIG_DEFAULT_SPI_CS
+
+This macro is defined, but not referenced by anyone.
+
+I did not touch config_whitelist.txt - the CONFIG will be dropped
+by the next re-sync.
+
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+---
+ include/configs/bg0900.h | 1 -
+ include/configs/m28evk.h | 1 -
+ 2 files changed, 2 deletions(-)
+
+diff --git a/include/configs/bg0900.h b/include/configs/bg0900.h
+index 3b65416dcf..03700b0b7b 100644
+--- a/include/configs/bg0900.h
++++ b/include/configs/bg0900.h
+@@ -27,7 +27,6 @@
+ /* SPI */
+ #ifdef CONFIG_CMD_SPI
+ #define CONFIG_DEFAULT_SPI_BUS		2
+-#define CONFIG_DEFAULT_SPI_CS		0
+ #define CONFIG_DEFAULT_SPI_MODE		SPI_MODE_0
+ 
+ /* SPI FLASH */
+diff --git a/include/configs/m28evk.h b/include/configs/m28evk.h
+index 4fcf4805ee..b5ba6b43d7 100644
+--- a/include/configs/m28evk.h
++++ b/include/configs/m28evk.h
+@@ -72,7 +72,6 @@
+ /* SPI */
+ #ifdef CONFIG_CMD_SPI
+ #define CONFIG_DEFAULT_SPI_BUS		2
+-#define CONFIG_DEFAULT_SPI_CS		0
+ #define CONFIG_DEFAULT_SPI_MODE		SPI_MODE_0
+ 
+ /* SPI FLASH */
+-- 
+2.13.6
+

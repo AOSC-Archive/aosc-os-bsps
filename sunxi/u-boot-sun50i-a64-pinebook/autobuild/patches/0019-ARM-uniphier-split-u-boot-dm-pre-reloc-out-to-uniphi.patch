@@ -1,0 +1,451 @@
+From 9ac0e7b37a5d9c01079f1a2d595fe67cef4ce154 Mon Sep 17 00:00:00 2001
+From: Masahiro Yamada <yamada.masahiro@socionext.com>
+Date: Tue, 17 Oct 2017 21:19:42 +0900
+Subject: [PATCH 019/105] ARM: uniphier: split u-boot,dm-pre-reloc out to
+ uniphier-v7-u-boot.dtsi
+
+UniPhier 32-bit SoCs use CONFIG_SPL_OF_CONTROL.  So, many nodes must
+be marked as dm-pre-reloc to prevent fdtgrep from stripping them off.
+
+Sprinkling U-Boot-specific properties all over the place is painful
+because DT files are synced with Linux from time to time.
+
+Split u-boot,dm-pre-reloc out to uniphier-v7-u-boot.dtsi, which is
+appended to UniPhier V7 DTS before the build.
+
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+Reviewed-by: Jagan Teki <jagan@openedev.com>
+---
+ arch/arm/dts/uniphier-ld4-ref.dts     |  9 ------
+ arch/arm/dts/uniphier-ld4.dtsi        |  3 --
+ arch/arm/dts/uniphier-ld6b-ref.dts    |  9 ------
+ arch/arm/dts/uniphier-pro4-ace.dts    |  9 ------
+ arch/arm/dts/uniphier-pro4-ref.dts    |  9 ------
+ arch/arm/dts/uniphier-pro4-sanji.dts  | 21 ------------
+ arch/arm/dts/uniphier-pro4.dtsi       |  4 ---
+ arch/arm/dts/uniphier-pro5-4kbox.dts  |  9 ------
+ arch/arm/dts/uniphier-pro5.dtsi       |  4 ---
+ arch/arm/dts/uniphier-pxs2-gentil.dts | 21 ------------
+ arch/arm/dts/uniphier-pxs2-vodka.dts  | 21 ------------
+ arch/arm/dts/uniphier-pxs2.dtsi       |  4 ---
+ arch/arm/dts/uniphier-sld8-ref.dts    |  9 ------
+ arch/arm/dts/uniphier-sld8.dtsi       |  3 --
+ arch/arm/dts/uniphier-v7-u-boot.dtsi  | 61 +++++++++++++++++++++++++++++++++++
+ arch/arm/mach-uniphier/Kconfig        |  2 ++
+ 16 files changed, 63 insertions(+), 135 deletions(-)
+ create mode 100644 arch/arm/dts/uniphier-v7-u-boot.dtsi
+
+diff --git a/arch/arm/dts/uniphier-ld4-ref.dts b/arch/arm/dts/uniphier-ld4-ref.dts
+index 0f50acb24c..0fd66e7b23 100644
+--- a/arch/arm/dts/uniphier-ld4-ref.dts
++++ b/arch/arm/dts/uniphier-ld4-ref.dts
+@@ -68,12 +68,3 @@
+ &usb1 {
+ 	status = "okay";
+ };
+-
+-/* for U-Boot only */
+-&serial0 {
+-	u-boot,dm-pre-reloc;
+-};
+-
+-&pinctrl_uart0 {
+-	u-boot,dm-pre-reloc;
+-};
+diff --git a/arch/arm/dts/uniphier-ld4.dtsi b/arch/arm/dts/uniphier-ld4.dtsi
+index b81603820a..158beae718 100644
+--- a/arch/arm/dts/uniphier-ld4.dtsi
++++ b/arch/arm/dts/uniphier-ld4.dtsi
+@@ -50,7 +50,6 @@
+ 		#size-cells = <1>;
+ 		ranges;
+ 		interrupt-parent = <&intc>;
+-		u-boot,dm-pre-reloc;
+ 
+ 		l2: l2-cache@500c0000 {
+ 			compatible = "socionext,uniphier-system-cache";
+@@ -295,11 +294,9 @@
+ 			compatible = "socionext,uniphier-ld4-soc-glue",
+ 				     "simple-mfd", "syscon";
+ 			reg = <0x5f800000 0x2000>;
+-			u-boot,dm-pre-reloc;
+ 
+ 			pinctrl: pinctrl {
+ 				compatible = "socionext,uniphier-ld4-pinctrl";
+-				u-boot,dm-pre-reloc;
+ 			};
+ 		};
+ 
+diff --git a/arch/arm/dts/uniphier-ld6b-ref.dts b/arch/arm/dts/uniphier-ld6b-ref.dts
+index bdb7f50ab3..926d37ee73 100644
+--- a/arch/arm/dts/uniphier-ld6b-ref.dts
++++ b/arch/arm/dts/uniphier-ld6b-ref.dts
+@@ -70,12 +70,3 @@
+ &usb1 {
+ 	status = "okay";
+ };
+-
+-/* for U-Boot only */
+-&serial0 {
+-	u-boot,dm-pre-reloc;
+-};
+-
+-&pinctrl_uart0 {
+-	u-boot,dm-pre-reloc;
+-};
+diff --git a/arch/arm/dts/uniphier-pro4-ace.dts b/arch/arm/dts/uniphier-pro4-ace.dts
+index 8161ba83a0..60a8c33767 100644
+--- a/arch/arm/dts/uniphier-pro4-ace.dts
++++ b/arch/arm/dts/uniphier-pro4-ace.dts
+@@ -90,12 +90,3 @@
+ &usb3 {
+ 	status = "okay";
+ };
+-
+-/* for U-Boot only */
+-&serial0 {
+-	u-boot,dm-pre-reloc;
+-};
+-
+-&pinctrl_uart0 {
+-	u-boot,dm-pre-reloc;
+-};
+diff --git a/arch/arm/dts/uniphier-pro4-ref.dts b/arch/arm/dts/uniphier-pro4-ref.dts
+index 360b31d692..1b22f80e2c 100644
+--- a/arch/arm/dts/uniphier-pro4-ref.dts
++++ b/arch/arm/dts/uniphier-pro4-ref.dts
+@@ -83,12 +83,3 @@
+ &usb1 {
+ 	status = "okay";
+ };
+-
+-/* for U-Boot only */
+-&serial0 {
+-	u-boot,dm-pre-reloc;
+-};
+-
+-&pinctrl_uart0 {
+-	u-boot,dm-pre-reloc;
+-};
+diff --git a/arch/arm/dts/uniphier-pro4-sanji.dts b/arch/arm/dts/uniphier-pro4-sanji.dts
+index 778e2bb4b7..950f47abf8 100644
+--- a/arch/arm/dts/uniphier-pro4-sanji.dts
++++ b/arch/arm/dts/uniphier-pro4-sanji.dts
+@@ -85,24 +85,3 @@
+ &usb3 {
+ 	status = "okay";
+ };
+-
+-/* for U-Boot only */
+-&serial0 {
+-	u-boot,dm-pre-reloc;
+-};
+-
+-&mio_clk {
+-	u-boot,dm-pre-reloc;
+-};
+-
+-&emmc {
+-	u-boot,dm-pre-reloc;
+-};
+-
+-&pinctrl_uart0 {
+-	u-boot,dm-pre-reloc;
+-};
+-
+-&pinctrl_emmc {
+-	u-boot,dm-pre-reloc;
+-};
+diff --git a/arch/arm/dts/uniphier-pro4.dtsi b/arch/arm/dts/uniphier-pro4.dtsi
+index 5f39972f67..ea97e26c25 100644
+--- a/arch/arm/dts/uniphier-pro4.dtsi
++++ b/arch/arm/dts/uniphier-pro4.dtsi
+@@ -58,7 +58,6 @@
+ 		#size-cells = <1>;
+ 		ranges;
+ 		interrupt-parent = <&intc>;
+-		u-boot,dm-pre-reloc;
+ 
+ 		l2: l2-cache@500c0000 {
+ 			compatible = "socionext,uniphier-system-cache";
+@@ -224,7 +223,6 @@
+ 			compatible = "socionext,uniphier-pro4-mioctrl",
+ 				     "simple-mfd", "syscon";
+ 			reg = <0x59810000 0x800>;
+-			u-boot,dm-pre-reloc;
+ 
+ 			mio_clk: clock {
+ 				compatible = "socionext,uniphier-pro4-mio-clock";
+@@ -333,11 +331,9 @@
+ 			compatible = "socionext,uniphier-pro4-soc-glue",
+ 				     "simple-mfd", "syscon";
+ 			reg = <0x5f800000 0x2000>;
+-			u-boot,dm-pre-reloc;
+ 
+ 			pinctrl: pinctrl {
+ 				compatible = "socionext,uniphier-pro4-pinctrl";
+-				u-boot,dm-pre-reloc;
+ 			};
+ 		};
+ 
+diff --git a/arch/arm/dts/uniphier-pro5-4kbox.dts b/arch/arm/dts/uniphier-pro5-4kbox.dts
+index 05597d385e..1986a0be4b 100644
+--- a/arch/arm/dts/uniphier-pro5-4kbox.dts
++++ b/arch/arm/dts/uniphier-pro5-4kbox.dts
+@@ -55,12 +55,3 @@
+ &sd {
+ 	status = "okay";
+ };
+-
+-/* for U-Boot only */
+-&serial1 {
+-	u-boot,dm-pre-reloc;
+-};
+-
+-&pinctrl_uart1 {
+-	u-boot,dm-pre-reloc;
+-};
+diff --git a/arch/arm/dts/uniphier-pro5.dtsi b/arch/arm/dts/uniphier-pro5.dtsi
+index 950b02c5b0..3be3acf51e 100644
+--- a/arch/arm/dts/uniphier-pro5.dtsi
++++ b/arch/arm/dts/uniphier-pro5.dtsi
+@@ -132,7 +132,6 @@
+ 		#size-cells = <1>;
+ 		ranges;
+ 		interrupt-parent = <&intc>;
+-		u-boot,dm-pre-reloc;
+ 
+ 		l2: l2-cache@500c0000 {
+ 			compatible = "socionext,uniphier-system-cache";
+@@ -311,7 +310,6 @@
+ 			compatible = "socionext,uniphier-pro5-sdctrl",
+ 				     "simple-mfd", "syscon";
+ 			reg = <0x59810000 0x400>;
+-			u-boot,dm-pre-reloc;
+ 
+ 			sd_clk: clock {
+ 				compatible = "socionext,uniphier-pro5-sd-clock";
+@@ -344,11 +342,9 @@
+ 			compatible = "socionext,uniphier-pro5-soc-glue",
+ 				     "simple-mfd", "syscon";
+ 			reg = <0x5f800000 0x2000>;
+-			u-boot,dm-pre-reloc;
+ 
+ 			pinctrl: pinctrl {
+ 				compatible = "socionext,uniphier-pro5-pinctrl";
+-				u-boot,dm-pre-reloc;
+ 			};
+ 		};
+ 
+diff --git a/arch/arm/dts/uniphier-pxs2-gentil.dts b/arch/arm/dts/uniphier-pxs2-gentil.dts
+index 7f0f972bde..4397714e49 100644
+--- a/arch/arm/dts/uniphier-pxs2-gentil.dts
++++ b/arch/arm/dts/uniphier-pxs2-gentil.dts
+@@ -66,24 +66,3 @@
+ &usb1 {
+ 	status = "okay";
+ };
+-
+-/* for U-Boot only */
+-&serial2 {
+-	u-boot,dm-pre-reloc;
+-};
+-
+-&sd_clk {
+-	u-boot,dm-pre-reloc;
+-};
+-
+-&emmc {
+-	u-boot,dm-pre-reloc;
+-};
+-
+-&pinctrl_uart2 {
+-	u-boot,dm-pre-reloc;
+-};
+-
+-&pinctrl_emmc {
+-	u-boot,dm-pre-reloc;
+-};
+diff --git a/arch/arm/dts/uniphier-pxs2-vodka.dts b/arch/arm/dts/uniphier-pxs2-vodka.dts
+index ec9ffb7df8..d29096fc19 100644
+--- a/arch/arm/dts/uniphier-pxs2-vodka.dts
++++ b/arch/arm/dts/uniphier-pxs2-vodka.dts
+@@ -49,24 +49,3 @@
+ &usb0 {
+ 	status = "okay";
+ };
+-
+-/* for U-Boot only */
+-&serial2 {
+-	u-boot,dm-pre-reloc;
+-};
+-
+-&sd_clk {
+-	u-boot,dm-pre-reloc;
+-};
+-
+-&emmc {
+-	u-boot,dm-pre-reloc;
+-};
+-
+-&pinctrl_uart2 {
+-	u-boot,dm-pre-reloc;
+-};
+-
+-&pinctrl_emmc {
+-	u-boot,dm-pre-reloc;
+-};
+diff --git a/arch/arm/dts/uniphier-pxs2.dtsi b/arch/arm/dts/uniphier-pxs2.dtsi
+index ac84d15560..dcb251597f 100644
+--- a/arch/arm/dts/uniphier-pxs2.dtsi
++++ b/arch/arm/dts/uniphier-pxs2.dtsi
+@@ -120,7 +120,6 @@
+ 		#size-cells = <1>;
+ 		ranges;
+ 		interrupt-parent = <&intc>;
+-		u-boot,dm-pre-reloc;
+ 
+ 		l2: l2-cache@500c0000 {
+ 			compatible = "socionext,uniphier-system-cache";
+@@ -297,7 +296,6 @@
+ 			compatible = "socionext,uniphier-pxs2-sdctrl",
+ 				     "simple-mfd", "syscon";
+ 			reg = <0x59810000 0x400>;
+-			u-boot,dm-pre-reloc;
+ 
+ 			sd_clk: clock {
+ 				compatible = "socionext,uniphier-pxs2-sd-clock";
+@@ -365,11 +363,9 @@
+ 			compatible = "socionext,uniphier-pxs2-soc-glue",
+ 				     "simple-mfd", "syscon";
+ 			reg = <0x5f800000 0x2000>;
+-			u-boot,dm-pre-reloc;
+ 
+ 			pinctrl: pinctrl {
+ 				compatible = "socionext,uniphier-pxs2-pinctrl";
+-				u-boot,dm-pre-reloc;
+ 			};
+ 		};
+ 
+diff --git a/arch/arm/dts/uniphier-sld8-ref.dts b/arch/arm/dts/uniphier-sld8-ref.dts
+index 3557bb7fed..478ee0a631 100644
+--- a/arch/arm/dts/uniphier-sld8-ref.dts
++++ b/arch/arm/dts/uniphier-sld8-ref.dts
+@@ -72,12 +72,3 @@
+ &usb2 {
+ 	status = "okay";
+ };
+-
+-/* for U-Boot only */
+-&serial0 {
+-	u-boot,dm-pre-reloc;
+-};
+-
+-&pinctrl_uart0 {
+-	u-boot,dm-pre-reloc;
+-};
+diff --git a/arch/arm/dts/uniphier-sld8.dtsi b/arch/arm/dts/uniphier-sld8.dtsi
+index 70a5ea454c..a3693b0c1f 100644
+--- a/arch/arm/dts/uniphier-sld8.dtsi
++++ b/arch/arm/dts/uniphier-sld8.dtsi
+@@ -50,7 +50,6 @@
+ 		#size-cells = <1>;
+ 		ranges;
+ 		interrupt-parent = <&intc>;
+-		u-boot,dm-pre-reloc;
+ 
+ 		l2: l2-cache@500c0000 {
+ 			compatible = "socionext,uniphier-system-cache";
+@@ -299,11 +298,9 @@
+ 			compatible = "socionext,uniphier-sld8-soc-glue",
+ 				     "simple-mfd", "syscon";
+ 			reg = <0x5f800000 0x2000>;
+-			u-boot,dm-pre-reloc;
+ 
+ 			pinctrl: pinctrl {
+ 				compatible = "socionext,uniphier-sld8-pinctrl";
+-				u-boot,dm-pre-reloc;
+ 			};
+ 		};
+ 
+diff --git a/arch/arm/dts/uniphier-v7-u-boot.dtsi b/arch/arm/dts/uniphier-v7-u-boot.dtsi
+new file mode 100644
+index 0000000000..4a0c9c088a
+--- /dev/null
++++ b/arch/arm/dts/uniphier-v7-u-boot.dtsi
+@@ -0,0 +1,61 @@
++/ {
++	soc {
++		u-boot,dm-pre-reloc;
++
++		serial@54006800 {
++			u-boot,dm-pre-reloc;
++		};
++
++		serial@54006900 {
++			u-boot,dm-pre-reloc;
++		};
++
++		serial@54006a00 {
++			u-boot,dm-pre-reloc;
++		};
++
++		mioctrl@59810000 {
++			u-boot,dm-pre-reloc;
++
++			clock {
++				u-boot,dm-pre-reloc;
++			};
++		};
++
++		sdctrl@59810000 {
++			u-boot,dm-pre-reloc;
++
++			clock {
++				u-boot,dm-pre-reloc;
++			};
++		};
++
++		soc-glue@5f800000 {
++			u-boot,dm-pre-reloc;
++
++			pinctrl {
++				u-boot,dm-pre-reloc;
++
++				emmc_grp {
++					u-boot,dm-pre-reloc;
++				};
++
++				uart0_grp {
++					u-boot,dm-pre-reloc;
++				};
++
++				uart1_grp {
++					u-boot,dm-pre-reloc;
++				};
++
++				uart2_grp {
++					u-boot,dm-pre-reloc;
++				};
++			};
++		};
++	};
++};
++
++&emmc {
++	u-boot,dm-pre-reloc;
++};
+diff --git a/arch/arm/mach-uniphier/Kconfig b/arch/arm/mach-uniphier/Kconfig
+index de3bdc0bc2..cc759b3e01 100644
+--- a/arch/arm/mach-uniphier/Kconfig
++++ b/arch/arm/mach-uniphier/Kconfig
+@@ -117,4 +117,6 @@ config CMD_DDRMPHY_DUMP
+ 	  The command "ddrmphy" shows the resulting parameters of DDR Multi PHY
+ 	  training; it is useful for the evaluation of DDR Multi PHY training.
+ 
++config SYS_SOC
++	default "uniphier-v7" if ARCH_UNIPHIER_LD4_SLD8 || ARCH_UNIPHIER_V7_MULTI
+ endif
+-- 
+2.13.6
+

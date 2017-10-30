@@ -1,0 +1,30 @@
+From a0dd989ffb2c6d67907c464663a0ea0828328eee Mon Sep 17 00:00:00 2001
+From: Masahiro Yamada <yamada.masahiro@socionext.com>
+Date: Thu, 26 Oct 2017 21:24:23 +0900
+Subject: [PATCH 072/105] SOCFPGA: remove CONFIG_AUTONEG_TIMEOUT
+
+This macro is defined, but not referenced by anyone.
+
+I did not touch config_whitelist.txt - the CONFIG will be dropped
+by the next re-sync.
+
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+---
+ include/configs/socfpga_common.h | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/include/configs/socfpga_common.h b/include/configs/socfpga_common.h
+index 7b5417a75b..7281bda6ac 100644
+--- a/include/configs/socfpga_common.h
++++ b/include/configs/socfpga_common.h
+@@ -94,7 +94,6 @@
+ #if defined(CONFIG_CMD_NET) && !defined(CONFIG_SOCFPGA_VIRTUAL_TARGET)
+ #define CONFIG_DW_ALTDESCRIPTOR
+ #define CONFIG_MII
+-#define CONFIG_AUTONEG_TIMEOUT		(15 * CONFIG_SYS_HZ)
+ #endif
+ 
+ /*
+-- 
+2.13.6
+

@@ -1,0 +1,405 @@
+From 166cae20dd797dcb25fc550269792f15704d9c58 Mon Sep 17 00:00:00 2001
+From: Masahiro Yamada <yamada.masahiro@socionext.com>
+Date: Wed, 18 Oct 2017 00:10:48 +0900
+Subject: [PATCH 025/105] mtd: replace MTDDEBUG() with pr_debug()
+
+In old days, the MTD subsystem in Linux had debug facility like
+DEBUG(MTD_DEBUG_LEVEL1, ...).
+
+They were all replaced with pr_debug() until Linux 3.2.  See Linux
+commit 289c05222172 ("mtd: replace DEBUG() with pr_debug()").
+
+U-Boot still uses similar macros.  Covert all of them for easier sync.
+
+Done with the help of Coccinelle.
+
+The semantic patch I used is as follows:
+
+// <smpl>
+@@
+expression e1, e2;
+@@
+-MTDDEBUG(e1, e2)
++pr_debug(e2)
+@@
+expression e1, e2;
+@@
+-MTDDEBUG(e1, e2,
++pr_debug(e2,
+ ...)
+// </smpl>
+
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+---
+ drivers/mtd/nand/atmel_nand.c      |  7 +++---
+ drivers/mtd/nand/davinci_nand.c    |  7 +++---
+ drivers/mtd/nand/mxc_nand.c        | 49 ++++++++++++++++----------------------
+ drivers/mtd/nand/nand_bch.c        |  4 ++--
+ drivers/mtd/onenand/onenand_base.c | 38 +++++++++++++++--------------
+ drivers/mtd/onenand/onenand_bbt.c  |  5 ++--
+ 6 files changed, 51 insertions(+), 59 deletions(-)
+
+diff --git a/drivers/mtd/nand/atmel_nand.c b/drivers/mtd/nand/atmel_nand.c
+index 7c10bfedc6..65dd83eced 100644
+--- a/drivers/mtd/nand/atmel_nand.c
++++ b/drivers/mtd/nand/atmel_nand.c
+@@ -702,7 +702,7 @@ static int pmecc_choose_ecc(struct atmel_nand_host *host,
+ 	if (chip->onfi_version) {
+ 		*cap = chip->ecc_strength_ds;
+ 		*sector_size = chip->ecc_step_ds;
+-		MTDDEBUG(MTD_DEBUG_LEVEL1, "ONFI params, minimum required ECC: %d bits in %d bytes\n",
++		pr_debug("ONFI params, minimum required ECC: %d bits in %d bytes\n",
+ 			 *cap, *sector_size);
+ 	}
+ 
+@@ -863,9 +863,8 @@ static int atmel_pmecc_nand_init_params(struct nand_chip *nand,
+ 		host->pmecc_index_table_offset = ATMEL_PMECC_INDEX_OFFSET_1024;
+ #endif
+ 
+-	MTDDEBUG(MTD_DEBUG_LEVEL1,
+-		"Initialize PMECC params, cap: %d, sector: %d\n",
+-		cap, sector_size);
++	pr_debug("Initialize PMECC params, cap: %d, sector: %d\n",
++		 cap, sector_size);
+ 
+ 	host->pmecc = (struct pmecc_regs __iomem *) ATMEL_BASE_PMECC;
+ 	host->pmerrloc = (struct pmecc_errloc_regs __iomem *)
+diff --git a/drivers/mtd/nand/davinci_nand.c b/drivers/mtd/nand/davinci_nand.c
+index 0624644581..2a01fd34e9 100644
+--- a/drivers/mtd/nand/davinci_nand.c
++++ b/drivers/mtd/nand/davinci_nand.c
+@@ -238,7 +238,7 @@ static int nand_davinci_correct_data(struct mtd_info *mtd, u_char *dat,
+ 				uint32_t find_byte = diff >> (12 + 3);
+ 
+ 				dat[find_byte] ^= find_bit;
+-				MTDDEBUG(MTD_DEBUG_LEVEL0, "Correcting single "
++				pr_debug("Correcting single "
+ 					 "bit ECC error at offset: %d, bit: "
+ 					 "%d\n", find_byte, find_bit);
+ 				return 1;
+@@ -248,12 +248,11 @@ static int nand_davinci_correct_data(struct mtd_info *mtd, u_char *dat,
+ 		} else if (!(diff & (diff - 1))) {
+ 			/* Single bit ECC error in the ECC itself,
+ 			   nothing to fix */
+-			MTDDEBUG(MTD_DEBUG_LEVEL0, "Single bit ECC error in "
+-				 "ECC.\n");
++			pr_debug("Single bit ECC error in " "ECC.\n");
+ 			return 1;
+ 		} else {
+ 			/* Uncorrectable error */
+-			MTDDEBUG(MTD_DEBUG_LEVEL0, "ECC UNCORRECTED_ERROR 1\n");
++			pr_debug("ECC UNCORRECTED_ERROR 1\n");
+ 			return -EBADMSG;
+ 		}
+ 	}
+diff --git a/drivers/mtd/nand/mxc_nand.c b/drivers/mtd/nand/mxc_nand.c
+index 7221d0ba0d..764391c8d2 100644
+--- a/drivers/mtd/nand/mxc_nand.c
++++ b/drivers/mtd/nand/mxc_nand.c
+@@ -132,7 +132,7 @@ static void wait_op_done(struct mxc_nand_host *host, int max_retries,
+ 		udelay(1);
+ 	}
+ 	if (max_retries < 0) {
+-		MTDDEBUG(MTD_DEBUG_LEVEL0, "%s(%d): INT not set\n",
++		pr_debug("%s(%d): INT not set\n",
+ 				__func__, param);
+ 	}
+ }
+@@ -143,7 +143,7 @@ static void wait_op_done(struct mxc_nand_host *host, int max_retries,
+  */
+ static void send_cmd(struct mxc_nand_host *host, uint16_t cmd)
+ {
+-	MTDDEBUG(MTD_DEBUG_LEVEL3, "send_cmd(host, 0x%x)\n", cmd);
++	pr_debug("send_cmd(host, 0x%x)\n", cmd);
+ 
+ 	writenfc(cmd, &host->regs->flash_cmd);
+ 	writenfc(NFC_CMD, &host->regs->operation);
+@@ -159,7 +159,7 @@ static void send_cmd(struct mxc_nand_host *host, uint16_t cmd)
+  */
+ static void send_addr(struct mxc_nand_host *host, uint16_t addr)
+ {
+-	MTDDEBUG(MTD_DEBUG_LEVEL3, "send_addr(host, 0x%x)\n", addr);
++	pr_debug("send_addr(host, 0x%x)\n", addr);
+ 
+ 	writenfc(addr, &host->regs->flash_addr);
+ 	writenfc(NFC_ADDR, &host->regs->operation);
+@@ -176,7 +176,7 @@ static void send_prog_page(struct mxc_nand_host *host, uint8_t buf_id,
+ 			int spare_only)
+ {
+ 	if (spare_only)
+-		MTDDEBUG(MTD_DEBUG_LEVEL1, "send_prog_page (%d)\n", spare_only);
++		pr_debug("send_prog_page (%d)\n", spare_only);
+ 
+ 	if (is_mxc_nfc_21() || is_mxc_nfc_32()) {
+ 		int i;
+@@ -226,7 +226,7 @@ static void send_prog_page(struct mxc_nand_host *host, uint8_t buf_id,
+ static void send_read_page(struct mxc_nand_host *host, uint8_t buf_id,
+ 		int spare_only)
+ {
+-	MTDDEBUG(MTD_DEBUG_LEVEL3, "send_read_page (%d)\n", spare_only);
++	pr_debug("send_read_page (%d)\n", spare_only);
+ 
+ #if defined(MXC_NFC_V1) || defined(MXC_NFC_V2_1)
+ 	writenfc(buf_id, &host->regs->buf_addr);
+@@ -392,8 +392,7 @@ static int mxc_nand_read_oob_syndrome(struct mtd_info *mtd,
+ 	uint8_t *bufpoi = buf;
+ 	int i, toread;
+ 
+-	MTDDEBUG(MTD_DEBUG_LEVEL0,
+-			"%s: Reading OOB area of page %u to oob %p\n",
++	pr_debug("%s: Reading OOB area of page %u to oob %p\n",
+ 			 __func__, page, buf);
+ 
+ 	chip->cmdfunc(mtd, NAND_CMD_READOOB, mtd->writesize, page);
+@@ -493,8 +492,8 @@ static int mxc_nand_read_page_syndrome(struct mtd_info *mtd,
+ 	uint8_t *p = buf;
+ 	uint8_t *oob = chip->oob_poi;
+ 
+-	MTDDEBUG(MTD_DEBUG_LEVEL1, "Reading page %u to buf %p oob %p\n",
+-	      page, buf, oob);
++	pr_debug("Reading page %u to buf %p oob %p\n",
++		 page, buf, oob);
+ 
+ 	/* first read the data area and the available portion of OOB */
+ 	for (n = 0; eccsteps; n++, eccsteps--, p += eccsize) {
+@@ -710,8 +709,7 @@ static int mxc_nand_correct_data(struct mtd_info *mtd, u_char *dat,
+ 	uint16_t ecc_status = readnfc(&host->regs->ecc_status_result);
+ 
+ 	if (((ecc_status & 0x3) == 2) || ((ecc_status >> 2) == 2)) {
+-		MTDDEBUG(MTD_DEBUG_LEVEL0,
+-		      "MXC_NAND: HWECC uncorrectable 2-bit ECC error\n");
++		pr_debug("MXC_NAND: HWECC uncorrectable 2-bit ECC error\n");
+ 		return -EBADMSG;
+ 	}
+ 
+@@ -773,8 +771,7 @@ static uint16_t mxc_nand_read_word(struct mtd_info *mtd)
+ 	uint16_t col, ret;
+ 	uint16_t __iomem *p;
+ 
+-	MTDDEBUG(MTD_DEBUG_LEVEL3,
+-	      "mxc_nand_read_word(col = %d)\n", host->col_addr);
++	pr_debug("mxc_nand_read_word(col = %d)\n", host->col_addr);
+ 
+ 	col = host->col_addr;
+ 	/* Adjust saved column address */
+@@ -824,9 +821,8 @@ static void mxc_nand_write_buf(struct mtd_info *mtd,
+ 	struct mxc_nand_host *host = nand_get_controller_data(nand_chip);
+ 	int n, col, i = 0;
+ 
+-	MTDDEBUG(MTD_DEBUG_LEVEL3,
+-	      "mxc_nand_write_buf(col = %d, len = %d)\n", host->col_addr,
+-	      len);
++	pr_debug("mxc_nand_write_buf(col = %d, len = %d)\n", host->col_addr,
++		 len);
+ 
+ 	col = host->col_addr;
+ 
+@@ -837,8 +833,7 @@ static void mxc_nand_write_buf(struct mtd_info *mtd,
+ 	n = mtd->writesize + mtd->oobsize - col;
+ 	n = min(len, n);
+ 
+-	MTDDEBUG(MTD_DEBUG_LEVEL3,
+-	      "%s:%d: col = %d, n = %d\n", __func__, __LINE__, col, n);
++	pr_debug("%s:%d: col = %d, n = %d\n", __func__, __LINE__, col, n);
+ 
+ 	while (n > 0) {
+ 		void __iomem *p;
+@@ -850,8 +845,8 @@ static void mxc_nand_write_buf(struct mtd_info *mtd,
+ 						mtd->writesize + (col & ~3);
+ 		}
+ 
+-		MTDDEBUG(MTD_DEBUG_LEVEL3, "%s:%d: p = %p\n", __func__,
+-		      __LINE__, p);
++		pr_debug("%s:%d: p = %p\n", __func__,
++			 __LINE__, p);
+ 
+ 		if (((col | (unsigned long)&buf[i]) & 3) || n < 4) {
+ 			union {
+@@ -873,9 +868,8 @@ static void mxc_nand_write_buf(struct mtd_info *mtd,
+ 
+ 			m = min(n, m) & ~3;
+ 
+-			MTDDEBUG(MTD_DEBUG_LEVEL3,
+-			      "%s:%d: n = %d, m = %d, i = %d, col = %d\n",
+-			      __func__,  __LINE__, n, m, i, col);
++			pr_debug("%s:%d: n = %d, m = %d, i = %d, col = %d\n",
++				 __func__,  __LINE__, n, m, i, col);
+ 
+ 			mxc_nand_memcpy32(p, (uint32_t *)&buf[i], m);
+ 			col += m;
+@@ -898,8 +892,8 @@ static void mxc_nand_read_buf(struct mtd_info *mtd, u_char *buf, int len)
+ 	struct mxc_nand_host *host = nand_get_controller_data(nand_chip);
+ 	int n, col, i = 0;
+ 
+-	MTDDEBUG(MTD_DEBUG_LEVEL3,
+-	      "mxc_nand_read_buf(col = %d, len = %d)\n", host->col_addr, len);
++	pr_debug("mxc_nand_read_buf(col = %d, len = %d)\n", host->col_addr,
++		 len);
+ 
+ 	col = host->col_addr;
+ 
+@@ -984,9 +978,8 @@ void mxc_nand_command(struct mtd_info *mtd, unsigned command,
+ 	struct nand_chip *nand_chip = mtd_to_nand(mtd);
+ 	struct mxc_nand_host *host = nand_get_controller_data(nand_chip);
+ 
+-	MTDDEBUG(MTD_DEBUG_LEVEL3,
+-	      "mxc_nand_command (cmd = 0x%x, col = 0x%x, page = 0x%x)\n",
+-	      command, column, page_addr);
++	pr_debug("mxc_nand_command (cmd = 0x%x, col = 0x%x, page = 0x%x)\n",
++		 command, column, page_addr);
+ 
+ 	/* Reset command state information */
+ 	host->status_request = false;
+diff --git a/drivers/mtd/nand/nand_bch.c b/drivers/mtd/nand/nand_bch.c
+index c14520380e..6c20d53e7e 100644
+--- a/drivers/mtd/nand/nand_bch.c
++++ b/drivers/mtd/nand/nand_bch.c
+@@ -81,8 +81,8 @@ int nand_bch_correct_data(struct mtd_info *mtd, unsigned char *buf,
+ 				buf[errloc[i] >> 3] ^= (1 << (errloc[i] & 7));
+ 			/* else error in ecc, no action needed */
+ 
+-			MTDDEBUG(MTD_DEBUG_LEVEL0, "%s: corrected bitflip %u\n",
+-			      __func__, errloc[i]);
++			pr_debug("%s: corrected bitflip %u\n",
++				 __func__, errloc[i]);
+ 		}
+ 	} else if (count < 0) {
+ 		printk(KERN_ERR "ecc unrecoverable error\n");
+diff --git a/drivers/mtd/onenand/onenand_base.c b/drivers/mtd/onenand/onenand_base.c
+index 8282f683a5..86b1640357 100644
+--- a/drivers/mtd/onenand/onenand_base.c
++++ b/drivers/mtd/onenand/onenand_base.c
+@@ -858,7 +858,8 @@ static int onenand_read_ops_nolock(struct mtd_info *mtd, loff_t from,
+ 	int ret = 0, boundary = 0;
+ 	int writesize = this->writesize;
+ 
+-	MTDDEBUG(MTD_DEBUG_LEVEL3, "onenand_read_ops_nolock: from = 0x%08x, len = %i\n", (unsigned int) from, (int) len);
++	pr_debug("onenand_read_ops_nolock: from = 0x%08x, len = %i\n",
++		 (unsigned int) from, (int) len);
+ 
+ 	if (ops->mode == MTD_OPS_AUTO_OOB)
+ 		oobsize = this->ecclayout->oobavail;
+@@ -1007,7 +1008,8 @@ static int onenand_read_oob_nolock(struct mtd_info *mtd, loff_t from,
+ 
+ 	from += ops->ooboffs;
+ 
+-	MTDDEBUG(MTD_DEBUG_LEVEL3, "onenand_read_oob_nolock: from = 0x%08x, len = %i\n", (unsigned int) from, (int) len);
++	pr_debug("onenand_read_oob_nolock: from = 0x%08x, len = %i\n",
++		 (unsigned int) from, (int) len);
+ 
+ 	/* Initialize return length value */
+ 	ops->oobretlen = 0;
+@@ -1214,7 +1216,8 @@ int onenand_bbt_read_oob(struct mtd_info *mtd, loff_t from,
+ 	size_t len = ops->ooblen;
+ 	u_char *buf = ops->oobbuf;
+ 
+-	MTDDEBUG(MTD_DEBUG_LEVEL3, "onenand_bbt_read_oob: from = 0x%08x, len = %zi\n", (unsigned int) from, len);
++	pr_debug("onenand_bbt_read_oob: from = 0x%08x, len = %zi\n",
++		 (unsigned int) from, len);
+ 
+ 	readcmd = ONENAND_IS_4KB_PAGE(this) ?
+ 		ONENAND_CMD_READ : ONENAND_CMD_READOOB;
+@@ -1417,7 +1420,8 @@ static int onenand_write_ops_nolock(struct mtd_info *mtd, loff_t to,
+ 	u_char *oobbuf;
+ 	int ret = 0;
+ 
+-	MTDDEBUG(MTD_DEBUG_LEVEL3, "onenand_write_ops_nolock: to = 0x%08x, len = %i\n", (unsigned int) to, (int) len);
++	pr_debug("onenand_write_ops_nolock: to = 0x%08x, len = %i\n",
++		 (unsigned int) to, (int) len);
+ 
+ 	/* Initialize retlen, in case of early exit */
+ 	ops->retlen = 0;
+@@ -1538,7 +1542,8 @@ static int onenand_write_oob_nolock(struct mtd_info *mtd, loff_t to,
+ 
+ 	to += ops->ooboffs;
+ 
+-	MTDDEBUG(MTD_DEBUG_LEVEL3, "onenand_write_oob_nolock: to = 0x%08x, len = %i\n", (unsigned int) to, (int) len);
++	pr_debug("onenand_write_oob_nolock: to = 0x%08x, len = %i\n",
++		 (unsigned int) to, (int) len);
+ 
+ 	/* Initialize retlen, in case of early exit */
+ 	ops->oobretlen = 0;
+@@ -1730,7 +1735,7 @@ int onenand_erase(struct mtd_info *mtd, struct erase_info *instr)
+ 	struct mtd_erase_region_info *region = NULL;
+ 	unsigned int region_end = 0;
+ 
+-	MTDDEBUG(MTD_DEBUG_LEVEL3, "onenand_erase: start = 0x%08x, len = %i\n",
++	pr_debug("onenand_erase: start = 0x%08x, len = %i\n",
+ 			(unsigned int) addr, len);
+ 
+ 	if (FLEXONENAND(this)) {
+@@ -1746,8 +1751,7 @@ int onenand_erase(struct mtd_info *mtd, struct erase_info *instr)
+ 		 * Erase region's start offset is always block start address.
+ 		 */
+ 		if (unlikely((addr - region->offset) & (block_size - 1))) {
+-			MTDDEBUG(MTD_DEBUG_LEVEL0, "onenand_erase:"
+-				" Unaligned address\n");
++			pr_debug("onenand_erase:" " Unaligned address\n");
+ 			return -EINVAL;
+ 		}
+ 	} else {
+@@ -1755,16 +1759,14 @@ int onenand_erase(struct mtd_info *mtd, struct erase_info *instr)
+ 
+ 		/* Start address must align on block boundary */
+ 		if (unlikely(addr & (block_size - 1))) {
+-			MTDDEBUG(MTD_DEBUG_LEVEL0, "onenand_erase:"
+-						"Unaligned address\n");
++			pr_debug("onenand_erase:" "Unaligned address\n");
+ 			return -EINVAL;
+ 		}
+ 	}
+ 
+ 	/* Length must align on block boundary */
+ 	if (unlikely(len & (block_size - 1))) {
+-		MTDDEBUG (MTD_DEBUG_LEVEL0,
+-			 "onenand_erase: Length not block aligned\n");
++		pr_debug("onenand_erase: Length not block aligned\n");
+ 		return -EINVAL;
+ 	}
+ 
+@@ -1793,12 +1795,12 @@ int onenand_erase(struct mtd_info *mtd, struct erase_info *instr)
+ 		/* Check, if it is write protected */
+ 		if (ret) {
+ 			if (ret == -EPERM)
+-				MTDDEBUG (MTD_DEBUG_LEVEL0, "onenand_erase: "
+-					  "Device is write protected!!!\n");
++				pr_debug("onenand_erase: "
++					 "Device is write protected!!!\n");
+ 			else
+-				MTDDEBUG (MTD_DEBUG_LEVEL0, "onenand_erase: "
+-					  "Failed erase, block %d\n",
+-					onenand_block(this, addr));
++				pr_debug("onenand_erase: "
++					 "Failed erase, block %d\n",
++					 onenand_block(this, addr));
+ 			instr->state = MTD_ERASE_FAILED;
+ 			instr->fail_addr = addr;
+ 
+@@ -1849,7 +1851,7 @@ erase_exit:
+  */
+ void onenand_sync(struct mtd_info *mtd)
+ {
+-	MTDDEBUG (MTD_DEBUG_LEVEL3, "onenand_sync: called\n");
++	pr_debug("onenand_sync: called\n");
+ 
+ 	/* Grab the lock and see if the device is available */
+ 	onenand_get_device(mtd, FL_SYNCING);
+diff --git a/drivers/mtd/onenand/onenand_bbt.c b/drivers/mtd/onenand/onenand_bbt.c
+index 20507004ed..cde342aaec 100644
+--- a/drivers/mtd/onenand/onenand_bbt.c
++++ b/drivers/mtd/onenand/onenand_bbt.c
+@@ -160,9 +160,8 @@ static int onenand_isbad_bbt(struct mtd_info *mtd, loff_t offs, int allowbbt)
+ 	block = (int) (onenand_block(this, offs) << 1);
+ 	res = (bbm->bbt[block >> 3] >> (block & 0x06)) & 0x03;
+ 
+-	MTDDEBUG (MTD_DEBUG_LEVEL2,
+-		"onenand_isbad_bbt: bbt info for offs 0x%08x: (block %d) 0x%02x\n",
+-		(unsigned int)offs, block >> 1, res);
++	pr_debug("onenand_isbad_bbt: bbt info for offs 0x%08x: (block %d) 0x%02x\n",
++		 (unsigned int)offs, block >> 1, res);
+ 
+ 	switch ((int)res) {
+ 	case 0x00:
+-- 
+2.13.6
+

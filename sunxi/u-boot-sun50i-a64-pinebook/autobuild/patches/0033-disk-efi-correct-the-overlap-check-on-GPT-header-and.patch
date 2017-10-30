@@ -1,0 +1,68 @@
+From ae0e0228e664f31ac3c6093758ddc85b664e2d08 Mon Sep 17 00:00:00 2001
+From: Patrick Delaunay <patrick.delaunay@st.com>
+Date: Wed, 18 Oct 2017 15:11:05 +0200
+Subject: [PATCH 033/105] disk: efi: correct the overlap check on GPT header
+ and PTE
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+the partition starting at 0x4400 is refused with overlap error:
+  $> gpt write mmc 0 "name=test,start=0x4400,size=0"
+  Writing GPT: Partition overlap
+  error!
+
+even if the 0x4400 is the first available offset for LBA35 with default
+value:
+- MBR=LBA1
+- GPT header=LBA2
+- PTE= 32 LBAs (128 entry), 3 to 34
+
+And the command to have one partition for all the disk failed also :
+  $> gpt write mmc 0 "name=test,size=0"
+
+After the patch :
+
+  $> gpt write mmc 0 "name=test,size=0"
+  Writing GPT: success!
+  $> part list mmc 0
+
+  Partition Map for MMC device 0  --   Partition Type: EFI
+
+  Part	Start LBA	End LBA		Name
+	Attributes
+	Type GUID
+	Partition GUID
+  1	0x00000022	0x01ce9fde	"test"
+	attrs:	0x0000000000000000
+	type:	ebd0a0a2-b9e5-4433-87c0-68b6b72699c7
+	type:	data
+	guid:	b4b84b8a-04e3-4000-0036-aff5c9c495b1
+
+And 0x22 = 34 LBA => offset = 0x4400 is accepted as expected
+
+Reviewed-by: Łukasz Majewski <lukma@denx.de>
+Tested-by: Stephen Warren <swarren@nvidia.com>
+Signed-off-by: Patrick Delaunay <patrick.delaunay@st.com>
+---
+ disk/part_efi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/disk/part_efi.c b/disk/part_efi.c
+index 782f8be502..7862beeea6 100644
+--- a/disk/part_efi.c
++++ b/disk/part_efi.c
+@@ -469,8 +469,8 @@ int gpt_fill_pte(struct blk_desc *dev_desc,
+ 		 * If our partition overlaps with either the GPT
+ 		 * header, or the partition entry, reject it.
+ 		 */
+-		if (((start <= hdr_end && hdr_start <= (start + size)) ||
+-		     (start <= pte_end && pte_start <= (start + size)))) {
++		if (((start < hdr_end && hdr_start < (start + size)) ||
++		     (start < pte_end && pte_start < (start + size)))) {
+ 			printf("Partition overlap\n");
+ 			return -1;
+ 		}
+-- 
+2.13.6
+

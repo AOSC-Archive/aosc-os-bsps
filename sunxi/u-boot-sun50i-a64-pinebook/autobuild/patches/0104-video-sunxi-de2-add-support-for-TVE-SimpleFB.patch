@@ -1,0 +1,64 @@
+From 8dd74e1d3273ed4d23eff51dc82d5fe8d031d065 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Mon, 30 Oct 2017 12:31:51 +0800
+Subject: [PATCH 104/105] video: sunxi: de2: add support for TVE SimpleFB
+
+Add support for setting up SimpleFB for TVE display output in DE2
+SimpleFB setup code.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ drivers/video/sunxi/sunxi_de2.c | 26 +++++++++++++++++++-------
+ 1 file changed, 19 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/video/sunxi/sunxi_de2.c b/drivers/video/sunxi/sunxi_de2.c
+index e8903400ec..4dcff8398b 100644
+--- a/drivers/video/sunxi/sunxi_de2.c
++++ b/drivers/video/sunxi/sunxi_de2.c
+@@ -319,7 +319,7 @@ U_BOOT_DEVICE(sunxi_de2) = {
+ #if defined(CONFIG_OF_BOARD_SETUP) && defined(CONFIG_VIDEO_DT_SIMPLEFB)
+ int sunxi_simplefb_setup(void *blob)
+ {
+-	struct udevice *de2, *hdmi;
++	struct udevice *de2, *disp;
+ 	struct video_priv *de2_priv;
+ 	struct video_uc_platdata *de2_plat;
+ 	int mux;
+@@ -343,16 +343,28 @@ int sunxi_simplefb_setup(void *blob)
+ 	}
+ 
+ 	ret = uclass_find_device_by_name(UCLASS_DISPLAY,
+-					 "sunxi_dw_hdmi", &hdmi);
++					 "sunxi_dw_hdmi", &disp);
+ 	if (ret) {
+ 		debug("HDMI not present\n");
+-		return 0;
++	} else if (device_active(disp)) {
++		if (mux == 0)
++			pipeline = "mixer0-lcd0-hdmi";
++		else
++			pipeline = "mixer1-lcd1-hdmi";
+ 	}
+ 
+-	if (mux == 0)
+-		pipeline = "mixer0-lcd0-hdmi";
+-	else
+-		pipeline = "mixer1-lcd1-hdmi";
++	ret = uclass_find_device_by_name(UCLASS_DISPLAY,
++					 "sunxi_tve", &disp);
++	if (ret) {
++		debug("TVE not present\n");
++	} else if (device_active(disp)) {
++		pipeline = "mixer1-lcd1-tve";
++	}
++
++	if (!pipeline) {
++		debug("No active display present\n");
++		return 0;
++	}
+ 
+ 	de2_priv = dev_get_uclass_priv(de2);
+ 	de2_plat = dev_get_uclass_platdata(de2);
+-- 
+2.13.6
+

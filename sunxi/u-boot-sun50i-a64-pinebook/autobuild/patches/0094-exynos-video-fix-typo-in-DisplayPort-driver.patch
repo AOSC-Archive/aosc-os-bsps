@@ -1,0 +1,28 @@
+From 9b73bcc6c3f9a5fdff75159fc8e1ecddf1c290e8 Mon Sep 17 00:00:00 2001
+From: Dongjin Kim <tobetter@gmail.com>
+Date: Fri, 27 Oct 2017 23:08:51 -0400
+Subject: [PATCH 094/105] exynos: video: fix typo in DisplayPort driver
+
+Signed-off-by: Dongjin Kim <tobetter@gmail.com>
+CC: Simon Glass <sjg@chromium.org>
+CC: Minkyu Kang <mk7.kang@samsung.com>
+---
+ drivers/video/exynos/exynos_dp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/video/exynos/exynos_dp.c b/drivers/video/exynos/exynos_dp.c
+index 092342e7ad..2be230cb6b 100644
+--- a/drivers/video/exynos/exynos_dp.c
++++ b/drivers/video/exynos/exynos_dp.c
+@@ -1075,7 +1075,7 @@ static const struct udevice_id exynos_dp_ids[] = {
+ };
+ 
+ U_BOOT_DRIVER(exynos_dp) = {
+-	.name	= "eexynos_dp",
++	.name	= "exynos_dp",
+ 	.id	= UCLASS_DISPLAY,
+ 	.of_match = exynos_dp_ids,
+ 	.ops	= &exynos_dp_ops,
+-- 
+2.13.6
+

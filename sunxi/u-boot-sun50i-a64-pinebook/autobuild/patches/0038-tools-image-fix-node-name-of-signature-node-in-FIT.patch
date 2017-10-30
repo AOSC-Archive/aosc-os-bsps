@@ -1,0 +1,30 @@
+From 16067e6b87293eeb1fc4bac3edc0fd675b94d1a8 Mon Sep 17 00:00:00 2001
+From: Masahiro Yamada <yamada.masahiro@socionext.com>
+Date: Thu, 19 Oct 2017 19:16:21 +0900
+Subject: [PATCH 038/105] tools: image: fix node name of signature node in FIT
+
+Both "conf_name" and "sig_name" point to the name of config node.
+The latter should be the name of the signature node.
+
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+Reviewed-by: Simon Glass <sjg@chromium.org>
+---
+ tools/image-host.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/image-host.c b/tools/image-host.c
+index 5e4d690714..c60d4adb3d 100644
+--- a/tools/image-host.c
++++ b/tools/image-host.c
+@@ -513,7 +513,7 @@ static int fit_config_get_data(void *fit, int conf_noffset, int noffset,
+ 	int ret, len;
+ 
+ 	conf_name = fit_get_name(fit, conf_noffset, NULL);
+-	sig_name = fit_get_name(fit, conf_noffset, NULL);
++	sig_name = fit_get_name(fit, noffset, NULL);
+ 	debug("%s: conf='%s', sig='%s'\n", __func__, conf_name, sig_name);
+ 
+ 	/* Get a list of nodes we want to hash */
+-- 
+2.13.6
+

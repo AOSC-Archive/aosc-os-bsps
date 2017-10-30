@@ -1,0 +1,28 @@
+From 15d0f3538a1a38577f155b58d170bd4ead1da978 Mon Sep 17 00:00:00 2001
+From: Masahiro Yamada <yamada.masahiro@socionext.com>
+Date: Sat, 21 Oct 2017 19:51:13 +0900
+Subject: [PATCH 022/105] ARM: uniphier: remove verify=n from environments
+
+If the environment "verify" is set to n, the image verification
+is entirely skipped.  Remove it as a preparation for verified boot.
+
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+---
+ include/configs/uniphier.h | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/include/configs/uniphier.h b/include/configs/uniphier.h
+index 5014828f8c..6f4d67ea8a 100644
+--- a/include/configs/uniphier.h
++++ b/include/configs/uniphier.h
+@@ -191,7 +191,6 @@
+ 
+ #define	CONFIG_EXTRA_ENV_SETTINGS				\
+ 	"netdev=eth0\0"						\
+-	"verify=n\0"						\
+ 	"initrd_high=0xffffffffffffffff\0"			\
+ 	"nor_base=0x42000000\0"					\
+ 	"sramupdate=setexpr tmp_addr $nor_base + 0x50000 &&"	\
+-- 
+2.13.6
+

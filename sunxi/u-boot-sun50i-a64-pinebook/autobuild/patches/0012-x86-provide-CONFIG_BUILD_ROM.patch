@@ -1,0 +1,109 @@
+From 871aa41d4c9ecf8d89b98491dc86d0097fdf80e5 Mon Sep 17 00:00:00 2001
+From: Heinrich Schuchardt <xypron.glpk@gmx.de>
+Date: Mon, 16 Oct 2017 18:08:38 +0000
+Subject: [PATCH 012/105] x86: provide CONFIG_BUILD_ROM
+
+Up to now we depended on an exported variable to build u-boot.rom.
+We should be able to specify it in the configuration file, too.
+
+With this patch this becomes possible using the new Kconfig option
+CONFIG_BUILD_ROM.
+
+This option depends on CONFIG_X86 and is selected in
+qemu-x86_defconfig and qemu-x86_64_defconfig.
+
+Cc: Simon Glass <sjg@chromium.org>
+Cc: Bin Meng <bmeng.cn@gmail.com>
+Signed-off-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
+Reviewed-by: Bin Meng <bmeng.cn@gmail.com>
+---
+ Kconfig                       |  9 +++++++++
+ Makefile                      |  2 +-
+ configs/qemu-x86_64_defconfig |  1 +
+ configs/qemu-x86_defconfig    |  1 +
+ doc/README.x86                | 10 +++++++---
+ 5 files changed, 19 insertions(+), 4 deletions(-)
+
+diff --git a/Kconfig b/Kconfig
+index 73f820a6de..227fb17dd9 100644
+--- a/Kconfig
++++ b/Kconfig
+@@ -158,6 +158,15 @@ config PHYS_64BIT
+ 	  This can be used not only for 64bit SoCs, but also for
+ 	  large physical address extention on 32bit SoCs.
+ 
++config BUILD_ROM
++	bool "Build U-Boot as BIOS replacement"
++	depends on X86
++	help
++	  This option allows to build a ROM version of U-Boot.
++	  The build process generally requires several binary blobs
++	  which are not shipped in the U-Boot source tree.
++	  Please, see doc/README.x86 for details.
++
+ endmenu		# General setup
+ 
+ menu "Boot images"
+diff --git a/Makefile b/Makefile
+index d074358e24..79150bb017 100644
+--- a/Makefile
++++ b/Makefile
+@@ -796,7 +796,7 @@ ALL-$(CONFIG_REMAKE_ELF) += u-boot.elf
+ ALL-$(CONFIG_EFI_APP) += u-boot-app.efi
+ ALL-$(CONFIG_EFI_STUB) += u-boot-payload.efi
+ 
+-ifneq ($(BUILD_ROM),)
++ifneq ($(BUILD_ROM)$(CONFIG_BUILD_ROM),)
+ ALL-$(CONFIG_X86_RESET_VECTOR) += u-boot.rom
+ endif
+ 
+diff --git a/configs/qemu-x86_64_defconfig b/configs/qemu-x86_64_defconfig
+index fae4a9ca54..0cea3694d0 100644
+--- a/configs/qemu-x86_64_defconfig
++++ b/configs/qemu-x86_64_defconfig
+@@ -14,6 +14,7 @@ CONFIG_SMP=y
+ CONFIG_GENERATE_PIRQ_TABLE=y
+ CONFIG_GENERATE_MP_TABLE=y
+ CONFIG_GENERATE_ACPI_TABLE=y
++CONFIG_BUILD_ROM=y
+ CONFIG_FIT=y
+ CONFIG_SPL_LOAD_FIT=y
+ CONFIG_BOOTSTAGE=y
+diff --git a/configs/qemu-x86_defconfig b/configs/qemu-x86_defconfig
+index ffdb4c34c1..bf7fbc723d 100644
+--- a/configs/qemu-x86_defconfig
++++ b/configs/qemu-x86_defconfig
+@@ -5,6 +5,7 @@ CONFIG_SMP=y
+ CONFIG_GENERATE_PIRQ_TABLE=y
+ CONFIG_GENERATE_MP_TABLE=y
+ CONFIG_GENERATE_ACPI_TABLE=y
++CONFIG_BUILD_ROM=y
+ CONFIG_FIT=y
+ CONFIG_BOOTSTAGE=y
+ CONFIG_BOOTSTAGE_REPORT=y
+diff --git a/doc/README.x86 b/doc/README.x86
+index 92f41283be..772e8d2a86 100644
+--- a/doc/README.x86
++++ b/doc/README.x86
+@@ -80,11 +80,15 @@ Building a ROM version of U-Boot (hereafter referred to as u-boot.rom) is a
+ little bit tricky, as generally it requires several binary blobs which are not
+ shipped in the U-Boot source tree. Due to this reason, the u-boot.rom build is
+ not turned on by default in the U-Boot source tree. Firstly, you need turn it
+-on by enabling the ROM build:
++on by enabling the ROM build either via an environment variable
+ 
+-$ export BUILD_ROM=y
++    $ export BUILD_ROM=y
+ 
+-This tells the Makefile to build u-boot.rom as a target.
++or via configuration
++
++    CONFIG_BUILD_ROM=y
++
++Both tell the Makefile to build u-boot.rom as a target.
+ 
+ ---
+ 
+-- 
+2.13.6
+
