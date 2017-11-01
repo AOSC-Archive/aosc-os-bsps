@@ -1,7 +1,7 @@
-From 11a1879976aff596ae5fcc91616a56e214044748 Mon Sep 17 00:00:00 2001
+From a2c52b854d3b27e83eebd2e3c92619e4aa0b5aad Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 24 Aug 2017 18:11:28 +0800
-Subject: [PATCH 86/87] ARM: sun8i: r40: enable Ethernet on Banana Pi M2 Ultra
+Subject: [PATCH 86/98] ARM: sun8i: r40: enable Ethernet on Banana Pi M2 Ultra
 
 Banana Pi M2 Ultra features an Ethernet port, connected to the R40 SoC's
 GMAC via a RTL8211E PHY.
@@ -75,5 +75,5 @@ index cc91d02a3b31..d6b379171801 100644
  	vmmc-supply = <&reg_dcdc1>;
  	bus-width = <4>;
 -- 
-2.13.5
+2.13.6
 

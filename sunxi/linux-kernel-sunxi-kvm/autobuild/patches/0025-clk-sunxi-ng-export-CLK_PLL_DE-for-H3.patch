@@ -1,7 +1,7 @@
-From a2c0b9d11979d44aa39ec420c902aceb1ef5ed99 Mon Sep 17 00:00:00 2001
+From 64ef39f5caf840450dfc2af6be6ee9fcb94b43c7 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 16 Apr 2017 16:52:34 +0800
-Subject: [PATCH 25/87] clk: sunxi-ng: export CLK_PLL_DE for H3
+Subject: [PATCH 25/98] clk: sunxi-ng: export CLK_PLL_DE for H3
 
 The CLK_PLL_DE is needed to be referenced in device tree for H3, for
 both forcing the parent of PLL_DE.
@@ -43,5 +43,5 @@ index e139fe5c62ec..5345957a8c2e 100644
  
  #define CLK_BUS_CE		20
 -- 
-2.13.5
+2.13.6
 

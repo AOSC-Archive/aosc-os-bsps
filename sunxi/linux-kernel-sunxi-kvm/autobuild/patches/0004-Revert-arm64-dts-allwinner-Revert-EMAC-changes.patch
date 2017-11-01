@@ -1,7 +1,7 @@
-From 92c4644f3d998e258f29a3d4392248905d75760a Mon Sep 17 00:00:00 2001
+From 11d2b86591a13abfae858eeff06d63fd1d1c3327 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 3 Sep 2017 17:30:46 +0800
-Subject: [PATCH 04/87] Revert "arm64: dts: allwinner: Revert EMAC changes"
+Subject: [PATCH 04/98] Revert "arm64: dts: allwinner: Revert EMAC changes"
 
 This reverts commit 87e1f5e8bb4bd584de0a8f3b1e42196dca221d02.
 
@@ -306,5 +306,5 @@ index 6be06873e5af..d906b302cbcd 100644
  	pinctrl-names = "default";
  	pinctrl-0 = <&mmc0_pins_a>, <&mmc0_cd_pin>;
 -- 
-2.13.5
+2.13.6
 

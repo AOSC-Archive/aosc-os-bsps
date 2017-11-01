@@ -1,7 +1,7 @@
-From 820b4236aec0e7521a414c7b428dc8d544097453 Mon Sep 17 00:00:00 2001
+From 69098e255cd6e55904c3da603fdca330e154d6d0 Mon Sep 17 00:00:00 2001
 From: Jernej Skrabec <jernej.skrabec@siol.net>
 Date: Thu, 1 Jun 2017 20:29:06 +0200
-Subject: [PATCH 27/87] drm: bridge: Enable polling hpd event in dw_hdmi
+Subject: [PATCH 27/98] drm: bridge: Enable polling hpd event in dw_hdmi
 
 Some custom phys don't support hpd interrupts. Add support for polling
 such events.
@@ -29,5 +29,5 @@ index ead11242c4b9..f67b493dabaa 100644
  	drm_connector_helper_add(connector, &dw_hdmi_connector_helper_funcs);
  
 -- 
-2.13.5
+2.13.6
 

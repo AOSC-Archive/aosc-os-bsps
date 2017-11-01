@@ -1,7 +1,7 @@
-From 22abd70574ae53b2f3df45f48b2b45de8b4ef681 Mon Sep 17 00:00:00 2001
+From 8b035eab7fcae5557724531ee353bff75ccda296 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 1 May 2017 13:42:52 +0800
-Subject: [PATCH 73/87] dt-bindings: add binding for Allwinner R40 SATA AHCI
+Subject: [PATCH 73/98] dt-bindings: add binding for Allwinner R40 SATA AHCI
  controller
 
 The Allwinner R40 SoC contains a SATA AHCI controller like the one in
@@ -80,5 +80,5 @@ index 000000000000..0eea78c14ad3
 +		vdd2v5-supply = <&reg_dldo4>;
 +	};
 -- 
-2.13.5
+2.13.6
 

@@ -1,7 +1,7 @@
-From 14663856bae0502be3efa0bff5506507b1e8af26 Mon Sep 17 00:00:00 2001
+From e4d64805056c0ef33cc8637a119bc3dc78748745 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 9 Apr 2017 02:10:34 +0800
-Subject: [PATCH 43/87] clk: sunxi-ng: allow set parent clock (PLL_CPUX) for
+Subject: [PATCH 43/98] clk: sunxi-ng: allow set parent clock (PLL_CPUX) for
  CPUX clock on H3
 
 The CPUX clock, which is the main clock of the ARM core on Allwinner H3,
@@ -32,5 +32,5 @@ index b886ebc55eaa..8321d2167cc3 100644
  static SUNXI_CCU_M(axi_clk, "axi", "cpux", 0x050, 0, 2, 0);
  
 -- 
-2.13.5
+2.13.6
 

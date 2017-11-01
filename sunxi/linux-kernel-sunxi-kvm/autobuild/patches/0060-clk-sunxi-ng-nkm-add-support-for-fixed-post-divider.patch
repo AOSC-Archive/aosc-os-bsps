@@ -1,7 +1,7 @@
-From 9ecd01267dd00f9dc5bfd2c46086bf60594dc812 Mon Sep 17 00:00:00 2001
+From 3c48fad507fee72fcfc22ae3f4246ef990b69a04 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 12 Aug 2017 20:43:51 +0800
-Subject: [PATCH 60/87] clk: sunxi-ng: nkm: add support for fixed post-divider
+Subject: [PATCH 60/98] clk: sunxi-ng: nkm: add support for fixed post-divider
 
 SATA PLL on Allwinner R40 is of type (parent) * N * K / M / 6 where 6 is
 the fixed post-divider.
@@ -86,5 +86,5 @@ index 34580894f4d1..cc6efb70a102 100644
  };
  
 -- 
-2.13.5
+2.13.6
 

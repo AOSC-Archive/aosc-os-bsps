@@ -1,7 +1,7 @@
-From f9e7f8e50fdbd6fb2bb211a988c2e4d889992d2d Mon Sep 17 00:00:00 2001
+From b5fa5c5d2a296c426a4295c91285f813fbe5151e Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 28 Mar 2017 19:50:50 +0800
-Subject: [PATCH 52/87] dt-bindings: update the Allwinner GPADC device tree
+Subject: [PATCH 52/98] dt-bindings: update the Allwinner GPADC device tree
  binding for H3
 
 Allwinner H3 features a thermal sensor like the one in A33, but has its
@@ -63,5 +63,5 @@ index badff3611a98..986265c59b2a 100644
  
  sun4i resistive touchscreen controller
 -- 
-2.13.5
+2.13.6
 

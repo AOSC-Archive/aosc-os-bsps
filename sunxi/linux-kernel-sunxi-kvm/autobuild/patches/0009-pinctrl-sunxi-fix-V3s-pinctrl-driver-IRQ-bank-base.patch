@@ -1,7 +1,7 @@
-From d8a457cda8c176e3dc40872da24ffe7c23cd14ac Mon Sep 17 00:00:00 2001
+From 45bded36fc55694869a2f9fee066cff288904203 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 1 Aug 2017 22:50:48 +0800
-Subject: [PATCH 09/87] pinctrl: sunxi: fix V3s pinctrl driver IRQ bank base
+Subject: [PATCH 09/98] pinctrl: sunxi: fix V3s pinctrl driver IRQ bank base
 
 The V3s pin controller doesn't have the bank 0 (starts at address
 0x200), which is like A33. However, this is not workarounded when
@@ -29,5 +29,5 @@ index c86d3c42a905..496ba34e1f5f 100644
  };
  
 -- 
-2.13.5
+2.13.6
 

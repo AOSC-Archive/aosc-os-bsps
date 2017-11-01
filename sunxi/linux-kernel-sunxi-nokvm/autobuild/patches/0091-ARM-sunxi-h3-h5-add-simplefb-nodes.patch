@@ -1,7 +1,7 @@
-From 61432a71a281c407ed15fa4d82a1c4b4e6821fde Mon Sep 17 00:00:00 2001
+From 41e038c55f4d5bbcdbc3b5c2066e233afffda9a5 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 11 Sep 2017 00:08:03 +0800
-Subject: [PATCH 4/7] ARM: sunxi: h3/h5: add simplefb nodes
+Subject: [PATCH 91/98] ARM: sunxi: h3/h5: add simplefb nodes
 
 The H3/H5 SoCs have a HDMI output and a TV Composite output.
 
@@ -13,7 +13,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 29 insertions(+)
 
 diff --git a/arch/arm/boot/dts/sunxi-h3-h5.dtsi b/arch/arm/boot/dts/sunxi-h3-h5.dtsi
-index abc4f5d52ec5..f03c2c18955c 100644
+index df7b62f18b43..a00079229d55 100644
 --- a/arch/arm/boot/dts/sunxi-h3-h5.dtsi
 +++ b/arch/arm/boot/dts/sunxi-h3-h5.dtsi
 @@ -53,6 +53,35 @@
@@ -53,5 +53,5 @@ index abc4f5d52ec5..f03c2c18955c 100644
  		#address-cells = <1>;
  		#size-cells = <1>;
 -- 
-2.13.5
+2.13.6
 

@@ -1,7 +1,7 @@
-From 5970762c418653fd293cfc285af03218bdb17c56 Mon Sep 17 00:00:00 2001
+From cb3f9dc935c7f6f173c853edf7011b4555ea36ca Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 13 Aug 2017 12:08:30 +0800
-Subject: [PATCH 72/87] ARM: sun8i: v40: enable USB host ports for Banana Pi M2
+Subject: [PATCH 72/98] ARM: sun8i: v40: enable USB host ports for Banana Pi M2
  Berry
 
 Banana Pi M2 Berry has an on-board USB Hub that provides 4 USB Type-A
@@ -65,5 +65,5 @@ index 8a69be2a0842..67cf87f3d5c7 100644
 +	usb1_vbus-supply = <&reg_vcc5v0>;
 +};
 -- 
-2.13.5
+2.13.6
 

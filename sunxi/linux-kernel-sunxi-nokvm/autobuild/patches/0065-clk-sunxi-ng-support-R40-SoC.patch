@@ -1,7 +1,7 @@
-From f44bef22afc8e312524eb72197a60358c94414fc Mon Sep 17 00:00:00 2001
+From f15222f6bbc6968a908feda43b64d2a5ed4050c6 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 15 Aug 2017 13:55:29 +0800
-Subject: [PATCH 65/87] clk: sunxi-ng: support R40 SoC
+Subject: [PATCH 65/98] clk: sunxi-ng: support R40 SoC
 
 Allwinner R40 SoC have a clock controller module in the style of the
 SoCs beyond sun6i, however, it's more rich and complex.
@@ -1752,5 +1752,5 @@ index 000000000000..c5ebcf6672e4
 +
 +#endif /* _DT_BINDINGS_RST_SUN8I_R40_H_ */
 -- 
-2.13.5
+2.13.6
 

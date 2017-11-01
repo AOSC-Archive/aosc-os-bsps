@@ -1,7 +1,7 @@
-From 132eee4aa179f7d364bebe4d7d68114c6a78b99f Mon Sep 17 00:00:00 2001
+From 0cfa286fef2fc9da3017565666ba183192013dbb Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 17 Aug 2017 15:41:27 +0800
-Subject: [PATCH 17/87] ARM: sun8i: a33: add dts for Q8 tablets with different
+Subject: [PATCH 17/98] ARM: sun8i: a33: add dts for Q8 tablets with different
  resolution
 
 Q8 tablets with Allwinner A33 SoC now come with two kind of LCD, either
@@ -148,5 +148,5 @@ index 000000000000..ad84b94dee53
 +		     "allwinner,sun8i-a33";
 +};
 -- 
-2.13.5
+2.13.6
 

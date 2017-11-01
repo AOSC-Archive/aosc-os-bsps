@@ -1,7 +1,7 @@
-From 2e5a1ccce7231074ef86cf2eb32ae950548793e5 Mon Sep 17 00:00:00 2001
+From 270fba6924dd14454508f6963f4172d3c3b1700b Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 24 Aug 2017 17:27:55 +0800
-Subject: [PATCH 82/87] net: stmmac: dwmac-sun8i: add support for syscon
+Subject: [PATCH 82/98] net: stmmac: dwmac-sun8i: add support for syscon
  register in CCU
 
 Allwinner R40 SoC places the syscon register to control GMAC into the
@@ -117,5 +117,5 @@ index 318c5588002d..1aa280a28a2c 100644
  		ret = PTR_ERR(gmac->regmap);
  		dev_err(&pdev->dev, "Unable to map syscon: %d\n", ret);
 -- 
-2.13.5
+2.13.6
 

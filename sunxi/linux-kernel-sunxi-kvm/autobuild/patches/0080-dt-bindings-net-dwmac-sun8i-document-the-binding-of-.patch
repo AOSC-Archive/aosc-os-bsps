@@ -1,7 +1,7 @@
-From efffe4e6f0aa377386732907c533d6d938b12921 Mon Sep 17 00:00:00 2001
+From 830399b1669e60a1d5555dbd7e97dfde95b91ec5 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 24 Aug 2017 17:31:46 +0800
-Subject: [PATCH 80/87] dt-bindings: net: dwmac-sun8i: document the binding of
+Subject: [PATCH 80/98] dt-bindings: net: dwmac-sun8i: document the binding of
  the R40 GMAC
 
 Allwinner R40 SoC features a GMAC like the MACs in Allwinner
@@ -64,5 +64,5 @@ index 725f3b187886..4d83b5e18380 100644
    - "allwinner,sun8i-h3-emac",
    - "allwinner,sun8i-v3s-emac":
 -- 
-2.13.5
+2.13.6
 

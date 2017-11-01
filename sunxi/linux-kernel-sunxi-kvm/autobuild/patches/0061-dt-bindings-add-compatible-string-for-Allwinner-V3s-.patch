@@ -1,7 +1,7 @@
-From 126bae561a640f484730199a099c5ca3eed833f8 Mon Sep 17 00:00:00 2001
+From 274458a07f1c6ab777ed86e42b4f060d1aaae5e8 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 20 Aug 2017 13:23:21 +0800
-Subject: [PATCH 61/87] dt-bindings: add compatible string for Allwinner V3s
+Subject: [PATCH 61/98] dt-bindings: add compatible string for Allwinner V3s
  SoC
 
 The compatible string for Allwinner V3s SoC used to be missing.
@@ -27,5 +27,5 @@ index d2c46449b4eb..f35c6ada5a65 100644
    allwinner,sun50i-a64
    nextthing,gr8
 -- 
-2.13.5
+2.13.6
 

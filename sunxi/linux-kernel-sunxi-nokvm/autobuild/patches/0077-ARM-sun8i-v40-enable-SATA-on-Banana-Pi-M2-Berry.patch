@@ -1,7 +1,7 @@
-From 8e23da2f7bf29b841ec89c56a0588e1278d30987 Mon Sep 17 00:00:00 2001
+From f95df905681e11ce9f6ccb3bb6dbb692f6f69189 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 1 May 2017 13:58:37 +0800
-Subject: [PATCH 77/87] ARM: sun8i: v40: enable SATA on Banana Pi M2 Berry
+Subject: [PATCH 77/98] ARM: sun8i: v40: enable SATA on Banana Pi M2 Berry
 
 The Banana Pi M2 Berry board has a SATA port connected to the SATA
 controller on V40 SoC. The controller's 1.2v VDD is connected to ELDO3
@@ -52,5 +52,5 @@ index 67cf87f3d5c7..8d92b7a5138a 100644
  	vmmc-supply = <&reg_dcdc1>;
  	bus-width = <4>;
 -- 
-2.13.5
+2.13.6
 

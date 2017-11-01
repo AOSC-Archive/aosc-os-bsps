@@ -1,7 +1,7 @@
-From a898a1ed2eaa99c5bfc26be14c005a86a994d8bb Mon Sep 17 00:00:00 2001
+From 9c72a24f88d7eb2687df36a5ebff66ca1046c37c Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 12 Aug 2017 15:35:50 +0800
-Subject: [PATCH 68/87] ARM: dts: sun8i: Add board dts file for Banana Pi M2
+Subject: [PATCH 68/98] ARM: dts: sun8i: Add board dts file for Banana Pi M2
  Berry
 
 The Banana Pi M2 Ultra is an SBC based on the Allwinner V40 SoC (same as
@@ -220,5 +220,5 @@ index 000000000000..8a69be2a0842
 +	status = "okay";
 +};
 -- 
-2.13.5
+2.13.6
 

@@ -1,7 +1,7 @@
-From 726258fbc3f6a4c9068dde250a570cc89569ffd5 Mon Sep 17 00:00:00 2001
+From 31a09ad618ca9171fcd9415c87ca22edf254c88d Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 24 Aug 2017 17:43:44 +0800
-Subject: [PATCH 83/87] net: stmmac: dwmac-sun8i: add support for R40 GMAC
+Subject: [PATCH 83/98] net: stmmac: dwmac-sun8i: add support for R40 GMAC
 
 The GMAC of Allwinner R40 SoC features the similar design with the A83T
 EMAC, except the GMAC configuration register is in CCU on R40.
@@ -56,5 +56,5 @@ index a366b3747eeb..ec7187fada2f 100644
  		{ .compatible = "allwinner,sun50i-a64-emac" },
  	};
 -- 
-2.13.5
+2.13.6
 

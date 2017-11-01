@@ -1,7 +1,7 @@
-From 0b53beb9386de46b32037a1a0e3cba5ed2506250 Mon Sep 17 00:00:00 2001
+From f51ddf8bc0b56b9a3371f2c32ec26471de80d9aa Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 1 May 2017 13:52:42 +0800
-Subject: [PATCH 74/87] ata: ahci_sunxi: add support for R40 SATA controller
+Subject: [PATCH 74/98] ata: ahci_sunxi: add support for R40 SATA controller
 
 Allwinner R40 SoC has an AHCI SATA controller like the one in A10/A20,
 but with a reset control and two dedicated VDD pins for this controller
@@ -189,5 +189,5 @@ index b26437430163..fa1d8ccac409 100644
  		.name = DRV_NAME,
  		.of_match_table = ahci_sunxi_of_match,
 -- 
-2.13.5
+2.13.6
 

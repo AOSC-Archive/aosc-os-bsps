@@ -1,7 +1,7 @@
-From 283d36e551f5b2b89058ec591c34630e8dd138e9 Mon Sep 17 00:00:00 2001
+From 27bb85dab18a2af8bada405b5acdf0da3e8a8b6a Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 9 Apr 2017 02:15:20 +0800
-Subject: [PATCH 44/87] cpufreq: dt: Add support for some new Allwinner SoCs
+Subject: [PATCH 44/98] cpufreq: dt: Add support for some new Allwinner SoCs
 
 Some new Allwinner SoCs get supported in the kernel after the
 compatibles are added to cpufreq-dt-platdev driver.
@@ -42,5 +42,5 @@ index 1c262923fe58..938bb20f4893 100644
  	{ .compatible = "samsung,exynos4210", },
  	{ .compatible = "samsung,exynos4212", },
 -- 
-2.13.5
+2.13.6
 

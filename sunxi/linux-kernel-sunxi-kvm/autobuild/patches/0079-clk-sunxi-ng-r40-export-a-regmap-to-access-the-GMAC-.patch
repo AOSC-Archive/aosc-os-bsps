@@ -1,7 +1,7 @@
-From 1de2dfaebf747b7463f4512d478494969476a339 Mon Sep 17 00:00:00 2001
+From 4541e643b19d915239941eebd60a86fba0b4b033 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 24 Aug 2017 17:20:50 +0800
-Subject: [PATCH 79/87] clk: sunxi-ng: r40: export a regmap to access the GMAC
+Subject: [PATCH 79/98] clk: sunxi-ng: r40: export a regmap to access the GMAC
  register
 
 There's a GMAC configuration register, which exists on A64/A83T/H3/H5 in
@@ -78,5 +78,5 @@ index bb94e2c44e86..df752bf77ff1 100644
  	if (ret)
  		return ret;
 -- 
-2.13.5
+2.13.6
 

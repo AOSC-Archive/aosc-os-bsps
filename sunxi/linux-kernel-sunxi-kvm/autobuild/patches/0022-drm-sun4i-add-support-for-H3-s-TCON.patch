@@ -1,7 +1,7 @@
-From 064857967a0ba9e1149f0e698917b163678b8923 Mon Sep 17 00:00:00 2001
+From e5ab8770028ef355c9f8bc1a1ba98a1411baabd9 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.xyz>
 Date: Mon, 27 Feb 2017 03:37:17 +0800
-Subject: [PATCH 22/87] drm: sun4i: add support for H3's TCON
+Subject: [PATCH 22/98] drm: sun4i: add support for H3's TCON
 
 Allwinner H3 has two special TCONs without channel 0.
 
@@ -164,5 +164,5 @@ index e3c50ecdcd04..98077a6685a0 100644
  };
  
 -- 
-2.13.5
+2.13.6
 

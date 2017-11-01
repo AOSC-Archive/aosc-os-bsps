@@ -1,7 +1,7 @@
-From e42ea77a5f2b389eed2c9004eab80bf6589ebf5a Mon Sep 17 00:00:00 2001
+From 38d3d35460236919b8cbe473b0d7c119197fa96e Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 1 Aug 2017 23:42:12 +0800
-Subject: [PATCH 55/87] iio: adc: sun4i-gpadc: workaroud bogus THS raw value 0
+Subject: [PATCH 55/98] iio: adc: sun4i-gpadc: workaroud bogus THS raw value 0
  readout
 
 When booting the system, the THS may read out a bogus false value which
@@ -33,5 +33,5 @@ index f378ca0bc0b3..a89dcb6fba4e 100644
  	}
  
 -- 
-2.13.5
+2.13.6
 

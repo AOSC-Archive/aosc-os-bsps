@@ -1,7 +1,7 @@
-From 0bbf265ec51bb5549850368e45a10445fd40e2d7 Mon Sep 17 00:00:00 2001
+From c62ae87119826934a5b15d3911789d20eef92716 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 13 Aug 2017 11:20:37 +0800
-Subject: [PATCH 69/87] phy: sun4i-usb: add support for R40 USB PHY
+Subject: [PATCH 69/98] phy: sun4i-usb: add support for R40 USB PHY
 
 Allwinner R40 features a USB PHY like the one in A64, but with 3 PHYs.
 
@@ -63,5 +63,5 @@ index bbf06cfe5898..f0970c44fbbe 100644
  	{ .compatible = "allwinner,sun50i-a64-usb-phy",
  	  .data = &sun50i_a64_cfg},
 -- 
-2.13.5
+2.13.6
 

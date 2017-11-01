@@ -1,7 +1,7 @@
-From 7438cc8ddc721c320bdefc132e85cec6fdcb20eb Mon Sep 17 00:00:00 2001
+From f77654b8472a2eccd44260c040483418a49e3b99 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 24 Aug 2017 17:47:06 +0800
-Subject: [PATCH 85/87] ARM: sun8i: r40: add GMAC RGMII pinmux
+Subject: [PATCH 85/98] ARM: sun8i: r40: add GMAC RGMII pinmux
 
 The GMAC of Allwinner R40 SoC is capable of RGMII PHY mode.
 
@@ -34,5 +34,5 @@ index 32648765319a..f71a358971f6 100644
  				pins = "PB0", "PB1";
  				function = "i2c0";
 -- 
-2.13.5
+2.13.6
 

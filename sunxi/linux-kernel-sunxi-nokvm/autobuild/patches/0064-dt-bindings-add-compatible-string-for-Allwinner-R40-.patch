@@ -1,7 +1,7 @@
-From df540bc0499c100cc01857407c6b23aa9aff0b7a Mon Sep 17 00:00:00 2001
+From 22b1d56108fe256a27a625ee3724406197f7a6da Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 27 May 2017 18:23:05 +0800
-Subject: [PATCH 64/87] dt-bindings: add compatible string for Allwinner R40
+Subject: [PATCH 64/98] dt-bindings: add compatible string for Allwinner R40
  CCU
 
 Allwinner R40 has a clock controlling unit like the ones on other
@@ -29,5 +29,5 @@ index df9fad58facd..0b62422b3fbd 100644
  		- "allwinner,sun9i-a80-ccu"
  		- "allwinner,sun50i-a64-ccu"
 -- 
-2.13.5
+2.13.6
 

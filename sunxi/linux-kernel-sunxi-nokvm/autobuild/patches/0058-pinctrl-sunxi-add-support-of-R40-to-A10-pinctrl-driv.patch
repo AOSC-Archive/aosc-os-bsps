@@ -1,7 +1,7 @@
-From d5b0e97ec4e93fd682327bffcdaefc1c75fbb797 Mon Sep 17 00:00:00 2001
+From 79518414a7caff2cf2689849d943fb88c2903f0b Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 22 Jul 2017 10:50:54 +0800
-Subject: [PATCH 58/87] pinctrl: sunxi: add support of R40 to A10 pinctrl
+Subject: [PATCH 58/98] pinctrl: sunxi: add support of R40 to A10 pinctrl
  driver
 
 R40 is said to be an upgrade of A20, and its pin configuration is also
@@ -754,5 +754,5 @@ index 47a392bc73c8..f763d8d62d6e 100644
  };
  
 -- 
-2.13.5
+2.13.6
 

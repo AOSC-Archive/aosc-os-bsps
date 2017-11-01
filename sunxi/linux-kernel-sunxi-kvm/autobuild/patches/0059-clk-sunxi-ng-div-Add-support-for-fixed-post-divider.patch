@@ -1,7 +1,7 @@
-From e8d353be50bae89e4539cd78fc0b296e9087dfc6 Mon Sep 17 00:00:00 2001
+From 5b2511cede73f70923c2c897134d7f2b0ca6fec2 Mon Sep 17 00:00:00 2001
 From: Priit Laes <plaes@plaes.org>
 Date: Sat, 12 Aug 2017 20:43:50 +0800
-Subject: [PATCH 59/87] clk: sunxi-ng: div: Add support for fixed post-divider
+Subject: [PATCH 59/98] clk: sunxi-ng: div: Add support for fixed post-divider
 
 SATA clock on sun4i/sun7i is of type (parent) / M / 6 where
 6 is fixed post-divider.
@@ -81,5 +81,5 @@ index 08d074451204..f3a5028dcd14 100644
  
  #define SUNXI_CCU_DIV_TABLE_WITH_GATE(_struct, _name, _parent, _reg,	\
 -- 
-2.13.5
+2.13.6
 

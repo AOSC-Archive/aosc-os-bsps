@@ -1,7 +1,7 @@
-From 5333872da2eb2814f0fb5ab9f94c3925621a8471 Mon Sep 17 00:00:00 2001
+From 6b47a020694970ff2538230f624e1ebec579990c Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 11 Sep 2017 00:02:54 +0800
-Subject: [PATCH 3/7] arm64: allwinner: h5: add compatible string for DE2 CCU
+Subject: [PATCH 90/98] arm64: allwinner: h5: add compatible string for DE2 CCU
 
 The DE2 CCU on Allwinner H5 SoC has a slightly different behavior than
 the one on H3, so the compatible string is not set in the common DTSI
@@ -30,5 +30,5 @@ index d9a720bff05d..e237c05cfdb4 100644
  	compatible = "allwinner,sun50i-h5-mmc",
  		     "allwinner,sun50i-a64-mmc";
 -- 
-2.13.5
+2.13.6
 

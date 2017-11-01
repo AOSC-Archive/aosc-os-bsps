@@ -1,7 +1,7 @@
-From e467ef51bf64e4942dfe85d653d8b941585c3adc Mon Sep 17 00:00:00 2001
+From bac9df2e124f2850f1a0db6e6761e69ca99f9867 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 2 Apr 2017 21:06:13 +0800
-Subject: [PATCH 53/87] iio: adc: sun4i-gpadc-iio: rename A23/A33-specified
+Subject: [PATCH 53/98] iio: adc: sun4i-gpadc-iio: rename A23/A33-specified
  registers to contain A23
 
 As the H3 SoC, which is also in sun8i line, has totally different
@@ -49,5 +49,5 @@ index 139872c2e0fe..d31d962bb7d8 100644
  #define SUN4I_GPADC_CTRL2				0x08
  
 -- 
-2.13.5
+2.13.6
 

@@ -1,7 +1,7 @@
-From 1d2b6751346eab9f54d74d2cd723304d324f6f72 Mon Sep 17 00:00:00 2001
+From f3aa1eec92ef0e9f3d2386505b75a3c8ee55139d Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 22 Aug 2017 13:14:52 +0800
-Subject: [PATCH 62/87] ARM: sunxi: fix the core number of V3s in sunxi README
+Subject: [PATCH 62/98] ARM: sunxi: fix the core number of V3s in sunxi README
 
 The Allwinner V3s SoC is not quad-core, but single-core.
 
@@ -41,5 +41,5 @@ index d7b1f016bd62..de791e18ccef 100644
        - Allwinner A80
          + Datasheet
 -- 
-2.13.5
+2.13.6
 

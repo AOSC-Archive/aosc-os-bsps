@@ -1,7 +1,7 @@
-From 415a76d836e674c3ba0d2ad863a2d82da70dc9cb Mon Sep 17 00:00:00 2001
+From e6cf99a84dcbd5756804471d818bed15cb950003 Mon Sep 17 00:00:00 2001
 From: Jernej Skrabec <jernej.skrabec@siol.net>
 Date: Tue, 11 Apr 2017 21:46:33 +0200
-Subject: [PATCH 30/87] drm: sun4i: Add a glue for the DesignWare HDMI
+Subject: [PATCH 30/98] drm: sun4i: Add a glue for the DesignWare HDMI
  controller in H3
 
 Allwinner H3 features DesignWare HDMI Transmitter paired with custom
@@ -516,5 +516,5 @@ index 000000000000..fa1ecbcf08b8
 +MODULE_DESCRIPTION("Allwinner H3 DW HDMI bridge");
 +MODULE_LICENSE("GPL");
 -- 
-2.13.5
+2.13.6
 

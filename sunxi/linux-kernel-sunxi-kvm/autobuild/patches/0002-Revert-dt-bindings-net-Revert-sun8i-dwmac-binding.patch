@@ -1,7 +1,7 @@
-From 410556d93752b7cb0b621610691be699bae74135 Mon Sep 17 00:00:00 2001
+From fb66081e4a1efb708da24b5b72c04335e29770ac Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 3 Sep 2017 17:30:35 +0800
-Subject: [PATCH 02/87] Revert "dt-bindings: net: Revert sun8i dwmac binding"
+Subject: [PATCH 02/98] Revert "dt-bindings: net: Revert sun8i dwmac binding"
 
 This reverts commit 8aa33ec2f4812d1ee96f4c02ba013f5b9c514343.
 
@@ -102,5 +102,5 @@ index 000000000000..725f3b187886
 +	};
 +};
 -- 
-2.13.5
+2.13.6
 

@@ -1,7 +1,7 @@
-From 12fc37a8e7514f1de6ef007f1bf32ff5164d5981 Mon Sep 17 00:00:00 2001
+From addf7d673d9039caf479800c8a6463d0f144617f Mon Sep 17 00:00:00 2001
 From: Jernej Skrabec <jernej.skrabec@siol.net>
 Date: Tue, 11 Apr 2017 21:44:31 +0200
-Subject: [PATCH 28/87] drm: bridge: Add a pre_init function for the dw_hdmi
+Subject: [PATCH 28/98] drm: bridge: Add a pre_init function for the dw_hdmi
  driver
 
 Some platform glues of DesignWare HDMI controller require some
@@ -43,5 +43,5 @@ index 182f83283e24..6e109c336ca1 100644
  	/* Vendor PHY support */
  	const struct dw_hdmi_phy_ops *phy_ops;
 -- 
-2.13.5
+2.13.6
 

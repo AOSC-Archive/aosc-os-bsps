@@ -1,7 +1,7 @@
-From 0071ec35cc71edc6bf40c0cab953d63f71a1a44a Mon Sep 17 00:00:00 2001
+From 1d6075a8a8afff6140daf180127df593369bee83 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 1 Aug 2017 20:23:00 +0800
-Subject: [PATCH 31/87] ARM: sun8i: h3: enable DesignWare HDMI controller
+Subject: [PATCH 31/98] ARM: sun8i: h3: enable DesignWare HDMI controller
 
 The H3 SoC has a DesignWare HDMI controller with some Allwinner-specific
 glues.
@@ -67,5 +67,5 @@ index 75ad7b65a7fc..cd38d7e04606 100644
  
  	timer {
 -- 
-2.13.5
+2.13.6
 

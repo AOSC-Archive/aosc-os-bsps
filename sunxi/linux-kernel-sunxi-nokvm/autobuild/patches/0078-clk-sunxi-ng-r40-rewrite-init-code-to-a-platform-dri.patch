@@ -1,7 +1,7 @@
-From 73f287766f8c3c1e056b0ab9ebd9125ff6a94a07 Mon Sep 17 00:00:00 2001
+From 0d89a0bc85d686b429d89d83083d1e555ec034a6 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 24 Aug 2017 17:05:10 +0800
-Subject: [PATCH 78/87] clk: sunxi-ng: r40: rewrite init code to a platform
+Subject: [PATCH 78/98] clk: sunxi-ng: r40: rewrite init code to a platform
  driver
 
 As we need to register a regmap on the R40 CCU, there needs to be a
@@ -87,5 +87,5 @@ index 933f2e68f42a..bb94e2c44e86 100644
 +};
 +builtin_platform_driver(sun8i_r40_ccu_driver);
 -- 
-2.13.5
+2.13.6
 

@@ -1,7 +1,7 @@
-From ba2a660cbc4b7e3b308eeaa9e1c2d34f4997bdf9 Mon Sep 17 00:00:00 2001
+From 419a66d6810a169bdabe576de6ea57b3b7ece6d5 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.xyz>
 Date: Fri, 17 Feb 2017 23:30:53 +0800
-Subject: [PATCH 70/87] ARM: dts: sun8i: add USB host port nodes for R40
+Subject: [PATCH 70/98] ARM: dts: sun8i: add USB host port nodes for R40
 
 Allwinner R40 SoC features a USB OTG port and two USB HOST ports.
 
@@ -105,5 +105,5 @@ index 5d365b72b893..65a8a5663f1c 100644
  			compatible = "allwinner,sun8i-r40-ccu";
  			reg = <0x01c20000 0x400>;
 -- 
-2.13.5
+2.13.6
 

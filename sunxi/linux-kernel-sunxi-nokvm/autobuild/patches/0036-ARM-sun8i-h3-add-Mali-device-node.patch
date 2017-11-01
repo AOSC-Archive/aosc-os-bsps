@@ -1,7 +1,7 @@
-From 77e91b470e7753e53a3c62959e601f16623f1888 Mon Sep 17 00:00:00 2001
+From 4366e4e5dbc4e851bd19c2ecd2070cc4fb918e74 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 1 Aug 2017 22:18:41 +0800
-Subject: [PATCH 36/87] ARM: sun8i: h3: add Mali device node
+Subject: [PATCH 36/98] ARM: sun8i: h3: add Mali device node
 
 Allwinner H3 SoC has a Mali-400MP2 GPU.
 
@@ -72,5 +72,5 @@ index cd38d7e04606..173d9d4f8983 100644
  			compatible = "allwinner,h3-dw-hdmi";
  			reg = <0x01ee0000 0x10000>,
 -- 
-2.13.5
+2.13.6
 

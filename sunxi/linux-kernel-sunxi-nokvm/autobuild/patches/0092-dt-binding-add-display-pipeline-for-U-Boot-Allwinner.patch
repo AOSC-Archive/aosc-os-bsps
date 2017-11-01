@@ -1,8 +1,8 @@
-From a9e8f29d53c2d7da79e53b25edfb0f05f07b659a Mon Sep 17 00:00:00 2001
+From e5e71f0d4ff102af225fb8cf2ab0e53215ea242f Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 29 Sep 2017 18:21:23 +0800
-Subject: [PATCH 5/7] dt-binding: add display pipeline for U-Boot Allwinner R40
- simplefb
+Subject: [PATCH 92/98] dt-binding: add display pipeline for U-Boot Allwinner
+ R40 simplefb
 
 The SimpleFB of the U-Boot on R40 currently uses R40's mixer0, TCON_TV0
 and HDMI controller.
@@ -27,5 +27,5 @@ index 29b553933e46..019e1e5f6000 100644
  Example:
  
 -- 
-2.13.5
+2.13.6
 

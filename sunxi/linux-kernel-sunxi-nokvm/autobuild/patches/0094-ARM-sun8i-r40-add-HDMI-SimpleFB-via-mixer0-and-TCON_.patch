@@ -1,7 +1,7 @@
-From 8beb27b6346a8c47df34583a2a09dade02c6d982 Mon Sep 17 00:00:00 2001
+From db4343426d72954e84cd5b25c3c0b69b9bac58af Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 29 Sep 2017 18:57:53 +0800
-Subject: [PATCH 7/7] ARM: sun8i: r40: add HDMI SimpleFB via mixer0 and
+Subject: [PATCH 94/98] ARM: sun8i: r40: add HDMI SimpleFB via mixer0 and
  TCON_TV0
 
 The U-Boot can now initialize the SimpleFB of R40 via mixer0, TCON_TV0
@@ -46,5 +46,5 @@ index 8d699301a329..8d1629ffb989 100644
  		#address-cells = <1>;
  		#size-cells = <1>;
 -- 
-2.13.5
+2.13.6
 

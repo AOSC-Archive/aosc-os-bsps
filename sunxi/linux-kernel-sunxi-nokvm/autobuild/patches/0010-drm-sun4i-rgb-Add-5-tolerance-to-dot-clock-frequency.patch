@@ -1,7 +1,7 @@
-From 06438b3b689985db94ca032ffdce8184db525dae Mon Sep 17 00:00:00 2001
+From ea471a7028b85986dcc633a87fbce63470581c58 Mon Sep 17 00:00:00 2001
 From: Chen-Yu Tsai <wens@csie.org>
 Date: Sat, 5 Nov 2016 22:24:02 +0800
-Subject: [PATCH 10/87] drm/sun4i: rgb: Add 5% tolerance to dot clock frequency
+Subject: [PATCH 10/98] drm/sun4i: rgb: Add 5% tolerance to dot clock frequency
  check
 
 The panels shipped with Allwinner devices are very "generic", i.e.
@@ -52,5 +52,5 @@ index 422b191faa77..9c6d65053787 100644
  
  	DRM_DEBUG_DRIVER("Clock rate OK\n");
 -- 
-2.13.5
+2.13.6
 

@@ -1,7 +1,7 @@
-From e1df15b5e4c6ff2dd630e56dbc2b28e756f43765 Mon Sep 17 00:00:00 2001
+From e74d281f583bde6f052f554a557b6be634f3e8b0 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.xyz>
 Date: Fri, 17 Feb 2017 23:33:29 +0800
-Subject: [PATCH 71/87] ARM: dts: sun8i: enable USB host for Banana Pi M2 Ultra
+Subject: [PATCH 71/98] ARM: dts: sun8i: enable USB host for Banana Pi M2 Ultra
 
 Banana Pi M2 Ultra board features two USB host ports, connected to the
 two USB host ports on the SoC.
@@ -72,5 +72,5 @@ index 148427517819..e8226ee0c737 100644
 +	status = "okay";
 +};
 -- 
-2.13.5
+2.13.6
 

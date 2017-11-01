@@ -1,7 +1,7 @@
-From 4e3be988c9d5e8da0828611497f672976c765c7b Mon Sep 17 00:00:00 2001
+From 2291fbc8cc8d01906dc8d79e2f70ce71d80c1d81 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 10 Sep 2017 23:55:48 +0800
-Subject: [PATCH 1/7] dt-bindings: simplefb-sunxi: add pipelines for DE2
+Subject: [PATCH 88/98] dt-bindings: simplefb-sunxi: add pipelines for DE2
 
 As we're going to add simplefb support for Allwinner SoCs with DE2, add
 suitable pipeline strings in the device tree binding.
@@ -27,5 +27,5 @@ index c46ba641a1df..29b553933e46 100644
  Example:
  
 -- 
-2.13.5
+2.13.6
 

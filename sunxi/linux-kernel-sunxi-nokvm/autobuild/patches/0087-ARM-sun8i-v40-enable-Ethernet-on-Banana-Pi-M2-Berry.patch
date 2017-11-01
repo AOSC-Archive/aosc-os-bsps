@@ -1,7 +1,7 @@
-From 1ac96b94f1c19b0da7a43b8224aa173c580507d1 Mon Sep 17 00:00:00 2001
+From d049cd79f9b287b8b95c2c1fa60f45f34a849798 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 24 Aug 2017 18:11:28 +0800
-Subject: [PATCH 87/87] ARM: sun8i: v40: enable Ethernet on Banana Pi M2 Berry
+Subject: [PATCH 87/98] ARM: sun8i: v40: enable Ethernet on Banana Pi M2 Berry
 
 Banana Pi M2 Berry features an Ethernet port, connected to the V40 SoC's
 GMAC via a RTL8211E PHY.
@@ -75,5 +75,5 @@ index 8d92b7a5138a..568befb80ce0 100644
  	vmmc-supply = <&reg_dcdc1>;
  	bus-width = <4>;
 -- 
-2.13.5
+2.13.6
 

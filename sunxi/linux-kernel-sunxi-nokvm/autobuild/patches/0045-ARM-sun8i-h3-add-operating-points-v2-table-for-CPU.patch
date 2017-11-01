@@ -1,7 +1,7 @@
-From 827a88322e4d74a158010fef34ad9c08250472c6 Mon Sep 17 00:00:00 2001
+From 6bc349af6885404293b99d8fa0a72011752bcbd4 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 9 Apr 2017 02:16:47 +0800
-Subject: [PATCH 45/87] ARM: sun8i: h3: add operating-points-v2 table for CPU
+Subject: [PATCH 45/98] ARM: sun8i: h3: add operating-points-v2 table for CPU
 
 The CPU on Allwinner H3 can do dynamic frequency scaling.
 
@@ -101,5 +101,5 @@ index 173d9d4f8983..eb29c3c10b98 100644
  	};
  
 -- 
-2.13.5
+2.13.6
 

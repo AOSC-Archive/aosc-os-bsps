@@ -1,7 +1,7 @@
-From 3eb00b129028caffb5da8c8c0dad9e5e87f5a653 Mon Sep 17 00:00:00 2001
+From 898194f990b040b4fad076bc83a67c4361bc5021 Mon Sep 17 00:00:00 2001
 From: Chen-Yu Tsai <wens@csie.org>
 Date: Thu, 16 Feb 2017 13:08:05 +0800
-Subject: [PATCH 66/87] ARM: dts: sun8i: Add basic dtsi file for Allwinner R40
+Subject: [PATCH 66/98] ARM: dts: sun8i: Add basic dtsi file for Allwinner R40
 
 The Allwinner R40 SoC is marketed as the successor to the A20 SoC.
 The R40 is a smaller chip than the A20, but features the same set
@@ -432,5 +432,5 @@ index 000000000000..5d365b72b893
 +	};
 +};
 -- 
-2.13.5
+2.13.6
 

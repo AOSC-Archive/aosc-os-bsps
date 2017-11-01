@@ -1,7 +1,7 @@
-From e9807e63fec81bab15b2e8be714d802966ea6425 Mon Sep 17 00:00:00 2001
+From c835cec5811579ab71fdaea59d21137297f218ab Mon Sep 17 00:00:00 2001
 From: Ondrej Jirman <megous@megous.com>
 Date: Sat, 25 Jun 2016 02:13:50 +0200
-Subject: [PATCH 39/87] regulator: add support for SY8106A regulator
+Subject: [PATCH 39/98] regulator: add support for SY8106A regulator
 
 SY8106A is an I2C attached single output regulator made by Silergy Corp,
 which is used on several Allwinner H3/H5 SBCs to control the power
@@ -232,5 +232,5 @@ index 000000000000..4babc95894e7
 +MODULE_DESCRIPTION("Regulator device driver for Silergy SY8106A");
 +MODULE_LICENSE("GPL v2");
 -- 
-2.13.5
+2.13.6
 

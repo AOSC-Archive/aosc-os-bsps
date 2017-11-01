@@ -1,7 +1,7 @@
-From 1f75a1be524a9d8b53a0285f0218ffa8592632d2 Mon Sep 17 00:00:00 2001
+From 3193dc1537bcde4ef343000595654a1de7b27d95 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 29 Sep 2017 18:57:23 +0800
-Subject: [PATCH 6/7] ARM: sun8i: r40: add DE2 CCU for R40 SoC
+Subject: [PATCH 93/98] ARM: sun8i: r40: add DE2 CCU for R40 SoC
 
 The R40 SoC has a "Display Engine 2.0", which has a clock control unit.
 
@@ -46,5 +46,5 @@ index f71a358971f6..8d699301a329 100644
  			compatible = "allwinner,sun7i-a20-sc-nmi";
  			interrupt-controller;
 -- 
-2.13.5
+2.13.6
 

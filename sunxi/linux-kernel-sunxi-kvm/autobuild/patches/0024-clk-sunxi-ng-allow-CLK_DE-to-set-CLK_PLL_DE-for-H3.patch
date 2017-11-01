@@ -1,7 +1,7 @@
-From 5051ff038a2f3e6d4bdf29cf8f8c349e130378a4 Mon Sep 17 00:00:00 2001
+From 7387f1214ccbd53ffc4468186300f838b7a8a4a2 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 16 Apr 2017 16:50:04 +0800
-Subject: [PATCH 24/87] clk: sunxi-ng: allow CLK_DE to set CLK_PLL_DE for H3
+Subject: [PATCH 24/98] clk: sunxi-ng: allow CLK_DE to set CLK_PLL_DE for H3
 
 Allwinner H3 features a PLL named CLK_PLL_DE, and a mod clock for the
 "Display Engine 2.0" named CLK_DE. As the name indicated, the CLK_PLL_DE
@@ -31,5 +31,5 @@ index 62e4f0d2b2fc..b6a1636c2f6b 100644
  static const char * const tcon_parents[] = { "pll-video" };
  static SUNXI_CCU_M_WITH_MUX_GATE(tcon_clk, "tcon", tcon_parents,
 -- 
-2.13.5
+2.13.6
 

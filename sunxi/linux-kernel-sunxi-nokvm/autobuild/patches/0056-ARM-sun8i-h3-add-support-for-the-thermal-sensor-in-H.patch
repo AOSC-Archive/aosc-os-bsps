@@ -1,7 +1,7 @@
-From bc389accb7386dda0bd1c807fb09fa1f0888a18e Mon Sep 17 00:00:00 2001
+From b12d6f7c5e58c46ce4d997fcb5b11771945de94c Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 29 Mar 2017 00:46:49 +0800
-Subject: [PATCH 56/87] ARM: sun8i: h3: add support for the thermal sensor in
+Subject: [PATCH 56/98] ARM: sun8i: h3: add support for the thermal sensor in
  H3
 
 As we have gained the support for the thermal sensor in H3, we can now
@@ -45,5 +45,5 @@ index eb29c3c10b98..0ce5c11121ba 100644
  		compatible = "arm,armv7-timer";
  		interrupts = <GIC_PPI 13 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>,
 -- 
-2.13.5
+2.13.6
 

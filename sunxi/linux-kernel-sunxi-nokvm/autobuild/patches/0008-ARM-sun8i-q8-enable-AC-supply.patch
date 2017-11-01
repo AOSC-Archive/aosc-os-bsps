@@ -1,7 +1,7 @@
-From 9b52c2b51992df2470f16ef97a6ef9dd53e2dd54 Mon Sep 17 00:00:00 2001
+From 2df6d3bacfc09f9a0fa3b39698475d7b37cabcbd Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 1 Aug 2017 21:46:40 +0800
-Subject: [PATCH 08/87] ARM: sun8i: q8: enable AC supply
+Subject: [PATCH 08/98] ARM: sun8i: q8: enable AC supply
 
 Q8 tablets usually come with an power-only barrel which is connected to
 the ACIN of AXP223 PMIC.
@@ -32,5 +32,5 @@ index c676940a96da..407ac24e7dd0 100644
  	status  = "okay";
  };
 -- 
-2.13.5
+2.13.6
 

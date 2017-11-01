@@ -1,7 +1,7 @@
-From 6ed414fbf83d99e7d1655d0ed065dcef332eeb17 Mon Sep 17 00:00:00 2001
+From 533473703dedc4233d5722fc5dd8168d8ee0a752 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 23 Jul 2017 19:16:25 +0800
-Subject: [PATCH 57/87] ARM: sun8i: h3: add CPU thermal zone
+Subject: [PATCH 57/98] ARM: sun8i: h3: add CPU thermal zone
 
 Add a thermal zone which claims the H3 THS as the thermal sensor, and
 controls the frequency of the ARM cores.
@@ -74,5 +74,5 @@ index 0ce5c11121ba..d3b320ae0a4b 100644
  		compatible = "arm,armv7-timer";
  		interrupts = <GIC_PPI 13 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>,
 -- 
-2.13.5
+2.13.6
 

@@ -1,7 +1,7 @@
-From 36d3ff72fdd24f5def35829dd2b6335173074167 Mon Sep 17 00:00:00 2001
+From 08c71fa6fb8fc5101d85057722607cf4a8baa47b Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 9 Apr 2017 02:21:08 +0800
-Subject: [PATCH 46/87] ARM: sun8i: h2+: add SY8113B regulator used by Orange
+Subject: [PATCH 46/98] ARM: sun8i: h2+: add SY8113B regulator used by Orange
  Pi Zero board
 
 Orange Pi Zero board has a SY8113B regulator, which is controlled via
@@ -50,5 +50,5 @@ index 6713d0f2b3f4..34fc35737090 100644
  
  &ehci0 {
 -- 
-2.13.5
+2.13.6
 

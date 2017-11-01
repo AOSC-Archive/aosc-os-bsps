@@ -1,7 +1,7 @@
-From 9e1f61ec9dc041d5fc1e5349cb5878e2cc757c1d Mon Sep 17 00:00:00 2001
+From 1a72523701e0ffe955a277bcb848fa3b77393ac2 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 1 Aug 2017 22:07:52 +0800
-Subject: [PATCH 33/87] ARM: sun8i: h3: enable HDMI output on Banana Pi M2+
+Subject: [PATCH 33/98] ARM: sun8i: h3: enable HDMI output on Banana Pi M2+
 
 Banana Pi M2+ board has a HDMI-A port connected to the HDMI controller of
 Allwinner H3 SoC.
@@ -62,5 +62,5 @@ index d756ff825116..eef3ae2c325e 100644
  	pinctrl-names = "default";
  	pinctrl-0 = <&uart0_pins_a>;
 -- 
-2.13.5
+2.13.6
 

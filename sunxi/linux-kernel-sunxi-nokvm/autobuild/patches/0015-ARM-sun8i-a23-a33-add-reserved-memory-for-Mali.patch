@@ -1,7 +1,7 @@
-From 1944f831356677f6c7563bc817ea7f5cd3fb3824 Mon Sep 17 00:00:00 2001
+From 181ad373feca2972ee977cfbc302c6d7f51c0b46 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 1 Aug 2017 21:52:35 +0800
-Subject: [PATCH 15/87] ARM: sun8i: a23/a33: add reserved-memory for Mali
+Subject: [PATCH 15/98] ARM: sun8i: a23/a33: add reserved-memory for Mali
 
 The current Mali driver doesn't work without reserved-memory node.
 
@@ -46,5 +46,5 @@ index a8b978d0f35b..38eaf73cdbfd 100644
  			assigned-clocks = <&ccu CLK_GPU>;
  			assigned-clock-rates = <384000000>;
 -- 
-2.13.5
+2.13.6
 

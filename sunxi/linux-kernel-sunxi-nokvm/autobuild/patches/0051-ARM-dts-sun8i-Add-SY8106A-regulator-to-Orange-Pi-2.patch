@@ -1,7 +1,7 @@
-From 814efe11040e7c84cd44774649f51bb0e461dba1 Mon Sep 17 00:00:00 2001
+From 02a50cfcdb85827693e45d918d1907cbfed81f85 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 1 Aug 2017 23:35:40 +0800
-Subject: [PATCH 51/87] ARM: dts: sun8i: Add SY8106A regulator to Orange Pi 2
+Subject: [PATCH 51/98] ARM: dts: sun8i: Add SY8106A regulator to Orange Pi 2
 
 Add SY8106A regulator to r_i2c bus and enable the r_i2c bus on
 Orange Pi 2, then set the power supply of the ARM cores to this
@@ -57,5 +57,5 @@ index ce4fae1bcba6..2996095cffc2 100644
  	gpio = <&pio 6 13 GPIO_ACTIVE_HIGH>;
  	status = "okay";
 -- 
-2.13.5
+2.13.6
 

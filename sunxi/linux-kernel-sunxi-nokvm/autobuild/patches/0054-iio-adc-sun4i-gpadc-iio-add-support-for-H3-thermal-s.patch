@@ -1,7 +1,7 @@
-From da3acd347c42a3839d0bb6dc54fe9a18e54ff28f Mon Sep 17 00:00:00 2001
+From 56cd19c4c90f53e8b364f47d34e68442a7edaeb0 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 29 Mar 2017 00:16:31 +0800
-Subject: [PATCH 54/87] iio: adc: sun4i-gpadc-iio: add support for H3 thermal
+Subject: [PATCH 54/98] iio: adc: sun4i-gpadc-iio: add support for H3 thermal
  sensor
 
 This adds support for the Allwinner H3 thermal sensor.
@@ -424,5 +424,5 @@ index d31d962bb7d8..f794a2988a93 100644
  #define SUN4I_GPADC_IRQ_FIFO_DATA			0
  #define SUN4I_GPADC_IRQ_TEMP_DATA			1
 -- 
-2.13.5
+2.13.6
 

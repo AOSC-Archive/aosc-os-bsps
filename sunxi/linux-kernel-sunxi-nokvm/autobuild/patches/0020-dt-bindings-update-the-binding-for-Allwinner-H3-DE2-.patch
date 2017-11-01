@@ -1,7 +1,7 @@
-From 1b09f11da7a31acacfa7ebc3f40f416c4fc781b5 Mon Sep 17 00:00:00 2001
+From f414ce94482a2391c1171ebf51ed5356055d8d6e Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 16 Apr 2017 17:15:55 +0800
-Subject: [PATCH 20/87] dt-bindings: update the binding for Allwinner H3 DE2
+Subject: [PATCH 20/98] dt-bindings: update the binding for Allwinner H3 DE2
  support
 
 Allwinner H3 features a "Display Engine 2.0".
@@ -91,5 +91,5 @@ index b83e6018041d..30cc59682b1c 100644
  
    - allwinner,pipelines: list of phandle to the display engine
 -- 
-2.13.5
+2.13.6
 

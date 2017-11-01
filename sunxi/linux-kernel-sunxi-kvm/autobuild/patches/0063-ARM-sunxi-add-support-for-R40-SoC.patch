@@ -1,7 +1,7 @@
-From 601088ad1dfddc03851885c2284605c21ae971d1 Mon Sep 17 00:00:00 2001
+From af9a3dd64250d6dfc9418281f139aa4f60f364b9 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 16 Feb 2017 02:18:25 +0800
-Subject: [PATCH 63/87] ARM: sunxi: add support for R40 SoC
+Subject: [PATCH 63/98] ARM: sunxi: add support for R40 SoC
 
 Allwinner R40 is a new SoC, with Quad Core Cortex-A7 and peripherals
 like A20.
@@ -57,5 +57,5 @@ index 7ab353fb25f2..5e9602ce1573 100644
  	NULL,
  };
 -- 
-2.13.5
+2.13.6
 

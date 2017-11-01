@@ -1,7 +1,7 @@
-From abaf127f48370319e35567f177f44c3f35835ff2 Mon Sep 17 00:00:00 2001
+From a847ef21597383afc59595aa009a770d79b83740 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 1 Aug 2017 21:04:06 +0800
-Subject: [PATCH 32/87] ARM: sun8i: h3: enable HDMI output on Orange Pi PC
+Subject: [PATCH 32/98] ARM: sun8i: h3: enable HDMI output on Orange Pi PC
 
 Orange Pi PC board has a HDMI-A port connected to the HDMI controller of
 Allwinner H3 SoC.
@@ -61,5 +61,5 @@ index 998b60f8d295..0e3326399590 100644
  	pinctrl-names = "default";
  	pinctrl-0 = <&uart0_pins_a>;
 -- 
-2.13.5
+2.13.6
 

@@ -1,7 +1,7 @@
-From 166a6248e68430fdb0070d89a820bd2e9285a3e4 Mon Sep 17 00:00:00 2001
+From 5c705853dddde2ae14807fc672816d9517eb8a09 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 12 Aug 2017 16:44:52 +0800
-Subject: [PATCH 81/87] net: stmmac: dwmac-sun8i: allow different syscon
+Subject: [PATCH 81/98] net: stmmac: dwmac-sun8i: allow different syscon
  register offset
 
 The R40 GMAC has the EMAC syscon register in CCU, not in the original
@@ -104,5 +104,5 @@ index fffd6d5fc907..318c5588002d 100644
  
  static int sun8i_dwmac_power_internal_phy(struct stmmac_priv *priv)
 -- 
-2.13.5
+2.13.6
 

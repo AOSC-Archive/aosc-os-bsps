@@ -1,7 +1,7 @@
-From d9f1631d1d56f29108bc8f43e60fa621dc903593 Mon Sep 17 00:00:00 2001
+From 9d59427818aad0b5803e8075fe29e05443daffb8 Mon Sep 17 00:00:00 2001
 From: Jernej Skrabec <jernej.skrabec@siol.net>
 Date: Tue, 11 Apr 2017 21:45:23 +0200
-Subject: [PATCH 29/87] clk: sunxi: Add CLK_SET_RATE_PARENT flag for H3 HDMI
+Subject: [PATCH 29/98] clk: sunxi: Add CLK_SET_RATE_PARENT flag for H3 HDMI
  clock
 
 When setting the HDMI clock of H3, the PLL_VIDEO clock needs to be set.
@@ -28,5 +28,5 @@ index b6a1636c2f6b..552a1ff3f4fc 100644
  static SUNXI_CCU_GATE(hdmi_ddc_clk,	"hdmi-ddc",	"osc24M",
  		      0x154, BIT(31), 0);
 -- 
-2.13.5
+2.13.6
 

@@ -1,7 +1,7 @@
-From 247d2f7b040667fbd066437b9a7a173ed9183e1c Mon Sep 17 00:00:00 2001
+From 4b07ab6708f9f1876d6aa03ae4220497f4cecdeb Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 16 Apr 2017 17:19:49 +0800
-Subject: [PATCH 23/87] drm: sun4i: add compatible for H3 display engine
+Subject: [PATCH 23/98] drm: sun4i: add compatible for H3 display engine
 
 Add a compatible string for H3 display engine in sun4i_drv code.
 
@@ -23,5 +23,5 @@ index 0a367fe85b86..bfe40743e7f8 100644
  	{ }
  };
 -- 
-2.13.5
+2.13.6
 

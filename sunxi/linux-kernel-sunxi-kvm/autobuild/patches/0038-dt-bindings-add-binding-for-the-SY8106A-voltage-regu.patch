@@ -1,7 +1,7 @@
-From a9736923ae7b3468b9fc7b78e5e4a56c94b5e5f3 Mon Sep 17 00:00:00 2001
+From 12c8f68ad675b7954ab8838b7eb682aeb97da149 Mon Sep 17 00:00:00 2001
 From: Ondrej Jirman <megous@megous.com>
 Date: Sat, 25 Jun 2016 02:20:08 +0200
-Subject: [PATCH 38/87] dt-bindings: add binding for the SY8106A voltage
+Subject: [PATCH 38/98] dt-bindings: add binding for the SY8106A voltage
  regulator
 
 SY8106A is an I2C-controlled adjustable voltage regulator made by
@@ -45,5 +45,5 @@ index 000000000000..82384579b5ef
 +		regulator-always-on;
 +	};
 -- 
-2.13.5
+2.13.6
 

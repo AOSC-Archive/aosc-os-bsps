@@ -1,7 +1,7 @@
-From 0a5631cbb1144c1f093dc2263e4e92b126c24bfd Mon Sep 17 00:00:00 2001
+From 08e32a529de97da2853e042e3fe0e8594398c2d2 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.xyz>
 Date: Sun, 6 Nov 2016 19:01:01 +0800
-Subject: [PATCH 12/87] ARM: dts: add panel and tcon nodes to Allwinner A33 Q8
+Subject: [PATCH 12/98] ARM: dts: add panel and tcon nodes to Allwinner A33 Q8
  tablet dts
 
 All A33 Q8 tablets features a LCD panel, with a resolution of either
@@ -66,5 +66,5 @@ index b0bc2360f8c4..116988047ab2 100644
 +	};
  };
 -- 
-2.13.5
+2.13.6
 

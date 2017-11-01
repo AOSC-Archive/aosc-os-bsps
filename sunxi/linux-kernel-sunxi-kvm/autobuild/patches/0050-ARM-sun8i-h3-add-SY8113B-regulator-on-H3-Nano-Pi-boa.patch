@@ -1,7 +1,7 @@
-From 067647c8e00be0254e72130ec2c179cf6a3771f6 Mon Sep 17 00:00:00 2001
+From 976c7484190af2c8dd1fa861ba04e527d96326e8 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 1 Aug 2017 23:32:45 +0800
-Subject: [PATCH 50/87] ARM: sun8i: h3: add SY8113B regulator on H3 Nano Pi
+Subject: [PATCH 50/98] ARM: sun8i: h3: add SY8113B regulator on H3 Nano Pi
  boards
 
 H3 Nano Pi boards all have a SY8113B regulator, which is controlled via
@@ -50,5 +50,5 @@ index c6decee41a27..1f9e4e2cd4bd 100644
  
  &ehci3 {
 -- 
-2.13.5
+2.13.6
 

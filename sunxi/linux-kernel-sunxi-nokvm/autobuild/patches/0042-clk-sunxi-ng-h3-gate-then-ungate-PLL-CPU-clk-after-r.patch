@@ -1,7 +1,7 @@
-From 33a54161aeee56fbf78b0222fd24ad9846dca269 Mon Sep 17 00:00:00 2001
+From 9f7f6c7575ede6989c236a8f4a3f3ec9ade241b3 Mon Sep 17 00:00:00 2001
 From: Chen-Yu Tsai <wens@csie.org>
 Date: Thu, 13 Apr 2017 10:13:54 +0800
-Subject: [PATCH 42/87] clk: sunxi-ng: h3: gate then ungate PLL CPU clk after
+Subject: [PATCH 42/98] clk: sunxi-ng: h3: gate then ungate PLL CPU clk after
  rate change
 
 This patch utilizes the new PLL clk notifier to gate then ungate the
@@ -48,5 +48,5 @@ index 552a1ff3f4fc..b886ebc55eaa 100644
  				  &sun8i_h3_cpu_nb);
  }
 -- 
-2.13.5
+2.13.6
 

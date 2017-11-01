@@ -1,7 +1,7 @@
-From 6e9b5512eca8abcc35c91a87e69e82e989d0056d Mon Sep 17 00:00:00 2001
+From 96e2dc54eeaec35ef0a885f88fcba59f910453db Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.xyz>
 Date: Mon, 27 Feb 2017 03:14:57 +0800
-Subject: [PATCH 21/87] drm: sun4i: add support for H3 mixers
+Subject: [PATCH 21/98] drm: sun4i: add support for H3 mixers
 
 Allwinner H3 SoC has two mixers, one has 1 VI channel and 3 UI channels,
 and the other has 1 VI and 1 UI. There's also some graphics post-process
@@ -51,5 +51,5 @@ index cb193c5f1686..d658a3a8159a 100644
  };
  MODULE_DEVICE_TABLE(of, sun8i_mixer_of_table);
 -- 
-2.13.5
+2.13.6
 

@@ -1,7 +1,7 @@
-From a117dd8c71c512103500e6c94a1aa8d7ca13f965 Mon Sep 17 00:00:00 2001
+From 0729b61c45f9d7192646c8053a1ecbf0190e52ab Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 30 Jul 2017 13:33:42 +0800
-Subject: [PATCH 37/87] pinctrl: sunxi: rename R_PIO i2c pin function name
+Subject: [PATCH 37/98] pinctrl: sunxi: rename R_PIO i2c pin function name
 
 The I2C pin functions in R_PIO used to be named "s_twi".
 
@@ -77,5 +77,5 @@ index 686ec212120b..ebfd9a26628c 100644
  	SUNXI_PIN(SUNXI_PINCTRL_PIN(L, 2),
  		  SUNXI_FUNCTION(0x0, "gpio_in"),
 -- 
-2.13.5
+2.13.6
 

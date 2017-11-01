@@ -1,7 +1,7 @@
-From 4421404b90a66b8fcf94b426b58965f4c108c507 Mon Sep 17 00:00:00 2001
+From cd235b53e434baec1bfb2034bef111e987283840 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 11 Sep 2017 00:00:16 +0800
-Subject: [PATCH 2/7] ARM: sun8i: h3/h5: add DE2 CCU device node for H3
+Subject: [PATCH 89/98] ARM: sun8i: h3/h5: add DE2 CCU device node for H3
 
 The DE2 in H3/H5 has a clock control unit in it, and the behavior is
 slightly different between H3 and H5.
@@ -18,10 +18,10 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  2 files changed, 18 insertions(+)
 
 diff --git a/arch/arm/boot/dts/sun8i-h3.dtsi b/arch/arm/boot/dts/sun8i-h3.dtsi
-index b36f9f423c39..a8a1db79f362 100644
+index d3b320ae0a4b..e85299b65295 100644
 --- a/arch/arm/boot/dts/sun8i-h3.dtsi
 +++ b/arch/arm/boot/dts/sun8i-h3.dtsi
-@@ -85,6 +85,10 @@
+@@ -428,6 +428,10 @@
  	compatible = "allwinner,sun8i-h3-ccu";
  };
  
@@ -33,7 +33,7 @@ index b36f9f423c39..a8a1db79f362 100644
  	compatible = "allwinner,sun7i-a20-mmc";
  	clocks = <&ccu CLK_BUS_MMC0>,
 diff --git a/arch/arm/boot/dts/sunxi-h3-h5.dtsi b/arch/arm/boot/dts/sunxi-h3-h5.dtsi
-index d38282b9e5d4..abc4f5d52ec5 100644
+index 19fb71d29159..df7b62f18b43 100644
 --- a/arch/arm/boot/dts/sunxi-h3-h5.dtsi
 +++ b/arch/arm/boot/dts/sunxi-h3-h5.dtsi
 @@ -40,9 +40,11 @@
@@ -68,5 +68,5 @@ index d38282b9e5d4..abc4f5d52ec5 100644
  			compatible = "allwinner,sun8i-h3-system-controller",
  				"syscon";
 -- 
-2.13.5
+2.13.6
 

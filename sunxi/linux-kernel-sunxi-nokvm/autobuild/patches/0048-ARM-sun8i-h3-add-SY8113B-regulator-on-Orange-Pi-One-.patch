@@ -1,7 +1,7 @@
-From 30c8f84af1991a2fae0cad4f168e291c79fb7d38 Mon Sep 17 00:00:00 2001
+From 8688b63c948b9bdf700d79c6f4c6bedbdf46363e Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 1 Aug 2017 23:29:07 +0800
-Subject: [PATCH 48/87] ARM: sun8i: h3: add SY8113B regulator on Orange Pi One
+Subject: [PATCH 48/98] ARM: sun8i: h3: add SY8113B regulator on Orange Pi One
  board
 
 Orange Pi One board has a SY8113B regulator, which is controlled via
@@ -50,5 +50,5 @@ index d4abc1bfae5e..639cdd560c98 100644
  
  &de {
 -- 
-2.13.5
+2.13.6
 

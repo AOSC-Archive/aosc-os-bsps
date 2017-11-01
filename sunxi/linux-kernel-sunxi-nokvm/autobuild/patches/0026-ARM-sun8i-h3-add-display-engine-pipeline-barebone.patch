@@ -1,7 +1,7 @@
-From 799a25c645d84da06927bce99c64a2c87fb43607 Mon Sep 17 00:00:00 2001
+From 6ed29213c4de18fe49bd52b73a2e34f747bd678b Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 16 Apr 2017 16:54:52 +0800
-Subject: [PATCH 26/87] ARM: sun8i: h3: add display engine pipeline barebone
+Subject: [PATCH 26/98] ARM: sun8i: h3: add display engine pipeline barebone
 
 As we have already the support for the DE2 on Allwinner H3, add the
 display engine pipeline device tree nodes to its DTSI file.
@@ -202,5 +202,5 @@ index b36f9f423c39..75ad7b65a7fc 100644
  		compatible = "arm,armv7-timer";
  		interrupts = <GIC_PPI 13 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>,
 -- 
-2.13.5
+2.13.6
 

@@ -1,7 +1,7 @@
-From 408095010a1653c527476d405275cf6fce96d82d Mon Sep 17 00:00:00 2001
+From 7b71c7b0bd36df5664ddce00f354593985343443 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 3 Sep 2017 23:53:15 +0800
-Subject: [PATCH 03/87] Revert "arm: dts: sunxi: Revert EMAC changes"
+Subject: [PATCH 03/98] Revert "arm: dts: sunxi: Revert EMAC changes"
 
 This reverts commit fe45174b72aead678da581bab9e9a37c9b26a070.
 
@@ -300,5 +300,5 @@ index 11240a8313c2..d38282b9e5d4 100644
  			compatible = "allwinner,sun8i-h3-spi";
  			reg = <0x01c68000 0x1000>;
 -- 
-2.13.5
+2.13.6
 
