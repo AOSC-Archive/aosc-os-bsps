@@ -1,5 +1,6 @@
 PKGNAME=u-boot-sun50i-a64-sopine-baseboard
 PKGDES="U-Boot for SoPine with Model A Baseboard"
+PKGEPOCH=1
 PKGSEC=embedded
 BUILDDEP="dtc swig"
 

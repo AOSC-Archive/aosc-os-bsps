@@ -1,5 +1,6 @@
 PKGNAME=u-boot-sun50i-h5-orangepi-prime
 PKGDES="U-Boot for Orange Pi Prime"
+PKGEPOCH=1
 PKGSEC=embedded
 BUILDDEP="dtc swig"
 
