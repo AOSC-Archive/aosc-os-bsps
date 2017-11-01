@@ -1,7 +1,7 @@
-From c535a033cf29089ef33ff0045428fdf7a230fd95 Mon Sep 17 00:00:00 2001
+From 0eaf5e3d049054c12775a94fa4ad783d927ec084 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 28 Sep 2017 20:57:38 +0800
-Subject: [PATCH 1/8] sunxi: update MMIO addresses for R40 display pipeline
+Subject: [PATCH 3/8] sunxi: update MMIO addresses for R40 display pipeline
 
 The MMIO addresses of the HDMI controller on Allwinner R40 is the same
 with other SoCs with obfuscated DesignWare HDMI, but the TCONs are
@@ -63,5 +63,5 @@ index 2419062d45..765eeb0374 100644
  #endif
  
 -- 
-2.13.5
+2.13.6
 

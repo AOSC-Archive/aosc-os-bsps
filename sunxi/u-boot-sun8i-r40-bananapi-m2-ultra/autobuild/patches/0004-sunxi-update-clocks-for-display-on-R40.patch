@@ -1,7 +1,7 @@
-From 1159f5ecb2a75823bf25054c2e65076d7276d38a Mon Sep 17 00:00:00 2001
+From 928f4b45c7a3e0eb3bf702e2daa6d35deca15564 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 28 Sep 2017 21:05:08 +0800
-Subject: [PATCH 2/8] sunxi: update clocks for display on R40
+Subject: [PATCH 4/8] sunxi: update clocks for display on R40
 
 The clocks for TCONs on R40 are different from other SoCs, as there's 4
 TCONs on R40; in addition an extra bus gate is added for HDMI.
@@ -69,5 +69,5 @@ index d328df9597..b6d951c0fc 100644
  #define AHB_RESET_OFFSET_DRC0		25
  #define AHB_RESET_OFFSET_DE_FE0		14
 -- 
-2.13.5
+2.13.6
 

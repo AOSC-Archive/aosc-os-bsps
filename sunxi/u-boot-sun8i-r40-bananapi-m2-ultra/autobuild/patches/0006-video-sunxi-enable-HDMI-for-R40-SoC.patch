@@ -1,7 +1,7 @@
-From 1ee9b24ee674c16bf3d8f9343e91708fafba1f9a Mon Sep 17 00:00:00 2001
+From f51731c4325d4e3c5389583680baf6813ba6b0bf Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 28 Sep 2017 22:08:09 +0800
-Subject: [PATCH 4/8] video: sunxi: enable HDMI for R40 SoC
+Subject: [PATCH 6/8] video: sunxi: enable HDMI for R40 SoC
 
 Allwinner R40 SoC has a "Display Engine 2.0" and 4 TCONs controlled by a
 mux called "TCON_TOP", and the mux also controls the input of the HDMI
@@ -17,7 +17,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  3 files changed, 35 insertions(+), 1 deletion(-)
 
 diff --git a/arch/arm/mach-sunxi/Kconfig b/arch/arm/mach-sunxi/Kconfig
-index 2309f59999..a512b851b5 100644
+index 09cfec6f57..0e086177b3 100644
 --- a/arch/arm/mach-sunxi/Kconfig
 +++ b/arch/arm/mach-sunxi/Kconfig
 @@ -144,6 +144,7 @@ config MACH_SUN8I_R40
@@ -29,10 +29,10 @@ index 2309f59999..a512b851b5 100644
  	select SUNXI_DRAM_DW
  	select SUNXI_DRAM_DW_32BIT
 diff --git a/drivers/video/sunxi/sunxi_de2.c b/drivers/video/sunxi/sunxi_de2.c
-index ee67764ac5..ba35547c97 100644
+index 860187323c..dc6ceea75e 100644
 --- a/drivers/video/sunxi/sunxi_de2.c
 +++ b/drivers/video/sunxi/sunxi_de2.c
-@@ -236,7 +236,8 @@ static int sunxi_de2_probe(struct udevice *dev)
+@@ -256,7 +256,8 @@ static int sunxi_de2_probe(struct udevice *dev)
  					 "sunxi_dw_hdmi", &disp);
  	if (!ret) {
  		int mux;
@@ -94,5 +94,5 @@ index 33920a2b67..0b2c86e9c7 100644
  	lcdc_init(lcdc);
  	lcdc_tcon1_mode_set(lcdc, edid, false, false);
 -- 
-2.13.5
+2.13.6
 

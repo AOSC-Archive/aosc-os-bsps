@@ -1,7 +1,7 @@
-From 362c42e42de3780b020138a46e031d5c88ffe3d3 Mon Sep 17 00:00:00 2001
+From 504cb661fbb4ad19f36cda846f66270ae60b4c16 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 28 Sep 2017 22:06:47 +0800
-Subject: [PATCH 3/8] sunxi: add TCON_TOP register definitions
+Subject: [PATCH 5/8] sunxi: add TCON_TOP register definitions
 
 A mux module called TCON_TOP is introduced on R40 SoC.
 
@@ -13,7 +13,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 21 insertions(+)
 
 diff --git a/arch/arm/include/asm/arch-sunxi/lcdc.h b/arch/arm/include/asm/arch-sunxi/lcdc.h
-index a751698b4f..c8a79cc7d9 100644
+index 132c480106..84e9f6766f 100644
 --- a/arch/arm/include/asm/arch-sunxi/lcdc.h
 +++ b/arch/arm/include/asm/arch-sunxi/lcdc.h
 @@ -58,6 +58,13 @@ struct sunxi_lcdc_reg {
@@ -52,5 +52,5 @@ index a751698b4f..c8a79cc7d9 100644
  void lcdc_enable(struct sunxi_lcdc_reg * const lcdc, int depth);
  void lcdc_tcon0_mode_set(struct sunxi_lcdc_reg * const lcdc,
 -- 
-2.13.5
+2.13.6
 
