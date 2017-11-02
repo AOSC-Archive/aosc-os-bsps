@@ -1,7 +1,7 @@
 From 169de5ad13bb2ec13caab486e93d6b4a7cc04f0c Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 3 Sep 2017 17:29:56 +0800
-Subject: [PATCH 02/78] Revert "net: stmmac: sun8i: Remove the compatibles"
+Subject: [PATCH 02/80] Revert "net: stmmac: sun8i: Remove the compatibles"
 
 This reverts commit ad4540cc5aa3dccb8e1e12458d57f8c40fae5a1c.
 

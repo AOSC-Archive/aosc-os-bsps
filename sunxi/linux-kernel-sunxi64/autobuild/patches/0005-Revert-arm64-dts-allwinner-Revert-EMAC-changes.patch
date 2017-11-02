@@ -1,7 +1,7 @@
 From d2e8b78ce58946f83efaee2aac193658c47a9e25 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 3 Sep 2017 17:30:46 +0800
-Subject: [PATCH 05/78] Revert "arm64: dts: allwinner: Revert EMAC changes"
+Subject: [PATCH 05/80] Revert "arm64: dts: allwinner: Revert EMAC changes"
 
 This reverts commit 87e1f5e8bb4bd584de0a8f3b1e42196dca221d02.
 

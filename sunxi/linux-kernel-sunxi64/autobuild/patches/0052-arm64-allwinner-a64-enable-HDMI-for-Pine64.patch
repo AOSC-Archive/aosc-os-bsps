@@ -1,0 +1,67 @@
+From f32115e508e32670c33fc08d397166ed9f18fde4 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Sat, 6 May 2017 18:27:25 +0800
+Subject: [PATCH 52/80] arm64: allwinner: a64: enable HDMI for Pine64
+
+Pine64 board has a HDMI connector connected to the HDMI controller in
+A64 SoC, and the HDMI controller's HVCC pin is powered via DLDO1.
+
+Enable HDMI-related device nodes.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm64/boot/dts/allwinner/sun50i-a64-pine64.dts | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pine64.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-pine64.dts
+index 586af875b22e..a48fba735d25 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pine64.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pine64.dts
+@@ -69,6 +69,10 @@
+ 	};
+ };
+ 
++&de {
++	status = "okay";
++};
++
+ &ehci0 {
+ 	status = "okay";
+ };
+@@ -86,6 +90,11 @@
+ 	status = "okay";
+ };
+ 
++&hdmi {
++	hvcc-supply = <&reg_dldo1>;
++	status = "okay";
++};
++
+ &i2c1 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&i2c1_pins>;
+@@ -103,6 +112,10 @@
+ 	};
+ };
+ 
++&mixer1 {
++	status = "okay";
++};
++
+ &mmc0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&mmc0_pins>;
+@@ -249,6 +262,10 @@
+ 	vcc-hdmi-supply = <&reg_dldo1>;
+ };
+ 
++&tcon1 {
++	status = "okay";
++};
++
+ /* On Exp and Euler connectors */
+ &uart0 {
+ 	pinctrl-names = "default";
+-- 
+2.13.6
+

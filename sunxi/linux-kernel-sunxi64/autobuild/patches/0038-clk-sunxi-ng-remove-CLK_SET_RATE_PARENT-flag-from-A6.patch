@@ -1,0 +1,33 @@
+From 0af6b08ece3f403a368fc9acc482507f9931dd1a Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Sat, 6 May 2017 18:29:17 +0800
+Subject: [PATCH 38/80] clk: sunxi-ng: remove CLK_SET_RATE_PARENT flag from A64
+ TCON1 clock
+
+Allwinner A64 TCON1 is connected to the HDMI controller. The shared
+parent clock of TCON1 and HDMI clock should be set by HDMI clock, not
+the TCON1 clock.
+
+Remove the CLK_SET_RATE_PARENT flag from A64 TCON1 clock.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ drivers/clk/sunxi-ng/ccu-sun50i-a64.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/clk/sunxi-ng/ccu-sun50i-a64.c b/drivers/clk/sunxi-ng/ccu-sun50i-a64.c
+index 2bb4cabf802f..2795408582dd 100644
+--- a/drivers/clk/sunxi-ng/ccu-sun50i-a64.c
++++ b/drivers/clk/sunxi-ng/ccu-sun50i-a64.c
+@@ -513,7 +513,7 @@ static struct ccu_div tcon1_clk = {
+ 		.hw.init	= CLK_HW_INIT_PARENTS("tcon1",
+ 						      tcon1_parents,
+ 						      &ccu_div_ops,
+-						      CLK_SET_RATE_PARENT),
++						      0),
+ 	},
+ };
+ 
+-- 
+2.13.6
+

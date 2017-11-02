@@ -1,7 +1,7 @@
 From 89ca2899b2fe975df50d2272697d32c572bdb5ee Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 3 Sep 2017 23:53:15 +0800
-Subject: [PATCH 04/78] Revert "arm: dts: sunxi: Revert EMAC changes"
+Subject: [PATCH 04/80] Revert "arm: dts: sunxi: Revert EMAC changes"
 
 This reverts commit fe45174b72aead678da581bab9e9a37c9b26a070.
 
