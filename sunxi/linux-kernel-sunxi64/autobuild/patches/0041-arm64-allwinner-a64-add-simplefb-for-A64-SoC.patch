@@ -1,4 +1,4 @@
-From 82994546f2b8d9ff506a95350a9074843c1eb009 Mon Sep 17 00:00:00 2001
+From c558612f8e90bf23421261720117084d5074cac7 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 27 Oct 2017 22:42:51 +0800
 Subject: [PATCH 41/80] arm64: allwinner: a64: add simplefb for A64 SoC

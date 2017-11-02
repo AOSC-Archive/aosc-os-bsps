@@ -1,4 +1,4 @@
-From 9a1eac2cd053542e0415c52c22f9df3028522ba6 Mon Sep 17 00:00:00 2001
+From 1f2a8f35f6e3ec605d25d96b82a8bf403afdd163 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 6 May 2017 22:34:24 +0800
 Subject: [PATCH 69/80] arm64: allwinner: h5: add GPU device node

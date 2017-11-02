@@ -1,4 +1,4 @@
-From f2b4fdcd1369ec46c993e3e5ce643fdb0ccd81d9 Mon Sep 17 00:00:00 2001
+From 22b0e3517006037f4238f52560fae03ea5e06533 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 6 May 2017 15:24:39 +0800
 Subject: [PATCH 56/80] drm/bridge: move ANA78xx driver to analogix

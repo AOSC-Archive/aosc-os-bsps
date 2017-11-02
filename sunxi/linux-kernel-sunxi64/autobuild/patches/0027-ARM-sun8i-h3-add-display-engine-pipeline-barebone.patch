@@ -1,4 +1,4 @@
-From 11e805ff819b797505f55d51094330ad4535a072 Mon Sep 17 00:00:00 2001
+From 5f067f2c6255ab5d9da62754de4127963d197a65 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 16 Apr 2017 16:54:52 +0800
 Subject: [PATCH 27/80] ARM: sun8i: h3: add display engine pipeline barebone

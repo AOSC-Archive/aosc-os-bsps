@@ -1,4 +1,4 @@
-From 7fd1373ad75e77b6e5a07b8f7b7c834ec20dc789 Mon Sep 17 00:00:00 2001
+From b05d8bba38de8b2271cd90dbb8e01592ed0bad48 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 16 Apr 2017 17:15:55 +0800
 Subject: [PATCH 14/80] dt-bindings: update the binding for Allwinner H3 DE2

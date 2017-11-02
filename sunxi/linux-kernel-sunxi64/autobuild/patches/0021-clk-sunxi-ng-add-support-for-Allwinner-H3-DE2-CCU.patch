@@ -1,4 +1,4 @@
-From ad2a1cbb862f2ccc13eb500ccc8a5aebbf5739c9 Mon Sep 17 00:00:00 2001
+From 5d44b2606c1968a7d7f9ceb9b7fb9b3cd057880e Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 27 Oct 2017 22:18:39 +0800
 Subject: [PATCH 21/80] clk: sunxi-ng: add support for Allwinner H3 DE2 CCU

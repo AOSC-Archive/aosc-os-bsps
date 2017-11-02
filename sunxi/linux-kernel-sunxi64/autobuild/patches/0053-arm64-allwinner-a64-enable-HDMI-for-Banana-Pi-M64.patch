@@ -1,4 +1,4 @@
-From e5d8996ba3d1e954a1bff5c853ac4701091b1a23 Mon Sep 17 00:00:00 2001
+From 361ebe2a8e7053edd0bfca368210658b4b46fca2 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 6 May 2017 20:20:56 +0800
 Subject: [PATCH 53/80] arm64: allwinner: a64: enable HDMI for Banana Pi M64

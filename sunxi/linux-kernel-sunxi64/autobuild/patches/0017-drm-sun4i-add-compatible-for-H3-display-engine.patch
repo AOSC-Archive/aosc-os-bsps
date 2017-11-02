@@ -1,4 +1,4 @@
-From cd1b44585a7cee791b340af89f8dea3e9d1b9495 Mon Sep 17 00:00:00 2001
+From 8cef0ce2f2bb161ed25c6fb8eeb40cd5e6d46a9b Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 16 Apr 2017 17:19:49 +0800
 Subject: [PATCH 17/80] drm: sun4i: add compatible for H3 display engine

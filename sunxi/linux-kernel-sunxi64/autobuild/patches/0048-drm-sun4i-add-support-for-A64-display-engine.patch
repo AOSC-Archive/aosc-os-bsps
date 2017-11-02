@@ -1,4 +1,4 @@
-From 74286cad8d4dd483461c7af4e8bd143717da7567 Mon Sep 17 00:00:00 2001
+From 7e07109d4a5ae66e85531c32a7a96a875be7cbac Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 6 May 2017 17:11:15 +0800
 Subject: [PATCH 48/80] drm/sun4i: add support for A64 display engine

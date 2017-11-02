@@ -1,4 +1,4 @@
-From d22f85303989acea1a3312958c977d51eed055e1 Mon Sep 17 00:00:00 2001
+From 1b88fb6df49cdd09931dc18efcb5b7fc56d151a0 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 15 Aug 2017 21:35:39 +0800
 Subject: [PATCH 34/80] arm64: allwinner: h5: support display pipelines

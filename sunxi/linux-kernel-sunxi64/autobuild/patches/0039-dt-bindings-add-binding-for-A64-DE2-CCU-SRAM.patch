@@ -1,4 +1,4 @@
-From 480ee7f5e26db7303b3ad7841fe6165895a770fa Mon Sep 17 00:00:00 2001
+From ca830d8b1ce0d632fb2a06049c9a9df0dd2afab8 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 6 May 2017 16:27:01 +0800
 Subject: [PATCH 39/80] dt-bindings: add binding for A64 DE2 CCU SRAM

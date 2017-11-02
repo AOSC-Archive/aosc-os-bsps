@@ -1,4 +1,4 @@
-From 5917e2af1a16720df29aeffbed8e3bc3b216052f Mon Sep 17 00:00:00 2001
+From 26f698253336a6aac98aae1ef0f3eeaf94ac9bd5 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 3 Sep 2017 23:34:06 +0800
 Subject: [PATCH 72/80] arm64: allwinner: h5: add support for Orange Pi Zero

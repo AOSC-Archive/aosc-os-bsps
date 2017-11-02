@@ -1,4 +1,4 @@
-From 2b6ed790ad5a517aa75a0f61a5458b4dfccd7355 Mon Sep 17 00:00:00 2001
+From e94872dbc30616ebf9fbd7ef65e1f74e68c5b0b5 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 20 Sep 2017 22:22:01 +0800
 Subject: [PATCH 79/80] arm64: allwinner: a64: enable AC and Battery for Pine64

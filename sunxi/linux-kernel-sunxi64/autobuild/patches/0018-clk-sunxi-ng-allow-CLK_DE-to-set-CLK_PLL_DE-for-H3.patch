@@ -1,4 +1,4 @@
-From efc0768add3dc11ea5a4b62d8629a05e4abff3ac Mon Sep 17 00:00:00 2001
+From 11f9df7f89116de35a0a9ec882d737ce0f1664f7 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 16 Apr 2017 16:50:04 +0800
 Subject: [PATCH 18/80] clk: sunxi-ng: allow CLK_DE to set CLK_PLL_DE for H3

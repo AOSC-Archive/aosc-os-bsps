@@ -1,4 +1,4 @@
-From c0d3beb06d6fa1bb4a901514b11816feee847e08 Mon Sep 17 00:00:00 2001
+From cda75f9de10b3f228cf3a4e46850aa1e8dd05b9e Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 6 May 2017 16:03:20 +0800
 Subject: [PATCH 35/80] drm/sun4i: allow to build for arm64

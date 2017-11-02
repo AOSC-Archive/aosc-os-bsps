@@ -1,4 +1,4 @@
-From af87db7d08ae4effb29497c0a3c63a7956d3adfa Mon Sep 17 00:00:00 2001
+From f24ebcdecd4df09f807be7a59eafbef5923be11d Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 7 May 2017 14:34:32 +0800
 Subject: [PATCH 61/80] drm/bridge: Add Analogix anx6345 support

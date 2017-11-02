@@ -1,4 +1,4 @@
-From c61eae0861b4111c1e0fa9649516a3e9d652ff65 Mon Sep 17 00:00:00 2001
+From 948cbf32a428897d04b7c0e0de1de05d2a7970dd Mon Sep 17 00:00:00 2001
 From: Jernej Skrabec <jernej.skrabec@siol.net>
 Date: Tue, 11 Apr 2017 21:44:31 +0200
 Subject: [PATCH 29/80] drm: bridge: Add a pre_init function for the dw_hdmi

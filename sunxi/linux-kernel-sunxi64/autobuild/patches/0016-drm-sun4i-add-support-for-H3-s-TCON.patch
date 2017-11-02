@@ -1,4 +1,4 @@
-From 41a6754faafb961ba809e0f665a3d997287689a0 Mon Sep 17 00:00:00 2001
+From 33018f8ee942009cb27bdb800428717097c32edf Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.xyz>
 Date: Mon, 27 Feb 2017 03:37:17 +0800
 Subject: [PATCH 16/80] drm: sun4i: add support for H3's TCON

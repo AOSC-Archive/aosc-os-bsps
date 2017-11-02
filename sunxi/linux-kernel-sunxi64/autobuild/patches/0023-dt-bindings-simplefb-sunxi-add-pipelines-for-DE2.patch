@@ -1,4 +1,4 @@
-From 8308440e2b21b0a122568989f445f718bffb1872 Mon Sep 17 00:00:00 2001
+From f48e03760625a652d7c6d1a7f88b1d58c678b467 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 10 Sep 2017 23:55:48 +0800
 Subject: [PATCH 23/80] dt-bindings: simplefb-sunxi: add pipelines for DE2

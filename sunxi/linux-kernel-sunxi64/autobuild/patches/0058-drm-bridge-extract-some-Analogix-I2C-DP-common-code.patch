@@ -1,4 +1,4 @@
-From 6439b1154c8d3432ae4bd1b3f4205e078a3c12a4 Mon Sep 17 00:00:00 2001
+From 806d02083258b497aadb8e704549a8d9a15317bf Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 7 May 2017 00:44:27 +0800
 Subject: [PATCH 58/80] drm/bridge: extract some Analogix I2C DP common code

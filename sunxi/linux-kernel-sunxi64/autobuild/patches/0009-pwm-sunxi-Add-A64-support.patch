@@ -1,4 +1,4 @@
-From cae440a9edb42dbbb91156bdb9daf0ff53e8746a Mon Sep 17 00:00:00 2001
+From 31035bd45fef5273a0225cc021055b4697b077db Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.xyz>
 Date: Sat, 25 Feb 2017 15:33:05 +0800
 Subject: [PATCH 09/80] pwm: sunxi: Add A64 support

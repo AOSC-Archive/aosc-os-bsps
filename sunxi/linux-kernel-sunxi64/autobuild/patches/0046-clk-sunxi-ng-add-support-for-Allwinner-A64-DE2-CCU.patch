@@ -1,4 +1,4 @@
-From 16924d512f48ea2e0fc2bf1e830b2408b316ab48 Mon Sep 17 00:00:00 2001
+From 6b68c65f3f927afca5f2bb22dff0527c08bfcacb Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 6 May 2017 17:02:45 +0800
 Subject: [PATCH 46/80] clk: sunxi-ng: add support for Allwinner A64 DE2 CCU

@@ -1,4 +1,4 @@
-From 0b385ed336345851b9b5971da30d0be31437c86c Mon Sep 17 00:00:00 2001
+From 33ce9cb7872219de2ff4d88abb93730465d74f2a Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 21 Aug 2017 23:08:08 +0800
 Subject: [PATCH 68/80] arm64: allwinner: a64: disable the RTL8211E internal RX

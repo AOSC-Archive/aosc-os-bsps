@@ -1,4 +1,4 @@
-From d04f5733cb331725bb219efdd840134376b2a5af Mon Sep 17 00:00:00 2001
+From 16908cffc88cbaaac531db5cc2f50890943c3c61 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.xyz>
 Date: Sat, 25 Feb 2017 19:14:16 +0800
 Subject: [PATCH 13/80] arm64: dts: allwinner: enable RTL8723CS for Pinebook
@@ -17,7 +17,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.xyz>
  1 file changed, 15 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinebook.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinebook.dts
-index 8f1d45743442..3d94d4b9b8f7 100644
+index cb1f60d8c837..3b96d0739c0a 100644
 --- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinebook.dts
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinebook.dts
 @@ -54,6 +54,7 @@

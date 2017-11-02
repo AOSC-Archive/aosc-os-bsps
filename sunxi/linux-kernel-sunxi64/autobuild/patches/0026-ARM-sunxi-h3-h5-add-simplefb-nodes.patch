@@ -1,4 +1,4 @@
-From 247d9456d6428e3927417fc7431e425245d78538 Mon Sep 17 00:00:00 2001
+From 531420b58efd255aa85d36df6646a415a43e2073 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 11 Sep 2017 00:08:03 +0800
 Subject: [PATCH 26/80] ARM: sunxi: h3/h5: add simplefb nodes

@@ -1,4 +1,4 @@
-From 3adeb98a9aba8cc4ad1c4ca6a29781db7e489325 Mon Sep 17 00:00:00 2001
+From 3cdcce54aabef937b17f49d4c1cf4a0a37e436ca Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.xyz>
 Date: Mon, 27 Feb 2017 03:14:57 +0800
 Subject: [PATCH 15/80] drm: sun4i: add support for H3 mixers

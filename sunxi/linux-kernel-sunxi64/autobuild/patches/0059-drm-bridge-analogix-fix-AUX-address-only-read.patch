@@ -1,4 +1,4 @@
-From dedc8f4ea8ad22e31a7c9bc42fe2d85809db6a56 Mon Sep 17 00:00:00 2001
+From 2b9f05c340451b1c82246e139b7057f1e3266920 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 17 Sep 2017 07:05:43 +0800
 Subject: [PATCH 59/80] drm: bridge: analogix: fix AUX address-only read

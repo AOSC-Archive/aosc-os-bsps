@@ -1,4 +1,4 @@
-From e8df7080e60a0300c46d6180fc0f7173adb040b6 Mon Sep 17 00:00:00 2001
+From 3c51faec5761112c66f340fa66535b19e7a82854 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 16 Apr 2017 16:52:34 +0800
 Subject: [PATCH 19/80] clk: sunxi-ng: export CLK_PLL_DE for H3

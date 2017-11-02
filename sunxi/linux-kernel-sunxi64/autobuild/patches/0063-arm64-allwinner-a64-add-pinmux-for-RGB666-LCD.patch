@@ -1,4 +1,4 @@
-From f0d571a0392f64cbc749ff12424a9d47c0602e99 Mon Sep 17 00:00:00 2001
+From 97f926118b34abbbb468c4e60949e7e159d23b34 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 7 May 2017 14:40:48 +0800
 Subject: [PATCH 63/80] arm64: allwinner: a64: add pinmux for RGB666 LCD

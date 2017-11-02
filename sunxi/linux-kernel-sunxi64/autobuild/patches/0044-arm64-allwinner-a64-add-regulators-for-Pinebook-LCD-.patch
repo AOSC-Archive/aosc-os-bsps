@@ -1,4 +1,4 @@
-From 977a87dd87de50b684d3265a5801c36c8531f4ca Mon Sep 17 00:00:00 2001
+From 9d2593f71ac8cb3cad25158a21c3b6a20f66e4c5 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 30 Apr 2017 11:34:23 +0800
 Subject: [PATCH 44/80] arm64: allwinner: a64: add regulators for Pinebook LCD
@@ -14,7 +14,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 6 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinebook.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinebook.dts
-index 3d94d4b9b8f7..1ceca7afad87 100644
+index 3b96d0739c0a..6cb145bad44c 100644
 --- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinebook.dts
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinebook.dts
 @@ -268,6 +268,12 @@

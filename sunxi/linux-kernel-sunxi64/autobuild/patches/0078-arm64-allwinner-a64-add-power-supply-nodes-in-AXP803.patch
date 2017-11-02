@@ -1,4 +1,4 @@
-From dd2347de6bb2c99d550731160b274032621757c2 Mon Sep 17 00:00:00 2001
+From 5e41548696abb7c74a44bc62d3d14c842b131927 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 20 Sep 2017 22:18:16 +0800
 Subject: [PATCH 78/80] arm64: allwinner: a64: add power supply nodes in AXP803

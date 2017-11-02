@@ -1,4 +1,4 @@
-From b77eb68e1e09554ac57b2b93c45176368328a4de Mon Sep 17 00:00:00 2001
+From 6263b4adba83bbe34add0f04739a09599a8e4bfb Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 15 Aug 2017 21:34:53 +0800
 Subject: [PATCH 33/80] ARM: sun8i: h3/h5: extract display pipeline to H3/H5

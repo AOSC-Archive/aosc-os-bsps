@@ -1,4 +1,4 @@
-From 423027fe2ffc9fba493214b7761877d356646518 Mon Sep 17 00:00:00 2001
+From eef4dbc525d7bee81653f1cfb47aee07bc6571e2 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 7 May 2017 14:32:23 +0800
 Subject: [PATCH 60/80] dt-bindings: Add ANX6345 DP/eDP transmitter binding

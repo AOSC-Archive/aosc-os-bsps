@@ -1,4 +1,4 @@
-From 0af6b08ece3f403a368fc9acc482507f9931dd1a Mon Sep 17 00:00:00 2001
+From 30250da567371961da26bdeb319f4de5156a80c6 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 6 May 2017 18:29:17 +0800
 Subject: [PATCH 38/80] clk: sunxi-ng: remove CLK_SET_RATE_PARENT flag from A64

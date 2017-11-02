@@ -1,4 +1,4 @@
-From 9f9614199ee97208c7ee18885ecbebfc22d44fda Mon Sep 17 00:00:00 2001
+From 33bbb706d4e2fbfb7e818325f09a1bfa9501d111 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 6 May 2017 17:13:22 +0800
 Subject: [PATCH 50/80] drm: sun4i: add support for A64 TCONs

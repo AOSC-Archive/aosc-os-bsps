@@ -1,4 +1,4 @@
-From 225f3f649a366dbffcf74692c6a29ff898d23be8 Mon Sep 17 00:00:00 2001
+From f9ff7a80a525c2a23d77c7eac734859c9b444179 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 6 May 2017 17:10:07 +0800
 Subject: [PATCH 45/80] dt-bindings: add bindings for the A64 display pipeline

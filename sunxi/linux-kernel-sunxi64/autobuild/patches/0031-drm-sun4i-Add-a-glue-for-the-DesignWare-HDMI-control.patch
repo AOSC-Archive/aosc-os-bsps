@@ -1,4 +1,4 @@
-From 10e119e066996d7f3540b3425239a63d99df5088 Mon Sep 17 00:00:00 2001
+From 50cda1319e4cb3e6d915f8d709822930690ccdc9 Mon Sep 17 00:00:00 2001
 From: Jernej Skrabec <jernej.skrabec@siol.net>
 Date: Tue, 11 Apr 2017 21:46:33 +0200
 Subject: [PATCH 31/80] drm: sun4i: Add a glue for the DesignWare HDMI

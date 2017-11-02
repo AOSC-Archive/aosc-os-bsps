@@ -1,4 +1,4 @@
-From 4471794de74efcf500ddc4f29a389cb15dec3c1f Mon Sep 17 00:00:00 2001
+From 9015b53474764e8faf779ef080141dbaada70260 Mon Sep 17 00:00:00 2001
 From: Jernej Skrabec <jernej.skrabec@siol.net>
 Date: Tue, 11 Apr 2017 21:45:23 +0200
 Subject: [PATCH 30/80] clk: sunxi: Add CLK_SET_RATE_PARENT flag for H3 HDMI

@@ -1,4 +1,4 @@
-From 5052cba41628b1799ccdb6e3e18eec3aa83f3a4d Mon Sep 17 00:00:00 2001
+From c6f6ddd3693b7cdf182eb2f1e55936d86400fa9a Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 27 Oct 2017 22:19:53 +0800
 Subject: [PATCH 22/80] clk: sunxi-ng: fix the A64/H5 clock description of DE2

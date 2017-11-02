@@ -1,4 +1,4 @@
-From a5ad3f76afc9e52cd90ed5b73a44527a0803b414 Mon Sep 17 00:00:00 2001
+From 505a295056065e294f9113c15ddb9748797d1550 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 6 May 2017 17:27:31 +0800
 Subject: [PATCH 51/80] arm64: allwinner: a64: add pipeline for HDMI

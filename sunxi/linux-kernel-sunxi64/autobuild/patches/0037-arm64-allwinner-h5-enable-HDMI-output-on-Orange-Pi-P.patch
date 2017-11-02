@@ -1,4 +1,4 @@
-From ba364ab832f5b9c5117cdf6c267ef21b48c766fe Mon Sep 17 00:00:00 2001
+From 6099937a382103c52c3aa997f9ae0c286302754a Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 6 May 2017 16:14:36 +0800
 Subject: [PATCH 37/80] arm64: allwinner: h5: enable HDMI output on Orange Pi

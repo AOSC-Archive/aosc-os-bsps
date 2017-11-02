@@ -1,4 +1,4 @@
-From bafd0bea2f3965019977100cc4d63c4109302c3d Mon Sep 17 00:00:00 2001
+From 974b3a8ab0af8760f744f7fa942de22eee9445b3 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.xyz>
 Date: Mon, 20 Mar 2017 01:37:24 +0800
 Subject: [PATCH 66/80] net: phy: realtek: change macro name for page select

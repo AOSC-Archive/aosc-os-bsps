@@ -1,4 +1,4 @@
-From 14abcd7483af9e50332ce48b8a8347e11f2bc9dc Mon Sep 17 00:00:00 2001
+From b51b262b971bfe364585da342961db710b0f0493 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 7 May 2017 14:38:12 +0800
 Subject: [PATCH 62/80] arm64: allwinner: a64: add R_I2C controller

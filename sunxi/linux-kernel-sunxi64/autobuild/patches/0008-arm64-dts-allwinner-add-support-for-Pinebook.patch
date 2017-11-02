@@ -1,4 +1,4 @@
-From dfafd2db7c884854faf7202ac457d3547867c9b1 Mon Sep 17 00:00:00 2001
+From def67be97fa539385267f9db2d576409d655219d Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.xyz>
 Date: Fri, 24 Feb 2017 23:53:50 +0800
 Subject: [PATCH 08/80] arm64: dts: allwinner: add support for Pinebook

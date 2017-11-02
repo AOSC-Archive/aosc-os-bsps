@@ -1,4 +1,4 @@
-From f32115e508e32670c33fc08d397166ed9f18fde4 Mon Sep 17 00:00:00 2001
+From b1302953b1585c26e5821e1032ba0fa2ac896cc0 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 6 May 2017 18:27:25 +0800
 Subject: [PATCH 52/80] arm64: allwinner: a64: enable HDMI for Pine64

@@ -1,4 +1,4 @@
-From 399edc18acfc8644f3a9d1d6005ad604242f77dd Mon Sep 17 00:00:00 2001
+From a84853a390126e043517776f67643782e680f0cf Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 6 May 2017 19:29:44 +0800
 Subject: [PATCH 55/80] arm64: allwinner: a64: add Mali device node

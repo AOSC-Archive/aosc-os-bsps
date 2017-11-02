@@ -1,4 +1,4 @@
-From 0b292283d1847930bc2d6e84bc7dd56a601a835c Mon Sep 17 00:00:00 2001
+From bf5dcea01a51674ea84afc1666c5c01808b544b8 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 11 Sep 2017 00:00:16 +0800
 Subject: [PATCH 24/80] ARM: sun8i: h3/h5: add DE2 CCU device node for H3

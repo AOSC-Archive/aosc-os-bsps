@@ -1,4 +1,4 @@
-From 9f1647647d18ee4de7cea6bdfd6500a5e747bcb0 Mon Sep 17 00:00:00 2001
+From 27d12cd2fe89f64c5f4d5224984d4cbfcb7ee137 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 6 May 2017 17:03:27 +0800
 Subject: [PATCH 47/80] drm: sun4i: add support for HVCC regulator for DWC HDMI

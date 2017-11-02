@@ -1,4 +1,4 @@
-From dac1b2a0a9f3005f5ada3c5ad230004e504c9b04 Mon Sep 17 00:00:00 2001
+From dfe614bf437f1ca94aa302ce9ecf8cc1454c5e64 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.xyz>
 Date: Mon, 20 Mar 2017 01:41:03 +0800
 Subject: [PATCH 67/80] net: phy: realtek: add disable RX internal delay mode

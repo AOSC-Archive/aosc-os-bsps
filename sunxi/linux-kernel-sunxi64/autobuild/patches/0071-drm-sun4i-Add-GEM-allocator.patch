@@ -1,4 +1,4 @@
-From 686c6e5870f3fbbd7263a95031f53829e9c9ff7a Mon Sep 17 00:00:00 2001
+From 8d3fb0c9b55ec0405ab7ad22b936fbd3f3955e4e Mon Sep 17 00:00:00 2001
 From: Maxime Ripard <maxime.ripard@free-electrons.com>
 Date: Mon, 7 Dec 2015 09:47:34 +0100
 Subject: [PATCH 71/80] drm/sun4i: Add GEM allocator

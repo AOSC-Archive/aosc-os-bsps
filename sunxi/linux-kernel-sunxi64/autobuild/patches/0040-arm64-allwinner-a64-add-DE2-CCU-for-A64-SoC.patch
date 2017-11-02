@@ -1,4 +1,4 @@
-From f183aad17d020fb0fd87f537b5df61ebaf3e4893 Mon Sep 17 00:00:00 2001
+From ef2e121f7e1ae7bfd202fe7b4c3787ba6976abdf Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 27 Oct 2017 22:41:43 +0800
 Subject: [PATCH 40/80] arm64: allwinner: a64: add DE2 CCU for A64 SoC

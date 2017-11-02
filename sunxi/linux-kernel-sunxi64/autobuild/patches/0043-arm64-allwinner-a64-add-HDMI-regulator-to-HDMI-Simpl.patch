@@ -1,4 +1,4 @@
-From 7a110190d5188dff33aaee603a270c984619b149 Mon Sep 17 00:00:00 2001
+From d894b0b9020919be85743317cfc89a3f144a8b1c Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 2 Nov 2017 16:36:00 +0800
 Subject: [PATCH 43/80] arm64: allwinner: a64: add HDMI regulator to HDMI
@@ -80,10 +80,10 @@ index f8ae8b63ca83..586af875b22e 100644
  &uart0 {
  	pinctrl-names = "default";
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-sopine-baseboard.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-sopine-baseboard.dts
-index 939890795f72..bb4b584222bb 100644
+index 05b627eb9270..8ddbe98b034b 100644
 --- a/arch/arm64/boot/dts/allwinner/sun50i-a64-sopine-baseboard.dts
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-sopine-baseboard.dts
-@@ -150,6 +150,10 @@
+@@ -152,6 +152,10 @@
  	regulator-name = "vcc-wifi";
  };
  

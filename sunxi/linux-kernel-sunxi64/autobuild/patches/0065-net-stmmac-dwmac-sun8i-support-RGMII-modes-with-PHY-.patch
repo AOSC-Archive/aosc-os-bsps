@@ -1,4 +1,4 @@
-From c1fafa9873086a11364596776912e39bcd0681c9 Mon Sep 17 00:00:00 2001
+From 21445d117d015c8e29aaa1b775bbde7098362041 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 21 Aug 2017 23:02:32 +0800
 Subject: [PATCH 65/80] net: stmmac: dwmac-sun8i: support RGMII modes with PHY

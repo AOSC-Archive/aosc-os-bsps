@@ -1,4 +1,4 @@
-From 8d8ac1059204f4695a63333b3d8f53da94e21412 Mon Sep 17 00:00:00 2001
+From fad2dc21e5920a35699ae2b165c1829a453a4c47 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 20 Sep 2017 22:14:55 +0800
 Subject: [PATCH 76/80] power: supply: axp20x-battery: support AXP803

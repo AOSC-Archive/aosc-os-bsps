@@ -1,4 +1,4 @@
-From 1dbbeda949c5d2e79716b739042279962c5a0ed2 Mon Sep 17 00:00:00 2001
+From 9fd94654a7d4969ba6a3c181c3c8252f33d97072 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 6 May 2017 15:41:56 +0800
 Subject: [PATCH 57/80] drm/bridge: split some definitions of ANX78xx to

@@ -1,4 +1,4 @@
-From 35ba70d6cfd383537e679917bdfd5e4e49b477fc Mon Sep 17 00:00:00 2001
+From dba1f639f56eef78098d305dd94bc70ffc6baeac Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 27 Oct 2017 22:13:45 +0800
 Subject: [PATCH 20/80] dt-bindings: fix the binding of Allwinner DE2 CCU of

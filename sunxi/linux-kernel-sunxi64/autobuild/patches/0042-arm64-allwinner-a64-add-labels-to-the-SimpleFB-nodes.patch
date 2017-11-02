@@ -1,4 +1,4 @@
-From 2a90f17783d828e70b48d6289fe9c15bc6ad3b26 Mon Sep 17 00:00:00 2001
+From 42ed836760a824cbbeb7f9e54773ecdf4c076a78 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 30 Oct 2017 13:22:44 +0800
 Subject: [PATCH 42/80] arm64: allwinner: a64: add labels to the SimpleFB nodes

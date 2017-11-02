@@ -1,4 +1,4 @@
-From ba2576410019fc0212cecfd975c334088f1b850f Mon Sep 17 00:00:00 2001
+From 29ad4982ce769426b3328908d4f792f58ca06cb6 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 1 Aug 2017 20:23:00 +0800
 Subject: [PATCH 32/80] ARM: sun8i: h3: enable DesignWare HDMI controller

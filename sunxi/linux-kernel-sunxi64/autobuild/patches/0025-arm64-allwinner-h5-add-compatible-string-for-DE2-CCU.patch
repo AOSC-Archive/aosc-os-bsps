@@ -1,4 +1,4 @@
-From b9725e8e4044ce83801115c09d44dc839bb9b23b Mon Sep 17 00:00:00 2001
+From 8d4e6a4e0daaf1f5380a7779f9f69b8f06ef8c60 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 11 Sep 2017 00:02:54 +0800
 Subject: [PATCH 25/80] arm64: allwinner: h5: add compatible string for DE2 CCU
