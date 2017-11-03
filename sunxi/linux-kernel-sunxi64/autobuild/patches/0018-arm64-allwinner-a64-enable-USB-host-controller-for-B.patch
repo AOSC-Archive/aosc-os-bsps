@@ -1,0 +1,57 @@
+From 903d324dcdd8a021d42cb5634561f5a376817436 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Tue, 25 Jul 2017 20:45:02 +0800
+Subject: [PATCH 018/102] arm64: allwinner: a64: enable USB host controller for
+ BPi M64
+
+Banana Pi M64 connects the USB host-only controller on A64 SoC to a USB
+hub, which provided the two USB Type-A ports on the board.
+
+Enable the USB host controller.
+
+The OTG function of the Micro-USB port needs the drivevbus function of
+the AXP803 driver implemented, so it's not enabled now.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+---
+ arch/arm64/boot/dts/allwinner/sun50i-a64-bananapi-m64.dts | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-bananapi-m64.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-bananapi-m64.dts
+index 6872135d7f84..d2a591cb492a 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a64-bananapi-m64.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-bananapi-m64.dts
+@@ -67,6 +67,10 @@
+ 	};
+ };
+ 
++&ehci1 {
++	status = "okay";
++};
++
+ &i2c1 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&i2c1_pins>;
+@@ -107,6 +111,10 @@
+ 	status = "okay";
+ };
+ 
++&ohci1 {
++	status = "okay";
++};
++
+ &uart0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&uart0_pins_a>;
+@@ -118,3 +126,7 @@
+ 	pinctrl-0 = <&uart1_pins>, <&uart1_rts_cts_pins>;
+ 	status = "okay";
+ };
++
++&usbphy {
++	status = "okay";
++};
+-- 
+2.13.6
+
