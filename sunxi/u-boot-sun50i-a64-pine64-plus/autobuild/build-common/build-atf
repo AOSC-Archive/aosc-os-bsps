@@ -1,5 +1,1 @@
-git clone https://github.com/apritzel/arm-trusted-firmware -b allwinner-stable --depth=1
-cd arm-trusted-firmware
-make PLAT=sun50iw1p1
-cp build/sun50iw1p1/release/bl31.bin ..
-cd ..
+cp autobuild/bl31.bin .
