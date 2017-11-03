@@ -1,6 +1,6 @@
 PKGNAME=u-boot-sun50i-h5-nanopi-neo2
 PKGDES="U-Boot for Nano Pi NEO2"
-PKGEPOCH=1
+PKGEPOCH=2
 PKGSEC=embedded
 BUILDDEP="dtc swig"
 

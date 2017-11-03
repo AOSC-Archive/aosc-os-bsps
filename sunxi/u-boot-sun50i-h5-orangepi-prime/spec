@@ -1,3 +1,2 @@
-VER=2017.11rc3
-REL=1
-SRCTBL="ftp://ftp.denx.de/pub/u-boot/u-boot-2017.11-rc3.tar.bz2"
+VER=2017.09
+SRCTBL="ftp://ftp.denx.de/pub/u-boot/u-boot-2017.09.tar.bz2"

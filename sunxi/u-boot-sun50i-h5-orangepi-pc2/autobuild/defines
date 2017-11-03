@@ -1,6 +1,6 @@
 PKGNAME=u-boot-sun50i-h5-orangepi-pc2
 PKGDES="U-Boot for Orange Pi PC2"
-PKGEPOCH=1
+PKGEPOCH=2
 PKGSEC=embedded
 BUILDDEP="dtc swig"
 

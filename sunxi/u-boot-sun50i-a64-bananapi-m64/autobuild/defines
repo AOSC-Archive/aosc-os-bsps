@@ -1,6 +1,6 @@
 PKGNAME=u-boot-sun50i-a64-bananapi-m64
 PKGDES="U-Boot for Banana Pi M64"
-PKGEPOCH=1
+PKGEPOCH=2
 PKGSEC=embedded
 BUILDDEP="dtc swig"
 
