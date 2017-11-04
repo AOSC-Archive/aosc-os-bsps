@@ -1,0 +1,81 @@
+From 27d12cd2fe89f64c5f4d5224984d4cbfcb7ee137 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Sat, 6 May 2017 17:03:27 +0800
+Subject: [PATCH 47/80] drm: sun4i: add support for HVCC regulator for DWC HDMI
+ glue
+
+Allwinner SoCs with DWC HDMI controller have a "HVCC" power pin for the
+HDMI part, and on some boards it's connected to a dedicated regulator
+rather than the main 3.3v.
+
+Add support for optional HVCC regulator. For boards that doesn't use a
+dedicated regulator to power it, the default dummy regulator is used.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ drivers/gpu/drm/sun4i/sun8i_dw_hdmi.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/sun4i/sun8i_dw_hdmi.c b/drivers/gpu/drm/sun4i/sun8i_dw_hdmi.c
+index fa1ecbcf08b8..5e0cb2d3c56c 100644
+--- a/drivers/gpu/drm/sun4i/sun8i_dw_hdmi.c
++++ b/drivers/gpu/drm/sun4i/sun8i_dw_hdmi.c
+@@ -12,6 +12,7 @@
+ #include <linux/delay.h>
+ #include <linux/module.h>
+ #include <linux/platform_device.h>
++#include <linux/regulator/consumer.h>
+ #include <linux/reset.h>
+ 
+ #include <drm/drm_of.h>
+@@ -52,6 +53,7 @@ struct sun8i_dw_hdmi {
+ 	struct drm_encoder encoder;
+ 	void __iomem *phy_base;
+ 	struct dw_hdmi_plat_data plat_data;
++	struct regulator *vcc_hdmi;
+ 	struct reset_control *rst_ddc;
+ 	struct reset_control *rst_hdmi;
+ };
+@@ -344,6 +346,12 @@ static int sun8i_dw_hdmi_bind(struct device *dev, struct device *master,
+ 	if (IS_ERR(hdmi->phy_base))
+ 		return PTR_ERR(hdmi->phy_base);
+ 
++	hdmi->vcc_hdmi = devm_regulator_get(dev, "hvcc");
++	if (IS_ERR(hdmi->vcc_hdmi)) {
++		dev_err(dev, "Could not get HDMI power supply\n");
++		return PTR_ERR(hdmi->vcc_hdmi);
++	}
++
+ 	hdmi->clk_hdmi = devm_clk_get(dev, "isfr");
+ 	if (IS_ERR(hdmi->clk_hdmi)) {
+ 		dev_err(dev, "Could not get hdmi clock\n");
+@@ -368,10 +376,16 @@ static int sun8i_dw_hdmi_bind(struct device *dev, struct device *master,
+ 		return PTR_ERR(hdmi->rst_ddc);
+ 	}
+ 
++	ret = regulator_enable(hdmi->vcc_hdmi);
++	if (ret) {
++		dev_err(dev, "Cannot enable HDMI power supply\n");
++		return ret;
++	}
++
+ 	ret = clk_prepare_enable(hdmi->clk_ddc);
+ 	if (ret) {
+ 		dev_err(dev, "Cannot enable DDC clock: %d\n", ret);
+-		return ret;
++		goto err_disable_vcc;
+ 	}
+ 
+ 	ret = reset_control_deassert(hdmi->rst_hdmi);
+@@ -414,6 +428,8 @@ static int sun8i_dw_hdmi_bind(struct device *dev, struct device *master,
+ 	reset_control_assert(hdmi->rst_hdmi);
+ err_ddc_clk:
+ 	clk_disable_unprepare(hdmi->clk_ddc);
++err_disable_vcc:
++	regulator_disable(hdmi->vcc_hdmi);
+ 
+ 	return ret;
+ }
+-- 
+2.13.6
+
