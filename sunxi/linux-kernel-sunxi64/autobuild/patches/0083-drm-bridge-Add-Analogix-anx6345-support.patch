@@ -51,7 +51,7 @@ new file mode 100644
 index 000000000000..88c9280aefbe
 --- /dev/null
 +++ b/drivers/gpu/drm/bridge/analogix/analogix-anx6345.c
-@@ -0,0 +1,878 @@
+@@ -0,0 +1,877 @@
 +/*
 + * Copyright(c) Icenowy Zheng <icenowy@aosc.io>
 + * Based on analogix-anx6345.c, which is:
@@ -644,7 +644,6 @@ index 000000000000..88c9280aefbe
 +}
 +
 +static const struct drm_connector_funcs anx6345_connector_funcs = {
-+	.dpms = drm_atomic_helper_connector_dpms,
 +	.fill_modes = drm_helper_probe_single_connector_modes,
 +	.detect = anx6345_detect,
 +	.destroy = drm_connector_cleanup,
