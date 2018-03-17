@@ -1,7 +1,7 @@
-From 887196fd4bd3183b2b65b6737ba2b4b9a8ef7f11 Mon Sep 17 00:00:00 2001
+From e965819635799246cc0da635977c887eb2ac2066 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 1 Aug 2017 21:45:44 +0800
-Subject: [PATCH 07/98] ARM: sun8i: reference-design-tablet: enable AXP223
+Subject: [PATCH 07/88] ARM: sun8i: reference-design-tablet: enable AXP223
  battery
 
 All tablets that uses the reference design of Allwinner A23/A33 has a
@@ -30,5 +30,5 @@ index d6bd15898db6..b0c406757ef6 100644
  	regulator-always-on;
  	regulator-min-microvolt = <3000000>;
 -- 
-2.13.6
+2.16.2
 

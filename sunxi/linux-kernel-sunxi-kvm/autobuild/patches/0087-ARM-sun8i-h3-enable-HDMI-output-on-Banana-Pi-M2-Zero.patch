@@ -1,0 +1,56 @@
+From b27e6501bec7368254349fddea3f923edfd18f7d Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Wed, 1 Nov 2017 21:22:17 +0800
+Subject: [PATCH 87/88] ARM: sun8i: h3: enable HDMI output on Banana Pi M2 Zero
+
+Banana Pi M2 Zero board has a miniHDMI port connected to the HDMI
+controller of Allwinner H3 SoC.
+
+Enable the HDMI output in Banana Pi M2 Zero device tree.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm/boot/dts/sun8i-h2-plus-bananapi-m2-zero.dts | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/arch/arm/boot/dts/sun8i-h2-plus-bananapi-m2-zero.dts b/arch/arm/boot/dts/sun8i-h2-plus-bananapi-m2-zero.dts
+index 414258da4308..30f6c3f362a2 100644
+--- a/arch/arm/boot/dts/sun8i-h2-plus-bananapi-m2-zero.dts
++++ b/arch/arm/boot/dts/sun8i-h2-plus-bananapi-m2-zero.dts
+@@ -92,10 +92,22 @@
+ 	};
+ };
+ 
++&de {
++	status = "okay";
++};
++
+ &ehci0 {
+ 	status = "okay";
+ };
+ 
++&hdmi {
++	status = "okay";
++};
++
++&mixer0 {
++	status = "okay";
++};
++
+ &mmc0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&mmc0_pins_a>;
+@@ -132,6 +144,10 @@
+ 	status = "okay";
+ };
+ 
++&tcon0 {
++	status = "okay";
++};
++
+ &uart0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&uart0_pins_a>;
+-- 
+2.16.2
+

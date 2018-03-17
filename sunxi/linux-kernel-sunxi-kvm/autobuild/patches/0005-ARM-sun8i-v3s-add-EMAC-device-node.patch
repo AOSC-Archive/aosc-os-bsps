@@ -1,7 +1,7 @@
-From 33c3b45053999feaedf36f478f1b0f7f0610664c Mon Sep 17 00:00:00 2001
+From 702336d50d6260c83faea556eab3cc7fd8a4984f Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 20 Aug 2017 23:41:44 +0800
-Subject: [PATCH 05/98] ARM: sun8i: v3s: add EMAC device node
+Subject: [PATCH 05/88] ARM: sun8i: v3s: add EMAC device node
 
 As we have now the driver for the V3s EMAC, add the device node of it.
 
@@ -67,5 +67,5 @@ index 3a06dc5b3746..f9aeb76549a8 100644
  			compatible = "allwinner,sun8i-h3-spi";
  			reg = <0x01c68000 0x1000>;
 -- 
-2.13.6
+2.16.2
 

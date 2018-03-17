@@ -1,0 +1,69 @@
+From 7b548b09d0498333e08f81bcdc3c7b4861827ba2 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Sun, 13 Aug 2017 12:08:30 +0800
+Subject: [PATCH 62/88] ARM: sun8i: v40: enable USB host ports for Banana Pi M2
+ Berry
+
+Banana Pi M2 Berry has an on-board USB Hub that provides 4 USB Type-A
+ports, and it's connected to the USB1 port of the SoC.
+
+Enable it.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm/boot/dts/sun8i-v40-bananapi-m2-berry.dts | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
+
+diff --git a/arch/arm/boot/dts/sun8i-v40-bananapi-m2-berry.dts b/arch/arm/boot/dts/sun8i-v40-bananapi-m2-berry.dts
+index 8a69be2a0842..67cf87f3d5c7 100644
+--- a/arch/arm/boot/dts/sun8i-v40-bananapi-m2-berry.dts
++++ b/arch/arm/boot/dts/sun8i-v40-bananapi-m2-berry.dts
+@@ -72,12 +72,25 @@
+ 		};
+ 	};
+ 
++	reg_vcc5v0: vcc5v0 {
++		compatible = "regulator-fixed";
++		regulator-name = "vcc5v0";
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		gpio = <&pio 7 23 GPIO_ACTIVE_HIGH>; /* PH23 */
++		enable-active-high;
++	};
++
+ 	wifi_pwrseq: wifi_pwrseq {
+ 		compatible = "mmc-pwrseq-simple";
+ 		reset-gpios = <&pio 6 10 GPIO_ACTIVE_LOW>; /* PG10 WIFI_EN */
+ 	};
+ };
+ 
++&ehci1 {
++	status = "okay";
++};
++
+ &i2c0 {
+ 	status = "okay";
+ 
+@@ -89,6 +102,10 @@
+ 	};
+ };
+ 
++&ohci1 {
++	status = "okay";
++};
++
+ #include "axp22x.dtsi"
+ 
+ &reg_aldo3 {
+@@ -162,3 +179,8 @@
+ 	pinctrl-0 = <&uart0_pb_pins>;
+ 	status = "okay";
+ };
++
++&usbphy {
++	status = "okay";
++	usb1_vbus-supply = <&reg_vcc5v0>;
++};
+-- 
+2.16.2
+

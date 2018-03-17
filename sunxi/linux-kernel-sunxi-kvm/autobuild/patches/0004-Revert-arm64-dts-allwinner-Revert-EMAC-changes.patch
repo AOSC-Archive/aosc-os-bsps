@@ -1,7 +1,7 @@
-From 11d2b86591a13abfae858eeff06d63fd1d1c3327 Mon Sep 17 00:00:00 2001
+From 7cff891eef4a349fa328686b494997b0464b0bdd Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 3 Sep 2017 17:30:46 +0800
-Subject: [PATCH 04/98] Revert "arm64: dts: allwinner: Revert EMAC changes"
+Subject: [PATCH 04/88] Revert "arm64: dts: allwinner: Revert EMAC changes"
 
 This reverts commit 87e1f5e8bb4bd584de0a8f3b1e42196dca221d02.
 
@@ -18,7 +18,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  8 files changed, 135 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-bananapi-m64.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-bananapi-m64.dts
-index 6872135d7f84..ba2fde2909f9 100644
+index d347f52e27f6..45bdbfb96126 100644
 --- a/arch/arm64/boot/dts/allwinner/sun50i-a64-bananapi-m64.dts
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-bananapi-m64.dts
 @@ -51,6 +51,7 @@
@@ -29,8 +29,8 @@ index 6872135d7f84..ba2fde2909f9 100644
  		serial0 = &uart0;
  		serial1 = &uart1;
  	};
-@@ -67,6 +68,14 @@
- 	};
+@@ -69,6 +70,14 @@
+ 	status = "okay";
  };
  
 +&emac {
@@ -44,7 +44,7 @@ index 6872135d7f84..ba2fde2909f9 100644
  &i2c1 {
  	pinctrl-names = "default";
  	pinctrl-0 = <&i2c1_pins>;
-@@ -77,6 +86,13 @@
+@@ -79,6 +88,13 @@
  	bias-pull-up;
  };
  
@@ -82,7 +82,7 @@ index f82ccf332c0f..24f1aac366d6 100644
 +	};
 +};
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pine64.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-pine64.dts
-index 7c533b6d4ba9..827168bc22ed 100644
+index d06e34b5d192..806442d3e846 100644
 --- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pine64.dts
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pine64.dts
 @@ -51,6 +51,7 @@
@@ -93,7 +93,7 @@ index 7c533b6d4ba9..827168bc22ed 100644
  		serial0 = &uart0;
  		serial1 = &uart1;
  		serial2 = &uart2;
-@@ -78,6 +79,15 @@
+@@ -71,6 +72,15 @@
  	status = "okay";
  };
  
@@ -109,7 +109,7 @@ index 7c533b6d4ba9..827168bc22ed 100644
  &i2c1 {
  	pinctrl-names = "default";
  	pinctrl-0 = <&i2c1_pins>;
-@@ -88,6 +98,13 @@
+@@ -81,6 +91,13 @@
  	bias-pull-up;
  };
  
@@ -124,7 +124,7 @@ index 7c533b6d4ba9..827168bc22ed 100644
  	pinctrl-names = "default";
  	pinctrl-0 = <&mmc0_pins>;
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-sopine-baseboard.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-sopine-baseboard.dts
-index d891a1a27f6c..216e3a5dafae 100644
+index 17ccc12b58df..0eb2acedf8c3 100644
 --- a/arch/arm64/boot/dts/allwinner/sun50i-a64-sopine-baseboard.dts
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-sopine-baseboard.dts
 @@ -53,6 +53,7 @@
@@ -158,7 +158,7 @@ index d891a1a27f6c..216e3a5dafae 100644
  	pinctrl-names = "default";
  	pinctrl-0 = <&mmc2_pins>;
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
-index 68aadc9b96dc..bd0f33b77f57 100644
+index 8c8db1b057df..50f17bab0c07 100644
 --- a/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
 @@ -449,6 +449,26 @@
@@ -306,5 +306,5 @@ index 6be06873e5af..d906b302cbcd 100644
  	pinctrl-names = "default";
  	pinctrl-0 = <&mmc0_pins_a>, <&mmc0_cd_pin>;
 -- 
-2.13.6
+2.16.2
 
