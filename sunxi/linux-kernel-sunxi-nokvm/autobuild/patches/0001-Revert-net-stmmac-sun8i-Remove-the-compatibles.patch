@@ -1,7 +1,7 @@
-From 6cd14d63d568db33e5d52841521f02be1c82047b Mon Sep 17 00:00:00 2001
+From ac2bf2cf889d1fddb71e982f58c1df4258df6f14 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 3 Sep 2017 17:29:56 +0800
-Subject: [PATCH 01/98] Revert "net: stmmac: sun8i: Remove the compatibles"
+Subject: [PATCH 01/88] Revert "net: stmmac: sun8i: Remove the compatibles"
 
 This reverts commit ad4540cc5aa3dccb8e1e12458d57f8c40fae5a1c.
 
@@ -30,5 +30,5 @@ index 39c2122a4f26..fffd6d5fc907 100644
  };
  MODULE_DEVICE_TABLE(of, sun8i_dwmac_match);
 -- 
-2.13.6
+2.16.2
 

@@ -1,0 +1,50 @@
+From 6584b0493a9706816646e0b39be2d5b5fe08bb38 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Fri, 29 Sep 2017 18:57:53 +0800
+Subject: [PATCH 84/88] ARM: sun8i: r40: add HDMI SimpleFB via mixer0 and
+ TCON_TV0
+
+The U-Boot can now initialize the SimpleFB of R40 via mixer0, TCON_TV0
+and HDMI.
+
+Add a SimpleFB device node for it.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm/boot/dts/sun8i-r40.dtsi | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+
+diff --git a/arch/arm/boot/dts/sun8i-r40.dtsi b/arch/arm/boot/dts/sun8i-r40.dtsi
+index 8d699301a329..8d1629ffb989 100644
+--- a/arch/arm/boot/dts/sun8i-r40.dtsi
++++ b/arch/arm/boot/dts/sun8i-r40.dtsi
+@@ -52,6 +52,26 @@
+ 	#size-cells = <1>;
+ 	interrupt-parent = <&gic>;
+ 
++	chosen {
++		#address-cells = <1>;
++		#size-cells = <1>;
++		ranges;
++
++		framebuffer-hdmi {
++			compatible = "allwinner,simple-framebuffer",
++				     "simple-framebuffer";
++			allwinner,pipeline = "mixer0-tcon_tv0-hdmi";
++			clocks = <&display_clocks CLK_BUS_MIXER0>,
++				 <&ccu CLK_BUS_TCON_TOP>,
++				 <&ccu CLK_BUS_TCON_TV0>,
++				 <&ccu CLK_BUS_HDMI0>,
++				 <&display_clocks CLK_MIXER0>,
++				 <&ccu CLK_TCON_TV0>, <&ccu CLK_HDMI>,
++				 <&ccu CLK_HDMI_SLOW>;
++			status = "disabled";
++		};
++	};
++
+ 	clocks {
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+-- 
+2.16.2
+

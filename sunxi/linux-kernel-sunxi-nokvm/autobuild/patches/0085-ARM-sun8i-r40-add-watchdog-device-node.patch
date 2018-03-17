@@ -1,0 +1,34 @@
+From 343da897b156a3c065865856a6b54c28b953bbcd Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Fri, 13 Oct 2017 19:23:28 +0800
+Subject: [PATCH 85/88] ARM: sun8i: r40: add watchdog device node
+
+The R40 SoC has a watchdog like the one on A20, in the timer memory zone
+(which is also the same on A20).
+
+Add the device tree node for it.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm/boot/dts/sun8i-r40.dtsi | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/arch/arm/boot/dts/sun8i-r40.dtsi b/arch/arm/boot/dts/sun8i-r40.dtsi
+index 8d1629ffb989..8c28c3769253 100644
+--- a/arch/arm/boot/dts/sun8i-r40.dtsi
++++ b/arch/arm/boot/dts/sun8i-r40.dtsi
+@@ -371,6 +371,11 @@
+ 			};
+ 		};
+ 
++		wdt: watchdog@1c20c90 {
++			compatible = "allwinner,sun4i-a10-wdt";
++			reg = <0x01c20c90 0x10>;
++		};
++
+ 		uart0: serial@1c28000 {
+ 			compatible = "snps,dw-apb-uart";
+ 			reg = <0x01c28000 0x400>;
+-- 
+2.16.2
+

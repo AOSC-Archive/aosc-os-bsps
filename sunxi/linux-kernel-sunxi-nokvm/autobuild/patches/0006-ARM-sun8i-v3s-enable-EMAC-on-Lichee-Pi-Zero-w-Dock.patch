@@ -1,7 +1,7 @@
-From 732a52fcf85db09c7836cf432aa68b9bcde36dfb Mon Sep 17 00:00:00 2001
+From f08571ce44f9ebfe49216ff0c83ea290e5fcd60a Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 20 Aug 2017 23:42:44 +0800
-Subject: [PATCH 06/98] ARM: sun8i: v3s: enable EMAC on Lichee Pi Zero w/ Dock
+Subject: [PATCH 06/88] ARM: sun8i: v3s: enable EMAC on Lichee Pi Zero w/ Dock
 
 The Dock of Lichee Pi Zero has a Ethernet port connected to the internal
 PHY of Allwinner V3s, but with the LED pins not connected.
@@ -39,5 +39,5 @@ index d1311098ea45..9b3465cc0dcd 100644
  	broken-cd;
  	bus-width = <4>;
 -- 
-2.13.6
+2.16.2
 
