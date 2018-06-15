@@ -1,4 +1,4 @@
-From fd428b9b6431b42ba4f22fa8f8e6833180c70461 Mon Sep 17 00:00:00 2001
+From 969027009025ebe8109e3b36eebee8766792dcb2 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 20 Sep 2017 22:25:34 +0800
 Subject: [PATCH 73/80] dt-bindings: add compatibles for AXP803 Battery/USB
@@ -14,8 +14,8 @@ power supply the one on AXP803 is compatible with the one on AXP22x.
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---
- Documentation/devicetree/bindings/power/supply/axp20x_battery.txt   | 1 +
- Documentation/devicetree/bindings/power/supply/axp20x_usb_power.txt | 1 +
+ .../devicetree/bindings/power/supply/axp20x_battery.txt          | 1 +
+ .../devicetree/bindings/power/supply/axp20x_usb_power.txt        | 1 +
  2 files changed, 2 insertions(+)
 
 diff --git a/Documentation/devicetree/bindings/power/supply/axp20x_battery.txt b/Documentation/devicetree/bindings/power/supply/axp20x_battery.txt
@@ -43,5 +43,5 @@ index ba8d35f66cbe..f30e3bf8d23f 100644
  The AXP223 PMIC shares most of its behaviour with the AXP221 but has slight
  variations such as the former being able to set the VBUS power supply max
 -- 
-2.13.6
+2.17.1
 

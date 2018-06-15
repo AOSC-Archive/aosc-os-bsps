@@ -1,4 +1,4 @@
-From 6b68c65f3f927afca5f2bb22dff0527c08bfcacb Mon Sep 17 00:00:00 2001
+From 34aed268505c1c7a4d4f728c334f105e36f42ccb Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 6 May 2017 17:02:45 +0800
 Subject: [PATCH 46/80] clk: sunxi-ng: add support for Allwinner A64 DE2 CCU
@@ -9,7 +9,7 @@ Add support for it.
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---
- drivers/clk/sunxi-ng/ccu-sun8i-de2.c | 32 ++++++++++++++++++++++++--------
+ drivers/clk/sunxi-ng/ccu-sun8i-de2.c | 32 +++++++++++++++++++++-------
  1 file changed, 24 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/clk/sunxi-ng/ccu-sun8i-de2.c b/drivers/clk/sunxi-ng/ccu-sun8i-de2.c
@@ -69,14 +69,15 @@ index 468d1abaf0ee..38b029b7bb5a 100644
  	return ret;
  }
  
-@@ -289,16 +308,13 @@ static const struct of_device_id sunxi_de2_clk_ids[] = {
+@@ -288,17 +307,14 @@ static const struct of_device_id sunxi_de2_clk_ids[] = {
+ 		.compatible = "allwinner,sun8i-v3s-de2-clk",
  		.data = &sun8i_v3s_de2_clk_desc,
  	},
- 	{
++	{
 +		.compatible = "allwinner,sun50i-a64-de2-clk",
 +		.data = &sun50i_a64_de2_clk_desc,
 +	},
-+	{
+ 	{
  		.compatible = "allwinner,sun50i-h5-de2-clk",
  		.data = &sun50i_a64_de2_clk_desc,
  	},
@@ -91,5 +92,5 @@ index 468d1abaf0ee..38b029b7bb5a 100644
  };
  
 -- 
-2.13.6
+2.17.1
 

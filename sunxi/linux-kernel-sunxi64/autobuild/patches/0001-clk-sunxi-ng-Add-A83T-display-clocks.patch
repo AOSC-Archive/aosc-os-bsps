@@ -1,4 +1,4 @@
-From e4d30a4756eb2f58930919a0ea97dabb58f5383c Mon Sep 17 00:00:00 2001
+From acf406ab247cd102db0e935e36d718782cfab645 Mon Sep 17 00:00:00 2001
 From: Maxime Ripard <maxime.ripard@free-electrons.com>
 Date: Tue, 17 Oct 2017 11:06:17 +0200
 Subject: [PATCH 01/80] clk: sunxi-ng: Add A83T display clocks
@@ -66,5 +66,5 @@ index 5cdaf52669e4..5cc9d9952121 100644
  	.num	= CLK_NUMBER,
  };
 -- 
-2.13.6
+2.17.1
 

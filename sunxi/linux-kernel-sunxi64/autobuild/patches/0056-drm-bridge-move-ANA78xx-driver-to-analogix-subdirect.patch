@@ -1,4 +1,4 @@
-From 22b0e3517006037f4238f52560fae03ea5e06533 Mon Sep 17 00:00:00 2001
+From a2742812e0421ab171cf75bbb6d14df91bc85564 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 6 May 2017 15:24:39 +0800
 Subject: [PATCH 56/80] drm/bridge: move ANA78xx driver to analogix
@@ -9,12 +9,12 @@ Inc, move their driver codes into analogix subdirectory.
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---
- drivers/gpu/drm/bridge/Kconfig                           | 10 ----------
- drivers/gpu/drm/bridge/Makefile                          |  4 ++--
- drivers/gpu/drm/bridge/analogix/Kconfig                  | 10 ++++++++++
- drivers/gpu/drm/bridge/analogix/Makefile                 |  1 +
- drivers/gpu/drm/bridge/{ => analogix}/analogix-anx78xx.c |  0
- drivers/gpu/drm/bridge/{ => analogix}/analogix-anx78xx.h |  0
+ drivers/gpu/drm/bridge/Kconfig                         | 10 ----------
+ drivers/gpu/drm/bridge/Makefile                        |  4 ++--
+ drivers/gpu/drm/bridge/analogix/Kconfig                | 10 ++++++++++
+ drivers/gpu/drm/bridge/analogix/Makefile               |  1 +
+ .../gpu/drm/bridge/{ => analogix}/analogix-anx78xx.c   |  0
+ .../gpu/drm/bridge/{ => analogix}/analogix-anx78xx.h   |  0
  6 files changed, 13 insertions(+), 12 deletions(-)
  rename drivers/gpu/drm/bridge/{ => analogix}/analogix-anx78xx.c (100%)
  rename drivers/gpu/drm/bridge/{ => analogix}/analogix-anx78xx.h (100%)
@@ -41,15 +41,16 @@ index adf9ae0e0b7c..80cba02c3b6d 100644
  	tristate "Dumb VGA DAC Bridge support"
  	depends on OF
 diff --git a/drivers/gpu/drm/bridge/Makefile b/drivers/gpu/drm/bridge/Makefile
-index defcf1e7ca1c..34ae650e1507 100644
+index 60dab87e4783..8b2a6ced18b1 100644
 --- a/drivers/gpu/drm/bridge/Makefile
 +++ b/drivers/gpu/drm/bridge/Makefile
-@@ -1,4 +1,3 @@
+@@ -1,5 +1,4 @@
+ # SPDX-License-Identifier: GPL-2.0
 -obj-$(CONFIG_DRM_ANALOGIX_ANX78XX) += analogix-anx78xx.o
  obj-$(CONFIG_DRM_DUMB_VGA_DAC) += dumb-vga-dac.o
  obj-$(CONFIG_DRM_LVDS_ENCODER) += lvds-encoder.o
  obj-$(CONFIG_DRM_MEGACHIPS_STDPXXXX_GE_B850V3_FW) += megachips-stdpxxxx-ge-b850v3-fw.o
-@@ -7,7 +6,8 @@ obj-$(CONFIG_DRM_PARADE_PS8622) += parade-ps8622.o
+@@ -8,7 +7,8 @@ obj-$(CONFIG_DRM_PARADE_PS8622) += parade-ps8622.o
  obj-$(CONFIG_DRM_SIL_SII8620) += sil-sii8620.o
  obj-$(CONFIG_DRM_SII902X) += sii902x.o
  obj-$(CONFIG_DRM_TOSHIBA_TC358767) += tc358767.o
@@ -94,5 +95,5 @@ similarity index 100%
 rename from drivers/gpu/drm/bridge/analogix-anx78xx.h
 rename to drivers/gpu/drm/bridge/analogix/analogix-anx78xx.h
 -- 
-2.13.6
+2.17.1
 

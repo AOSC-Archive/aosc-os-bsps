@@ -1,4 +1,4 @@
-From 9d2593f71ac8cb3cad25158a21c3b6a20f66e4c5 Mon Sep 17 00:00:00 2001
+From 60e93fea8c6e10d9df92981116da293cb63b10ff Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 30 Apr 2017 11:34:23 +0800
 Subject: [PATCH 44/80] arm64: allwinner: a64: add regulators for Pinebook LCD
@@ -31,5 +31,5 @@ index 3b96d0739c0a..6cb145bad44c 100644
  	pinctrl-names = "default";
  	pinctrl-0 = <&uart0_pins_a>;
 -- 
-2.13.6
+2.17.1
 

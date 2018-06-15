@@ -1,4 +1,4 @@
-From f9d4f5a2ee6594af619d60c193fb9cb3b72eb702 Mon Sep 17 00:00:00 2001
+From 665c8606119ff79e28624cafdee05f020e7ce96a Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 20 Sep 2017 22:17:17 +0800
 Subject: [PATCH 77/80] mfd: axp20x: add cells for AXP803 ADC/AC Power/Battery
@@ -35,5 +35,5 @@ index 336de66ca408..91be5fe1c5de 100644
  
  static struct mfd_cell axp806_cells[] = {
 -- 
-2.13.6
+2.17.1
 

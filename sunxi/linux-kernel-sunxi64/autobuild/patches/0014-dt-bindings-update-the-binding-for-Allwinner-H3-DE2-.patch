@@ -1,4 +1,4 @@
-From b05d8bba38de8b2271cd90dbb8e01592ed0bad48 Mon Sep 17 00:00:00 2001
+From a9f91a96535c70f7a5f7746ff41be992f85e8c5a Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 16 Apr 2017 17:15:55 +0800
 Subject: [PATCH 14/80] dt-bindings: update the binding for Allwinner H3 DE2
@@ -13,7 +13,7 @@ Add device tree bindings for the following parts:
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---
- .../bindings/display/sunxi/sun4i-drm.txt           | 25 ++++++++++++++++++----
+ .../bindings/display/sunxi/sun4i-drm.txt      | 25 ++++++++++++++++---
  1 file changed, 21 insertions(+), 4 deletions(-)
 
 diff --git a/Documentation/devicetree/bindings/display/sunxi/sun4i-drm.txt b/Documentation/devicetree/bindings/display/sunxi/sun4i-drm.txt
@@ -91,5 +91,5 @@ index 92441086caba..44b61658b8af 100644
  
    - allwinner,pipelines: list of phandle to the display engine
 -- 
-2.13.6
+2.17.1
 

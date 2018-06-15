@@ -1,4 +1,4 @@
-From cda75f9de10b3f228cf3a4e46850aa1e8dd05b9e Mon Sep 17 00:00:00 2001
+From 530f053c2a818ad79bb776edbcdcddfaa83f6a0f Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 6 May 2017 16:03:20 +0800
 Subject: [PATCH 35/80] drm/sun4i: allow to build for arm64
@@ -24,5 +24,5 @@ index 7327da3bc94f..eee6bc0eaf97 100644
  	select DRM_GEM_CMA_HELPER
  	select DRM_KMS_HELPER
 -- 
-2.13.6
+2.17.1
 

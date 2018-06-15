@@ -1,4 +1,4 @@
-From 948cbf32a428897d04b7c0e0de1de05d2a7970dd Mon Sep 17 00:00:00 2001
+From d625b3be727de19df9e02608164ea98a0bce49be Mon Sep 17 00:00:00 2001
 From: Jernej Skrabec <jernej.skrabec@siol.net>
 Date: Tue, 11 Apr 2017 21:44:31 +0200
 Subject: [PATCH 29/80] drm: bridge: Add a pre_init function for the dw_hdmi
@@ -16,10 +16,10 @@ Signed-off-by: Jernej Skrabec <jernej.skrabec@siol.net>
  2 files changed, 5 insertions(+)
 
 diff --git a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
-index 09cb5a3e4c71..508a68a3bded 100644
+index 79bbb0aa0f7e..5daf07a5a853 100644
 --- a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
 +++ b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
-@@ -2386,6 +2386,9 @@ __dw_hdmi_probe(struct platform_device *pdev,
+@@ -2389,6 +2389,9 @@ __dw_hdmi_probe(struct platform_device *pdev,
  		goto err_isfr;
  	}
  
@@ -43,5 +43,5 @@ index 182f83283e24..6e109c336ca1 100644
  	/* Vendor PHY support */
  	const struct dw_hdmi_phy_ops *phy_ops;
 -- 
-2.13.6
+2.17.1
 

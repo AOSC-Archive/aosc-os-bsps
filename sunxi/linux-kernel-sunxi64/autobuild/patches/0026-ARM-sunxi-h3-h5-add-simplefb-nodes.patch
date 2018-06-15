@@ -1,4 +1,4 @@
-From 531420b58efd255aa85d36df6646a415a43e2073 Mon Sep 17 00:00:00 2001
+From 1f5a8941b70d50dbe3c8bcc3f6b58a10e98b9a18 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 11 Sep 2017 00:08:03 +0800
 Subject: [PATCH 26/80] ARM: sunxi: h3/h5: add simplefb nodes
@@ -53,5 +53,5 @@ index abc4f5d52ec5..f03c2c18955c 100644
  		#address-cells = <1>;
  		#size-cells = <1>;
 -- 
-2.13.6
+2.17.1
 

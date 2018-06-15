@@ -1,4 +1,4 @@
-From fad2dc21e5920a35699ae2b165c1829a453a4c47 Mon Sep 17 00:00:00 2001
+From 4d70f6f31d2d63b7701d931c58694dac8ade4d89 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 20 Sep 2017 22:14:55 +0800
 Subject: [PATCH 76/80] power: supply: axp20x-battery: support AXP803
@@ -11,7 +11,7 @@ Add support for AXP803 battery in axp20x-battery driver.
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---
- drivers/power/supply/axp20x_battery.c | 88 +++++++++++++++++++++++++++++++----
+ drivers/power/supply/axp20x_battery.c | 88 ++++++++++++++++++++++++---
  1 file changed, 78 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/power/supply/axp20x_battery.c b/drivers/power/supply/axp20x_battery.c
@@ -154,5 +154,5 @@ index 7494f0f0eadb..c9a9fb320c92 100644
  };
  MODULE_DEVICE_TABLE(of, axp20x_battery_ps_id);
 -- 
-2.13.6
+2.17.1
 

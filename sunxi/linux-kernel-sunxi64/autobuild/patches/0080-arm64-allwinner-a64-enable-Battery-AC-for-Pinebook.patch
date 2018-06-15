@@ -1,4 +1,4 @@
-From 41527e612117341d615b66dd11e2bd2c67b196ce Mon Sep 17 00:00:00 2001
+From 87aa67fc02bf100727188177d70639d77d31fd68 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 20 Sep 2017 22:35:32 +0800
 Subject: [PATCH 80/80] arm64: allwinner: a64: enable Battery/AC for Pinebook
@@ -34,5 +34,5 @@ index a5ffad7bfbcc..fad0645725db 100644
  	regulator-min-microvolt = <2800000>;
  	regulator-max-microvolt = <2800000>;
 -- 
-2.13.6
+2.17.1
 

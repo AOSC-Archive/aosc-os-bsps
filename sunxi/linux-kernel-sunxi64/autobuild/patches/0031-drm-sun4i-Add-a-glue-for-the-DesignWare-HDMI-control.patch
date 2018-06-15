@@ -1,4 +1,4 @@
-From 50cda1319e4cb3e6d915f8d709822930690ccdc9 Mon Sep 17 00:00:00 2001
+From f46c0f1e5adbc5ae175e3250aeb12854d9f84d4b Mon Sep 17 00:00:00 2001
 From: Jernej Skrabec <jernej.skrabec@siol.net>
 Date: Tue, 11 Apr 2017 21:46:33 +0200
 Subject: [PATCH 31/80] drm: sun4i: Add a glue for the DesignWare HDMI
@@ -14,7 +14,7 @@ Signed-off-by: Jernej Skrabec <jernej.skrabec@siol.net>
 ---
  drivers/gpu/drm/sun4i/Kconfig         |   9 +
  drivers/gpu/drm/sun4i/Makefile        |   1 +
- drivers/gpu/drm/sun4i/sun8i_dw_hdmi.c | 462 ++++++++++++++++++++++++++++++++++
+ drivers/gpu/drm/sun4i/sun8i_dw_hdmi.c | 462 ++++++++++++++++++++++++++
  3 files changed, 472 insertions(+)
  create mode 100644 drivers/gpu/drm/sun4i/sun8i_dw_hdmi.c
 
@@ -39,10 +39,10 @@ index 882d85db9053..7327da3bc94f 100644
  	tristate "Support for Allwinner Display Engine 2.0 Mixer"
  	default MACH_SUN8I
 diff --git a/drivers/gpu/drm/sun4i/Makefile b/drivers/gpu/drm/sun4i/Makefile
-index 43c753cafc88..9c56173bf140 100644
+index 55b32368f8fb..7ce43a4c6c70 100644
 --- a/drivers/gpu/drm/sun4i/Makefile
 +++ b/drivers/gpu/drm/sun4i/Makefile
-@@ -22,3 +22,4 @@ obj-$(CONFIG_DRM_SUN4I)		+= sun4i_tv.o
+@@ -23,3 +23,4 @@ obj-$(CONFIG_DRM_SUN4I)		+= sun4i_tv.o
  obj-$(CONFIG_DRM_SUN4I_BACKEND)		+= sun4i-backend.o
  obj-$(CONFIG_DRM_SUN4I_HDMI)	+= sun4i-drm-hdmi.o
  obj-$(CONFIG_DRM_SUN8I_MIXER)		+= sun8i-mixer.o
@@ -516,5 +516,5 @@ index 000000000000..fa1ecbcf08b8
 +MODULE_DESCRIPTION("Allwinner H3 DW HDMI bridge");
 +MODULE_LICENSE("GPL");
 -- 
-2.13.6
+2.17.1
 

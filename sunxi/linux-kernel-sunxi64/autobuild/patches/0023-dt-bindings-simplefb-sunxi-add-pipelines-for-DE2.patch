@@ -1,4 +1,4 @@
-From f48e03760625a652d7c6d1a7f88b1d58c678b467 Mon Sep 17 00:00:00 2001
+From 72616ae9be4f14efa6062f64a313dd173bd28b7c Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 10 Sep 2017 23:55:48 +0800
 Subject: [PATCH 23/80] dt-bindings: simplefb-sunxi: add pipelines for DE2
@@ -9,7 +9,7 @@ suitable pipeline strings in the device tree binding.
 Acked-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---
- .../devicetree/bindings/display/simple-framebuffer-sunxi.txt          | 4 ++++
+ .../devicetree/bindings/display/simple-framebuffer-sunxi.txt  | 4 ++++
  1 file changed, 4 insertions(+)
 
 diff --git a/Documentation/devicetree/bindings/display/simple-framebuffer-sunxi.txt b/Documentation/devicetree/bindings/display/simple-framebuffer-sunxi.txt
@@ -28,5 +28,5 @@ index a9168ae6946c..d693b8dc9a62 100644
  Example:
  
 -- 
-2.13.6
+2.17.1
 

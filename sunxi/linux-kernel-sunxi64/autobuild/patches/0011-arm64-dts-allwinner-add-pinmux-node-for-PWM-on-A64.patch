@@ -1,4 +1,4 @@
-From 342030977a8f55c02d154ada461000b261034cf2 Mon Sep 17 00:00:00 2001
+From ab2f347fda503834b188f0d23160195e01703c6a Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.xyz>
 Date: Sat, 25 Feb 2017 15:45:12 +0800
 Subject: [PATCH 11/80] arm64: dts: allwinner: add pinmux node for PWM on A64
@@ -30,5 +30,5 @@ index d629671d0e86..50a3c0fb0f7f 100644
  				pins = "PD10", "PD11", "PD13", "PD14", "PD17",
  				       "PD18", "PD19", "PD20", "PD22", "PD23";
 -- 
-2.13.6
+2.17.1
 

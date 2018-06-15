@@ -1,4 +1,4 @@
-From 3c51faec5761112c66f340fa66535b19e7a82854 Mon Sep 17 00:00:00 2001
+From 5f7a9cc9b562313c26ddebd72d914796af450f25 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 16 Apr 2017 16:52:34 +0800
 Subject: [PATCH 19/80] clk: sunxi-ng: export CLK_PLL_DE for H3
@@ -43,5 +43,5 @@ index e139fe5c62ec..5345957a8c2e 100644
  
  #define CLK_BUS_CE		20
 -- 
-2.13.6
+2.17.1
 

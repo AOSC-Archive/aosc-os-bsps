@@ -1,4 +1,4 @@
-From 1f2a8f35f6e3ec605d25d96b82a8bf403afdd163 Mon Sep 17 00:00:00 2001
+From ff8a39ecb1c75bc45ad68022380a58a8dcf82348 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 6 May 2017 22:34:24 +0800
 Subject: [PATCH 69/80] arm64: allwinner: h5: add GPU device node
@@ -9,7 +9,7 @@ Add its device node.
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---
- arch/arm64/boot/dts/allwinner/sun50i-h5.dtsi | 53 ++++++++++++++++++++++++++++
+ arch/arm64/boot/dts/allwinner/sun50i-h5.dtsi | 53 ++++++++++++++++++++
  1 file changed, 53 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h5.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-h5.dtsi
@@ -77,5 +77,5 @@ index 305f7a28ba03..ebc451de215c 100644
  		compatible = "arm,armv8-timer";
  		interrupts = <GIC_PPI 13
 -- 
-2.13.6
+2.17.1
 

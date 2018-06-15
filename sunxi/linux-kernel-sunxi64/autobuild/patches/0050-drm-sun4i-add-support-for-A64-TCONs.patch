@@ -1,4 +1,4 @@
-From 33bbb706d4e2fbfb7e818325f09a1bfa9501d111 Mon Sep 17 00:00:00 2001
+From ef8e5619c8ca1a13e9feaafff8e97a242968cfe2 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 6 May 2017 17:13:22 +0800
 Subject: [PATCH 50/80] drm: sun4i: add support for A64 TCONs
@@ -29,7 +29,7 @@ index 9578f43cce0a..d714cee9db49 100644
  
  static int compare_of(struct device *dev, void *data)
 diff --git a/drivers/gpu/drm/sun4i/sun4i_tcon.c b/drivers/gpu/drm/sun4i/sun4i_tcon.c
-index 270f09e381a5..c173d4ae00fe 100644
+index 70618ccf8231..301858c026f9 100644
 --- a/drivers/gpu/drm/sun4i/sun4i_tcon.c
 +++ b/drivers/gpu/drm/sun4i/sun4i_tcon.c
 @@ -654,6 +654,10 @@ static const struct sun4i_tcon_quirks sun8i_a33_quirks = {
@@ -74,5 +74,5 @@ index 270f09e381a5..c173d4ae00fe 100644
  };
  MODULE_DEVICE_TABLE(of, sun4i_tcon_of_table);
 -- 
-2.13.6
+2.17.1
 

@@ -1,4 +1,4 @@
-From f24ebcdecd4df09f807be7a59eafbef5923be11d Mon Sep 17 00:00:00 2001
+From 314b48355ec6a1e79c33a010c5d0b2828e6e8011 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 7 May 2017 14:34:32 +0800
 Subject: [PATCH 61/80] drm/bridge: Add Analogix anx6345 support
@@ -10,11 +10,11 @@ This is a configuration usually seen in eDP applications.
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---
- drivers/gpu/drm/bridge/analogix/Kconfig            |  11 +
- drivers/gpu/drm/bridge/analogix/Makefile           |   1 +
- drivers/gpu/drm/bridge/analogix/analogix-anx6345.c | 877 +++++++++++++++++++++
- .../gpu/drm/bridge/analogix/analogix-i2c-dptx.h    |   8 +
- .../drm/bridge/analogix/analogix-i2c-txcommon.h    |   3 +
+ drivers/gpu/drm/bridge/analogix/Kconfig       |  11 +
+ drivers/gpu/drm/bridge/analogix/Makefile      |   1 +
+ .../drm/bridge/analogix/analogix-anx6345.c    | 877 ++++++++++++++++++
+ .../drm/bridge/analogix/analogix-i2c-dptx.h   |   8 +
+ .../bridge/analogix/analogix-i2c-txcommon.h   |   3 +
  5 files changed, 900 insertions(+)
  create mode 100644 drivers/gpu/drm/bridge/analogix/analogix-anx6345.c
 
@@ -978,5 +978,5 @@ index 25ceabe34a39..ea92c7228926 100644
  #define SP_ANALOG_DEBUG2_REG		0xdd
  #define SP_FORCE_SW_OFF_BYPASS		0x20
 -- 
-2.13.6
+2.17.1
 

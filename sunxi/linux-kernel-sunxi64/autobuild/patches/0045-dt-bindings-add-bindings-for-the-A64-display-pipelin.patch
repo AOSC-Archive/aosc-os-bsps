@@ -1,4 +1,4 @@
-From f9ff7a80a525c2a23d77c7eac734859c9b444179 Mon Sep 17 00:00:00 2001
+From 37fece454e814c3b055545aadd561e42dc2ccc96 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 6 May 2017 17:10:07 +0800
 Subject: [PATCH 45/80] dt-bindings: add bindings for the A64 display pipeline
@@ -10,7 +10,7 @@ pipeline:
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---
- Documentation/devicetree/bindings/display/sunxi/sun4i-drm.txt | 7 +++++++
+ .../devicetree/bindings/display/sunxi/sun4i-drm.txt        | 7 +++++++
  1 file changed, 7 insertions(+)
 
 diff --git a/Documentation/devicetree/bindings/display/sunxi/sun4i-drm.txt b/Documentation/devicetree/bindings/display/sunxi/sun4i-drm.txt
@@ -60,5 +60,5 @@ index 44b61658b8af..84739924bc77 100644
    - allwinner,pipelines: list of phandle to the display engine
      frontends (DE 1.0) or mixers (DE 2.0) available.
 -- 
-2.13.6
+2.17.1
 

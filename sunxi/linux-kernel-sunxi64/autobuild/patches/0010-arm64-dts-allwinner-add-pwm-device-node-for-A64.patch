@@ -1,4 +1,4 @@
-From 2e95305d56049be1663f27209d7238fc8982683c Mon Sep 17 00:00:00 2001
+From 375988c2ced4adb1a79898004c4e9173f2f8b70f Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.xyz>
 Date: Sat, 25 Feb 2017 15:36:06 +0800
 Subject: [PATCH 10/80] arm64: dts: allwinner: add pwm device node for A64
@@ -33,5 +33,5 @@ index 50f17bab0c07..d629671d0e86 100644
  			compatible = "snps,dw-apb-uart";
  			reg = <0x01c28000 0x400>;
 -- 
-2.13.6
+2.17.1
 

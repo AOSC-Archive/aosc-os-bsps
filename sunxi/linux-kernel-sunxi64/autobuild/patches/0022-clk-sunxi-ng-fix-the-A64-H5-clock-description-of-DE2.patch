@@ -1,4 +1,4 @@
-From c6f6ddd3693b7cdf182eb2f1e55936d86400fa9a Mon Sep 17 00:00:00 2001
+From e46609986a78ac9a20fc35fb54c54aa32efe05c0 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 27 Oct 2017 22:19:53 +0800
 Subject: [PATCH 22/80] clk: sunxi-ng: fix the A64/H5 clock description of DE2
@@ -35,5 +35,5 @@ index 2db5d4e00ea7..468d1abaf0ee 100644
  	.resets		= sun50i_a64_de2_resets,
  	.num_resets	= ARRAY_SIZE(sun50i_a64_de2_resets),
 -- 
-2.13.6
+2.17.1
 

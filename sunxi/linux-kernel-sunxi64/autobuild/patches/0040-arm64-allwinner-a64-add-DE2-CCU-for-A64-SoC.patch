@@ -1,4 +1,4 @@
-From ef2e121f7e1ae7bfd202fe7b4c3787ba6976abdf Mon Sep 17 00:00:00 2001
+From cc3f7df131f17b4e93d0ee9746df9a10b836e831 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 27 Oct 2017 22:41:43 +0800
 Subject: [PATCH 40/80] arm64: allwinner: a64: add DE2 CCU for A64 SoC
@@ -10,7 +10,7 @@ Adds the device tree nodes for the SRAM controller and the DE2 CCU.
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---
- arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi | 34 +++++++++++++++++++++++++++
+ arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi | 34 +++++++++++++++++++
  1 file changed, 34 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
@@ -59,5 +59,5 @@ index 50a3c0fb0f7f..8f0c78d307c5 100644
  			compatible = "allwinner,sun50i-a64-system-controller",
  				"syscon";
 -- 
-2.13.6
+2.17.1
 

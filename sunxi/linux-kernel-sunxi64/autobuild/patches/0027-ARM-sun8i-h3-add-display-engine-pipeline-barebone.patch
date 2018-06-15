@@ -1,4 +1,4 @@
-From 5f067f2c6255ab5d9da62754de4127963d197a65 Mon Sep 17 00:00:00 2001
+From 41ded01b5cd0d382a3ec79c8944156f765d84927 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 16 Apr 2017 16:54:52 +0800
 Subject: [PATCH 27/80] ARM: sun8i: h3: add display engine pipeline barebone
@@ -10,7 +10,7 @@ The H5 pipeline has some differences and will be enabled later.
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---
- arch/arm/boot/dts/sun8i-h3.dtsi | 155 ++++++++++++++++++++++++++++++++++++++++
+ arch/arm/boot/dts/sun8i-h3.dtsi | 155 ++++++++++++++++++++++++++++++++
  1 file changed, 155 insertions(+)
 
 diff --git a/arch/arm/boot/dts/sun8i-h3.dtsi b/arch/arm/boot/dts/sun8i-h3.dtsi
@@ -187,5 +187,5 @@ index 8495deecedad..39c6ebf6846d 100644
  		compatible = "arm,armv7-timer";
  		interrupts = <GIC_PPI 13 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>,
 -- 
-2.13.6
+2.17.1
 

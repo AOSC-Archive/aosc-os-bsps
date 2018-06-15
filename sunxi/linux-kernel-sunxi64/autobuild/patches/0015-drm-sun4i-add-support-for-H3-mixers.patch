@@ -1,4 +1,4 @@
-From 3cdcce54aabef937b17f49d4c1cf4a0a37e436ca Mon Sep 17 00:00:00 2001
+From 1778ad3c4f130b41bf3244f5f78003b5781f9ce5 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.xyz>
 Date: Mon, 27 Feb 2017 03:14:57 +0800
 Subject: [PATCH 15/80] drm: sun4i: add support for H3 mixers
@@ -51,5 +51,5 @@ index cb193c5f1686..d658a3a8159a 100644
  };
  MODULE_DEVICE_TABLE(of, sun8i_mixer_of_table);
 -- 
-2.13.6
+2.17.1
 

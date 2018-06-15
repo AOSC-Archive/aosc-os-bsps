@@ -1,4 +1,4 @@
-From 9fd94654a7d4969ba6a3c181c3c8252f33d97072 Mon Sep 17 00:00:00 2001
+From 392035cf31224ea343eabe871acacfb39202a10f Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 6 May 2017 15:41:56 +0800
 Subject: [PATCH 57/80] drm/bridge: split some definitions of ANX78xx to
@@ -13,9 +13,9 @@ them.
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---
- drivers/gpu/drm/bridge/analogix/analogix-anx78xx.h | 464 +--------------------
- .../gpu/drm/bridge/analogix/analogix-i2c-dptx.h    | 256 ++++++++++++
- .../drm/bridge/analogix/analogix-i2c-txcommon.h    | 245 +++++++++++
+ .../drm/bridge/analogix/analogix-anx78xx.h    | 464 +-----------------
+ .../drm/bridge/analogix/analogix-i2c-dptx.h   | 256 ++++++++++
+ .../bridge/analogix/analogix-i2c-txcommon.h   | 245 +++++++++
  3 files changed, 506 insertions(+), 459 deletions(-)
  create mode 100644 drivers/gpu/drm/bridge/analogix/analogix-i2c-dptx.h
  create mode 100644 drivers/gpu/drm/bridge/analogix/analogix-i2c-txcommon.h
@@ -39,10 +39,11 @@ index 38753c870137..8aa1eca306d3 100644
  
  #define RX_P0				0x7e
  #define RX_P1				0x80
-@@ -226,463 +229,6 @@
+@@ -225,463 +228,6 @@
+ #define SP_CLEAR_AVMUTE			BIT(4)
  #define SP_SET_AVMUTE			BIT(0)
  
- /***************************************************************/
+-/***************************************************************/
 -/* Register definition of device address 0x70                  */
 -/***************************************************************/
 -
@@ -499,10 +500,9 @@ index 38753c870137..8aa1eca306d3 100644
 -/* Interrupt Control Register */
 -#define SP_INT_CTRL_REG			0xff
 -
--/***************************************************************/
+ /***************************************************************/
  /* Register definition of device address 0x7a                  */
  /***************************************************************/
- 
 diff --git a/drivers/gpu/drm/bridge/analogix/analogix-i2c-dptx.h b/drivers/gpu/drm/bridge/analogix/analogix-i2c-dptx.h
 new file mode 100644
 index 000000000000..2ef90f0d9104
@@ -1017,5 +1017,5 @@ index 000000000000..25ceabe34a39
 +
 +#endif /* _ANALOGIX_I2C_TXCOMMON_H_ */
 -- 
-2.13.6
+2.17.1
 

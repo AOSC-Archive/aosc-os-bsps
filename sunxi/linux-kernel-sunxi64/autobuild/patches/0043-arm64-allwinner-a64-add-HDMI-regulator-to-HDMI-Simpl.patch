@@ -1,4 +1,4 @@
-From d894b0b9020919be85743317cfc89a3f144a8b1c Mon Sep 17 00:00:00 2001
+From 223e95f6f9bf8e9e91c86e7221e7d7b1fc154187 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 2 Nov 2017 16:36:00 +0800
 Subject: [PATCH 43/80] arm64: allwinner: a64: add HDMI regulator to HDMI
@@ -95,5 +95,5 @@ index 05b627eb9270..8ddbe98b034b 100644
  	pinctrl-names = "default";
  	pinctrl-0 = <&uart0_pins_a>;
 -- 
-2.13.6
+2.17.1
 

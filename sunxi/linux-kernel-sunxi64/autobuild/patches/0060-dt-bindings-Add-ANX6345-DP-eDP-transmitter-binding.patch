@@ -1,4 +1,4 @@
-From eef4dbc525d7bee81653f1cfb47aee07bc6571e2 Mon Sep 17 00:00:00 2001
+From d9d942ee83acaf4d63998bdd15adc702b488ca46 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 7 May 2017 14:32:23 +0800
 Subject: [PATCH 60/80] dt-bindings: Add ANX6345 DP/eDP transmitter binding
@@ -10,7 +10,7 @@ Add a binding document for it.
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---
- .../devicetree/bindings/display/bridge/anx6345.txt | 39 ++++++++++++++++++++++
+ .../bindings/display/bridge/anx6345.txt       | 39 +++++++++++++++++++
  1 file changed, 39 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/display/bridge/anx6345.txt
 
@@ -60,5 +60,5 @@ index 000000000000..0689d4eb5f65
 +	};
 +};
 -- 
-2.13.6
+2.17.1
 

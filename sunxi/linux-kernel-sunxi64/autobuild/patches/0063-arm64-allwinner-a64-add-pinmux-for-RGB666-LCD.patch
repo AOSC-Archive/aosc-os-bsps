@@ -1,4 +1,4 @@
-From 97f926118b34abbbb468c4e60949e7e159d23b34 Mon Sep 17 00:00:00 2001
+From 9b362e7f99155d8eb9f2ce7c4b4b92996d1bf44e Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 7 May 2017 14:40:48 +0800
 Subject: [PATCH 63/80] arm64: allwinner: a64: add pinmux for RGB666 LCD
@@ -33,5 +33,5 @@ index 6ab781ad4b20..81bfd855ba12 100644
  				pins = "PF0", "PF1", "PF2", "PF3",
  				       "PF4", "PF5";
 -- 
-2.13.6
+2.17.1
 

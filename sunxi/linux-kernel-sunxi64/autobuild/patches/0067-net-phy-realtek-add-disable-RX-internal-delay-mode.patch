@@ -1,4 +1,4 @@
-From dfe614bf437f1ca94aa302ce9ecf8cc1454c5e64 Mon Sep 17 00:00:00 2001
+From e54b9179a69db14912cd09ae1523f82606d89318 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.xyz>
 Date: Mon, 20 Mar 2017 01:41:03 +0800
 Subject: [PATCH 67/80] net: phy: realtek: add disable RX internal delay mode
@@ -85,5 +85,5 @@ index d820d00addf6..bb368a5e31e9 100644
  		.ack_interrupt	= &rtl821x_ack_interrupt,
  		.config_intr	= &rtl8211e_config_intr,
 -- 
-2.13.6
+2.17.1
 

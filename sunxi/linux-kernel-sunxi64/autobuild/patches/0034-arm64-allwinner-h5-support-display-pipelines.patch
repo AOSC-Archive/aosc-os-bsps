@@ -1,4 +1,4 @@
-From 1b88fb6df49cdd09931dc18efcb5b7fc56d151a0 Mon Sep 17 00:00:00 2001
+From 9f0d2893a9d63579c67190909c7dc4f1d7658081 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 15 Aug 2017 21:35:39 +0800
 Subject: [PATCH 34/80] arm64: allwinner: h5: support display pipelines
@@ -27,5 +27,5 @@ index e237c05cfdb4..305f7a28ba03 100644
  	compatible = "allwinner,sun50i-h5-mmc",
  		     "allwinner,sun50i-a64-mmc";
 -- 
-2.13.6
+2.17.1
 

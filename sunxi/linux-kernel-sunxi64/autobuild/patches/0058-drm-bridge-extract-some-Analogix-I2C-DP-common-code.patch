@@ -1,4 +1,4 @@
-From 806d02083258b497aadb8e704549a8d9a15317bf Mon Sep 17 00:00:00 2001
+From fd229e7936b6b4919d88a1aee16f0a585e457950 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 7 May 2017 00:44:27 +0800
 Subject: [PATCH 58/80] drm/bridge: extract some Analogix I2C DP common code
@@ -9,11 +9,11 @@ Extract them to a new module.
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---
- drivers/gpu/drm/bridge/analogix/Kconfig            |   4 +
- drivers/gpu/drm/bridge/analogix/Makefile           |   2 +
- drivers/gpu/drm/bridge/analogix/analogix-anx78xx.c | 146 +----------------
- .../gpu/drm/bridge/analogix/analogix-i2c-dptx.c    | 177 +++++++++++++++++++++
- .../gpu/drm/bridge/analogix/analogix-i2c-dptx.h    |   2 +
+ drivers/gpu/drm/bridge/analogix/Kconfig       |   4 +
+ drivers/gpu/drm/bridge/analogix/Makefile      |   2 +
+ .../drm/bridge/analogix/analogix-anx78xx.c    | 146 +--------------
+ .../drm/bridge/analogix/analogix-i2c-dptx.c   | 177 ++++++++++++++++++
+ .../drm/bridge/analogix/analogix-i2c-dptx.h   |   2 +
  5 files changed, 186 insertions(+), 145 deletions(-)
  create mode 100644 drivers/gpu/drm/bridge/analogix/analogix-i2c-dptx.c
 
@@ -407,5 +407,5 @@ index 2ef90f0d9104..650e2f46d030 100644
 +
  #endif
 -- 
-2.13.6
+2.17.1
 

@@ -1,4 +1,4 @@
-From ca830d8b1ce0d632fb2a06049c9a9df0dd2afab8 Mon Sep 17 00:00:00 2001
+From ffc8d091e3d4b6485ead29e5e811b562922e62b0 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 6 May 2017 16:27:01 +0800
 Subject: [PATCH 39/80] dt-bindings: add binding for A64 DE2 CCU SRAM
@@ -38,5 +38,5 @@ index f2fa87c4765c..a7d558a2b9b2 100644
  de2_clocks: clock@1000000 {
  	compatible = "allwinner,sun8i-h3-de2-clk";
 -- 
-2.13.6
+2.17.1
 

@@ -1,4 +1,4 @@
-From 9015b53474764e8faf779ef080141dbaada70260 Mon Sep 17 00:00:00 2001
+From d275517bae57e1b3a1e86f9a486eed194566b742 Mon Sep 17 00:00:00 2001
 From: Jernej Skrabec <jernej.skrabec@siol.net>
 Date: Tue, 11 Apr 2017 21:45:23 +0200
 Subject: [PATCH 30/80] clk: sunxi: Add CLK_SET_RATE_PARENT flag for H3 HDMI
@@ -28,5 +28,5 @@ index 7a222ff1ad0a..36224ba93f9d 100644
  static SUNXI_CCU_GATE(hdmi_ddc_clk,	"hdmi-ddc",	"osc24M",
  		      0x154, BIT(31), 0);
 -- 
-2.13.6
+2.17.1
 

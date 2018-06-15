@@ -1,4 +1,4 @@
-From 11f9df7f89116de35a0a9ec882d737ce0f1664f7 Mon Sep 17 00:00:00 2001
+From ca8ce6c36bbff531ef21802aa67faec4757fdde9 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 16 Apr 2017 16:50:04 +0800
 Subject: [PATCH 18/80] clk: sunxi-ng: allow CLK_DE to set CLK_PLL_DE for H3
@@ -31,5 +31,5 @@ index 1729ff6a5aae..7a222ff1ad0a 100644
  static const char * const tcon_parents[] = { "pll-video" };
  static SUNXI_CCU_M_WITH_MUX_GATE(tcon_clk, "tcon", tcon_parents,
 -- 
-2.13.6
+2.17.1
 

@@ -1,4 +1,4 @@
-From 44ccdf8c34671a47a13ecef704178f545d4a8770 Mon Sep 17 00:00:00 2001
+From 7a223c79e35ace2ff212d766398340ee69cd8f46 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 15 Aug 2017 22:03:35 +0800
 Subject: [PATCH 49/80] drm/sun4i: add support for A64 DE2 mixers
@@ -50,5 +50,5 @@ index d658a3a8159a..2a69e0953726 100644
  };
  MODULE_DEVICE_TABLE(of, sun8i_mixer_of_table);
 -- 
-2.13.6
+2.17.1
 

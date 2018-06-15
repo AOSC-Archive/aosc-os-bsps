@@ -1,4 +1,4 @@
-From bf5dcea01a51674ea84afc1666c5c01808b544b8 Mon Sep 17 00:00:00 2001
+From 27fcc2e5ef944c9041c35f5ebbef133632b778cf Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 11 Sep 2017 00:00:16 +0800
 Subject: [PATCH 24/80] ARM: sun8i: h3/h5: add DE2 CCU device node for H3
@@ -68,5 +68,5 @@ index d38282b9e5d4..abc4f5d52ec5 100644
  			compatible = "allwinner,sun8i-h3-system-controller",
  				"syscon";
 -- 
-2.13.6
+2.17.1
 
