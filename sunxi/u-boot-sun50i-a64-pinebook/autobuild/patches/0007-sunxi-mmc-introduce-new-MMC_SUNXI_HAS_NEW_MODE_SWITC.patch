@@ -1,0 +1,60 @@
+From df6995d8ec4fdbf8f2695ca6a8af6df0a38ef95f Mon Sep 17 00:00:00 2001
+From: Vasily Khoruzhick <anarsoul@gmail.com>
+Date: Mon, 4 Jun 2018 17:46:04 -0700
+Subject: [PATCH 07/16] sunxi-mmc: introduce new MMC_SUNXI_HAS_NEW_MODE_SWITCH
+ option
+
+A64 doesn't have a mode switch in CCM, so introduce new
+MMC_SUNXI_HAS_NEW_MODE_SWITCH option to support new mode on A64
+
+Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
+---
+ arch/arm/mach-sunxi/Kconfig | 1 +
+ drivers/mmc/Kconfig         | 4 ++++
+ drivers/mmc/sunxi_mmc.c     | 2 ++
+ 3 files changed, 7 insertions(+)
+
+diff --git a/arch/arm/mach-sunxi/Kconfig b/arch/arm/mach-sunxi/Kconfig
+index b9f778dd24..c4dc0f7672 100644
+--- a/arch/arm/mach-sunxi/Kconfig
++++ b/arch/arm/mach-sunxi/Kconfig
+@@ -213,6 +213,7 @@ config MACH_SUN8I_A83T
+ 	select PHY_SUN4I_USB
+ 	select SUNXI_GEN_SUN6I
+ 	select MMC_SUNXI_HAS_NEW_MODE
++	select MMC_SUNXI_HAS_NEW_MODE_SWITCH
+ 	select SUPPORT_SPL
+ 
+ config MACH_SUN8I_H3
+diff --git a/drivers/mmc/Kconfig b/drivers/mmc/Kconfig
+index 693b3ceaf0..f8e435a2a2 100644
+--- a/drivers/mmc/Kconfig
++++ b/drivers/mmc/Kconfig
+@@ -536,6 +536,10 @@ config MMC_SUNXI_HAS_NEW_MODE
+ 	bool
+ 	depends on MMC_SUNXI
+ 
++config MMC_SUNXI_HAS_NEW_MODE_SWITCH
++	bool
++	depends on MMC_SUNXI
++
+ config GENERIC_ATMEL_MCI
+ 	bool "Atmel Multimedia Card Interface support"
+ 	depends on DM_MMC && BLK && ARCH_AT91
+diff --git a/drivers/mmc/sunxi_mmc.c b/drivers/mmc/sunxi_mmc.c
+index fe6d82c7b4..43c6d7c346 100644
+--- a/drivers/mmc/sunxi_mmc.c
++++ b/drivers/mmc/sunxi_mmc.c
+@@ -166,7 +166,9 @@ static int mmc_set_mod_clk(struct sunxi_mmc_priv *priv, unsigned int hz)
+ 
+ 	if (new_mode) {
+ #ifdef CONFIG_MMC_SUNXI_HAS_NEW_MODE
++#ifdef CONFIG_MMC_SUNXI_HAS_NEW_MODE_SWITCH
+ 		val = CCM_MMC_CTRL_MODE_SEL_NEW;
++#endif
+ 		setbits_le32(&priv->reg->ntsr, SUNXI_MMC_NTSR_MODE_SEL_NEW);
+ #endif
+ 	} else {
+-- 
+2.17.1
+

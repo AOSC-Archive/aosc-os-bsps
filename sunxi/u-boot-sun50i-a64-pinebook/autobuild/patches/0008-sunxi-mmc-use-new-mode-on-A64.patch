@@ -1,0 +1,27 @@
+From c8ada8a9d62b658b6fdca75447417e40077e70bc Mon Sep 17 00:00:00 2001
+From: Vasily Khoruzhick <anarsoul@gmail.com>
+Date: Mon, 4 Jun 2018 17:47:40 -0700
+Subject: [PATCH 08/16] sunxi-mmc: use new mode on A64
+
+That is necessary for using automatic calibration on A64 eMMC.
+
+Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
+---
+ arch/arm/mach-sunxi/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm/mach-sunxi/Kconfig b/arch/arm/mach-sunxi/Kconfig
+index c4dc0f7672..fbba20ce10 100644
+--- a/arch/arm/mach-sunxi/Kconfig
++++ b/arch/arm/mach-sunxi/Kconfig
+@@ -267,6 +267,7 @@ config MACH_SUN50I
+ 	select SUNXI_GEN_SUN6I
+ 	select SUN6I_PRCM
+ 	select SUNXI_HIGH_SRAM
++	select MMC_SUNXI_HAS_NEW_MODE
+ 	select SUPPORT_SPL
+ 	select SUNXI_DRAM_DW
+ 	select SUNXI_DRAM_DW_32BIT
+-- 
+2.17.1
+

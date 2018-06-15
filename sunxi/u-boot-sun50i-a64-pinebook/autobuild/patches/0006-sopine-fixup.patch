@@ -1,0 +1,107 @@
+From ecdc7deb265a223d2c00c88d38f436ddbd1d28fd Mon Sep 17 00:00:00 2001
+From: Vasily Khoruzhick <anarsoul@gmail.com>
+Date: Mon, 30 Apr 2018 19:42:54 -0700
+Subject: [PATCH 06/16] sopine fixup
+
+---
+ .../sun50i-a64-sopine-baseboard-u-boot.dtsi   | 51 +++++++++++--------
+ configs/sopine_baseboard_defconfig            |  1 +
+ 2 files changed, 31 insertions(+), 21 deletions(-)
+
+diff --git a/arch/arm/dts/sun50i-a64-sopine-baseboard-u-boot.dtsi b/arch/arm/dts/sun50i-a64-sopine-baseboard-u-boot.dtsi
+index 9c61beac01..32a263ce3d 100644
+--- a/arch/arm/dts/sun50i-a64-sopine-baseboard-u-boot.dtsi
++++ b/arch/arm/dts/sun50i-a64-sopine-baseboard-u-boot.dtsi
+@@ -4,25 +4,38 @@
+ 	};
+ 
+ 	soc {
+-		emac: ethernet@01c30000 {
++		syscon: syscon@1c00000 {
++			compatible = "allwinner,sun50i-a64-system-controller",
++				     "syscon";
++			reg = <0x01c00000 0x1000>;
++		};
++
++		emac: ethernet@1c30000 {
+ 			compatible = "allwinner,sun50i-a64-emac";
+-			reg = <0x01c30000 0x2000>, <0x01c00030 0x4>;
+-			reg-names = "emac", "syscon";
++			syscon = <&syscon>;
++			reg = <0x01c30000 0x10000>;
+ 			interrupts = <GIC_SPI 82 IRQ_TYPE_LEVEL_HIGH>;
++			interrupt-names = "macirq";
+ 			resets = <&ccu RST_BUS_EMAC>;
+-			reset-names = "ahb";
++			reset-names = "stmmaceth";
+ 			clocks = <&ccu CLK_BUS_EMAC>;
+-			clock-names = "ahb";
++			clock-names = "stmmaceth";
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
+ 			pinctrl-names = "default";
+ 			pinctrl-0 = <&rgmii_pins>;
+ 			phy-mode = "rgmii";
+-			phy = <&phy1>;
++			phy-handle = <&ext_rgmii_phy>;
+ 			status = "okay";
+ 
+-			phy1: ethernet-phy@1 {
+-				reg = <1>;
++			mdio: mdio {
++				compatible = "snps,dwmac-mdio";
++				#address-cells = <1>;
++				#size-cells = <0>;
++				ext_rgmii_phy: ethernet-phy@1 {
++					compatible = "ethernet-phy-ieee802.3-c22";
++					reg = <1>;
++				};
+ 			};
+ 		};
+ 	};
+@@ -30,21 +43,17 @@
+ 
+ &pio {
+ 	rmii_pins: rmii_pins {
+-		allwinner,pins = "PD10", "PD11", "PD13", "PD14",
+-				 "PD17", "PD18", "PD19", "PD20",
+-				 "PD22", "PD23";
+-		allwinner,function = "emac";
+-		allwinner,drive = <3>;
+-		allwinner,pull = <0>;
++		pins = "PD10", "PD11", "PD13", "PD14", "PD17",
++		       "PD18", "PD19", "PD20", "PD22", "PD23";
++		function = "emac";
++		drive-strength = <40>;
+ 	};
+ 
+ 	rgmii_pins: rgmii_pins {
+-		allwinner,pins = "PD8", "PD9", "PD10", "PD11",
+-				 "PD12", "PD13", "PD15",
+-				 "PD16", "PD17", "PD18", "PD19",
+-				 "PD20", "PD21", "PD22", "PD23";
+-		allwinner,function = "emac";
+-		allwinner,drive = <3>;
+-		allwinner,pull = <0>;
++		pins = "PD8", "PD9", "PD10", "PD11", "PD12",
++		       "PD13", "PD15", "PD16", "PD17", "PD18",
++		       "PD19", "PD20", "PD21", "PD22", "PD23";
++		function = "emac";
++		drive-strength = <40>;
+ 	};
+ };
+diff --git a/configs/sopine_baseboard_defconfig b/configs/sopine_baseboard_defconfig
+index c79c111b5d..14c29ea238 100644
+--- a/configs/sopine_baseboard_defconfig
++++ b/configs/sopine_baseboard_defconfig
+@@ -15,6 +15,7 @@ CONFIG_DEFAULT_DEVICE_TREE="sun50i-a64-sopine-baseboard"
+ # CONFIG_CMD_FLASH is not set
+ # CONFIG_SPL_DOS_PARTITION is not set
+ # CONFIG_SPL_EFI_PARTITION is not set
++CONFIG_PHY_REALTEK=y
+ CONFIG_SUN8I_EMAC=y
+ CONFIG_USB_EHCI_HCD=y
+ CONFIG_SYS_USB_EVENT_POLL_VIA_INT_QUEUE=y
+-- 
+2.17.1
+

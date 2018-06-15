@@ -1,0 +1,61 @@
+From 818ebc497d9b8ea96d5d60ce93065c6f0664f312 Mon Sep 17 00:00:00 2001
+From: Vasily Khoruzhick <anarsoul@gmail.com>
+Date: Mon, 22 Jan 2018 22:45:41 -0800
+Subject: [PATCH 09/16] mmc: sunxi: run calibration on A64
+
+Along with using new mode it fixes eMMC instability on Pinebook
+
+Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
+---
+ arch/arm/include/asm/arch-sunxi/mmc.h |  6 +++++-
+ drivers/mmc/sunxi_mmc.c               | 11 +++++++++++
+ 2 files changed, 16 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/include/asm/arch-sunxi/mmc.h b/arch/arm/include/asm/arch-sunxi/mmc.h
+index 1574b8e8fe..d6664a01f2 100644
+--- a/arch/arm/include/asm/arch-sunxi/mmc.h
++++ b/arch/arm/include/asm/arch-sunxi/mmc.h
+@@ -46,7 +46,9 @@ struct sunxi_mmc {
+ 	u32 cbda;		/* 0x94 */
+ 	u32 res2[26];
+ #ifdef CONFIG_SUNXI_GEN_SUN6I
+-	u32 res3[64];
++	u32 res3[17];
++	u32 samp_dl;
++	u32 res4[46];
+ #endif
+ 	u32 fifo;		/* 0x100 / 0x200 FIFO access address */
+ };
+@@ -130,5 +132,7 @@ struct sunxi_mmc {
+ #define SUNXI_MMC_COMMON_CLK_GATE		(1 << 16)
+ #define SUNXI_MMC_COMMON_RESET			(1 << 18)
+ 
++#define SUNXI_MMC_CAL_DL_SW_EN		(0x1 << 7)
++
+ struct mmc *sunxi_mmc_init(int sdc_no);
+ #endif /* _SUNXI_MMC_H */
+diff --git a/drivers/mmc/sunxi_mmc.c b/drivers/mmc/sunxi_mmc.c
+index 43c6d7c346..624c907154 100644
+--- a/drivers/mmc/sunxi_mmc.c
++++ b/drivers/mmc/sunxi_mmc.c
+@@ -225,6 +225,17 @@ static int mmc_config_clock(struct sunxi_mmc_priv *priv, struct mmc *mmc)
+ 	rval &= ~SUNXI_MMC_CLK_DIVIDER_MASK;
+ 	writel(rval, &priv->reg->clkcr);
+ 
++#ifdef CONFIG_MACH_SUN50I
++	/* A64 needs to run calibration on eMMC controller and we
++	 * have to set delay of zero before starting calibration.
++	 * Allwinner BSP driver sets a delay only in the case of
++	 * using HS400 which is not supported by mainline U-Boot or
++	 * Linux at the moment
++	 */
++	if (priv->mmc_no == 2)
++		writel(SUNXI_MMC_CAL_DL_SW_EN, &priv->reg->samp_dl);
++#endif
++
+ 	/* Re-enable Clock */
+ 	rval |= SUNXI_MMC_CLK_ENABLE;
+ 	writel(rval, &priv->reg->clkcr);
+-- 
+2.17.1
+

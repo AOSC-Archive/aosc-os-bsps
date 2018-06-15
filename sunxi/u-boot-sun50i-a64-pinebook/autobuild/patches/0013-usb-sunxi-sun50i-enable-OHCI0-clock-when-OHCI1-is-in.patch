@@ -1,0 +1,63 @@
+From a1687dc3a0e4686b9294467be2e1d93661c3c43d Mon Sep 17 00:00:00 2001
+From: Vasily Khoruzhick <anarsoul@gmail.com>
+Date: Tue, 5 Jun 2018 20:34:58 -0700
+Subject: [PATCH 13/16] usb: sunxi: sun50i: enable OHCI0 clock when OHCI1 is in
+ use
+
+On A64 OHCI1 clock source is OHCI0 clock, so we need to enable OHCI0
+clock when OHCI1 is in use.
+
+Fixes commit dd3228170ad7 ("usb: sunxi: Switch to use generic-phy")
+
+Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
+---
+ drivers/usb/host/ohci-sunxi.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/usb/host/ohci-sunxi.c b/drivers/usb/host/ohci-sunxi.c
+index 19f99adcf1..2b99169da6 100644
+--- a/drivers/usb/host/ohci-sunxi.c
++++ b/drivers/usb/host/ohci-sunxi.c
+@@ -25,6 +25,7 @@
+ struct ohci_sunxi_cfg {
+ 	bool has_reset;
+ 	u32 extra_ahb_gate_mask;
++	u32 extra_usb_gate_mask;
+ };
+ 
+ struct ohci_sunxi_priv {
+@@ -89,7 +90,8 @@ no_phy:
+ 
+ 	setbits_le32(&priv->ccm->ahb_gate0,
+ 		     priv->ahb_gate_mask | extra_ahb_gate_mask);
+-	setbits_le32(&priv->ccm->usb_clk_cfg, priv->usb_gate_mask);
++	setbits_le32(&priv->ccm->usb_clk_cfg,
++		     priv->usb_gate_mask | priv->cfg->extra_usb_gate_mask);
+ 	if (priv->cfg->has_reset)
+ 		setbits_le32(&priv->ccm->ahb_reset0_cfg,
+ 			     priv->ahb_gate_mask | extra_ahb_gate_mask);
+@@ -135,6 +137,12 @@ static const struct ohci_sunxi_cfg sun8i_h3_cfg = {
+ 	.extra_ahb_gate_mask = 1 << AHB_GATE_OFFSET_USB_EHCI0,
+ };
+ 
++static const struct ohci_sunxi_cfg sun50i_a64_cfg = {
++	.has_reset = true,
++	.extra_ahb_gate_mask = 1 << AHB_GATE_OFFSET_USB_EHCI0,
++	.extra_usb_gate_mask = CCM_USB_CTRL_OHCI0_CLK,
++};
++
+ static const struct udevice_id ohci_usb_ids[] = {
+ 	{
+ 		.compatible = "allwinner,sun4i-a10-ohci",
+@@ -170,7 +178,7 @@ static const struct udevice_id ohci_usb_ids[] = {
+ 	},
+ 	{
+ 		.compatible = "allwinner,sun50i-a64-ohci",
+-		.data = (ulong)&sun6i_a31_cfg,
++		.data = (ulong)&sun50i_a64_cfg,
+ 	},
+ 	{ /* sentinel */ }
+ };
+-- 
+2.17.1
+

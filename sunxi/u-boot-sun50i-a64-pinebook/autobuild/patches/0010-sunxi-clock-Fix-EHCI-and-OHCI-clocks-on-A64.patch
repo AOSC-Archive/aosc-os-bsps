@@ -1,0 +1,34 @@
+From 1104bc70fab6d3498b7bb5ad4adf8a469c798a42 Mon Sep 17 00:00:00 2001
+From: Vasily Khoruzhick <anarsoul@gmail.com>
+Date: Tue, 5 Jun 2018 20:32:41 -0700
+Subject: [PATCH 10/16] sunxi: clock: Fix EHCI and OHCI clocks on A64
+
+EHCI0 is bit 24, EHCI1 - 25, OHCI0 - 28, OHCI1 - 29
+
+Fixes commit fef73766d9ad ("sunxi: clock: Fix OHCI clock gating for H3/H5")
+
+Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
+---
+ arch/arm/include/asm/arch-sunxi/clock_sun6i.h | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/include/asm/arch-sunxi/clock_sun6i.h b/arch/arm/include/asm/arch-sunxi/clock_sun6i.h
+index 8acf79fbba..8afeaf872e 100644
+--- a/arch/arm/include/asm/arch-sunxi/clock_sun6i.h
++++ b/arch/arm/include/asm/arch-sunxi/clock_sun6i.h
+@@ -280,8 +280,10 @@ struct sunxi_ccm_reg {
+ #define AHB_GATE_OFFSET_USB_EHCI1	26
+ #define AHB_GATE_OFFSET_USB_EHCI0	24
+ #elif defined(CONFIG_MACH_SUN50I)
+-#define AHB_GATE_OFFSET_USB_OHCI0	29
+-#define AHB_GATE_OFFSET_USB_EHCI0	25
++#define AHB_GATE_OFFSET_USB_OHCI0	28
++#define AHB_GATE_OFFSET_USB_OHCI1	29
++#define AHB_GATE_OFFSET_USB_EHCI0	24
++#define AHB_GATE_OFFSET_USB_EHCI1	25
+ #else
+ #define AHB_GATE_OFFSET_USB_OHCI1	30
+ #define AHB_GATE_OFFSET_USB_OHCI0	29
+-- 
+2.17.1
+

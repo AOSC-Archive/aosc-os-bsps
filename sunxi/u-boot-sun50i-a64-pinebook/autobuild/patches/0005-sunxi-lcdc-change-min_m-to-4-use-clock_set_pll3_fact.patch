@@ -1,0 +1,53 @@
+From e0fa81ec40a7757aba7d77fda68fa3a8dcbe19bb Mon Sep 17 00:00:00 2001
+From: Vasily Khoruzhick <anarsoul@gmail.com>
+Date: Tue, 6 Feb 2018 22:10:55 -0800
+Subject: [PATCH 05/16] sunxi: lcdc: change min_m to 4, use
+ clock_set_pll3_factors()
+
+---
+ drivers/video/sunxi/lcdc.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/video/sunxi/lcdc.c b/drivers/video/sunxi/lcdc.c
+index 63c47bf1bc..2942e6244e 100644
+--- a/drivers/video/sunxi/lcdc.c
++++ b/drivers/video/sunxi/lcdc.c
+@@ -217,13 +217,17 @@ void lcdc_pll_set(struct sunxi_ccm_reg *ccm, int tcon, int dotclock,
+ 	bool use_mipi_pll = false;
+ 
+ 	if (tcon == 0) {
+-#if defined(CONFIG_VIDEO_LCD_IF_PARALLEL) || defined(CONFIG_SUNXI_DE2)
++#ifdef CONFIG_VIDEO_LCD_IF_PARALLEL
+ 		min_m = 6;
+ 		max_m = 127;
+ #endif
+ #ifdef CONFIG_VIDEO_LCD_IF_LVDS
+ 		min_m = 7;
+ 		max_m = 7;
++#endif
++#ifdef CONFIG_SUNXI_DE2
++		min_m = 4;
++		max_m = 127;
+ #endif
+ 	} else {
+ 		min_m = 1;
+@@ -287,7 +291,16 @@ void lcdc_pll_set(struct sunxi_ccm_reg *ccm, int tcon, int dotclock,
+ 	} else
+ #endif
+ 	{
++#ifdef CONFIG_SUNXI_DE2
++		if ((best_n * 3000) < 192000) {
++			clock_set_pll3_factors(4, best_n);
++			best_m *= 2;
++		} else {
++			clock_set_pll3(best_n * 3000000);
++		}
++#else
+ 		clock_set_pll3(best_n * 3000000);
++#endif
+ 		debug("dotclock: %dkHz = %dkHz: (%d * 3MHz * %d) / %d\n",
+ 		      dotclock,
+ 		      (best_double + 1) * clock_get_pll3() / best_m / 1000,
+-- 
+2.17.1
+
