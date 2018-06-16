@@ -1,4 +1,4 @@
-KERNVER=4.13.10
+KERNVER=4.14.49
 
 mkdir -p "$PKGDIR"/usr/lib/aosc-os-armel-sunxi-boot/
 mkdir -p "$PKGDIR"/usr/lib/aosc-os-armel-sunxi-boot/linux-kernel-${KERNVER}-aosc-sunxi/modules
