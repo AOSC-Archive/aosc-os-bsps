@@ -1,6 +1,6 @@
 PKGNAME=linux+kernel+sunxi+kvm
 PKGSEC=kernel
-PKGDEP="linux-kernel-sunxi-kvm-4.13.10"
+PKGDEP="linux-kernel-sunxi-kvm-4.14.49"
 PKGDES="The Linux Kernel optimized for Allwinner/sunXi SoCs, for ARMv7 CPUs w/ Virtualization Extension"
 
 ABSTRIP=no
