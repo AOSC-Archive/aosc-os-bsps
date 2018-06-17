@@ -1,13 +1,13 @@
-From d0c26a35ec4b0273babad384958c99aa107899e4 Mon Sep 17 00:00:00 2001
+From 8df4acdc4d2498b98e40bfe305e037516c8c1029 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 17 Jun 2018 22:56:56 +0800
-Subject: [PATCH 2/2] arm64: allwinner: a64: support TERES-I
+Subject: [PATCH] arm64: allwinner: a64: support TERES-I
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---
  arch/arm64/boot/dts/allwinner/Makefile        |   1 +
- .../boot/dts/allwinner/sun50i-a64-teres-i.dts | 317 ++++++++++++++++++
- 2 files changed, 318 insertions(+)
+ .../boot/dts/allwinner/sun50i-a64-teres-i.dts | 333 ++++++++++++++++++
+ 2 files changed, 334 insertions(+)
  create mode 100644 arch/arm64/boot/dts/allwinner/sun50i-a64-teres-i.dts
 
 diff --git a/arch/arm64/boot/dts/allwinner/Makefile b/arch/arm64/boot/dts/allwinner/Makefile
@@ -24,10 +24,10 @@ index 9d9e4a09f476..8540ea85fc97 100644
  dtb-$(CONFIG_ARCH_SUNXI) += sun50i-h5-orangepi-zero-plus.dtb
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-teres-i.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-teres-i.dts
 new file mode 100644
-index 000000000000..047d8a2c86e2
+index 000000000000..1e6f2046f041
 --- /dev/null
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-teres-i.dts
-@@ -0,0 +1,317 @@
+@@ -0,0 +1,333 @@
 +/*
 + * Copyright (c) 2018 Icenowy Zheng <icenowy@aosc.io>
 + *
@@ -107,6 +107,22 @@ index 000000000000..047d8a2c86e2
 +			linux,input-type = <EV_SW>;
 +			linux,code = <SW_LID>;
 +			linux,can-disable;
++		};
++	};
++
++	leds {
++		compatible = "gpio-leds";
++
++		numlock {
++			label = "teres-i:green:numlock";
++			gpios = <&pio 2 7 GPIO_ACTIVE_HIGH>;
++			linux,default-trigger = "kbd-numlock";
++		};
++
++		capslock {
++			label = "teres-i:green:capslock";
++			gpios = <&pio 2 4 GPIO_ACTIVE_HIGH>;
++			linux,default-trigger = "kbd-capslock";
 +		};
 +	};
 +
