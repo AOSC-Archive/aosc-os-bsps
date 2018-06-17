@@ -1,0 +1,32 @@
+From a25690ecab316089917f98f912e4039139e5c766 Mon Sep 17 00:00:00 2001
+From: Vasily Khoruzhick <anarsoul@gmail.com>
+Date: Sat, 23 Dec 2017 22:26:44 -0800
+Subject: [PATCH 03/16] net: nfs: don't fail when nfs_read_reply returns
+ -NFS_RPC_DROP
+
+That can happen if duplicate UDP packet arrived, and that's not uncommon.
+
+Anyway, we ignore packets with rpc_id lower than last we sent for other requests,
+so it makes sense to do that for read request as well.
+
+Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
+---
+ net/nfs.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/net/nfs.c b/net/nfs.c
+index 83ed0a7c37..9a16765ba1 100644
+--- a/net/nfs.c
++++ b/net/nfs.c
+@@ -822,6 +822,8 @@ static void nfs_handler(uchar *pkt, unsigned dest, struct in_addr sip,
+ 
+ 	case STATE_READ_REQ:
+ 		rlen = nfs_read_reply(pkt, len);
++		if (rlen == -NFS_RPC_DROP)
++			break;
+ 		net_set_timeout_handler(nfs_timeout, nfs_timeout_handler);
+ 		if (rlen > 0) {
+ 			nfs_offset += rlen;
+-- 
+2.17.1
+
