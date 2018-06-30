@@ -229,8 +229,8 @@ index 000000000000..14a48e1b892e
 +
 +&reg_dcdc5 {
 +	regulator-always-on;
-+	regulator-min-microvolt = <1500000>;
-+	regulator-max-microvolt = <1500000>;
++	regulator-min-microvolt = <1200000>;
++	regulator-max-microvolt = <1200000>;
 +	regulator-name = "vcc-dram";
 +};
 +
