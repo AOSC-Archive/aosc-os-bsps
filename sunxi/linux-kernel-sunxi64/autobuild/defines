@@ -1,8 +1,8 @@
-PKGNAME=linux-kernel-sunxi64-4.14.52
+PKGNAME=linux-kernel-sunxi64-4.14.62
 PKGSEC=kernel
 PKGDEP=""
 BUILDDEP="bc dracut git"
-PKGDES="Linux Kernel version 4.14.52 optimized for Allwinner/sunXi SoCs with 64-bit ARMv8 cores"
+PKGDES="Linux Kernel version 4.14.62 optimized for Allwinner/sunXi SoCs with 64-bit ARMv8 cores"
 
 ABSTRIP=no
 ABELFDEP=no
