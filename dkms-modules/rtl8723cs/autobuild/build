@@ -7,6 +7,11 @@ pushd "$PKGDIR"/usr/src/rtl8723cs-$DATE
 git checkout $REV
 rm -rf .git
 sed -i 's/obj-$(CONFIG_RTL8723CS)/obj-m/g' Makefile
+
+# Ugly hack for -next kernel
+
+sed -i 's/4, 19, 0/4, 18, 0/g' os_dep/linux/os_intfs.c
+
 cat > dkms.conf << EOF
 PACKAGE_NAME="rtl8723cs"
 PACKAGE_VERSION="$DATE"
