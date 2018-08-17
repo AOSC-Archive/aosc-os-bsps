@@ -1,7 +1,7 @@
-From d0d703ddc5144c94e13bf14a5e874bd6bc735876 Mon Sep 17 00:00:00 2001
+From eae9bdd5d2e25523f4270ea715d0b1d50e0b4d1b Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 7 May 2017 14:41:24 +0800
-Subject: [PATCH 64/80] arm64: allwinner: a64: enable ANX6345 bridge on
+Subject: [PATCH 064/112] arm64: allwinner: a64: enable ANX6345 bridge on
  Pinebook
 
 Pinebook has an ANX6345 bridge connected to the RGB666 LCD output, and
@@ -16,18 +16,21 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 43 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinebook.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinebook.dts
-index 6cb145bad44c..a5ffad7bfbcc 100644
+index 4fabe22ece47..9c0d0eb89002 100644
 --- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinebook.dts
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinebook.dts
-@@ -86,10 +86,18 @@
- 	status = "okay";
+@@ -66,6 +66,10 @@
+ 	};
  };
  
 +&de {
 +	status = "okay";
 +};
 +
- &ehci1 {
+ &ehci0 {
+ 	phys = <&usbphy 0>;
+ 	phy-names = "usb";
+@@ -76,6 +80,10 @@
  	status = "okay";
  };
  
@@ -38,7 +41,7 @@ index 6cb145bad44c..a5ffad7bfbcc 100644
  &mmc0 {
  	pinctrl-names = "default";
  	pinctrl-0 = <&mmc0_pins>;
-@@ -140,6 +148,27 @@
+@@ -128,6 +136,27 @@
  	status = "okay";
  };
  
@@ -66,8 +69,8 @@ index 6cb145bad44c..a5ffad7bfbcc 100644
  &r_rsb {
  	status = "okay";
  
-@@ -274,6 +303,20 @@
- 	edp-1v2-supply = <&reg_fldo1>;
+@@ -276,6 +305,20 @@
+ 	vcc-hdmi-supply = <&reg_dldo1>;
  };
  
 +&tcon0 {
@@ -88,5 +91,5 @@ index 6cb145bad44c..a5ffad7bfbcc 100644
  	pinctrl-names = "default";
  	pinctrl-0 = <&uart0_pins_a>;
 -- 
-2.17.1
+2.18.0
 
