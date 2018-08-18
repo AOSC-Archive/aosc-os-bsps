@@ -1,0 +1,33 @@
+From 7bcf69b455da555c10032c046e25b8f2de7144c7 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Sat, 18 Aug 2018 13:31:31 +0800
+Subject: [PATCH] sunxi: fix sid base address macro name for H6
+
+In the current H6 CPU memory space code, the SUNXI in the macro name of
+the SID address base is wrongly spelled as SNUXI, which leads to SID
+readout not working.
+
+Fix this macro name.
+
+Fixes: 55f6b1c351c9 ("sunxi: add basic memory map definitions of H6 SoC")
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm/include/asm/arch-sunxi/cpu_sun50i_h6.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/include/asm/arch-sunxi/cpu_sun50i_h6.h b/arch/arm/include/asm/arch-sunxi/cpu_sun50i_h6.h
+index f568def8b4..41a9b0fc47 100644
+--- a/arch/arm/include/asm/arch-sunxi/cpu_sun50i_h6.h
++++ b/arch/arm/include/asm/arch-sunxi/cpu_sun50i_h6.h
+@@ -20,7 +20,7 @@
+ #define SUNXI_DMA_BASE			0x03002000
+ /* SID address space starts at 0x03006000, but e-fuse is at offset 0x200 */
+ #define SUNXI_SIDC_BASE			0x03006000
+-#define SNUXI_SID_BASE			0x03006200
++#define SUNXI_SID_BASE			0x03006200
+ #define SUNXI_TIMER_BASE		0x03009000
+ #define SUNXI_PIO_BASE			0x0300B000
+ #define SUNXI_PSI_BASE			0x0300C000
+-- 
+2.18.0
+
