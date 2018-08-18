@@ -1,0 +1,39 @@
+From 2cd01285b53f376e439e4cbdbce808ca8231ef84 Mon Sep 17 00:00:00 2001
+From: Simon Glass <sjg@chromium.org>
+Date: Fri, 6 Jul 2018 10:27:18 -0600
+Subject: [PATCH 016/144] binman: Tidy up execution of tests
+
+Move all the test execution into the same mechanism so that we can request
+a particular test (from any suite) by passing it as an argument to
+'binman -t'.
+
+Signed-off-by: Simon Glass <sjg@chromium.org>
+---
+ tools/binman/binman.py | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
+
+diff --git a/tools/binman/binman.py b/tools/binman/binman.py
+index 944fd5d7ba..74862b1146 100755
+--- a/tools/binman/binman.py
++++ b/tools/binman/binman.py
+@@ -54,14 +54,12 @@ def RunTests(debug, args):
+ 
+     # Run the entry tests first ,since these need to be the first to import the
+     # 'entry' module.
+-    suite = unittest.TestLoader().loadTestsFromTestCase(entry_test.TestEntry)
+-    suite.run(result)
+     test_name = args and args[0] or None
+-    for module in (ftest.TestFunctional, fdt_test.TestFdt, elf_test.TestElf,
+-                   image_test.TestImage):
++    for module in (entry_test.TestEntry, ftest.TestFunctional, fdt_test.TestFdt,
++                   elf_test.TestElf, image_test.TestImage):
+         if test_name:
+             try:
+-                suite = unittest.TestLoader().loadTestsFromName(args[0], module)
++                suite = unittest.TestLoader().loadTestsFromName(test_name, module)
+             except AttributeError:
+                 continue
+         else:
+-- 
+2.18.0
+

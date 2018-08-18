@@ -1,0 +1,218 @@
+From d0626e0b3ca76253c3c296248913f43af8125d9e Mon Sep 17 00:00:00 2001
+From: Daniel Schwierzeck <daniel.schwierzeck@gmail.com>
+Date: Fri, 1 Jun 2018 11:57:37 +0200
+Subject: [PATCH 080/144] MIPS: add MIPS Release 6 build coverage for Boston
+ boards
+
+Now that Travis CI is building with gcc-7.3.0, we can add
+build coverage for all combinations of MIPS Release 6
+instruction sets (MIPS32, MIPS64, Big Endian, Little Endian).
+
+Add mew default configs for Boston board for all MIPS Release 6
+variants.
+
+Signed-off-by: Daniel Schwierzeck <daniel.schwierzeck@gmail.com>
+---
+ configs/boston32r6_defconfig   | 41 +++++++++++++++++++++++++++++++++
+ configs/boston32r6el_defconfig | 42 ++++++++++++++++++++++++++++++++++
+ configs/boston64r6_defconfig   | 41 +++++++++++++++++++++++++++++++++
+ configs/boston64r6el_defconfig | 42 ++++++++++++++++++++++++++++++++++
+ 4 files changed, 166 insertions(+)
+ create mode 100644 configs/boston32r6_defconfig
+ create mode 100644 configs/boston32r6el_defconfig
+ create mode 100644 configs/boston64r6_defconfig
+ create mode 100644 configs/boston64r6el_defconfig
+
+diff --git a/configs/boston32r6_defconfig b/configs/boston32r6_defconfig
+new file mode 100644
+index 0000000000..1cd5667ce5
+--- /dev/null
++++ b/configs/boston32r6_defconfig
+@@ -0,0 +1,41 @@
++CONFIG_MIPS=y
++CONFIG_SYS_TEXT_BASE=0x9FC00000
++CONFIG_TARGET_BOSTON=y
++CONFIG_CPU_MIPS32_R6=y
++# CONFIG_MIPS_BOOT_CMDLINE_LEGACY is not set
++# CONFIG_MIPS_BOOT_ENV_LEGACY is not set
++CONFIG_MIPS_BOOT_FDT=y
++CONFIG_DEFAULT_DEVICE_TREE="img,boston"
++CONFIG_DISTRO_DEFAULTS=y
++CONFIG_FIT=y
++CONFIG_FIT_VERBOSE=y
++CONFIG_FIT_BEST_MATCH=y
++CONFIG_OF_STDOUT_VIA_ALIAS=y
++CONFIG_SYS_PROMPT="boston # "
++# CONFIG_CMD_ELF is not set
++CONFIG_CMD_GREPENV=y
++CONFIG_CMD_MEMTEST=y
++# CONFIG_CMD_LOADB is not set
++# CONFIG_CMD_LOADS is not set
++CONFIG_CMD_PCI=y
++CONFIG_CMD_SNTP=y
++CONFIG_CMD_DNS=y
++CONFIG_CMD_LINK_LOCAL=y
++CONFIG_CMD_TIME=y
++CONFIG_CMD_EXT4_WRITE=y
++# CONFIG_DOS_PARTITION is not set
++# CONFIG_ISO_PARTITION is not set
++CONFIG_OF_EMBED=y
++CONFIG_ENV_IS_IN_FLASH=y
++CONFIG_NET_RANDOM_ETHADDR=y
++CONFIG_CLK=y
++CONFIG_MTD=y
++CONFIG_MTD_NOR_FLASH=y
++CONFIG_CFI_FLASH=y
++CONFIG_DM_ETH=y
++CONFIG_PCH_GBE=y
++CONFIG_PCI=y
++CONFIG_DM_PCI=y
++CONFIG_PCI_XILINX=y
++CONFIG_SYS_NS16550=y
++CONFIG_LZ4=y
+diff --git a/configs/boston32r6el_defconfig b/configs/boston32r6el_defconfig
+new file mode 100644
+index 0000000000..c7f641c7d4
+--- /dev/null
++++ b/configs/boston32r6el_defconfig
+@@ -0,0 +1,42 @@
++CONFIG_MIPS=y
++CONFIG_SYS_TEXT_BASE=0x9FC00000
++CONFIG_TARGET_BOSTON=y
++CONFIG_SYS_LITTLE_ENDIAN=y
++CONFIG_CPU_MIPS32_R6=y
++# CONFIG_MIPS_BOOT_CMDLINE_LEGACY is not set
++# CONFIG_MIPS_BOOT_ENV_LEGACY is not set
++CONFIG_MIPS_BOOT_FDT=y
++CONFIG_DEFAULT_DEVICE_TREE="img,boston"
++CONFIG_DISTRO_DEFAULTS=y
++CONFIG_FIT=y
++CONFIG_FIT_VERBOSE=y
++CONFIG_FIT_BEST_MATCH=y
++CONFIG_OF_STDOUT_VIA_ALIAS=y
++CONFIG_SYS_PROMPT="boston # "
++# CONFIG_CMD_ELF is not set
++CONFIG_CMD_GREPENV=y
++CONFIG_CMD_MEMTEST=y
++# CONFIG_CMD_LOADB is not set
++# CONFIG_CMD_LOADS is not set
++CONFIG_CMD_PCI=y
++CONFIG_CMD_SNTP=y
++CONFIG_CMD_DNS=y
++CONFIG_CMD_LINK_LOCAL=y
++CONFIG_CMD_TIME=y
++CONFIG_CMD_EXT4_WRITE=y
++# CONFIG_DOS_PARTITION is not set
++# CONFIG_ISO_PARTITION is not set
++CONFIG_OF_EMBED=y
++CONFIG_ENV_IS_IN_FLASH=y
++CONFIG_NET_RANDOM_ETHADDR=y
++CONFIG_CLK=y
++CONFIG_MTD=y
++CONFIG_MTD_NOR_FLASH=y
++CONFIG_CFI_FLASH=y
++CONFIG_DM_ETH=y
++CONFIG_PCH_GBE=y
++CONFIG_PCI=y
++CONFIG_DM_PCI=y
++CONFIG_PCI_XILINX=y
++CONFIG_SYS_NS16550=y
++CONFIG_LZ4=y
+diff --git a/configs/boston64r6_defconfig b/configs/boston64r6_defconfig
+new file mode 100644
+index 0000000000..b4bb8a6d00
+--- /dev/null
++++ b/configs/boston64r6_defconfig
+@@ -0,0 +1,41 @@
++CONFIG_MIPS=y
++CONFIG_SYS_TEXT_BASE=0xFFFFFFFF9FC00000
++CONFIG_TARGET_BOSTON=y
++CONFIG_CPU_MIPS64_R6=y
++# CONFIG_MIPS_BOOT_CMDLINE_LEGACY is not set
++# CONFIG_MIPS_BOOT_ENV_LEGACY is not set
++CONFIG_MIPS_BOOT_FDT=y
++CONFIG_DEFAULT_DEVICE_TREE="img,boston"
++CONFIG_DISTRO_DEFAULTS=y
++CONFIG_FIT=y
++CONFIG_FIT_VERBOSE=y
++CONFIG_FIT_BEST_MATCH=y
++CONFIG_OF_STDOUT_VIA_ALIAS=y
++CONFIG_SYS_PROMPT="boston # "
++# CONFIG_CMD_ELF is not set
++CONFIG_CMD_GREPENV=y
++CONFIG_CMD_MEMTEST=y
++# CONFIG_CMD_LOADB is not set
++# CONFIG_CMD_LOADS is not set
++CONFIG_CMD_PCI=y
++CONFIG_CMD_SNTP=y
++CONFIG_CMD_DNS=y
++CONFIG_CMD_LINK_LOCAL=y
++CONFIG_CMD_TIME=y
++CONFIG_CMD_EXT4_WRITE=y
++# CONFIG_DOS_PARTITION is not set
++# CONFIG_ISO_PARTITION is not set
++CONFIG_OF_EMBED=y
++CONFIG_ENV_IS_IN_FLASH=y
++CONFIG_NET_RANDOM_ETHADDR=y
++CONFIG_CLK=y
++CONFIG_MTD=y
++CONFIG_MTD_NOR_FLASH=y
++CONFIG_CFI_FLASH=y
++CONFIG_DM_ETH=y
++CONFIG_PCH_GBE=y
++CONFIG_PCI=y
++CONFIG_DM_PCI=y
++CONFIG_PCI_XILINX=y
++CONFIG_SYS_NS16550=y
++CONFIG_LZ4=y
+diff --git a/configs/boston64r6el_defconfig b/configs/boston64r6el_defconfig
+new file mode 100644
+index 0000000000..1cd4836b58
+--- /dev/null
++++ b/configs/boston64r6el_defconfig
+@@ -0,0 +1,42 @@
++CONFIG_MIPS=y
++CONFIG_SYS_TEXT_BASE=0xFFFFFFFF9FC00000
++CONFIG_TARGET_BOSTON=y
++CONFIG_SYS_LITTLE_ENDIAN=y
++CONFIG_CPU_MIPS64_R6=y
++# CONFIG_MIPS_BOOT_CMDLINE_LEGACY is not set
++# CONFIG_MIPS_BOOT_ENV_LEGACY is not set
++CONFIG_MIPS_BOOT_FDT=y
++CONFIG_DEFAULT_DEVICE_TREE="img,boston"
++CONFIG_DISTRO_DEFAULTS=y
++CONFIG_FIT=y
++CONFIG_FIT_VERBOSE=y
++CONFIG_FIT_BEST_MATCH=y
++CONFIG_OF_STDOUT_VIA_ALIAS=y
++CONFIG_SYS_PROMPT="boston # "
++# CONFIG_CMD_ELF is not set
++CONFIG_CMD_GREPENV=y
++CONFIG_CMD_MEMTEST=y
++# CONFIG_CMD_LOADB is not set
++# CONFIG_CMD_LOADS is not set
++CONFIG_CMD_PCI=y
++CONFIG_CMD_SNTP=y
++CONFIG_CMD_DNS=y
++CONFIG_CMD_LINK_LOCAL=y
++CONFIG_CMD_TIME=y
++CONFIG_CMD_EXT4_WRITE=y
++# CONFIG_DOS_PARTITION is not set
++# CONFIG_ISO_PARTITION is not set
++CONFIG_OF_EMBED=y
++CONFIG_ENV_IS_IN_FLASH=y
++CONFIG_NET_RANDOM_ETHADDR=y
++CONFIG_CLK=y
++CONFIG_MTD=y
++CONFIG_MTD_NOR_FLASH=y
++CONFIG_CFI_FLASH=y
++CONFIG_DM_ETH=y
++CONFIG_PCH_GBE=y
++CONFIG_PCI=y
++CONFIG_DM_PCI=y
++CONFIG_PCI_XILINX=y
++CONFIG_SYS_NS16550=y
++CONFIG_LZ4=y
+-- 
+2.18.0
+

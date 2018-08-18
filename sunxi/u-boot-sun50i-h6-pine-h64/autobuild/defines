@@ -1,0 +1,9 @@
+PKGNAME=u-boot-sun50i-h6-pine-h64
+PKGDES="U-Boot for Pine H64"
+PKGEPOCH=2
+PKGSEC=embedded
+BUILDDEP="dtc swig"
+
+ABSTRIP=no
+ABELFDEP=no
+ABRPMAUTOPROVONLY=yes

@@ -1,0 +1,43 @@
+From 8b71e46ceab8b66208107de688cbb4dd25fe38cd Mon Sep 17 00:00:00 2001
+From: Ley Foon Tan <ley.foon.tan@intel.com>
+Date: Fri, 1 Jun 2018 16:52:20 +0800
+Subject: [PATCH 087/144] spi: cadence_qspi: Fix warning cast from pointer to
+ integer of different size
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Use "%p" to print cmdbuf.
+
+Compilation warning as below:
+
+  CC      spl/drivers/spi/cadence_qspi_apb.o
+  LD      spl/lib/built-in.o
+drivers/spi/cadence_qspi_apb.c: In function ‘cadence_qspi_apb_indirect_write_setup’:
+drivers/spi/cadence_qspi_apb.c:696:18: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+          cmdlen, (unsigned int)cmdbuf);
+
+Signed-off-by: Ley Foon Tan <ley.foon.tan@intel.com>
+Acked-by: Marek Vasut <marex@denx.de>
+---
+ drivers/spi/cadence_qspi_apb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/cadence_qspi_apb.c b/drivers/spi/cadence_qspi_apb.c
+index aa3a9ff5fa..a8af352030 100644
+--- a/drivers/spi/cadence_qspi_apb.c
++++ b/drivers/spi/cadence_qspi_apb.c
+@@ -692,8 +692,8 @@ int cadence_qspi_apb_indirect_write_setup(struct cadence_spi_platdata *plat,
+ 	unsigned int addr_bytes = cmdlen > 4 ? 4 : 3;
+ 
+ 	if (cmdlen < 4 || cmdbuf == NULL) {
+-		printf("QSPI: iInvalid input argument, len %d cmdbuf 0x%08x\n",
+-		       cmdlen, (unsigned int)cmdbuf);
++		printf("QSPI: Invalid input argument, len %d cmdbuf %p\n",
++		       cmdlen, cmdbuf);
+ 		return -EINVAL;
+ 	}
+ 	/* Setup the indirect trigger address */
+-- 
+2.18.0
+

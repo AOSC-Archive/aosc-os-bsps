@@ -1,0 +1,37 @@
+From 8c9f247a1a2031b200c04f297d5b9ae1353d9d90 Mon Sep 17 00:00:00 2001
+From: Ley Foon Tan <ley.foon.tan@intel.com>
+Date: Thu, 12 Jul 2018 19:13:34 +0800
+Subject: [PATCH 109/144] arm: socfpga: Fix: Compile MCR instruction on ARM
+ 32-bit only
+
+MCR instruction only available in ARM 32-bit. So, compile MCR instruction
+when ARM 32-bit is enabled.
+
+Signed-off-by: Ley Foon Tan <ley.foon.tan@intel.com>
+---
+ arch/arm/mach-socfpga/board.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/arm/mach-socfpga/board.c b/arch/arm/mach-socfpga/board.c
+index cb6530f7e8..26d84be6e9 100644
+--- a/arch/arm/mach-socfpga/board.c
++++ b/arch/arm/mach-socfpga/board.c
+@@ -19,6 +19,7 @@
+ DECLARE_GLOBAL_DATA_PTR;
+ 
+ void s_init(void) {
++#ifndef CONFIG_ARM64
+ 	/*
+ 	 * Preconfigure ACTLR, make sure Write Full Line of Zeroes is disabled.
+ 	 * This is optional on CycloneV / ArriaV.
+@@ -29,6 +30,7 @@ void s_init(void) {
+ 		"isb\n"
+ 		"dsb\n"
+ 	::"r"(0x0));
++#endif
+ }
+ 
+ /*
+-- 
+2.18.0
+

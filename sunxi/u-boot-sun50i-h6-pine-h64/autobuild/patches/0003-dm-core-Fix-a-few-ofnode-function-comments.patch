@@ -1,0 +1,44 @@
+From fbe8d033fcc64eef90d3e9642545804a0ab9b74f Mon Sep 17 00:00:00 2001
+From: Simon Glass <sjg@chromium.org>
+Date: Mon, 11 Jun 2018 13:07:11 -0600
+Subject: [PATCH 003/144] dm: core: Fix a few ofnode function comments
+
+Tidy up three return-value errors.
+
+Signed-off-by: Simon Glass <sjg@chromium.org>
+---
+ include/dm/ofnode.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/include/dm/ofnode.h b/include/dm/ofnode.h
+index dbb4273db6..85cb87b83f 100644
+--- a/include/dm/ofnode.h
++++ b/include/dm/ofnode.h
+@@ -262,6 +262,7 @@ const char *ofnode_read_string(ofnode node, const char *propname);
+  * @propname:	name of the property to read
+  * @out_values:	pointer to return value, modified only if return value is 0
+  * @sz:		number of array elements to read
++ * @return 0 if OK, -ve on error
+  *
+  * Search for a property in a device node and read 32-bit value(s) from
+  * it. Returns 0 on success, -EINVAL if the property does not exist,
+@@ -490,6 +491,7 @@ ofnode ofnode_path(const char *path);
+  * This looks for a property within the /chosen node and returns its value
+  *
+  * @propname: Property name to look for
++ * @return property value if found, else NULL
+  */
+ const char *ofnode_get_chosen_prop(const char *propname);
+ 
+@@ -645,7 +647,7 @@ int ofnode_read_simple_size_cells(ofnode node);
+  *   new platforms.
+  *
+  * @node: node to check
+- * @eturns true if node is needed in SPL/TL, false otherwise
++ * @return true if node is needed in SPL/TL, false otherwise
+  */
+ bool ofnode_pre_reloc(ofnode node);
+ 
+-- 
+2.18.0
+

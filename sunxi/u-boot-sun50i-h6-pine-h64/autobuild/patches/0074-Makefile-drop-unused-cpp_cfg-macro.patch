@@ -1,0 +1,35 @@
+From bf5dd78cd4b26e8e9186311da14793110b9c3278 Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Mon, 18 Jun 2018 07:59:25 +0300
+Subject: [PATCH 074/144] Makefile: drop unused cpp_cfg macro
+
+Commit e19b0fb4851f (kbuild: generate u-boot.cfg as a byproduct of
+include/autoconf.mk) removed the use of the cpp_cfg macro in Makefile,
+but forgot to remove its definition.
+
+Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+Reviewed-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+---
+ Makefile | 5 -----
+ 1 file changed, 5 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 7d5f801eea..3516671320 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1053,11 +1053,6 @@ ifndef CONFIG_SYS_UBOOT_START
+ CONFIG_SYS_UBOOT_START := 0
+ endif
+ 
+-# Create a file containing the configuration options the image was built with
+-quiet_cmd_cpp_cfg = CFG     $@
+-cmd_cpp_cfg = $(CPP) -Wp,-MD,$(depfile) $(cpp_flags) $(LDPPFLAGS) -ansi \
+-	-DDO_DEPS_ONLY -D__ASSEMBLY__ -x assembler-with-cpp -P -dM -E -o $@ $<
+-
+ # Boards with more complex image requirments can provide an .its source file
+ # or a generator script
+ ifneq ($(CONFIG_SPL_FIT_SOURCE),"")
+-- 
+2.18.0
+

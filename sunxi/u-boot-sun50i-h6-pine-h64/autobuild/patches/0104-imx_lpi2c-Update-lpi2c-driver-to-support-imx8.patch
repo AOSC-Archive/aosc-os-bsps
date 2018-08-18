@@ -1,0 +1,45 @@
+From 9b2ebcc06048cf49c2f8a8d152177ed1a8363878 Mon Sep 17 00:00:00 2001
+From: Ye Li <ye.li@nxp.com>
+Date: Sun, 8 Jul 2018 11:46:40 +0800
+Subject: [PATCH 104/144] imx_lpi2c: Update lpi2c driver to support imx8
+
+Add compatible string for i.MX8 and move imx_lpi2c.h from mx7ulp directory
+to u-boot include directory as a common header file.
+
+Signed-off-by: Ye Li <ye.li@nxp.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Heiko Schocher <hs@denx.de>
+---
+ drivers/i2c/imx_lpi2c.c                                   | 3 ++-
+ {arch/arm/include/asm/arch-mx7ulp => include}/imx_lpi2c.h | 0
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+ rename {arch/arm/include/asm/arch-mx7ulp => include}/imx_lpi2c.h (100%)
+
+diff --git a/drivers/i2c/imx_lpi2c.c b/drivers/i2c/imx_lpi2c.c
+index 8d3e0555a1..a6e41c5c91 100644
+--- a/drivers/i2c/imx_lpi2c.c
++++ b/drivers/i2c/imx_lpi2c.c
+@@ -8,7 +8,7 @@
+ #include <asm/io.h>
+ #include <asm/arch/clock.h>
+ #include <asm/arch/imx-regs.h>
+-#include <asm/arch/imx_lpi2c.h>
++#include <imx_lpi2c.h>
+ #include <asm/arch/sys_proto.h>
+ #include <dm.h>
+ #include <fdtdec.h>
+@@ -447,6 +447,7 @@ static const struct dm_i2c_ops imx_lpi2c_ops = {
+ 
+ static const struct udevice_id imx_lpi2c_ids[] = {
+ 	{ .compatible = "fsl,imx7ulp-lpi2c", },
++	{ .compatible = "fsl,imx8qm-lpi2c", },
+ 	{}
+ };
+ 
+diff --git a/arch/arm/include/asm/arch-mx7ulp/imx_lpi2c.h b/include/imx_lpi2c.h
+similarity index 100%
+rename from arch/arm/include/asm/arch-mx7ulp/imx_lpi2c.h
+rename to include/imx_lpi2c.h
+-- 
+2.18.0
+

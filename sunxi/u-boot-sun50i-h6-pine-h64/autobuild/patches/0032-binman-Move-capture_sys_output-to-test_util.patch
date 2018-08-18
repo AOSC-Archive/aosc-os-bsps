@@ -1,0 +1,121 @@
+From c3f9454103462e2cfcc5a9120b893f4ea250650a Mon Sep 17 00:00:00 2001
+From: Simon Glass <sjg@chromium.org>
+Date: Fri, 6 Jul 2018 10:27:34 -0600
+Subject: [PATCH 032/144] binman: Move capture_sys_output() to test_util
+
+This function is useful in various tests. Move it into the common test
+utility module.
+
+Signed-off-by: Simon Glass <sjg@chromium.org>
+---
+ tools/binman/elf_test.py   | 22 ++--------------------
+ tools/binman/image_test.py |  2 +-
+ tools/patman/test_util.py  | 21 +++++++++++++++++++++
+ 3 files changed, 24 insertions(+), 21 deletions(-)
+
+diff --git a/tools/binman/elf_test.py b/tools/binman/elf_test.py
+index fb6e451cf0..9c8f1feca8 100644
+--- a/tools/binman/elf_test.py
++++ b/tools/binman/elf_test.py
+@@ -4,33 +4,15 @@
+ #
+ # Test for the elf module
+ 
+-from contextlib import contextmanager
+ import os
+ import sys
+ import unittest
+ 
+-try:
+-  from StringIO import StringIO
+-except ImportError:
+-  from io import StringIO
+-
+ import elf
++import test_util
+ 
+ binman_dir = os.path.dirname(os.path.realpath(sys.argv[0]))
+ 
+-# Use this to suppress stdout/stderr output:
+-# with capture_sys_output() as (stdout, stderr)
+-#   ...do something...
+-@contextmanager
+-def capture_sys_output():
+-  capture_out, capture_err = StringIO(), StringIO()
+-  old_out, old_err = sys.stdout, sys.stderr
+-  try:
+-    sys.stdout, sys.stderr = capture_out, capture_err
+-    yield capture_out, capture_err
+-  finally:
+-    sys.stdout, sys.stderr = old_out, old_err
+-
+ 
+ class FakeEntry:
+     def __init__(self, contents_size):
+@@ -110,7 +92,7 @@ class TestElf(unittest.TestCase):
+         entry = FakeEntry(20)
+         section = FakeSection()
+         elf_fname = os.path.join(binman_dir, 'test', 'u_boot_binman_syms')
+-        with capture_sys_output() as (stdout, stderr):
++        with test_util.capture_sys_output() as (stdout, stderr):
+             syms = elf.LookupAndWriteSymbols(elf_fname, entry, section)
+         elf.debug = False
+         self.assertTrue(len(stdout.getvalue()) > 0)
+diff --git a/tools/binman/image_test.py b/tools/binman/image_test.py
+index 45dd2378c8..3775e1afb0 100644
+--- a/tools/binman/image_test.py
++++ b/tools/binman/image_test.py
+@@ -7,7 +7,7 @@
+ import unittest
+ 
+ from image import Image
+-from elf_test import capture_sys_output
++from test_util import capture_sys_output
+ 
+ class TestImage(unittest.TestCase):
+     def testInvalidFormat(self):
+diff --git a/tools/patman/test_util.py b/tools/patman/test_util.py
+index 1a33c997c4..0e79af871a 100644
+--- a/tools/patman/test_util.py
++++ b/tools/patman/test_util.py
+@@ -3,12 +3,19 @@
+ # Copyright (c) 2016 Google, Inc
+ #
+ 
++from contextlib import contextmanager
+ import glob
+ import os
+ import sys
+ 
+ import command
+ 
++try:
++  from StringIO import StringIO
++except ImportError:
++  from io import StringIO
++
++
+ def RunTestCoverage(prog, filter_fname, exclude_list, build_dir, required=None):
+     """Run tests and check that we get 100% coverage
+ 
+@@ -62,3 +69,17 @@ def RunTestCoverage(prog, filter_fname, exclude_list, build_dir, required=None):
+         ok = False
+     if not ok:
+         raise ValueError('Test coverage failure')
++
++
++# Use this to suppress stdout/stderr output:
++# with capture_sys_output() as (stdout, stderr)
++#   ...do something...
++@contextmanager
++def capture_sys_output():
++    capture_out, capture_err = StringIO(), StringIO()
++    old_out, old_err = sys.stdout, sys.stderr
++    try:
++        sys.stdout, sys.stderr = capture_out, capture_err
++        yield capture_out, capture_err
++    finally:
++        sys.stdout, sys.stderr = old_out, old_err
+-- 
+2.18.0
+

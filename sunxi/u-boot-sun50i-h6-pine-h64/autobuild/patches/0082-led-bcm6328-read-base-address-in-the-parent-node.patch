@@ -1,0 +1,37 @@
+From c38abed5093a486d6349fc0d9d7a663f24965d78 Mon Sep 17 00:00:00 2001
+From: Philippe Reynes <philippe.reynes@softathome.com>
+Date: Thu, 28 Jun 2018 15:26:16 +0200
+Subject: [PATCH 082/144] led: bcm6328: read base address in the parent node
+
+In the device tree, the address for the led is located
+in the parent node (for exemple leds), not in the led node
+(for exemple led@0).
+
+The commit "led: bcm6328: convert to use live dt"
+(sha1: 899455176058d673887a762aa38853188a030af4)
+change this behaviour and read the address in the led node.
+
+We fix this by reading the base address for led
+in the parent node.
+
+Signed-off-by: Philippe Reynes <philippe.reynes@softathome.com>
+---
+ drivers/led/led_bcm6328.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/led/led_bcm6328.c b/drivers/led/led_bcm6328.c
+index a29e5a02c0..7be4badbac 100644
+--- a/drivers/led/led_bcm6328.c
++++ b/drivers/led/led_bcm6328.c
+@@ -173,7 +173,7 @@ static int bcm6328_led_probe(struct udevice *dev)
+ 		struct bcm6328_led_priv *priv = dev_get_priv(dev);
+ 		unsigned int pin;
+ 
+-		priv->regs = dev_remap_addr(dev);
++		priv->regs = dev_remap_addr(dev_get_parent(dev));
+ 		if (!priv->regs)
+ 			return -EINVAL;
+ 
+-- 
+2.18.0
+

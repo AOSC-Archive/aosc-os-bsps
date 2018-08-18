@@ -1,0 +1,66 @@
+From ba765217ed0258fa0ecd5cb77c6c4c171624c4ad Mon Sep 17 00:00:00 2001
+From: Simon Glass <sjg@chromium.org>
+Date: Fri, 6 Jul 2018 10:27:33 -0600
+Subject: [PATCH 031/144] dtoc: Add a test for code coverage
+
+Add a -T option to run a code-coverage test on dtoc. At present this is
+about 96%. Future work will increase it to 100%.
+
+Signed-off-by: Simon Glass <sjg@chromium.org>
+---
+ tools/dtoc/dtoc.py | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/tools/dtoc/dtoc.py b/tools/dtoc/dtoc.py
+index 2e6a4db8bc..827094e72a 100755
+--- a/tools/dtoc/dtoc.py
++++ b/tools/dtoc/dtoc.py
+@@ -35,6 +35,7 @@ our_path = os.path.dirname(os.path.realpath(__file__))
+ sys.path.append(os.path.join(our_path, '../patman'))
+ 
+ import dtb_platdata
++import test_util
+ 
+ def run_tests(args):
+     """Run all the test we have for dtoc
+@@ -64,10 +65,19 @@ def run_tests(args):
+     for _, err in result.failures:
+         print err
+ 
++def RunTestCoverage():
++    """Run the tests and check that we get 100% coverage"""
++    sys.argv = [sys.argv[0]]
++    test_util.RunTestCoverage('tools/dtoc/dtoc.py', '/dtoc.py',
++            ['tools/patman/*.py', '*/fdt*', '*test*'], options.build_dir)
++
++
+ if __name__ != '__main__':
+     sys.exit(1)
+ 
+ parser = OptionParser()
++parser.add_option('-B', '--build-dir', type='string', default='b',
++        help='Directory containing the build output')
+ parser.add_option('-d', '--dtb-file', action='store',
+                   help='Specify the .dtb input file')
+ parser.add_option('--include-disabled', action='store_true',
+@@ -76,12 +86,17 @@ parser.add_option('-o', '--output', action='store', default='-',
+                   help='Select output filename')
+ parser.add_option('-t', '--test', action='store_true', dest='test',
+                   default=False, help='run tests')
++parser.add_option('-T', '--test-coverage', action='store_true',
++                default=False, help='run tests and check for 100% coverage')
+ (options, args) = parser.parse_args()
+ 
+ # Run our meagre tests
+ if options.test:
+     run_tests(args)
+ 
++elif options.test_coverage:
++    RunTestCoverage()
++
+ else:
+     dtb_platdata.run_steps(args, options.dtb_file, options.include_disabled,
+                            options.output)
+-- 
+2.18.0
+

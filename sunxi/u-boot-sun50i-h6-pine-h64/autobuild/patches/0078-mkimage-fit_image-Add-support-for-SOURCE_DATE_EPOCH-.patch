@@ -1,0 +1,185 @@
+From 795f452eeff157b994a783d78d00e0108463b993 Mon Sep 17 00:00:00 2001
+From: Alex Kiernan <alex.kiernan@gmail.com>
+Date: Wed, 20 Jun 2018 20:10:52 +0000
+Subject: [PATCH 078/144] mkimage: fit_image: Add support for SOURCE_DATE_EPOCH
+ in signatures
+
+When generating timestamps in signatures, use imagetool_get_source_date()
+so we can be overridden by SOURCE_DATE_EPOCH to generate reproducible
+images.
+
+Signed-off-by: Alex Kiernan <alex.kiernan@gmail.com>
+Reviewed-by: Simon Glass <sjg@chromum.org>
+---
+ include/image.h    |  3 ++-
+ tools/fit_image.c  |  3 ++-
+ tools/image-host.c | 34 ++++++++++++++++++++--------------
+ 3 files changed, 24 insertions(+), 16 deletions(-)
+
+diff --git a/include/image.h b/include/image.h
+index 420b8ff576..3bb7d29ef2 100644
+--- a/include/image.h
++++ b/include/image.h
+@@ -1009,6 +1009,7 @@ int fit_set_timestamp(void *fit, int noffset, time_t timestamp);
+  * @comment:	Comment to add to signature nodes
+  * @require_keys: Mark all keys as 'required'
+  * @engine_id:	Engine to use for signing
++ * @cmdname:	Command name used when reporting errors
+  *
+  * Adds hash values for all component images in the FIT blob.
+  * Hashes are calculated for all component images which have hash subnodes
+@@ -1022,7 +1023,7 @@ int fit_set_timestamp(void *fit, int noffset, time_t timestamp);
+  */
+ int fit_add_verification_data(const char *keydir, void *keydest, void *fit,
+ 			      const char *comment, int require_keys,
+-			      const char *engine_id);
++			      const char *engine_id, const char *cmdname);
+ 
+ int fit_image_verify_with_data(const void *fit, int image_noffset,
+ 			       const void *data, size_t size);
+diff --git a/tools/fit_image.c b/tools/fit_image.c
+index 6f09a66106..3c265357ae 100644
+--- a/tools/fit_image.c
++++ b/tools/fit_image.c
+@@ -60,7 +60,8 @@ static int fit_add_file_data(struct image_tool_params *params, size_t size_inc,
+ 		ret = fit_add_verification_data(params->keydir, dest_blob, ptr,
+ 						params->comment,
+ 						params->require_keys,
+-						params->engine_id);
++						params->engine_id,
++						params->cmdname);
+ 	}
+ 
+ 	if (dest_blob) {
+diff --git a/tools/image-host.c b/tools/image-host.c
+index be2d59b7c0..09e4f47e5a 100644
+--- a/tools/image-host.c
++++ b/tools/image-host.c
+@@ -106,7 +106,7 @@ static int fit_image_process_hash(void *fit, const char *image_name,
+  */
+ static int fit_image_write_sig(void *fit, int noffset, uint8_t *value,
+ 		int value_len, const char *comment, const char *region_prop,
+-		int region_proplen)
++		int region_proplen, const char *cmdname)
+ {
+ 	int string_size;
+ 	int ret;
+@@ -128,8 +128,12 @@ static int fit_image_write_sig(void *fit, int noffset, uint8_t *value,
+ 	}
+ 	if (comment && !ret)
+ 		ret = fdt_setprop_string(fit, noffset, "comment", comment);
+-	if (!ret)
+-		ret = fit_set_timestamp(fit, noffset, time(NULL));
++	if (!ret) {
++		time_t timestamp = imagetool_get_source_date(cmdname,
++							     time(NULL));
++
++		ret = fit_set_timestamp(fit, noffset, timestamp);
++	}
+ 	if (region_prop && !ret) {
+ 		uint32_t strdata[2];
+ 
+@@ -201,7 +205,8 @@ static int fit_image_setup_sig(struct image_sign_info *info,
+ static int fit_image_process_sig(const char *keydir, void *keydest,
+ 		void *fit, const char *image_name,
+ 		int noffset, const void *data, size_t size,
+-		const char *comment, int require_keys, const char *engine_id)
++		const char *comment, int require_keys, const char *engine_id,
++		const char *cmdname)
+ {
+ 	struct image_sign_info info;
+ 	struct image_region region;
+@@ -229,7 +234,7 @@ static int fit_image_process_sig(const char *keydir, void *keydest,
+ 	}
+ 
+ 	ret = fit_image_write_sig(fit, noffset, value, value_len, comment,
+-			NULL, 0);
++			NULL, 0, cmdname);
+ 	if (ret) {
+ 		if (ret == -FDT_ERR_NOSPACE)
+ 			return -ENOSPC;
+@@ -296,7 +301,7 @@ static int fit_image_process_sig(const char *keydir, void *keydest,
+  */
+ int fit_image_add_verification_data(const char *keydir, void *keydest,
+ 		void *fit, int image_noffset, const char *comment,
+-		int require_keys, const char *engine_id)
++		int require_keys, const char *engine_id, const char *cmdname)
+ {
+ 	const char *image_name;
+ 	const void *data;
+@@ -333,7 +338,7 @@ int fit_image_add_verification_data(const char *keydir, void *keydest,
+ 				strlen(FIT_SIG_NODENAME))) {
+ 			ret = fit_image_process_sig(keydir, keydest,
+ 				fit, image_name, noffset, data, size,
+-				comment, require_keys, engine_id);
++				comment, require_keys, engine_id, cmdname);
+ 		}
+ 		if (ret)
+ 			return ret;
+@@ -574,7 +579,7 @@ static int fit_config_get_data(void *fit, int conf_noffset, int noffset,
+ static int fit_config_process_sig(const char *keydir, void *keydest,
+ 		void *fit, const char *conf_name, int conf_noffset,
+ 		int noffset, const char *comment, int require_keys,
+-		const char *engine_id)
++		const char *engine_id, const char *cmdname)
+ {
+ 	struct image_sign_info info;
+ 	const char *node_name;
+@@ -609,7 +614,7 @@ static int fit_config_process_sig(const char *keydir, void *keydest,
+ 	}
+ 
+ 	ret = fit_image_write_sig(fit, noffset, value, value_len, comment,
+-				region_prop, region_proplen);
++				region_prop, region_proplen, cmdname);
+ 	if (ret) {
+ 		if (ret == -FDT_ERR_NOSPACE)
+ 			return -ENOSPC;
+@@ -638,7 +643,7 @@ static int fit_config_process_sig(const char *keydir, void *keydest,
+ 
+ static int fit_config_add_verification_data(const char *keydir, void *keydest,
+ 		void *fit, int conf_noffset, const char *comment,
+-		int require_keys, const char *engine_id)
++		int require_keys, const char *engine_id, const char *cmdname)
+ {
+ 	const char *conf_name;
+ 	int noffset;
+@@ -657,7 +662,7 @@ static int fit_config_add_verification_data(const char *keydir, void *keydest,
+ 			     strlen(FIT_SIG_NODENAME))) {
+ 			ret = fit_config_process_sig(keydir, keydest,
+ 				fit, conf_name, conf_noffset, noffset, comment,
+-				require_keys, engine_id);
++				require_keys, engine_id, cmdname);
+ 		}
+ 		if (ret)
+ 			return ret;
+@@ -668,7 +673,7 @@ static int fit_config_add_verification_data(const char *keydir, void *keydest,
+ 
+ int fit_add_verification_data(const char *keydir, void *keydest, void *fit,
+ 			      const char *comment, int require_keys,
+-			      const char *engine_id)
++			      const char *engine_id, const char *cmdname)
+ {
+ 	int images_noffset, confs_noffset;
+ 	int noffset;
+@@ -691,7 +696,8 @@ int fit_add_verification_data(const char *keydir, void *keydest, void *fit,
+ 		 * i.e. component image node.
+ 		 */
+ 		ret = fit_image_add_verification_data(keydir, keydest,
+-				fit, noffset, comment, require_keys, engine_id);
++				fit, noffset, comment, require_keys, engine_id,
++				cmdname);
+ 		if (ret)
+ 			return ret;
+ 	}
+@@ -715,7 +721,7 @@ int fit_add_verification_data(const char *keydir, void *keydest, void *fit,
+ 		ret = fit_config_add_verification_data(keydir, keydest,
+ 						       fit, noffset, comment,
+ 						       require_keys,
+-						       engine_id);
++						       engine_id, cmdname);
+ 		if (ret)
+ 			return ret;
+ 	}
+-- 
+2.18.0
+

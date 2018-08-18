@@ -1,0 +1,51 @@
+From c98ad4434c1a680915d10e5696e6bee9c81044d5 Mon Sep 17 00:00:00 2001
+From: Simon Glass <sjg@chromium.org>
+Date: Mon, 11 Jun 2018 13:07:12 -0600
+Subject: [PATCH 004/144] dm: core: Add comments to ofnode_read_resource()
+ functoins
+
+These functions are missing comments. Add some.
+
+Signed-off-by: Simon Glass <sjg@chromium.org>
+---
+ include/dm/ofnode.h | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
+
+diff --git a/include/dm/ofnode.h b/include/dm/ofnode.h
+index 85cb87b83f..61c42311f8 100644
+--- a/include/dm/ofnode.h
++++ b/include/dm/ofnode.h
+@@ -651,7 +651,30 @@ int ofnode_read_simple_size_cells(ofnode node);
+  */
+ bool ofnode_pre_reloc(ofnode node);
+ 
++/**
++ * ofnode_read_resource() - Read a resource from a node
++ *
++ * Read resource information from a node at the given index
++ *
++ * @node: Node to read from
++ * @index: Index of resource to read (0 = first)
++ * @res: Returns resource that was read, on success
++ * @return 0 if OK, -ve on error
++ */
+ int ofnode_read_resource(ofnode node, uint index, struct resource *res);
++
++/**
++ * ofnode_read_resource_byname() - Read a resource from a node by name
++ *
++ * Read resource information from a node matching the given name. This uses a
++ * 'reg-names' string list property with the names matching the associated
++ * 'reg' property list.
++ *
++ * @node: Node to read from
++ * @name: Name of resource to read
++ * @res: Returns resource that was read, on success
++ * @return 0 if OK, -ve on error
++ */
+ int ofnode_read_resource_byname(ofnode node, const char *name,
+ 				struct resource *res);
+ 
+-- 
+2.18.0
+

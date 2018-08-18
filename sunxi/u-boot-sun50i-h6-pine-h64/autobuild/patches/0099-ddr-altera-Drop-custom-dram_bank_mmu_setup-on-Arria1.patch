@@ -1,0 +1,54 @@
+From 93a8ed868583460ab9f3796fdc92f4713bf759a9 Mon Sep 17 00:00:00 2001
+From: Marek Vasut <marex@denx.de>
+Date: Tue, 29 May 2018 18:04:15 +0200
+Subject: [PATCH 099/144] ddr: altera: Drop custom dram_bank_mmu_setup() on
+ Arria10
+
+This function was never used in SPL and the default implementation of
+dram_bank_mmu_setup() does the same thing. The only difference is the
+part which configures OCRAM as cachable, which doesn't really work as
+it covers more than the OCRAM.
+
+Signed-off-by: Marek Vasut <marex@denx.de>
+Cc: Chin Liang See <chin.liang.see@intel.com>
+Cc: Dinh Nguyen <dinguyen@kernel.org>
+---
+ drivers/ddr/altera/sdram_arria10.c | 25 -------------------------
+ 1 file changed, 25 deletions(-)
+
+diff --git a/drivers/ddr/altera/sdram_arria10.c b/drivers/ddr/altera/sdram_arria10.c
+index 706a038b88..1f2b7f4819 100644
+--- a/drivers/ddr/altera/sdram_arria10.c
++++ b/drivers/ddr/altera/sdram_arria10.c
+@@ -713,28 +713,3 @@ int ddr_calibration_sequence(void)
+ 
+ 	return 0;
+ }
+-
+-void dram_bank_mmu_setup(int bank)
+-{
+-	bd_t *bd = gd->bd;
+-	int	i;
+-
+-	debug("%s: bank: %d\n", __func__, bank);
+-	for (i = bd->bi_dram[bank].start >> 20;
+-	     i < (bd->bi_dram[bank].start + bd->bi_dram[bank].size) >> 20;
+-	     i++) {
+-#if defined(CONFIG_SYS_ARM_CACHE_WRITETHROUGH)
+-		set_section_dcache(i, DCACHE_WRITETHROUGH);
+-#else
+-		set_section_dcache(i, DCACHE_WRITEBACK);
+-#endif
+-	}
+-
+-	/* same as above but just that we would want cacheable for ocram too */
+-	i = CONFIG_SYS_INIT_RAM_ADDR >> 20;
+-#if defined(CONFIG_SYS_ARM_CACHE_WRITETHROUGH)
+-	set_section_dcache(i, DCACHE_WRITETHROUGH);
+-#else
+-	set_section_dcache(i, DCACHE_WRITEBACK);
+-#endif
+-}
+-- 
+2.18.0
+

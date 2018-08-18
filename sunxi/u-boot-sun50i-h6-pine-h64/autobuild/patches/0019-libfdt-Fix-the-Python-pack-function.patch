@@ -1,0 +1,34 @@
+From a1e0085519b7b34b2db36faa76e13b7f1717f570 Mon Sep 17 00:00:00 2001
+From: Simon Glass <sjg@chromium.org>
+Date: Fri, 6 Jul 2018 10:27:21 -0600
+Subject: [PATCH 019/144] libfdt: Fix the Python pack() function
+
+This currently fails to reduce the device-tree bytearray size. Fix this.
+
+This stands in for a pending upstream change.
+
+Signed-off-by: Simon Glass <sjg@chromium.org>
+---
+ scripts/dtc/pylibfdt/libfdt.i_shipped | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/scripts/dtc/pylibfdt/libfdt.i_shipped b/scripts/dtc/pylibfdt/libfdt.i_shipped
+index 6774b93b2c..5b38e63b26 100644
+--- a/scripts/dtc/pylibfdt/libfdt.i_shipped
++++ b/scripts/dtc/pylibfdt/libfdt.i_shipped
+@@ -442,7 +442,11 @@ class Fdt:
+         Raises:
+             FdtException if any error occurs
+         """
+-        return check_err(fdt_pack(self._fdt), quiet)
++        err = check_err(fdt_pack(self._fdt), quiet)
++        if err:
++            return err
++        del self._fdt[self.totalsize():]
++        return err
+ 
+     def getprop(self, nodeoffset, prop_name, quiet=()):
+         """Get a property from a node
+-- 
+2.18.0
+

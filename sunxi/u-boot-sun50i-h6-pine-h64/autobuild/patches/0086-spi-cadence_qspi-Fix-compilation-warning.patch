@@ -1,0 +1,50 @@
+From 9bd39dd8e5f600560a00203ccb3e4e87780e10a2 Mon Sep 17 00:00:00 2001
+From: Ley Foon Tan <ley.foon.tan@intel.com>
+Date: Fri, 6 Jul 2018 10:39:14 +0800
+Subject: [PATCH 086/144] spi: cadence_qspi: Fix compilation warning
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Use "%zu" for size_t data type.
+
+Compilation warning as below:
+
+In file included from include/linux/bug.h:7:0,
+                 from include/common.h:26,
+                 from drivers/spi/cadence_qspi.c:8:
+drivers/spi/cadence_qspi.c: In function ‘cadence_spi_xfer’:
+drivers/spi/cadence_qspi.c:211:8: warning: format ‘%d’ expects argument of type ‘int’, but argument 3 has type ‘size_t {aka long unsigned int}’ [-Wformat=]
+  debug("%s: len=%d [bytes]\n", __func__, data_bytes);
+        ^
+include/linux/printk.h:37:21: note: in definition of macro ‘pr_fmt’
+ #define pr_fmt(fmt) fmt
+                     ^~~
+include/log.h:142:2: note: in expansion of macro ‘debug_cond’
+  debug_cond(_DEBUG, fmt, ##args)
+  ^~~~~~~~~~
+drivers/spi/cadence_qspi.c:211:2: note: in expansion of macro ‘debug’
+  debug("%s: len=%d [bytes]\n", __func__, data_bytes);
+
+Signed-off-by: Ley Foon Tan <ley.foon.tan@intel.com>
+Acked-by: Marek Vasut <marex@denx.de>
+---
+ drivers/spi/cadence_qspi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/spi/cadence_qspi.c b/drivers/spi/cadence_qspi.c
+index 91742ba5f1..29db6fa368 100644
+--- a/drivers/spi/cadence_qspi.c
++++ b/drivers/spi/cadence_qspi.c
+@@ -207,7 +207,7 @@ static int cadence_spi_xfer(struct udevice *dev, unsigned int bitlen,
+ 	} else {
+ 		data_bytes = bitlen / 8;
+ 	}
+-	debug("%s: len=%d [bytes]\n", __func__, data_bytes);
++	debug("%s: len=%zu [bytes]\n", __func__, data_bytes);
+ 
+ 	/* Set Chip select */
+ 	cadence_qspi_apb_chipselect(base, spi_chip_select(dev),
+-- 
+2.18.0
+

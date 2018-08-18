@@ -1,0 +1,1603 @@
+From 894c3ad27fa940beb7fdc07d01dcfe81c03d0481 Mon Sep 17 00:00:00 2001
+From: Thomas Fitzsimmons <fitzsim@fitzsim.org>
+Date: Fri, 8 Jun 2018 17:59:45 -0400
+Subject: [PATCH 068/144] board: arm: Add support for Broadcom BCM7445
+
+Add support for loading U-Boot on the Broadcom 7445 SoC.  This port
+assumes Broadcom's BOLT bootloader is acting as the second stage
+bootloader, and U-Boot is acting as the third stage bootloader, loaded
+as an ELF program by BOLT.
+
+Signed-off-by: Thomas Fitzsimmons <fitzsim@fitzsim.org>
+Cc: Stefan Roese <sr@denx.de>
+Cc: Tom Rini <trini@konsulko.com>
+Cc: Florian Fainelli <f.fainelli@gmail.com>
+---
+ MAINTAINERS                                   |  10 +
+ arch/arm/Kconfig                              |  12 +
+ arch/arm/Makefile                             |   1 +
+ arch/arm/mach-bcmstb/Kconfig                  |  36 ++
+ arch/arm/mach-bcmstb/Makefile                 |   8 +
+ arch/arm/mach-bcmstb/include/mach/gpio.h      |  11 +
+ arch/arm/mach-bcmstb/include/mach/hardware.h  |  11 +
+ .../mach-bcmstb/include/mach/prior_stage.h    |  30 ++
+ arch/arm/mach-bcmstb/include/mach/sdhci.h     |  15 +
+ arch/arm/mach-bcmstb/include/mach/timer.h     |  13 +
+ arch/arm/mach-bcmstb/lowlevel_init.S          |  21 +
+ board/broadcom/bcmstb/MAINTAINERS             |   7 +
+ board/broadcom/bcmstb/Makefile                |   8 +
+ board/broadcom/bcmstb/bcmstb.c                | 194 ++++++++
+ configs/bcm7445_defconfig                     |  27 ++
+ doc/README.bcm7xxx                            | 150 ++++++
+ drivers/mmc/Kconfig                           |  11 +
+ drivers/mmc/Makefile                          |   1 +
+ drivers/mmc/bcmstb_sdhci.c                    |  67 +++
+ drivers/spi/Kconfig                           |   7 +
+ drivers/spi/Makefile                          |   1 +
+ drivers/spi/bcmstb_spi.c                      | 439 ++++++++++++++++++
+ drivers/spi/spi-uclass.c                      |   2 +-
+ dts/Kconfig                                   |   7 +
+ include/configs/bcm7445.h                     |  26 ++
+ include/configs/bcmstb.h                      | 183 ++++++++
+ include/fdtdec.h                              |   4 +
+ lib/fdtdec.c                                  |   4 +
+ 28 files changed, 1305 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm/mach-bcmstb/Kconfig
+ create mode 100644 arch/arm/mach-bcmstb/Makefile
+ create mode 100644 arch/arm/mach-bcmstb/include/mach/gpio.h
+ create mode 100644 arch/arm/mach-bcmstb/include/mach/hardware.h
+ create mode 100644 arch/arm/mach-bcmstb/include/mach/prior_stage.h
+ create mode 100644 arch/arm/mach-bcmstb/include/mach/sdhci.h
+ create mode 100644 arch/arm/mach-bcmstb/include/mach/timer.h
+ create mode 100644 arch/arm/mach-bcmstb/lowlevel_init.S
+ create mode 100644 board/broadcom/bcmstb/MAINTAINERS
+ create mode 100644 board/broadcom/bcmstb/Makefile
+ create mode 100644 board/broadcom/bcmstb/bcmstb.c
+ create mode 100644 configs/bcm7445_defconfig
+ create mode 100644 doc/README.bcm7xxx
+ create mode 100644 drivers/mmc/bcmstb_sdhci.c
+ create mode 100644 drivers/spi/bcmstb_spi.c
+ create mode 100644 include/configs/bcm7445.h
+ create mode 100644 include/configs/bcmstb.h
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index d582e56222..570bc6d1a5 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -107,6 +107,16 @@ F:	drivers/video/bcm2835.c
+ F:	include/dm/platform_data/serial_bcm283x_mu.h
+ F:	drivers/pinctrl/broadcom/
+ 
++ARM BROADCOM BCMSTB
++M:	Thomas Fitzsimmons <fitzsim@fitzsim.org>
++S:	Maintained
++F:	arch/arm/mach-bcmstb/
++F:	board/broadcom/bcmstb/
++F:	configs/bcm7445_defconfig
++F:	doc/README.bcm7xxx
++F:	drivers/mmc/bcmstb_sdhci.c
++F:	drivers/spi/bcmstb_spi.c
++
+ ARM FREESCALE IMX
+ M:	Stefano Babic <sbabic@denx.de>
+ M:	Fabio Estevam <fabio.estevam@nxp.com>
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 82140efb99..4fbb424037 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -542,6 +542,16 @@ config TARGET_VEXPRESS_CA15_TC2
+ 	select CPU_V7_HAS_VIRT
+ 	select PL011_SERIAL
+ 
++config ARCH_BCMSTB
++	bool "Broadcom BCM7XXX family"
++	select CPU_V7A
++	select DM
++	select OF_CONTROL
++	select OF_PRIOR_STAGE
++	help
++	  This enables support for Broadcom ARM-based set-top box
++	  chipsets, including the 7445 family of chips.
++
+ config TARGET_VEXPRESS_CA5X2
+ 	bool "Support vexpress_ca5x2"
+ 	select CPU_V7A
+@@ -1326,6 +1336,8 @@ source "arch/arm/mach-at91/Kconfig"
+ 
+ source "arch/arm/mach-bcm283x/Kconfig"
+ 
++source "arch/arm/mach-bcmstb/Kconfig"
++
+ source "arch/arm/mach-davinci/Kconfig"
+ 
+ source "arch/arm/mach-exynos/Kconfig"
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index f15b2287df..cac58bdc4d 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -54,6 +54,7 @@ PLATFORM_CPPFLAGS += $(arch-y) $(tune-y)
+ machine-$(CONFIG_ARCH_ASPEED)		+= aspeed
+ machine-$(CONFIG_ARCH_AT91)		+= at91
+ machine-$(CONFIG_ARCH_BCM283X)		+= bcm283x
++machine-$(CONFIG_ARCH_BCMSTB)		+= bcmstb
+ machine-$(CONFIG_ARCH_DAVINCI)		+= davinci
+ machine-$(CONFIG_ARCH_EXYNOS)		+= exynos
+ machine-$(CONFIG_ARCH_HIGHBANK)		+= highbank
+diff --git a/arch/arm/mach-bcmstb/Kconfig b/arch/arm/mach-bcmstb/Kconfig
+new file mode 100644
+index 0000000000..6c7952ffe5
+--- /dev/null
++++ b/arch/arm/mach-bcmstb/Kconfig
+@@ -0,0 +1,36 @@
++if ARCH_BCMSTB
++
++config TARGET_BCM7445
++	bool "Broadcom 7445 TSBL"
++	depends on ARCH_BCMSTB
++	help
++	  Support for the Broadcom 7445 SoC.  This port assumes BOLT
++	  is acting as the second stage bootloader, and U-Boot is
++	  acting as the third stage bootloader (TSBL), loaded by BOLT.
++	  This port may work on other BCM7xxx boards with
++	  configuration changes.
++
++config SYS_CPU
++	default "armv7"
++
++config SYS_BOARD
++	default "bcmstb"
++
++config SYS_VENDOR
++	default "broadcom"
++
++config SYS_SOC
++	default "bcmstb"
++
++config SYS_CONFIG_NAME
++	default "bcm7445"
++
++config SYS_FDT_SAVE_ADDRESS
++	hex "Address to which the prior stage provided DTB will be copied"
++	default 0x1f00000
++
++config BCMSTB_SDHCI_INDEX
++	int "Index of preferred BCMSTB SDHCI alias in DTB"
++	default 1
++
++endif
+diff --git a/arch/arm/mach-bcmstb/Makefile b/arch/arm/mach-bcmstb/Makefile
+new file mode 100644
+index 0000000000..71e5727e41
+--- /dev/null
++++ b/arch/arm/mach-bcmstb/Makefile
+@@ -0,0 +1,8 @@
++# SPDX-License-Identifier: GPL-2.0+
++#
++# (C) Copyright 2018  Cisco Systems, Inc.
++#
++# Author: Thomas Fitzsimmons <fitzsim@fitzsim.org>
++#
++
++obj-y	:= lowlevel_init.o
+diff --git a/arch/arm/mach-bcmstb/include/mach/gpio.h b/arch/arm/mach-bcmstb/include/mach/gpio.h
+new file mode 100644
+index 0000000000..bffecf9bde
+--- /dev/null
++++ b/arch/arm/mach-bcmstb/include/mach/gpio.h
+@@ -0,0 +1,11 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/*
++ * (C) Copyright 2018  Cisco Systems, Inc.
++ *
++ * Author: Thomas Fitzsimmons <fitzsim@fitzsim.org>
++ */
++
++#ifndef _BCMSTB_GPIO_H
++#define _BCMSTB_GPIO_H
++
++#endif /* _BCMSTB_GPIO_H */
+diff --git a/arch/arm/mach-bcmstb/include/mach/hardware.h b/arch/arm/mach-bcmstb/include/mach/hardware.h
+new file mode 100644
+index 0000000000..76f799d024
+--- /dev/null
++++ b/arch/arm/mach-bcmstb/include/mach/hardware.h
+@@ -0,0 +1,11 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/*
++ * (C) Copyright 2018  Cisco Systems, Inc.
++ *
++ * Author: Thomas Fitzsimmons <fitzsim@fitzsim.org>
++ */
++
++#ifndef _BCMSTB_HARDWARE_H
++#define _BCMSTB_HARDWARE_H
++
++#endif /* _BCMSTB_HARDWARE_H */
+diff --git a/arch/arm/mach-bcmstb/include/mach/prior_stage.h b/arch/arm/mach-bcmstb/include/mach/prior_stage.h
+new file mode 100644
+index 0000000000..6c36c6810a
+--- /dev/null
++++ b/arch/arm/mach-bcmstb/include/mach/prior_stage.h
+@@ -0,0 +1,30 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/*
++ * (C) Copyright 2018  Cisco Systems, Inc.
++ *
++ * Author: Thomas Fitzsimmons <fitzsim@fitzsim.org>
++ */
++
++#ifndef _BCMSTB_PRIOR_STAGE_H
++#define _BCMSTB_PRIOR_STAGE_H
++
++#ifndef __ASSEMBLY__
++
++#include <linux/types.h>
++
++struct bcmstb_boot_parameters {
++	u32 r0;
++	u32 r1;
++	u32 r2;
++	u32 r3;
++	u32 sp;
++	u32 lr;
++};
++
++extern struct bcmstb_boot_parameters bcmstb_boot_parameters;
++
++extern phys_addr_t prior_stage_fdt_address;
++
++#endif /* __ASSEMBLY__ */
++
++#endif /* _BCMSTB_PRIOR_STAGE_H */
+diff --git a/arch/arm/mach-bcmstb/include/mach/sdhci.h b/arch/arm/mach-bcmstb/include/mach/sdhci.h
+new file mode 100644
+index 0000000000..243783d682
+--- /dev/null
++++ b/arch/arm/mach-bcmstb/include/mach/sdhci.h
+@@ -0,0 +1,15 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/*
++ * (C) Copyright 2018  Cisco Systems, Inc.
++ *
++ * Author: Thomas Fitzsimmons <fitzsim@fitzsim.org>
++ */
++
++#ifndef _BCMSTB_SDHCI_H
++#define _BCMSTB_SDHCI_H
++
++#include <linux/types.h>
++
++int bcmstb_sdhci_init(phys_addr_t regbase);
++
++#endif /* _BCMSTB_SDHCI_H */
+diff --git a/arch/arm/mach-bcmstb/include/mach/timer.h b/arch/arm/mach-bcmstb/include/mach/timer.h
+new file mode 100644
+index 0000000000..d05b4d64fe
+--- /dev/null
++++ b/arch/arm/mach-bcmstb/include/mach/timer.h
+@@ -0,0 +1,13 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/*
++ * (C) Copyright 2018  Cisco Systems, Inc.
++ *
++ * Author: Thomas Fitzsimmons <fitzsim@fitzsim.org>
++ */
++
++#ifndef _BCMSTB_TIMER_H
++#define _BCMSTB_TIMER_H
++
++unsigned long timer_read_counter(void);
++
++#endif /* _BCMSTB_TIMER_H */
+diff --git a/arch/arm/mach-bcmstb/lowlevel_init.S b/arch/arm/mach-bcmstb/lowlevel_init.S
+new file mode 100644
+index 0000000000..aa81f70248
+--- /dev/null
++++ b/arch/arm/mach-bcmstb/lowlevel_init.S
+@@ -0,0 +1,21 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/*
++ * (C) Copyright 2018  Cisco Systems, Inc.
++ *
++ * Author: Thomas Fitzsimmons <fitzsim@fitzsim.org>
++ */
++
++#include <linux/linkage.h>
++
++ENTRY(save_boot_params)
++	ldr	r6, =bcmstb_boot_parameters
++	str	r0, [r6, #0]
++	str	r1, [r6, #4]
++	str	r2, [r6, #8]
++	str	r3, [r6, #12]
++	str	sp, [r6, #16]
++	str	lr, [r6, #20]
++	ldr	r6, =prior_stage_fdt_address
++	str	r2, [r6]
++	b	save_boot_params_ret
++ENDPROC(save_boot_params)
+diff --git a/board/broadcom/bcmstb/MAINTAINERS b/board/broadcom/bcmstb/MAINTAINERS
+new file mode 100644
+index 0000000000..5851cb9978
+--- /dev/null
++++ b/board/broadcom/bcmstb/MAINTAINERS
+@@ -0,0 +1,7 @@
++BCM7445 BOARD
++M:	Thomas Fitzsimmons <fitzsim@fitzsim.org>
++S:	Maintained
++F:	board/broadcom/bcmstb/
++F:	include/configs/bcmstb.h
++F:	include/configs/bcm7445.h
++F:	configs/bcm7445_defconfig
+diff --git a/board/broadcom/bcmstb/Makefile b/board/broadcom/bcmstb/Makefile
+new file mode 100644
+index 0000000000..9609887760
+--- /dev/null
++++ b/board/broadcom/bcmstb/Makefile
+@@ -0,0 +1,8 @@
++# SPDX-License-Identifier: GPL-2.0+
++#
++# (C) Copyright 2018  Cisco Systems, Inc.
++#
++# Author: Thomas Fitzsimmons <fitzsim@fitzsim.org>
++#
++
++obj-y	:= bcmstb.o
+diff --git a/board/broadcom/bcmstb/bcmstb.c b/board/broadcom/bcmstb/bcmstb.c
+new file mode 100644
+index 0000000000..25cd354998
+--- /dev/null
++++ b/board/broadcom/bcmstb/bcmstb.c
+@@ -0,0 +1,194 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * (C) Copyright 2018  Cisco Systems, Inc.
++ *
++ * Author: Thomas Fitzsimmons <fitzsim@fitzsim.org>
++ */
++
++#include <linux/types.h>
++#include <common.h>
++#include <asm/io.h>
++#include <asm/bootm.h>
++#include <mach/sdhci.h>
++#include <mach/timer.h>
++#include <mmc.h>
++#include <fdtdec.h>
++
++DECLARE_GLOBAL_DATA_PTR;
++
++#define BCMSTB_DATA_SECTION __attribute__((section(".data")))
++
++struct bcmstb_boot_parameters bcmstb_boot_parameters BCMSTB_DATA_SECTION;
++
++phys_addr_t prior_stage_fdt_address BCMSTB_DATA_SECTION;
++
++union reg_value_union {
++	const char *data;
++	const phys_addr_t *address;
++};
++
++int board_init(void)
++{
++	return 0;
++}
++
++u32 get_board_rev(void)
++{
++	return 0;
++}
++
++void reset_cpu(ulong ignored)
++{
++}
++
++int print_cpuinfo(void)
++{
++	return 0;
++}
++
++int dram_init(void)
++{
++	if (fdtdec_setup_memory_size() != 0)
++		return -EINVAL;
++
++	return 0;
++}
++
++int dram_init_banksize(void)
++{
++	fdtdec_setup_memory_banksize();
++
++	/*
++	 * On this SoC, U-Boot is running as an ELF file.  Change the
++	 * relocation address to CONFIG_SYS_TEXT_BASE, so that in
++	 * setup_reloc, gd->reloc_off works out to 0, effectively
++	 * disabling relocation.  Otherwise U-Boot hangs in the setup
++	 * instructions just before relocate_code in
++	 * arch/arm/lib/crt0.S.
++	 */
++	gd->relocaddr = CONFIG_SYS_TEXT_BASE;
++
++	return 0;
++}
++
++void enable_caches(void)
++{
++	/*
++	 * This port assumes that the prior stage bootloader has
++	 * enabled I-cache and D-cache already.  Implementing this
++	 * function silences the warning in the default function.
++	 */
++}
++
++static const phys_addr_t bcmstb_sdhci_address(u32 alias_index)
++{
++	int node = 0;
++	int ret = 0;
++	char sdhci[16] = { 0 };
++	const void *fdt = gd->fdt_blob;
++	const char *path = NULL;
++	struct fdt_resource resource = { 0 };
++
++	if (!fdt) {
++		printf("%s: Invalid gd->fdt_blob\n", __func__);
++		return 0;
++	}
++
++	node = fdt_path_offset(fdt, "/aliases");
++	if (node < 0) {
++		printf("%s: Failed to find /aliases node\n", __func__);
++		return 0;
++	}
++
++	sprintf(sdhci, "sdhci%d", alias_index);
++	path = fdt_getprop(fdt, node, sdhci, NULL);
++	if (!path) {
++		printf("%s: Failed to find alias for %s\n", __func__, sdhci);
++		return 0;
++	}
++
++	node = fdt_path_offset(fdt, path);
++	if (node < 0) {
++		printf("%s: Failed to resolve BCMSTB SDHCI alias\n", __func__);
++		return 0;
++	}
++
++	ret = fdt_get_named_resource(fdt, node, "reg", "reg-names",
++				     "host", &resource);
++	if (ret) {
++		printf("%s: Failed to read BCMSTB SDHCI host resource\n",
++		       __func__);
++		return 0;
++	}
++
++	return resource.start;
++}
++
++int board_mmc_init(bd_t *bis)
++{
++	phys_addr_t sdhci_base_address = 0;
++
++	sdhci_base_address = bcmstb_sdhci_address(CONFIG_BCMSTB_SDHCI_INDEX);
++
++	if (!sdhci_base_address) {
++		sdhci_base_address = BCMSTB_SDHCI_BASE;
++		printf("%s: Assuming BCMSTB SDHCI address: 0x%p\n",
++		       __func__, (void *)sdhci_base_address);
++	}
++
++	debug("BCMSTB SDHCI base address: 0x%p\n", (void *)sdhci_base_address);
++
++	bcmstb_sdhci_init(sdhci_base_address);
++
++	return 0;
++}
++
++int timer_init(void)
++{
++	gd->arch.timer_rate_hz = readl(BCMSTB_TIMER_FREQUENCY);
++
++	return 0;
++}
++
++ulong get_tbclk(void)
++{
++	return gd->arch.timer_rate_hz;
++}
++
++uint64_t get_ticks(void)
++{
++	gd->timebase_h = readl(BCMSTB_TIMER_HIGH);
++	gd->timebase_l = readl(BCMSTB_TIMER_LOW);
++
++	return ((uint64_t)gd->timebase_h << 32) | gd->timebase_l;
++}
++
++int board_late_init(void)
++{
++	debug("Arguments from prior stage bootloader:\n");
++	debug("General Purpose Register 0: 0x%x\n", bcmstb_boot_parameters.r0);
++	debug("General Purpose Register 1: 0x%x\n", bcmstb_boot_parameters.r1);
++	debug("General Purpose Register 2: 0x%x\n", bcmstb_boot_parameters.r2);
++	debug("General Purpose Register 3: 0x%x\n", bcmstb_boot_parameters.r3);
++	debug("Stack Pointer Register:     0x%x\n", bcmstb_boot_parameters.sp);
++	debug("Link Register:              0x%x\n", bcmstb_boot_parameters.lr);
++	debug("Assuming timer frequency register at: 0x%p\n",
++	      (void *)BCMSTB_TIMER_FREQUENCY);
++	debug("Read timer frequency (in Hz): %ld\n", gd->arch.timer_rate_hz);
++	debug("Prior stage provided DTB at: 0x%p\n",
++	      (void *)prior_stage_fdt_address);
++
++	/*
++	 * Set fdtcontroladdr in the environment so that scripts can
++	 * refer to it, for example, to reuse it for fdtaddr.
++	 */
++	env_set_hex("fdtcontroladdr", prior_stage_fdt_address);
++
++	/*
++	 * Do not set machid to the machine identifier value provided
++	 * by the prior stage bootloader (bcmstb_boot_parameters.r1)
++	 * because we're using a device tree to boot Linux.
++	 */
++
++	return 0;
++}
+diff --git a/configs/bcm7445_defconfig b/configs/bcm7445_defconfig
+new file mode 100644
+index 0000000000..46dea17563
+--- /dev/null
++++ b/configs/bcm7445_defconfig
+@@ -0,0 +1,27 @@
++CONFIG_ARM=y
++CONFIG_ARCH_BCMSTB=y
++CONFIG_TARGET_BCM7445=y
++CONFIG_USE_PRIVATE_LIBGCC=y
++CONFIG_OF_CONTROL=y
++CONFIG_OF_PRIOR_STAGE=y
++CONFIG_DM=y
++CONFIG_DM_SPI=y
++CONFIG_DM_SPI_FLASH=y
++CONFIG_SPI=y
++CONFIG_SPI_FLASH=y
++CONFIG_ENV_IS_IN_SPI_FLASH=y
++CONFIG_BCMSTB_SPI=y
++CONFIG_FIT=y
++CONFIG_FIT_SIGNATURE=y
++CONFIG_RSA=y
++CONFIG_BLK=n
++CONFIG_SDHCI=y
++CONFIG_MMC_SDHCI=y
++CONFIG_MMC_SDHCI_BCMSTB=y
++CONFIG_CONS_INDEX=3
++CONFIG_BOOTDELAY=1
++CONFIG_SYS_PROMPT="U-Boot>"
++CONFIG_HUSH_PARSER=y
++CONFIG_SYS_TEXT_BASE=0x80100000
++CONFIG_SYS_NS16550_COM3=0xf040ab00
++CONFIG_EFI_LOADER=n
+diff --git a/doc/README.bcm7xxx b/doc/README.bcm7xxx
+new file mode 100644
+index 0000000000..9b5eae4741
+--- /dev/null
++++ b/doc/README.bcm7xxx
+@@ -0,0 +1,150 @@
++Summary
++=======
++
++This document describes how to use U-Boot on the Broadcom 7445 SoC, as
++a third stage bootloader loaded by Broadcom's BOLT bootloader.
++
++BOLT loads U-Boot as a generic ELF binary.  Some U-Boot features such
++as networking are not yet available but other important features are,
++including:
++
++   - ext4 file system traversal
++
++   - support for loading FIT images
++
++   - advanced scripting
++
++   - support for FIT-provided DTBs instead of relying on the
++     BOLT-provided DTB
++
++A customized version of this port has been used in production.  The
++same approach may work on other BCM7xxx boards, with some
++configuration adjustments and memory layout experimentation.
++
++Build
++=====
++
++make bcm7445_defconfig
++make
++${CROSS_COMPILE}strip u-boot
++
++Run
++===
++
++Flash the u-boot binary into board storage, then invoke it from BOLT.
++For example:
++
++BOLT> boot -bsu -elf flash0.u-boot1
++
++This port assumes that I-cache and D-cache are already enabled when
++U-Boot is entered.
++
++Flattened Image Tree Support
++============================
++
++What follows is an example FIT image source file.  Build it with:
++
++mkimage -f image.its image.itb
++
++Booting the resulting image.itb was tested on BOLT v1.20, with the
++following kernels:
++
++https://github.com/Broadcom/stblinux-3.14
++https://github.com/Broadcom/stblinux-4.1
++https://github.com/Broadcom/stblinux-4.9
++
++and with a generic ARMv7 root file system.
++
++image.its:
++/dts-v1/;
++/ {
++	description = "BCM7445 FIT";
++	images {
++		kernel@1 {
++			description = "Linux kernel";
++			/*
++			 * This kernel image output format can be
++			 * generated with:
++			 *
++			 * make vmlinux
++			 * ${CROSS_COMPILE}objcopy -O binary -S vmlinux vmlinux.bin
++			 * gzip -9 vmlinux.bin
++			 *
++			 * For stblinux-3.14, the specific Broadcom
++			 * board type should be configured in the
++			 * kernel, for example CONFIG_BCM7445D0=y.
++			 */
++			data = /incbin/("<vmlinux.bin.gz>");
++			type = "kernel";
++			arch = "arm";
++			os = "linux";
++			compression = "gzip";
++			load = <0x8000>;
++			entry = <0x8000>;
++			hash@1 {
++				algo = "sha256";
++			};
++		};
++		ramdisk@1 {
++			description = "Initramfs root file system";
++			data = /incbin/("<initramfs.cpio.gz>");
++			type = "ramdisk";
++			arch = "arm";
++			os = "linux";
++			compression = "gzip";
++			/*
++			 * Set the environment variable initrd_high to
++			 * 0xffffffff, and set "load" and "entry" here
++			 * to 0x0 to keep initramfs in-place and to
++			 * accommodate stblinux bmem/CMA reservations.
++			 */
++			load = <0x0>;
++			entry = <0x0>;
++			hash@1 {
++				algo = "sha256";
++			};
++		};
++		fdt@1 {
++			description = "Device tree dumped from BOLT";
++			/*
++			 * This DTB should be similar to the
++			 * BOLT-generated device tree, after BOLT has
++			 * done its runtime modifications to it.  For
++			 * example, it can be dumped from within
++			 * U-Boot (at ${fdtcontroladdr}), after BOLT
++			 * has loaded U-Boot.  The result can be added
++			 * to the Linux source tree as a .dts file.
++			 *
++			 * To support modifications to the device tree
++			 * in-place in U-Boot, add to Linux's
++			 * arch/arm/boot/dts/Makefile:
++			 *
++			 * DTC_FLAGS ?= -p 4096
++			 *
++			 * This will leave some padding in the DTB and
++			 * thus reserve room for node additions.
++			 *
++			 * Also, set the environment variable fdt_high
++			 * to 0xffffffff to keep the DTB in-place and
++			 * to accommodate stblinux bmem/CMA
++			 * reservations.
++			 */
++			data = /incbin/("<bolt-<version>.dtb");
++			type = "flat_dt";
++			arch = "arm";
++			compression = "none";
++			hash@1 {
++				algo = "sha256";
++			};
++		};
++	};
++	configurations {
++		default = "conf@bcm7445";
++		conf@bcm7445 {
++			description = "BCM7445 configuration";
++			kernel = "kernel@1";
++			ramdisk = "ramdisk@1";
++			fdt = "fdt@1";
++		};
++	};
++};
+diff --git a/drivers/mmc/Kconfig b/drivers/mmc/Kconfig
+index 693b3ceaf0..377b1c4b3b 100644
+--- a/drivers/mmc/Kconfig
++++ b/drivers/mmc/Kconfig
+@@ -379,6 +379,17 @@ config MMC_SDHCI_BCM2835
+ 
+ 	  If unsure, say N.
+ 
++config MMC_SDHCI_BCMSTB
++	tristate "SDHCI support for the BCMSTB SD/MMC Controller"
++	depends on MMC_SDHCI
++	help
++	  This selects the Broadcom set-top box SD/MMC controller.
++
++	  If you have a BCMSTB platform with SD or MMC devices,
++	  say Y here.
++
++	  If unsure, say N.
++
+ config MMC_SDHCI_CADENCE
+ 	bool "SDHCI support for the Cadence SD/SDIO/eMMC controller"
+ 	depends on BLK && DM_MMC
+diff --git a/drivers/mmc/Makefile b/drivers/mmc/Makefile
+index 3a9805dad9..f6191862d6 100644
+--- a/drivers/mmc/Makefile
++++ b/drivers/mmc/Makefile
+@@ -45,6 +45,7 @@ obj-$(CONFIG_STM32_SDMMC2) += stm32_sdmmc2.o
+ obj-$(CONFIG_MMC_SDHCI)			+= sdhci.o
+ obj-$(CONFIG_MMC_SDHCI_ATMEL)		+= atmel_sdhci.o
+ obj-$(CONFIG_MMC_SDHCI_BCM2835)		+= bcm2835_sdhci.o
++obj-$(CONFIG_MMC_SDHCI_BCMSTB)		+= bcmstb_sdhci.o
+ obj-$(CONFIG_MMC_SDHCI_CADENCE)		+= sdhci-cadence.o
+ obj-$(CONFIG_MMC_SDHCI_KONA)		+= kona_sdhci.o
+ obj-$(CONFIG_MMC_SDHCI_MSM)		+= msm_sdhci.o
+diff --git a/drivers/mmc/bcmstb_sdhci.c b/drivers/mmc/bcmstb_sdhci.c
+new file mode 100644
+index 0000000000..443ae8d481
+--- /dev/null
++++ b/drivers/mmc/bcmstb_sdhci.c
+@@ -0,0 +1,67 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * (C) Copyright 2018  Cisco Systems, Inc.
++ *
++ * Author: Thomas Fitzsimmons <fitzsim@fitzsim.org>
++ */
++
++#include <common.h>
++#include <mach/sdhci.h>
++#include <malloc.h>
++#include <sdhci.h>
++
++/*
++ * The BCMSTB SDHCI has a quirk in that its actual maximum frequency
++ * capability is 100 MHz.  The divisor that is eventually written to
++ * SDHCI_CLOCK_CONTROL is calculated based on what the MMC device
++ * reports, and relative to this maximum frequency.
++ *
++ * This define used to be set to 52000000 (52 MHz), the desired
++ * maximum frequency, but that would result in the communication
++ * actually running at 100 MHz (seemingly without issue), which is
++ * out-of-spec.
++ *
++ * Now, by setting this to 0 (auto-detect), 100 MHz will be read from
++ * the capabilities register, and the resulting divisor will be
++ * doubled, meaning that the clock control register will be set to the
++ * in-spec 52 MHz value.
++ */
++#define BCMSTB_SDHCI_MAXIMUM_CLOCK_FREQUENCY	0
++/*
++ * When the minimum clock frequency is set to 0 (auto-detect), U-Boot
++ * sets it to 100 MHz divided by SDHCI_MAX_DIV_SPEC_300, or 48,875 Hz,
++ * which results in the controller timing out when trying to
++ * communicate with the MMC device.  Hard-code this value to 400000
++ * (400 kHz) to prevent this.
++ */
++#define BCMSTB_SDHCI_MINIMUM_CLOCK_FREQUENCY	400000
++
++static char *BCMSTB_SDHCI_NAME = "bcmstb-sdhci";
++
++/*
++ * This driver has only been tested with eMMC devices; SD devices may
++ * not work.
++ */
++int bcmstb_sdhci_init(phys_addr_t regbase)
++{
++	struct sdhci_host *host = NULL;
++
++	host = (struct sdhci_host *)malloc(sizeof(struct sdhci_host));
++	if (!host) {
++		printf("%s: Failed to allocate memory\n", __func__);
++		return 1;
++	}
++	memset(host, 0, sizeof(*host));
++
++	host->name = BCMSTB_SDHCI_NAME;
++	host->ioaddr = (void *)regbase;
++	host->quirks = 0;
++
++	host->cfg.part_type = PART_TYPE_DOS;
++
++	host->version = sdhci_readw(host, SDHCI_HOST_VERSION);
++
++	return add_sdhci(host,
++			 BCMSTB_SDHCI_MAXIMUM_CLOCK_FREQUENCY,
++			 BCMSTB_SDHCI_MINIMUM_CLOCK_FREQUENCY);
++}
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 3532c2ad46..f5960a7c95 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -66,6 +66,13 @@ config BCM63XX_SPI
+ 	  access the SPI NOR flash on platforms embedding these Broadcom
+ 	  SPI cores.
+ 
++config BCMSTB_SPI
++	bool "BCMSTB SPI driver"
++	help
++	  Enable the Broadcom set-top box SPI driver. This driver can
++	  be used to access the SPI flash on platforms embedding this
++	  Broadcom SPI core.
++
+ config CADENCE_QSPI
+ 	bool "Cadence QSPI driver"
+ 	help
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index 5a2c00eafa..e73b0cd7d5 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -18,6 +18,7 @@ obj-$(CONFIG_ATH79_SPI) += ath79_spi.o
+ obj-$(CONFIG_ATMEL_SPI) += atmel_spi.o
+ obj-$(CONFIG_BCM63XX_HSSPI) += bcm63xx_hsspi.o
+ obj-$(CONFIG_BCM63XX_SPI) += bcm63xx_spi.o
++obj-$(CONFIG_BCMSTB_SPI) += bcmstb_spi.o
+ obj-$(CONFIG_CADENCE_QSPI) += cadence_qspi.o cadence_qspi_apb.o
+ obj-$(CONFIG_CF_SPI) += cf_spi.o
+ obj-$(CONFIG_DAVINCI_SPI) += davinci_spi.o
+diff --git a/drivers/spi/bcmstb_spi.c b/drivers/spi/bcmstb_spi.c
+new file mode 100644
+index 0000000000..fb1dc46b70
+--- /dev/null
++++ b/drivers/spi/bcmstb_spi.c
+@@ -0,0 +1,439 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * (C) Copyright 2018  Cisco Systems, Inc.
++ *
++ * Author: Thomas Fitzsimmons <fitzsim@fitzsim.org>
++ */
++
++#include <asm/io.h>
++#include <command.h>
++#include <config.h>
++#include <dm.h>
++#include <errno.h>
++#include <fdtdec.h>
++#include <linux/bitops.h>
++#include <linux/delay.h>
++#include <log.h>
++#include <malloc.h>
++#include <spi.h>
++#include <time.h>
++
++DECLARE_GLOBAL_DATA_PTR;
++
++#define SPBR_MIN		8
++#define BITS_PER_WORD		8
++
++#define NUM_TXRAM		32
++#define NUM_RXRAM		32
++#define NUM_CDRAM		16
++
++/* hif_mspi register structure. */
++struct bcmstb_hif_mspi_regs {
++	u32 spcr0_lsb;		/* 0x000 */
++	u32 spcr0_msb;		/* 0x004 */
++	u32 spcr1_lsb;		/* 0x008 */
++	u32 spcr1_msb;		/* 0x00c */
++	u32 newqp;		/* 0x010 */
++	u32 endqp;		/* 0x014 */
++	u32 spcr2;		/* 0x018 */
++	u32 reserved0;		/* 0x01c */
++	u32 mspi_status;	/* 0x020 */
++	u32 cptqp;		/* 0x024 */
++	u32 spcr3;		/* 0x028 */
++	u32 revision;		/* 0x02c */
++	u32 reserved1[4];	/* 0x030 */
++	u32 txram[NUM_TXRAM];	/* 0x040 */
++	u32 rxram[NUM_RXRAM];	/* 0x0c0 */
++	u32 cdram[NUM_CDRAM];	/* 0x140 */
++	u32 write_lock;		/* 0x180 */
++};
++
++/* hif_mspi masks. */
++#define HIF_MSPI_SPCR2_CONT_AFTER_CMD_MASK	0x00000080
++#define HIF_MSPI_SPCR2_SPE_MASK			0x00000040
++#define HIF_MSPI_SPCR2_SPIFIE_MASK		0x00000020
++#define HIF_MSPI_WRITE_LOCK_WRITE_LOCK_MASK	0x00000001
++
++/* bspi offsets. */
++#define BSPI_MAST_N_BOOT_CTRL			0x008
++
++/* bspi_raf is not used in this driver. */
++
++/* hif_spi_intr2 offsets and masks. */
++#define HIF_SPI_INTR2_CPU_CLEAR			0x08
++#define HIF_SPI_INTR2_CPU_MASK_SET		0x10
++#define HIF_SPI_INTR2_CPU_MASK_CLEAR		0x14
++#define HIF_SPI_INTR2_CPU_SET_MSPI_DONE_MASK	0x00000020
++
++/* SPI transfer timeout in milliseconds. */
++#define HIF_MSPI_WAIT				10
++
++enum bcmstb_base_type {
++	HIF_MSPI,
++	BSPI,
++	HIF_SPI_INTR2,
++	CS_REG,
++	BASE_LAST,
++};
++
++struct bcmstb_spi_platdata {
++	void *base[4];
++};
++
++struct bcmstb_spi_priv {
++	struct bcmstb_hif_mspi_regs *regs;
++	void *bspi;
++	void *hif_spi_intr2;
++	void *cs_reg;
++	int default_cs;
++	int curr_cs;
++	uint tx_slot;
++	uint rx_slot;
++	u8 saved_cmd[NUM_CDRAM];
++	uint saved_cmd_len;
++	void *saved_din_addr;
++};
++
++static int bcmstb_spi_ofdata_to_platdata(struct udevice *bus)
++{
++	struct bcmstb_spi_platdata *plat = dev_get_platdata(bus);
++	const void *fdt = gd->fdt_blob;
++	int node = dev_of_offset(bus);
++	int ret = 0;
++	int i = 0;
++	struct fdt_resource resource = { 0 };
++	char *names[BASE_LAST] = { "hif_mspi", "bspi", "hif_spi_intr2",
++				   "cs_reg" };
++	const phys_addr_t defaults[BASE_LAST] = { BCMSTB_HIF_MSPI_BASE,
++						  BCMSTB_BSPI_BASE,
++						  BCMSTB_HIF_SPI_INTR2,
++						  BCMSTB_CS_REG };
++
++	for (i = 0; i < BASE_LAST; i++) {
++		plat->base[i] = (void *)defaults[i];
++
++		ret = fdt_get_named_resource(fdt, node, "reg", "reg-names",
++					     names[i], &resource);
++		if (ret) {
++			printf("%s: Assuming BCMSTB SPI %s address 0x0x%p\n",
++			       __func__, names[i], (void *)defaults[i]);
++		} else {
++			plat->base[i] = (void *)resource.start;
++			debug("BCMSTB SPI %s address: 0x0x%p\n",
++			      names[i], (void *)plat->base[i]);
++		}
++	}
++
++	return 0;
++}
++
++static void bcmstb_spi_hw_set_parms(struct bcmstb_spi_priv *priv)
++{
++	writel(SPBR_MIN, &priv->regs->spcr0_lsb);
++	writel(BITS_PER_WORD << 2 | SPI_MODE_3, &priv->regs->spcr0_msb);
++}
++
++static void bcmstb_spi_enable_interrupt(void *base, u32 mask)
++{
++	void *reg = base + HIF_SPI_INTR2_CPU_MASK_CLEAR;
++
++	writel(readl(reg) | mask, reg);
++	readl(reg);
++}
++
++static void bcmstb_spi_disable_interrupt(void *base, u32 mask)
++{
++	void *reg = base + HIF_SPI_INTR2_CPU_MASK_SET;
++
++	writel(readl(reg) | mask, reg);
++	readl(reg);
++}
++
++static void bcmstb_spi_clear_interrupt(void *base, u32 mask)
++{
++	void *reg = base + HIF_SPI_INTR2_CPU_CLEAR;
++
++	writel(readl(reg) | mask, reg);
++	readl(reg);
++}
++
++static int bcmstb_spi_probe(struct udevice *bus)
++{
++	struct bcmstb_spi_platdata *plat = dev_get_platdata(bus);
++	struct bcmstb_spi_priv *priv = dev_get_priv(bus);
++
++	priv->regs = plat->base[HIF_MSPI];
++	priv->bspi = plat->base[BSPI];
++	priv->hif_spi_intr2 = plat->base[HIF_SPI_INTR2];
++	priv->cs_reg = plat->base[CS_REG];
++	priv->default_cs = 0;
++	priv->curr_cs = -1;
++	priv->tx_slot = 0;
++	priv->rx_slot = 0;
++	memset(priv->saved_cmd, 0, NUM_CDRAM);
++	priv->saved_cmd_len = 0;
++	priv->saved_din_addr = NULL;
++
++	debug("spi_xfer: tx regs: 0x%p\n", &priv->regs->txram[0]);
++	debug("spi_xfer: rx regs: 0x%p\n", &priv->regs->rxram[0]);
++
++	/* Disable BSPI. */
++	writel(1, priv->bspi + BSPI_MAST_N_BOOT_CTRL);
++	readl(priv->bspi + BSPI_MAST_N_BOOT_CTRL);
++
++	/* Set up interrupts. */
++	bcmstb_spi_disable_interrupt(priv->hif_spi_intr2, 0xffffffff);
++	bcmstb_spi_clear_interrupt(priv->hif_spi_intr2, 0xffffffff);
++	bcmstb_spi_enable_interrupt(priv->hif_spi_intr2,
++				    HIF_SPI_INTR2_CPU_SET_MSPI_DONE_MASK);
++
++	/* Set up control registers. */
++	writel(0, &priv->regs->spcr1_lsb);
++	writel(0, &priv->regs->spcr1_msb);
++	writel(0, &priv->regs->newqp);
++	writel(0, &priv->regs->endqp);
++	writel(HIF_MSPI_SPCR2_SPIFIE_MASK, &priv->regs->spcr2);
++	writel(0, &priv->regs->spcr3);
++
++	bcmstb_spi_hw_set_parms(priv);
++
++	return 0;
++}
++
++static void bcmstb_spi_submit(struct bcmstb_spi_priv *priv, bool done)
++{
++	debug("WR NEWQP: %d\n", 0);
++	writel(0, &priv->regs->newqp);
++
++	debug("WR ENDQP: %d\n", priv->tx_slot - 1);
++	writel(priv->tx_slot - 1, &priv->regs->endqp);
++
++	if (done) {
++		debug("WR CDRAM[%d]: %02x\n", priv->tx_slot - 1,
++		      readl(&priv->regs->cdram[priv->tx_slot - 1]) & ~0x80);
++		writel(readl(&priv->regs->cdram[priv->tx_slot - 1]) & ~0x80,
++		       &priv->regs->cdram[priv->tx_slot - 1]);
++	}
++
++	/* Force chip select first time. */
++	if (priv->curr_cs != priv->default_cs) {
++		debug("spi_xfer: switching chip select to %d\n",
++		      priv->default_cs);
++		writel((readl(priv->cs_reg) & ~0xff) | (1 << priv->default_cs),
++		       priv->cs_reg);
++		readl(priv->cs_reg);
++		udelay(10);
++		priv->curr_cs = priv->default_cs;
++	}
++
++	debug("WR WRITE_LOCK: %02x\n", 1);
++	writel((readl(&priv->regs->write_lock) &
++		~HIF_MSPI_WRITE_LOCK_WRITE_LOCK_MASK) | 1,
++	       &priv->regs->write_lock);
++	readl(&priv->regs->write_lock);
++
++	debug("WR SPCR2: %02x\n",
++	      HIF_MSPI_SPCR2_SPIFIE_MASK |
++	      HIF_MSPI_SPCR2_SPE_MASK |
++	      HIF_MSPI_SPCR2_CONT_AFTER_CMD_MASK);
++	writel(HIF_MSPI_SPCR2_SPIFIE_MASK |
++	       HIF_MSPI_SPCR2_SPE_MASK |
++	       HIF_MSPI_SPCR2_CONT_AFTER_CMD_MASK,
++	       &priv->regs->spcr2);
++}
++
++static int bcmstb_spi_wait(struct bcmstb_spi_priv *priv)
++{
++	u32 start_time = get_timer(0);
++	u32 status = readl(&priv->regs->mspi_status);
++
++	while (!(status & 1)) {
++		if (get_timer(start_time) > HIF_MSPI_WAIT)
++			return -ETIMEDOUT;
++		status = readl(&priv->regs->mspi_status);
++	}
++
++	writel(readl(&priv->regs->mspi_status) & ~1, &priv->regs->mspi_status);
++	bcmstb_spi_clear_interrupt(priv->hif_spi_intr2,
++				   HIF_SPI_INTR2_CPU_SET_MSPI_DONE_MASK);
++
++	return 0;
++}
++
++static int bcmstb_spi_xfer(struct udevice *dev, unsigned int bitlen,
++			   const void *dout, void *din, unsigned long flags)
++{
++	uint len = bitlen / 8;
++	uint tx_len = len;
++	uint rx_len = len;
++	const u8 *out_bytes = (u8 *)dout;
++	u8 *in_bytes = (u8 *)din;
++	struct udevice *bus = dev_get_parent(dev);
++	struct bcmstb_spi_priv *priv = dev_get_priv(bus);
++	struct bcmstb_hif_mspi_regs *regs = priv->regs;
++
++	debug("spi_xfer: %d, t: 0x%p, r: 0x%p, f: %lx\n",
++	      len, dout, din, flags);
++	debug("spi_xfer: chip select: %x\n", readl(priv->cs_reg) & 0xff);
++	debug("spi_xfer: tx addr: 0x%p\n", &regs->txram[0]);
++	debug("spi_xfer: rx addr: 0x%p\n", &regs->rxram[0]);
++	debug("spi_xfer: cd addr: 0x%p\n", &regs->cdram[0]);
++
++	if (flags & SPI_XFER_END) {
++		debug("spi_xfer: clearing saved din address: 0x%p\n",
++		      priv->saved_din_addr);
++		priv->saved_din_addr = NULL;
++		priv->saved_cmd_len = 0;
++		memset(priv->saved_cmd, 0, NUM_CDRAM);
++	}
++
++	if (bitlen == 0)
++		return 0;
++
++	if (bitlen % 8) {
++		printf("%s: Non-byte-aligned transfer\n", __func__);
++		return -EOPNOTSUPP;
++	}
++
++	if (flags & ~(SPI_XFER_BEGIN | SPI_XFER_END)) {
++		printf("%s: Unsupported flags: %lx\n", __func__, flags);
++		return -EOPNOTSUPP;
++	}
++
++	if (flags & SPI_XFER_BEGIN) {
++		priv->tx_slot = 0;
++		priv->rx_slot = 0;
++
++		if (out_bytes && len > NUM_CDRAM) {
++			printf("%s: Unable to save transfer\n", __func__);
++			return -EOPNOTSUPP;
++		}
++
++		if (out_bytes && !(flags & SPI_XFER_END)) {
++			/*
++			 * This is the start of a transmit operation
++			 * that will need repeating if the calling
++			 * code polls for the result.  Save it for
++			 * subsequent transmission.
++			 */
++			debug("spi_xfer: saving command: %x, %d\n",
++			      out_bytes[0], len);
++			priv->saved_cmd_len = len;
++			memcpy(priv->saved_cmd, out_bytes, priv->saved_cmd_len);
++		}
++	}
++
++	if (!(flags & (SPI_XFER_BEGIN | SPI_XFER_END))) {
++		if (priv->saved_din_addr == din) {
++			/*
++			 * The caller is polling for status.  Repeat
++			 * the last transmission.
++			 */
++			int ret = 0;
++
++			debug("spi_xfer: Making recursive call\n");
++			ret = bcmstb_spi_xfer(dev, priv->saved_cmd_len * 8,
++					      priv->saved_cmd, NULL,
++					      SPI_XFER_BEGIN);
++			if (ret) {
++				printf("%s: Recursive call failed\n", __func__);
++				return ret;
++			}
++		} else {
++			debug("spi_xfer: saving din address: 0x%p\n", din);
++			priv->saved_din_addr = din;
++		}
++	}
++
++	while (rx_len > 0) {
++		priv->rx_slot = priv->tx_slot;
++
++		while (priv->tx_slot < NUM_CDRAM && tx_len > 0) {
++			bcmstb_spi_hw_set_parms(priv);
++			debug("WR TXRAM[%d]: %02x\n", priv->tx_slot,
++			      out_bytes ? out_bytes[len - tx_len] : 0xff);
++			writel(out_bytes ? out_bytes[len - tx_len] : 0xff,
++			       &regs->txram[priv->tx_slot << 1]);
++			debug("WR CDRAM[%d]: %02x\n", priv->tx_slot, 0x8e);
++			writel(0x8e, &regs->cdram[priv->tx_slot]);
++			priv->tx_slot++;
++			tx_len--;
++			if (!in_bytes)
++				rx_len--;
++		}
++
++		debug("spi_xfer: early return clauses: %d, %d, %d\n",
++		      len <= NUM_CDRAM,
++		      !in_bytes,
++		      (flags & (SPI_XFER_BEGIN |
++				SPI_XFER_END)) == SPI_XFER_BEGIN);
++		if (len <= NUM_CDRAM &&
++		    !in_bytes &&
++		    (flags & (SPI_XFER_BEGIN | SPI_XFER_END)) == SPI_XFER_BEGIN)
++			return 0;
++
++		bcmstb_spi_submit(priv, tx_len == 0);
++
++		if (bcmstb_spi_wait(priv) == -ETIMEDOUT) {
++			printf("%s: Timed out\n", __func__);
++			return -ETIMEDOUT;
++		}
++
++		priv->tx_slot %= NUM_CDRAM;
++
++		if (in_bytes) {
++			while (priv->rx_slot < NUM_CDRAM && rx_len > 0) {
++				in_bytes[len - rx_len] =
++					readl(&regs->rxram[(priv->rx_slot << 1)
++							   + 1])
++					& 0xff;
++				debug("RD RXRAM[%d]: %02x\n",
++				      priv->rx_slot, in_bytes[len - rx_len]);
++				priv->rx_slot++;
++				rx_len--;
++			}
++		}
++	}
++
++	if (flags & SPI_XFER_END) {
++		debug("WR WRITE_LOCK: %02x\n", 0);
++		writel((readl(&priv->regs->write_lock) &
++			~HIF_MSPI_WRITE_LOCK_WRITE_LOCK_MASK) | 0,
++		       &priv->regs->write_lock);
++		readl(&priv->regs->write_lock);
++	}
++
++	return 0;
++}
++
++static int bcmstb_spi_set_speed(struct udevice *dev, uint speed)
++{
++	return 0;
++}
++
++static int bcmstb_spi_set_mode(struct udevice *dev, uint mode)
++{
++	return 0;
++}
++
++static const struct dm_spi_ops bcmstb_spi_ops = {
++	.xfer		= bcmstb_spi_xfer,
++	.set_speed	= bcmstb_spi_set_speed,
++	.set_mode	= bcmstb_spi_set_mode,
++};
++
++static const struct udevice_id bcmstb_spi_id[] = {
++	{ .compatible = "brcm,spi-brcmstb" },
++	{ }
++};
++
++U_BOOT_DRIVER(bcmstb_spi) = {
++	.name				= "bcmstb_spi",
++	.id				= UCLASS_SPI,
++	.of_match			= bcmstb_spi_id,
++	.ops				= &bcmstb_spi_ops,
++	.ofdata_to_platdata		= bcmstb_spi_ofdata_to_platdata,
++	.probe				= bcmstb_spi_probe,
++	.platdata_auto_alloc_size	= sizeof(struct bcmstb_spi_platdata),
++	.priv_auto_alloc_size		= sizeof(struct bcmstb_spi_priv),
++};
+diff --git a/drivers/spi/spi-uclass.c b/drivers/spi/spi-uclass.c
+index d2d091f5ea..c517d066f6 100644
+--- a/drivers/spi/spi-uclass.c
++++ b/drivers/spi/spi-uclass.c
+@@ -273,7 +273,7 @@ int spi_get_bus_and_cs(int busnum, int cs, int speed, int mode,
+ 	bool created = false;
+ 	int ret;
+ 
+-#if CONFIG_IS_ENABLED(OF_PLATDATA)
++#if CONFIG_IS_ENABLED(OF_PLATDATA) || CONFIG_IS_ENABLED(OF_PRIOR_STAGE)
+ 	ret = uclass_first_device_err(UCLASS_SPI, &bus);
+ #else
+ 	ret = uclass_get_device_by_seq(UCLASS_SPI, busnum, &bus);
+diff --git a/dts/Kconfig b/dts/Kconfig
+index 0cef225ba9..a1a92f2bbd 100644
+--- a/dts/Kconfig
++++ b/dts/Kconfig
+@@ -101,6 +101,13 @@ config OF_HOSTFILE
+ 	  This is only useful for Sandbox.  Use the -d flag to U-Boot to
+ 	  specify the file to read.
+ 
++config OF_PRIOR_STAGE
++	bool "Prior stage bootloader DTB for DT control"
++	help
++	  If this option is enabled, the device tree used for DT
++	  control will be read from a device tree binary, at a memory
++	  location passed to U-Boot by the prior stage bootloader.
++
+ endchoice
+ 
+ config DEFAULT_DEVICE_TREE
+diff --git a/include/configs/bcm7445.h b/include/configs/bcm7445.h
+new file mode 100644
+index 0000000000..f7200357eb
+--- /dev/null
++++ b/include/configs/bcm7445.h
+@@ -0,0 +1,26 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/*
++ * (C) Copyright 2018  Cisco Systems, Inc.
++ *
++ * Author: Thomas Fitzsimmons <fitzsim@fitzsim.org>
++ *
++ * Configuration settings for the Broadcom BCM7445 SoC family.
++ */
++
++#ifndef __CONFIG_H
++#define __CONFIG_H
++
++#include "bcmstb.h"
++
++#define CONFIG_SYS_NS16550_COM3	0xf040ab00
++
++#define BCMSTB_SDHCI_BASE	0xf03e0200
++#define BCMSTB_TIMER_LOW	0xf0412008
++#define BCMSTB_TIMER_HIGH	0xf041200c
++#define BCMSTB_TIMER_FREQUENCY	0xf0412020
++#define BCMSTB_HIF_MSPI_BASE	0xf03e3400
++#define BCMSTB_BSPI_BASE	0xf03e3200
++#define BCMSTB_HIF_SPI_INTR2	0xf03e1a00
++#define BCMSTB_CS_REG		0xf03e0920
++
++#endif	/* __CONFIG_H */
+diff --git a/include/configs/bcmstb.h b/include/configs/bcmstb.h
+new file mode 100644
+index 0000000000..8c6178042e
+--- /dev/null
++++ b/include/configs/bcmstb.h
+@@ -0,0 +1,183 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/*
++ * (C) Copyright 2018  Cisco Systems, Inc.
++ *
++ * Author: Thomas Fitzsimmons <fitzsim@fitzsim.org>
++ *
++ * Configuration settings for the Broadcom BCMSTB SoC family.
++ */
++
++#ifndef __BCMSTB_H
++#define __BCMSTB_H
++
++#include "version.h"
++#include <linux/sizes.h>
++#include <asm/arch/prior_stage.h>
++
++/*
++ * Generic board configuration.
++ */
++#define CONFIG_SYS_GENERIC_BOARD
++
++/*
++ * CPU configuration.
++ */
++#define CONFIG_SKIP_LOWLEVEL_INIT
++
++/*
++ * Memory configuration.
++ *
++ * The prior stage BOLT bootloader sets up memory for us.
++ *
++ * An example boot memory layout after loading everything is:
++ *
++ *	 0x0000 8000	vmlinux.bin.gz
++ *	       :	[~31 MiB uncompressed max]
++ *	 0x01ef f000	FIT containing signed public key
++ *	       :	[~2 KiB in size]
++ *	 0x01f0 0000	DTB copied from prior-stage-provided region
++ *	       :	[~1 MiB max]
++ *	 0x0200 0000	FIT containing ramdisk and device tree
++ *             :	  initramfs.cpio.gz
++ *	       :	  [~208 MiB uncompressed max, to CMA/bmem low address]
++ *	       :	  [~80 MiB compressed max, to PSB low address]
++ *             :	  device tree binary
++ *             :	  [~60 KiB]
++ *	 0x0700 0000	Prior stage bootloader (PSB)
++ *	       :
++ *	 0x0761 7000	Prior-stage-provided device tree binary (DTB)
++ *	       :	[~40 KiB in size]
++ *	 0x0f00 0000	Contiguous memory allocator (CMA/bmem) low address
++ *	       :
++ *	 0x8010 0000	U-Boot code at ELF load address
++ *	       :	[~500 KiB in size, stripped]
++ *	 0xc000 0000	Top of RAM
++ *
++ * Setting gd->relocaddr to CONFIG_SYS_TEXT_BASE in dram_init_banksize
++ * prevents U-Boot from relocating itself when it is run as an ELF
++ * program by the prior stage bootloader.
++ *
++ * We want to keep the ramdisk and FDT in the FIT image in-place, to
++ * accommodate stblinux's bmem and CMA regions.  To accomplish this,
++ * we set initrd_high and fdt_high to 0xffffffff, and the load and
++ * entry addresses of the FIT ramdisk entry to 0x0.
++ *
++ * Overwriting the prior stage bootloader causes memory instability,
++ * so the compressed initramfs needs to fit between the load address
++ * and the PSB low address.  In BOLT's default configuration this
++ * limits the compressed size of the initramfs to approximately 80
++ * MiB.  However, BOLT can be configured to allow loading larger
++ * initramfs images, in which case this limitation is eliminated.
++ */
++#define CONFIG_NR_DRAM_BANKS		3
++
++#define CONFIG_SYS_SDRAM_BASE		0x00000000
++#define CONFIG_SYS_TEXT_BASE		0x80100000
++#define CONFIG_SYS_INIT_RAM_ADDR	0x80200000
++#define CONFIG_SYS_INIT_RAM_SIZE	0x100000
++#define CONFIG_SYS_INIT_SP_ADDR		(CONFIG_SYS_INIT_RAM_ADDR +	\
++					 CONFIG_SYS_INIT_RAM_SIZE -	\
++					 GENERATED_GBL_DATA_SIZE)
++#define CONFIG_SYS_MALLOC_LEN		((10 * 1024) << 10) /* 10 MiB */
++#define CONFIG_SYS_LOAD_ADDR		0x2000000
++
++/*
++ * CONFIG_SYS_LOAD_ADDR - 1 MiB.
++ */
++#define CONFIG_SYS_FDT_SAVE_ADDRESS	0x1f00000
++#define CONFIG_SYS_CBSIZE		512
++#define CONFIG_SYS_MAXARGS		32
++
++/*
++ * Large kernel image bootm configuration.
++ */
++#define CONFIG_SYS_BOOTM_LEN		SZ_64M
++
++/*
++ * NS16550 configuration.
++ */
++#define V_NS16550_CLK			81000000
++
++#define CONFIG_SYS_NS16550
++#define CONFIG_SYS_NS16550_SERIAL
++#define CONFIG_SYS_NS16550_REG_SIZE	(-4)
++#define CONFIG_SYS_NS16550_CLK		V_NS16550_CLK
++
++/*
++ * Serial console configuration.
++ */
++#define CONFIG_SERIAL3			3
++
++#define CONFIG_BAUDRATE			115200
++#define CONFIG_SYS_BAUDRATE_TABLE	{4800, 9600, 19200, 38400, 57600, \
++					 115200}
++
++/*
++ * Informational display configuration.
++ */
++#define CONFIG_REVISION_TAG
++
++/*
++ * Command configuration.
++ */
++#define CONFIG_CMD_ASKENV
++#define CONFIG_CMD_CACHE
++#define CONFIG_CMD_EXT2
++#define CONFIG_CMD_SF
++#define CONFIG_CMD_SPI
++#define CONFIG_CMD_SF_TEST
++#define CONFIG_CMD_MMC
++
++/*
++ * Flash configuration.
++ */
++#define CONFIG_ST_SMI
++#define CONFIG_SPI_FLASH_STMICRO
++#define CONFIG_SPI_FLASH_MACRONIX
++
++/*
++ * Filesystem configuration.
++ */
++#define CONFIG_DOS_PARTITION
++#define CONFIG_CMD_EXT4
++#define CONFIG_FS_EXT4
++#define CONFIG_CMD_FS_GENERIC
++
++/*
++ * Environment configuration.
++ */
++#define CONFIG_SYS_REDUNDAND_ENVIRONMENT
++
++#define CONFIG_ENV_IS_IN_SPI_FLASH      1
++#define CONFIG_ENV_OFFSET		0x1e0000
++#define CONFIG_ENV_SIZE			(64 << 10) /* 64 KiB */
++#define CONFIG_ENV_SECT_SIZE		CONFIG_ENV_SIZE
++#define CONFIG_ENV_OFFSET_REDUND	(CONFIG_ENV_OFFSET + CONFIG_ENV_SIZE)
++#define CONFIG_ENV_OVERWRITE
++
++/*
++ * Save the prior stage provided DTB.
++ */
++#define CONFIG_PREBOOT					\
++	"fdt addr ${fdtcontroladdr};"			\
++	"fdt move ${fdtcontroladdr} ${fdtsaveaddr};"	\
++	"fdt addr ${fdtsaveaddr};"
++/*
++ * Enable in-place RFS with this initrd_high setting.
++ */
++#define CONFIG_EXTRA_ENV_SETTINGS					\
++	"fdtsaveaddr=" __stringify(CONFIG_SYS_FDT_SAVE_ADDRESS) "\0"	\
++	"initrd_high=0xffffffff\0"					\
++	"fdt_high=0xffffffff\0"
++
++/*
++ * Set fdtaddr to prior stage-provided DTB in board_late_init, when
++ * writeable environment is available.
++ */
++#define CONFIG_BOARD_LATE_INIT
++
++#define CONFIG_SYS_MAX_FLASH_BANKS 1
++
++#define CONFIG_DM_SPI 1
++
++#endif /* __BCMSTB_H */
+diff --git a/include/fdtdec.h b/include/fdtdec.h
+index 332105504b..58d5b721aa 100644
+--- a/include/fdtdec.h
++++ b/include/fdtdec.h
+@@ -49,6 +49,10 @@ struct bd_info;
+ #define SPL_BUILD	0
+ #endif
+ 
++#if CONFIG_IS_ENABLED(OF_PRIOR_STAGE)
++extern phys_addr_t prior_stage_fdt_address;
++#endif
++
+ /*
+  * Information about a resource. start is the first address of the resource
+  * and end is the last address (inclusive). The length of the resource will
+diff --git a/lib/fdtdec.c b/lib/fdtdec.c
+index fc92082b0b..1b0c430945 100644
+--- a/lib/fdtdec.c
++++ b/lib/fdtdec.c
+@@ -1324,8 +1324,12 @@ int fdtdec_setup(void)
+ # endif
+ # ifndef CONFIG_SPL_BUILD
+ 	/* Allow the early environment to override the fdt address */
++#  if CONFIG_IS_ENABLED(OF_PRIOR_STAGE)
++	gd->fdt_blob = (void *)prior_stage_fdt_address;
++#  else
+ 	gd->fdt_blob = (void *)env_get_ulong("fdtcontroladdr", 16,
+ 						(uintptr_t)gd->fdt_blob);
++#  endif
+ # endif
+ 
+ # if CONFIG_IS_ENABLED(MULTI_DTB_FIT)
+-- 
+2.18.0
+

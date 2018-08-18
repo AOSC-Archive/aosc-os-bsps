@@ -1,0 +1,376 @@
+From ecab89737a4eb58c043388b1ca1c0f1dfdaa3346 Mon Sep 17 00:00:00 2001
+From: Simon Glass <sjg@chromium.org>
+Date: Fri, 6 Jul 2018 10:27:40 -0600
+Subject: [PATCH 038/144] binman: Add a ProcessFdt() method
+
+Some entry types modify the device tree, e.g. to remove microcode or add a
+property. So far this just modifies their local copy and does not affect
+a 'shared' device tree.
+
+Rather than doing this modification in the ObtainContents() method, and a
+new ProcessFdt() method which is specifically designed to modify this
+shared device tree.
+
+Move the existing device-tree code over to use this method, reducing
+ObtainContents() to the goal of just obtaining the contents without any
+processing, even for device tree.
+
+Signed-off-by: Simon Glass <sjg@chromium.org>
+---
+ tools/binman/README                         | 23 +++++----
+ tools/binman/bsection.py                    | 15 ++++++
+ tools/binman/control.py                     | 52 ++++++++++++++++++++-
+ tools/binman/entry.py                       |  3 ++
+ tools/binman/etype/section.py               |  3 ++
+ tools/binman/etype/u_boot_dtb_with_ucode.py | 46 +++++++++---------
+ tools/binman/etype/u_boot_ucode.py          |  2 +-
+ tools/binman/etype/u_boot_with_ucode_ptr.py |  7 ++-
+ tools/binman/image.py                       |  3 ++
+ 9 files changed, 117 insertions(+), 37 deletions(-)
+
+diff --git a/tools/binman/README b/tools/binman/README
+index 3cfcf84d92..008d575052 100644
+--- a/tools/binman/README
++++ b/tools/binman/README
+@@ -462,7 +462,14 @@ Order of image creation
+ 
+ Image creation proceeds in the following order, for each entry in the image.
+ 
+-1. GetEntryContents() - the contents of each entry are obtained, normally by
++1. ProcessFdt() - process the device tree information as required by the
++particular entry. This may involve adding or deleting properties. If the
++processing is complete, this method should return True. If the processing
++cannot complete because it needs the ProcessFdt() method of another entry to
++run first, this method should return False, in which case it will be called
++again later.
++
++2. GetEntryContents() - the contents of each entry are obtained, normally by
+ reading from a file. This calls the Entry.ObtainContents() to read the
+ contents. The default version of Entry.ObtainContents() calls
+ Entry.GetDefaultFilename() and then reads that file. So a common mechanism
+@@ -471,35 +478,35 @@ functions must return True when they have read the contents. Binman will
+ retry calling the functions a few times if False is returned, allowing
+ dependencies between the contents of different entries.
+ 
+-2. GetEntryPositions() - calls Entry.GetPositions() for each entry. This can
++3. GetEntryPositions() - calls Entry.GetPositions() for each entry. This can
+ return a dict containing entries that need updating. The key should be the
+ entry name and the value is a tuple (pos, size). This allows an entry to
+ provide the position and size for other entries. The default implementation
+ of GetEntryPositions() returns {}.
+ 
+-3. PackEntries() - calls Entry.Pack() which figures out the position and
++4. PackEntries() - calls Entry.Pack() which figures out the position and
+ size of an entry. The 'current' image position is passed in, and the function
+ returns the position immediately after the entry being packed. The default
+ implementation of Pack() is usually sufficient.
+ 
+-4. CheckSize() - checks that the contents of all the entries fits within
++5. CheckSize() - checks that the contents of all the entries fits within
+ the image size. If the image does not have a defined size, the size is set
+ large enough to hold all the entries.
+ 
+-5. CheckEntries() - checks that the entries do not overlap, nor extend
++6. CheckEntries() - checks that the entries do not overlap, nor extend
+ outside the image.
+ 
+-6. ProcessEntryContents() - this calls Entry.ProcessContents() on each entry.
++7. ProcessEntryContents() - this calls Entry.ProcessContents() on each entry.
+ The default implementatoin does nothing. This can be overriden to adjust the
+ contents of an entry in some way. For example, it would be possible to create
+ an entry containing a hash of the contents of some other entries. At this
+ stage the position and size of entries should not be adjusted.
+ 
+-7. WriteSymbols() - write the value of symbols into the U-Boot SPL binary.
++8. WriteSymbols() - write the value of symbols into the U-Boot SPL binary.
+ See 'Access to binman entry positions at run time' below for a description of
+ what happens in this stage.
+ 
+-8. BuildImage() - builds the image and writes it to a file. This is the final
++9. BuildImage() - builds the image and writes it to a file. This is the final
+ step.
+ 
+ 
+diff --git a/tools/binman/bsection.py b/tools/binman/bsection.py
+index 06a6711350..3ed361d69a 100644
+--- a/tools/binman/bsection.py
++++ b/tools/binman/bsection.py
+@@ -90,6 +90,21 @@ class Section(object):
+             entry.SetPrefix(self._name_prefix)
+             self._entries[node.name] = entry
+ 
++    def ProcessFdt(self, fdt):
++        todo = self._entries.values()
++        for passnum in range(3):
++            next_todo = []
++            for entry in todo:
++                if not entry.ProcessFdt(fdt):
++                    next_todo.append(entry)
++            todo = next_todo
++            if not todo:
++                break
++        if todo:
++            self._Raise('Internal error: Could not complete processing of Fdt: '
++                        'remaining %s' % todo)
++        return True
++
+     def CheckSize(self):
+         """Check that the section contents does not exceed its size, etc."""
+         contents_size = 0
+diff --git a/tools/binman/control.py b/tools/binman/control.py
+index 9243472906..5325a6a006 100644
+--- a/tools/binman/control.py
++++ b/tools/binman/control.py
+@@ -21,6 +21,11 @@ import tout
+ # Make this global so that it can be referenced from tests
+ images = OrderedDict()
+ 
++# Records the device-tree files known to binman, keyed by filename (e.g.
++# 'u-boot-spl.dtb')
++fdt_files = {}
++
++
+ def _ReadImageDesc(binman_node):
+     """Read the image descriptions from the /binman node
+ 
+@@ -53,6 +58,24 @@ def _FindBinmanNode(dtb):
+             return node
+     return None
+ 
++def GetFdt(fname):
++    """Get the Fdt object for a particular device-tree filename
++
++    Binman keeps track of at least one device-tree file called u-boot.dtb but
++    can also have others (e.g. for SPL). This function looks up the given
++    filename and returns the associated Fdt object.
++
++    Args:
++        fname: Filename to look up (e.g. 'u-boot.dtb').
++
++    Returns:
++        Fdt object associated with the filename
++    """
++    return fdt_files[fname]
++
++def GetFdtPath(fname):
++    return fdt_files[fname]._fname
++
+ def Binman(options, args):
+     """The main control code for binman
+ 
+@@ -93,12 +116,39 @@ def Binman(options, args):
+         try:
+             tools.SetInputDirs(options.indir)
+             tools.PrepareOutputDir(options.outdir, options.preserve)
+-            dtb = fdt.FdtScan(dtb_fname)
++
++            # Get the device tree ready by compiling it and copying the compiled
++            # output into a file in our output directly. Then scan it for use
++            # in binman.
++            dtb_fname = fdt_util.EnsureCompiled(dtb_fname)
++            fname = tools.GetOutputFilename('u-boot-out.dtb')
++            with open(dtb_fname) as infd:
++                with open(fname, 'wb') as outfd:
++                    outfd.write(infd.read())
++            dtb = fdt.FdtScan(fname)
++
++            # Note the file so that GetFdt() can find it
++            fdt_files['u-boot.dtb'] = dtb
+             node = _FindBinmanNode(dtb)
+             if not node:
+                 raise ValueError("Device tree '%s' does not have a 'binman' "
+                                  "node" % dtb_fname)
++
+             images = _ReadImageDesc(node)
++
++            # Prepare the device tree by making sure that any missing
++            # properties are added (e.g. 'pos' and 'size'). The values of these
++            # may not be correct yet, but we add placeholders so that the
++            # size of the device tree is correct. Later, in
++            # SetCalculatedProperties() we will insert the correct values
++            # without changing the device-tree size, thus ensuring that our
++            # entry positions remain the same.
++            for image in images.values():
++                image.ProcessFdt(dtb)
++
++            dtb.Pack()
++            dtb.Flush()
++
+             for image in images.values():
+                 # Perform all steps for this image, including checking and
+                 # writing it. This means that errors found with a later
+diff --git a/tools/binman/entry.py b/tools/binman/entry.py
+index 303c992e37..62e65c9126 100644
+--- a/tools/binman/entry.py
++++ b/tools/binman/entry.py
+@@ -130,6 +130,9 @@ class Entry(object):
+         self.align_end = fdt_util.GetInt(self._node, 'align-end')
+         self.pos_unset = fdt_util.GetBool(self._node, 'pos-unset')
+ 
++    def ProcessFdt(self, fdt):
++        return True
++
+     def SetPrefix(self, prefix):
+         """Set the name prefix for a node
+ 
+diff --git a/tools/binman/etype/section.py b/tools/binman/etype/section.py
+index 36b31a849f..9b38738d38 100644
+--- a/tools/binman/etype/section.py
++++ b/tools/binman/etype/section.py
+@@ -17,6 +17,9 @@ class Entry_section(Entry):
+         Entry.__init__(self, image, etype, node)
+         self._section = bsection.Section(node.name, node)
+ 
++    def ProcessFdt(self, fdt):
++        return self._section.ProcessFdt(fdt)
++
+     def ObtainContents(self):
+         return self._section.GetEntryContents()
+ 
+diff --git a/tools/binman/etype/u_boot_dtb_with_ucode.py b/tools/binman/etype/u_boot_dtb_with_ucode.py
+index 1e530d6570..3808d6d278 100644
+--- a/tools/binman/etype/u_boot_dtb_with_ucode.py
++++ b/tools/binman/etype/u_boot_dtb_with_ucode.py
+@@ -5,6 +5,7 @@
+ # Entry-type module for U-Boot device tree with the microcode removed
+ #
+ 
++import control
+ import fdt
+ from entry import Entry
+ from blob import Entry_blob
+@@ -22,13 +23,13 @@ class Entry_u_boot_dtb_with_ucode(Entry_blob):
+         self.collate = False
+         self.ucode_offset = None
+         self.ucode_size = None
++        self.ucode = None
++        self.ready = False
+ 
+     def GetDefaultFilename(self):
+         return 'u-boot.dtb'
+ 
+-    def ObtainContents(self):
+-        Entry_blob.ObtainContents(self)
+-
++    def ProcessFdt(self, fdt):
+         # If the section does not need microcode, there is nothing to do
+         ucode_dest_entry = self.section.FindEntryType(
+             'u-boot-spl-with-ucode-ptr')
+@@ -38,36 +39,35 @@ class Entry_u_boot_dtb_with_ucode(Entry_blob):
+         if not ucode_dest_entry or not ucode_dest_entry.target_pos:
+             return True
+ 
+-        # Create a new file to hold the copied device tree
+-        dtb_name = 'u-boot-dtb-with-ucode.dtb'
+-        fname = tools.GetOutputFilename(dtb_name)
+-        with open(fname, 'wb') as fd:
+-            fd.write(self.data)
+-
+         # Remove the microcode
+-        dtb = fdt.FdtScan(fname)
+-        ucode = dtb.GetNode('/microcode')
+-        if not ucode:
++        fname = self.GetDefaultFilename()
++        fdt = control.GetFdt(fname)
++        self.ucode = fdt.GetNode('/microcode')
++        if not self.ucode:
+             raise self.Raise("No /microcode node found in '%s'" % fname)
+ 
+         # There's no need to collate it (move all microcode into one place)
+         # if we only have one chunk of microcode.
+-        self.collate = len(ucode.subnodes) > 1
+-        for node in ucode.subnodes:
++        self.collate = len(self.ucode.subnodes) > 1
++        for node in self.ucode.subnodes:
+             data_prop = node.props.get('data')
+             if data_prop:
+                 self.ucode_data += ''.join(data_prop.bytes)
+                 if self.collate:
+-                    prop = node.DeleteProp('data')
+-                else:
++                    node.DeleteProp('data')
++        return True
++
++    def ObtainContents(self):
++        # Call the base class just in case it does something important.
++        Entry_blob.ObtainContents(self)
++        self._pathname = control.GetFdtPath(self._filename)
++        self.ReadContents()
++        if self.ucode:
++            for node in self.ucode.subnodes:
++                data_prop = node.props.get('data')
++                if data_prop and not self.collate:
+                     # Find the offset in the device tree of the ucode data
+                     self.ucode_offset = data_prop.GetOffset() + 12
+                     self.ucode_size = len(data_prop.bytes)
+-        if self.collate:
+-            dtb.Pack()
+-            dtb.Flush()
+-
+-            # Make this file the contents of this entry
+-            self._pathname = fname
+-            self.ReadContents()
++        self.ready = True
+         return True
+diff --git a/tools/binman/etype/u_boot_ucode.py b/tools/binman/etype/u_boot_ucode.py
+index 8cae7deed3..ea0c85cc5c 100644
+--- a/tools/binman/etype/u_boot_ucode.py
++++ b/tools/binman/etype/u_boot_ucode.py
+@@ -71,7 +71,7 @@ class Entry_u_boot_ucode(Entry_blob):
+         fdt_entry = self.section.FindEntryType('u-boot-dtb-with-ucode')
+         if not fdt_entry:
+             return True
+-        if not fdt_entry.ucode_data:
++        if not fdt_entry.ready:
+             return False
+ 
+         if not fdt_entry.collate:
+diff --git a/tools/binman/etype/u_boot_with_ucode_ptr.py b/tools/binman/etype/u_boot_with_ucode_ptr.py
+index 86945f3318..8b1e41152e 100644
+--- a/tools/binman/etype/u_boot_with_ucode_ptr.py
++++ b/tools/binman/etype/u_boot_with_ucode_ptr.py
+@@ -28,7 +28,7 @@ class Entry_u_boot_with_ucode_ptr(Entry_blob):
+     def GetDefaultFilename(self):
+         return 'u-boot-nodtb.bin'
+ 
+-    def ObtainContents(self):
++    def ProcessFdt(self, fdt):
+         # Figure out where to put the microcode pointer
+         fname = tools.GetInputFilename(self.elf_fname)
+         sym = elf.GetSymbolAddress(fname, '_dt_ucode_base_size')
+@@ -36,8 +36,7 @@ class Entry_u_boot_with_ucode_ptr(Entry_blob):
+            self.target_pos = sym
+         elif not fdt_util.GetBool(self._node, 'optional-ucode'):
+             self.Raise('Cannot locate _dt_ucode_base_size symbol in u-boot')
+-
+-        return Entry_blob.ObtainContents(self)
++        return True
+ 
+     def ProcessContents(self):
+         # If the image does not need microcode, there is nothing to do
+@@ -73,7 +72,7 @@ class Entry_u_boot_with_ucode_ptr(Entry_blob):
+             pos, size = ucode_entry.pos, ucode_entry.size
+         else:
+             dtb_entry = self.section.FindEntryType('u-boot-dtb-with-ucode')
+-            if not dtb_entry:
++            if not dtb_entry or not dtb_entry.ready:
+                 self.Raise('Cannot find microcode region u-boot-dtb-with-ucode')
+             pos = dtb_entry.pos + dtb_entry.ucode_offset
+             size = dtb_entry.ucode_size
+diff --git a/tools/binman/image.py b/tools/binman/image.py
+index 835b66c99f..9732493709 100644
+--- a/tools/binman/image.py
++++ b/tools/binman/image.py
+@@ -54,6 +54,9 @@ class Image:
+             self._filename = filename
+         self._section = bsection.Section('main-section', self._node)
+ 
++    def ProcessFdt(self, fdt):
++        return self._section.ProcessFdt(fdt)
++
+     def GetEntryContents(self):
+         """Call ObtainContents() for the section
+         """
+-- 
+2.18.0
+

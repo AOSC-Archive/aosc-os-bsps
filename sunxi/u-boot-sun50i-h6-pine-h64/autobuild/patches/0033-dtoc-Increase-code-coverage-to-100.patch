@@ -1,0 +1,406 @@
+From 8512ea2e359cf5217183fc87326a015caab1994d Mon Sep 17 00:00:00 2001
+From: Simon Glass <sjg@chromium.org>
+Date: Fri, 6 Jul 2018 10:27:35 -0600
+Subject: [PATCH 033/144] dtoc: Increase code coverage to 100%
+
+Add more tests to increase dtoc code coverage to 100%.
+
+Correct a whitespace error in some test .dts files at the same time.
+
+Signed-off-by: Simon Glass <sjg@chromium.org>
+---
+ tools/dtoc/dtoc_test_add_prop.dts        |  24 ++++
+ tools/dtoc/dtoc_test_addr32_64.dts       |   2 +-
+ tools/dtoc/dtoc_test_addr64_32.dts       |   2 +-
+ tools/dtoc/dtoc_test_bad_reg.dts         |  17 +++
+ tools/dtoc/dtoc_test_bad_reg2.dts        |  17 +++
+ tools/dtoc/dtoc_test_phandle_bad.dts     |  16 +++
+ tools/dtoc/dtoc_test_phandle_bad2.dts    |  22 ++++
+ tools/dtoc/dtoc_test_phandle_reorder.dts |  23 ++++
+ tools/dtoc/dtoc_test_phandle_single.dts  |  23 ++++
+ tools/dtoc/test_dtoc.py                  | 141 +++++++++++++++++++++++
+ 10 files changed, 285 insertions(+), 2 deletions(-)
+ create mode 100644 tools/dtoc/dtoc_test_add_prop.dts
+ create mode 100644 tools/dtoc/dtoc_test_bad_reg.dts
+ create mode 100644 tools/dtoc/dtoc_test_bad_reg2.dts
+ create mode 100644 tools/dtoc/dtoc_test_phandle_bad.dts
+ create mode 100644 tools/dtoc/dtoc_test_phandle_bad2.dts
+ create mode 100644 tools/dtoc/dtoc_test_phandle_reorder.dts
+ create mode 100644 tools/dtoc/dtoc_test_phandle_single.dts
+
+diff --git a/tools/dtoc/dtoc_test_add_prop.dts b/tools/dtoc/dtoc_test_add_prop.dts
+new file mode 100644
+index 0000000000..fa296e5552
+--- /dev/null
++++ b/tools/dtoc/dtoc_test_add_prop.dts
+@@ -0,0 +1,24 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Test device tree file for dtoc
++ *
++ * Copyright 2018 Google, Inc
++ */
++
++/dts-v1/;
++
++/ {
++	#address-cells = <1>;
++	#size-cells = <1>;
++	spl-test {
++		u-boot,dm-pre-reloc;
++		compatible = "sandbox,spl-test";
++		intval = <1>;
++	};
++
++	spl-test2 {
++		u-boot,dm-pre-reloc;
++		compatible = "sandbox,spl-test";
++		intarray = <5>;
++	};
++};
+diff --git a/tools/dtoc/dtoc_test_addr32_64.dts b/tools/dtoc/dtoc_test_addr32_64.dts
+index 7891ee59fa..7599d5b0a5 100644
+--- a/tools/dtoc/dtoc_test_addr32_64.dts
++++ b/tools/dtoc/dtoc_test_addr32_64.dts
+@@ -5,7 +5,7 @@
+  * Copyright 2017 Google, Inc
+  */
+ 
+- /dts-v1/;
++/dts-v1/;
+ 
+ / {
+ 	#address-cells = <1>;
+diff --git a/tools/dtoc/dtoc_test_addr64_32.dts b/tools/dtoc/dtoc_test_addr64_32.dts
+index 759a7e8e26..85e4f5fdae 100644
+--- a/tools/dtoc/dtoc_test_addr64_32.dts
++++ b/tools/dtoc/dtoc_test_addr64_32.dts
+@@ -5,7 +5,7 @@
+  * Copyright 2017 Google, Inc
+  */
+ 
+- /dts-v1/;
++/dts-v1/;
+ 
+ / {
+ 	#address-cells = <2>;
+diff --git a/tools/dtoc/dtoc_test_bad_reg.dts b/tools/dtoc/dtoc_test_bad_reg.dts
+new file mode 100644
+index 0000000000..1312acb619
+--- /dev/null
++++ b/tools/dtoc/dtoc_test_bad_reg.dts
+@@ -0,0 +1,17 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Test device tree file for dtoc
++ *
++ * Copyright 2018 Google, Inc
++ */
++
++/dts-v1/;
++
++/ {
++	#address-cells = <1>;
++	#size-cells = <1>;
++	spl-test {
++	compatible = "test";
++		reg = "fre";
++	};
++};
+diff --git a/tools/dtoc/dtoc_test_bad_reg2.dts b/tools/dtoc/dtoc_test_bad_reg2.dts
+new file mode 100644
+index 0000000000..3e9efa43af
+--- /dev/null
++++ b/tools/dtoc/dtoc_test_bad_reg2.dts
+@@ -0,0 +1,17 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Test device tree file for dtoc
++ *
++ * Copyright 2018 Google, Inc
++ */
++
++/dts-v1/;
++
++/ {
++	#address-cells = <1>;
++	#size-cells = <1>;
++	spl-test {
++	compatible = "test";
++		reg = <1 2 3>;
++	};
++};
+diff --git a/tools/dtoc/dtoc_test_phandle_bad.dts b/tools/dtoc/dtoc_test_phandle_bad.dts
+new file mode 100644
+index 0000000000..a3ddc59585
+--- /dev/null
++++ b/tools/dtoc/dtoc_test_phandle_bad.dts
+@@ -0,0 +1,16 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Test device tree file for dtoc
++ *
++ * Copyright 2018 Google, Inc
++ */
++
++/dts-v1/;
++
++/ {
++	phandle-source {
++		u-boot,dm-pre-reloc;
++		compatible = "source";
++		clocks = <20>;    /* Invalid phandle */
++	};
++};
+diff --git a/tools/dtoc/dtoc_test_phandle_bad2.dts b/tools/dtoc/dtoc_test_phandle_bad2.dts
+new file mode 100644
+index 0000000000..fe25f565fb
+--- /dev/null
++++ b/tools/dtoc/dtoc_test_phandle_bad2.dts
+@@ -0,0 +1,22 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Test device tree file for dtoc
++ *
++ * Copyright 2018 Google, Inc
++ */
++
++/dts-v1/;
++
++/ {
++	phandle: phandle-target {
++		u-boot,dm-pre-reloc;
++		compatible = "target";
++		intval = <0>;
++	};
++
++	phandle-source2 {
++		u-boot,dm-pre-reloc;
++		compatible = "source";
++		clocks = <&phandle>;
++	};
++};
+diff --git a/tools/dtoc/dtoc_test_phandle_reorder.dts b/tools/dtoc/dtoc_test_phandle_reorder.dts
+new file mode 100644
+index 0000000000..aa71d56f27
+--- /dev/null
++++ b/tools/dtoc/dtoc_test_phandle_reorder.dts
+@@ -0,0 +1,23 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Test device tree file for dtoc
++ *
++ * Copyright 2018 Google, Inc
++ */
++
++/dts-v1/;
++
++/ {
++
++	phandle-source2 {
++		u-boot,dm-pre-reloc;
++		compatible = "source";
++		clocks = <&phandle>;
++	};
++
++	phandle: phandle-target {
++		u-boot,dm-pre-reloc;
++		compatible = "target";
++		#clock-cells = <0>;
++	};
++};
+diff --git a/tools/dtoc/dtoc_test_phandle_single.dts b/tools/dtoc/dtoc_test_phandle_single.dts
+new file mode 100644
+index 0000000000..aacd0b15fa
+--- /dev/null
++++ b/tools/dtoc/dtoc_test_phandle_single.dts
+@@ -0,0 +1,23 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Test device tree file for dtoc
++ *
++ * Copyright 2018 Google, Inc
++ */
++
++/dts-v1/;
++
++/ {
++	phandle: phandle-target {
++		u-boot,dm-pre-reloc;
++		compatible = "target";
++		intval = <0>;
++		#clock-cells = <0>;
++	};
++
++	phandle-source2 {
++		u-boot,dm-pre-reloc;
++		compatible = "source";
++		clocks = <&phandle>;
++	};
++};
+diff --git a/tools/dtoc/test_dtoc.py b/tools/dtoc/test_dtoc.py
+index 11cac3fc7a..622b39df39 100644
+--- a/tools/dtoc/test_dtoc.py
++++ b/tools/dtoc/test_dtoc.py
+@@ -20,6 +20,7 @@ from dtb_platdata import get_value
+ from dtb_platdata import tab_to
+ import fdt
+ import fdt_util
++import test_util
+ import tools
+ 
+ our_path = os.path.dirname(os.path.realpath(__file__))
+@@ -335,6 +336,68 @@ U_BOOT_DEVICE(phandle_source2) = {
+ 
+ ''', data)
+ 
++    def test_phandle_single(self):
++        """Test output from a node containing a phandle reference"""
++        dtb_file = get_dtb_file('dtoc_test_phandle_single.dts')
++        output = tools.GetOutputFilename('output')
++        dtb_platdata.run_steps(['struct'], dtb_file, False, output)
++        with open(output) as infile:
++            data = infile.read()
++        self._CheckStrings(HEADER + '''
++struct dtd_source {
++\tstruct phandle_0_arg clocks[1];
++};
++struct dtd_target {
++\tfdt32_t\t\tintval;
++};
++''', data)
++
++    def test_phandle_reorder(self):
++        """Test that phandle targets are generated before their references"""
++        dtb_file = get_dtb_file('dtoc_test_phandle_reorder.dts')
++        output = tools.GetOutputFilename('output')
++        dtb_platdata.run_steps(['platdata'], dtb_file, False, output)
++        with open(output) as infile:
++            data = infile.read()
++        self._CheckStrings(C_HEADER + '''
++static struct dtd_target dtv_phandle_target = {
++};
++U_BOOT_DEVICE(phandle_target) = {
++\t.name\t\t= "target",
++\t.platdata\t= &dtv_phandle_target,
++\t.platdata_size\t= sizeof(dtv_phandle_target),
++};
++
++static struct dtd_source dtv_phandle_source2 = {
++\t.clocks\t\t\t= {
++\t\t\t{&dtv_phandle_target, {}},},
++};
++U_BOOT_DEVICE(phandle_source2) = {
++\t.name\t\t= "source",
++\t.platdata\t= &dtv_phandle_source2,
++\t.platdata_size\t= sizeof(dtv_phandle_source2),
++};
++
++''', data)
++
++    def test_phandle_bad(self):
++        """Test a node containing an invalid phandle fails"""
++        dtb_file = get_dtb_file('dtoc_test_phandle_bad.dts')
++        output = tools.GetOutputFilename('output')
++        with self.assertRaises(ValueError) as e:
++            dtb_platdata.run_steps(['struct'], dtb_file, False, output)
++        self.assertIn("Cannot parse 'clocks' in node 'phandle-source'",
++                      str(e.exception))
++
++    def test_phandle_bad2(self):
++        """Test a phandle target missing its #*-cells property"""
++        dtb_file = get_dtb_file('dtoc_test_phandle_bad2.dts')
++        output = tools.GetOutputFilename('output')
++        with self.assertRaises(ValueError) as e:
++            dtb_platdata.run_steps(['struct'], dtb_file, False, output)
++        self.assertIn("Node 'phandle-target' has no '#clock-cells' property",
++                      str(e.exception))
++
+     def test_aliases(self):
+         """Test output from a node with multiple compatible strings"""
+         dtb_file = get_dtb_file('dtoc_test_aliases.dts')
+@@ -560,3 +623,81 @@ U_BOOT_DEVICE(test3) = {
+ };
+ 
+ ''', data)
++
++    def test_bad_reg(self):
++        """Test that a reg property with an invalid type generates an error"""
++        dtb_file = get_dtb_file('dtoc_test_bad_reg.dts')
++        output = tools.GetOutputFilename('output')
++        with self.assertRaises(ValueError) as e:
++            dtb_platdata.run_steps(['struct'], dtb_file, False, output)
++        self.assertIn("Node 'spl-test' reg property is not an int",
++                      str(e.exception))
++
++    def test_bad_reg2(self):
++        """Test that a reg property with an invalid cell count is detected"""
++        dtb_file = get_dtb_file('dtoc_test_bad_reg2.dts')
++        output = tools.GetOutputFilename('output')
++        with self.assertRaises(ValueError) as e:
++            dtb_platdata.run_steps(['struct'], dtb_file, False, output)
++        self.assertIn("Node 'spl-test' reg property has 3 cells which is not a multiple of na + ns = 1 + 1)",
++                      str(e.exception))
++
++    def test_add_prop(self):
++        """Test that a subequent node can add a new property to a struct"""
++        dtb_file = get_dtb_file('dtoc_test_add_prop.dts')
++        output = tools.GetOutputFilename('output')
++        dtb_platdata.run_steps(['struct'], dtb_file, False, output)
++        with open(output) as infile:
++            data = infile.read()
++        self._CheckStrings(HEADER + '''
++struct dtd_sandbox_spl_test {
++\tfdt32_t\t\tintarray;
++\tfdt32_t\t\tintval;
++};
++''', data)
++
++        dtb_platdata.run_steps(['platdata'], dtb_file, False, output)
++        with open(output) as infile:
++            data = infile.read()
++        self._CheckStrings(C_HEADER + '''
++static struct dtd_sandbox_spl_test dtv_spl_test = {
++\t.intval\t\t\t= 0x1,
++};
++U_BOOT_DEVICE(spl_test) = {
++\t.name\t\t= "sandbox_spl_test",
++\t.platdata\t= &dtv_spl_test,
++\t.platdata_size\t= sizeof(dtv_spl_test),
++};
++
++static struct dtd_sandbox_spl_test dtv_spl_test2 = {
++\t.intarray\t\t= 0x5,
++};
++U_BOOT_DEVICE(spl_test2) = {
++\t.name\t\t= "sandbox_spl_test",
++\t.platdata\t= &dtv_spl_test2,
++\t.platdata_size\t= sizeof(dtv_spl_test2),
++};
++
++''', data)
++
++    def testStdout(self):
++        """Test output to stdout"""
++        dtb_file = get_dtb_file('dtoc_test_simple.dts')
++        with test_util.capture_sys_output() as (stdout, stderr):
++            dtb_platdata.run_steps(['struct'], dtb_file, False, '-')
++
++    def testNoCommand(self):
++        """Test running dtoc without a command"""
++        with self.assertRaises(ValueError) as e:
++            dtb_platdata.run_steps([], '', False, '')
++        self.assertIn("Please specify a command: struct, platdata",
++                      str(e.exception))
++
++    def testBadCommand(self):
++        """Test running dtoc with an invalid command"""
++        dtb_file = get_dtb_file('dtoc_test_simple.dts')
++        output = tools.GetOutputFilename('output')
++        with self.assertRaises(ValueError) as e:
++            dtb_platdata.run_steps(['invalid-cmd'], dtb_file, False, output)
++        self.assertIn("Unknown command 'invalid-cmd': (use: struct, platdata)",
++                      str(e.exception))
+-- 
+2.18.0
+

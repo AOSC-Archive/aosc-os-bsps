@@ -1,0 +1,36 @@
+From e2a1484c3b372e1672b288455fd08cd214a86492 Mon Sep 17 00:00:00 2001
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Date: Thu, 14 Jun 2018 23:38:39 +0530
+Subject: [PATCH 050/144] MAINTAINERS: Add entries for Actions Semi OWL family
+
+Add myself as the Maintainer for Actions Semi OWL family and its
+relevant board, drivers.
+
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+---
+ MAINTAINERS | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index b2c9717cb7..d582e56222 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -145,6 +145,15 @@ T:	git git://git.denx.de/u-boot-pxa.git
+ F:	arch/arm/cpu/pxa/
+ F:	arch/arm/include/asm/arch-pxa/
+ 
++ARM OWL
++M:	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
++S:	Maintained
++F:	arch/arm/include/asm/arch-owl/
++F:	arch/arm/mach-owl/
++F:	board/ucRobotics/
++F:	drivers/clk/owl/
++F:	drivers/serial/serial_owl.c
++
+ ARM RENESAS RMOBILE/R-CAR
+ M:	Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
+ M:	Marek Vasut <marek.vasut+renesas@gmail.com>
+-- 
+2.18.0
+

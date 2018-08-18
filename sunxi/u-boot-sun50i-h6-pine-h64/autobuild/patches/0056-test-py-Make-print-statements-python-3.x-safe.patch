@@ -1,0 +1,142 @@
+From dffd56d1d270e4797e43272a6c9000b8b8aeaf29 Mon Sep 17 00:00:00 2001
+From: Paul Burton <paul.burton@imgtec.com>
+Date: Thu, 14 Sep 2017 14:34:43 -0700
+Subject: [PATCH 056/144] test/py: Make print statements python 3.x safe
+
+In python 3.x print must be called as a function rather than used as a
+statement. Update uses of print to the function call syntax in order to
+be python 3.x safe.
+
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Reviewed-by: Stephen Warren <swarren@nvidia.com>
+---
+ test/py/conftest.py               |  2 +-
+ test/py/test.py                   |  6 ++++--
+ test/py/tests/test_fit.py         | 12 +++++++-----
+ test/py/u_boot_console_sandbox.py |  2 +-
+ test/py/u_boot_spawn.py           |  2 +-
+ 5 files changed, 14 insertions(+), 10 deletions(-)
+
+diff --git a/test/py/conftest.py b/test/py/conftest.py
+index 446d8cb6fa..e591f5879d 100644
+--- a/test/py/conftest.py
++++ b/test/py/conftest.py
+@@ -586,7 +586,7 @@ def pytest_runtest_protocol(item, nextitem):
+         # is fixed, if this exception still exists, it will then be logged as
+         # part of the test's stdout.
+         import traceback
+-        print 'Exception occurred while logging runtest status:'
++        print('Exception occurred while logging runtest status:')
+         traceback.print_exc()
+         # FIXME: Can we force a test failure here?
+ 
+diff --git a/test/py/test.py b/test/py/test.py
+index 04baf8df3b..a5140945d4 100755
+--- a/test/py/test.py
++++ b/test/py/test.py
+@@ -7,6 +7,8 @@
+ # Wrapper script to invoke pytest with the directory name that contains the
+ # U-Boot tests.
+ 
++from __future__ import print_function
++
+ import os
+ import os.path
+ import sys
+@@ -26,7 +28,7 @@ except:
+     traceback.print_exc()
+     # Hint to the user that they likely simply haven't installed the required
+     # dependencies.
+-    print >>sys.stderr, '''
++    print('''
+ exec(py.test) failed; perhaps you are missing some dependencies?
+-See test/py/README.md for the list.'''
++See test/py/README.md for the list.''', file=sys.stderr)
+     sys.exit(1)
+diff --git a/test/py/tests/test_fit.py b/test/py/tests/test_fit.py
+index e407ccc05a..a0f9350411 100755
+--- a/test/py/tests/test_fit.py
++++ b/test/py/tests/test_fit.py
+@@ -3,6 +3,8 @@
+ #
+ # Sanity check of the FIT handling in U-Boot
+ 
++from __future__ import print_function
++
+ import os
+ import pytest
+ import struct
+@@ -153,7 +155,7 @@ def test_fit(u_boot_console):
+         src = make_fname('u-boot.dts')
+         dtb = make_fname('u-boot.dtb')
+         with open(src, 'w') as fd:
+-            print >> fd, base_fdt
++            print(base_fdt, file=fd)
+         util.run_and_log(cons, ['dtc', src, '-O', 'dtb', '-o', dtb])
+         return dtb
+ 
+@@ -167,7 +169,7 @@ def test_fit(u_boot_console):
+         """
+         its = make_fname('test.its')
+         with open(its, 'w') as fd:
+-            print >> fd, base_its % params
++            print(base_its % params, file=fd)
+         return its
+ 
+     def make_fit(mkimage, params):
+@@ -186,7 +188,7 @@ def test_fit(u_boot_console):
+         its = make_its(params)
+         util.run_and_log(cons, [mkimage, '-f', its, fit])
+         with open(make_fname('u-boot.dts'), 'w') as fd:
+-            print >> fd, base_fdt
++            print(base_fdt, file=fd)
+         return fit
+ 
+     def make_kernel(filename, text):
+@@ -202,7 +204,7 @@ def test_fit(u_boot_console):
+         for i in range(100):
+             data += 'this %s %d is unlikely to boot\n' % (text, i)
+         with open(fname, 'w') as fd:
+-            print >> fd, data
++            print(data, file=fd)
+         return fname
+ 
+     def make_ramdisk(filename, text):
+@@ -216,7 +218,7 @@ def test_fit(u_boot_console):
+         for i in range(100):
+             data += '%s %d was seldom used in the middle ages\n' % (text, i)
+         with open(fname, 'w') as fd:
+-            print >> fd, data
++            print(data, file=fd)
+         return fname
+ 
+     def find_matching(text, match):
+diff --git a/test/py/u_boot_console_sandbox.py b/test/py/u_boot_console_sandbox.py
+index a616cfb49f..c901397e1c 100644
+--- a/test/py/u_boot_console_sandbox.py
++++ b/test/py/u_boot_console_sandbox.py
+@@ -41,7 +41,7 @@ class ConsoleSandbox(ConsoleBase):
+         bcfg = self.config.buildconfig
+         config_spl = bcfg.get('config_spl', 'n') == 'y'
+         fname = '/spl/u-boot-spl' if config_spl else '/u-boot'
+-        print fname
++        print(fname)
+         cmd = []
+         if self.config.gdbserver:
+             cmd += ['gdbserver', self.config.gdbserver]
+diff --git a/test/py/u_boot_spawn.py b/test/py/u_boot_spawn.py
+index 108498a9a4..77a010a33f 100644
+--- a/test/py/u_boot_spawn.py
++++ b/test/py/u_boot_spawn.py
+@@ -58,7 +58,7 @@ class Spawn(object):
+                     os.chdir(cwd)
+                 os.execvp(args[0], args)
+             except:
+-                print 'CHILD EXECEPTION:'
++                print('CHILD EXECEPTION:')
+                 import traceback
+                 traceback.print_exc()
+             finally:
+-- 
+2.18.0
+

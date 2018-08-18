@@ -1,0 +1,31 @@
+From d99894dd3a713ea6226ac39a7e332b55cf8aca49 Mon Sep 17 00:00:00 2001
+From: Ley Foon Tan <ley.foon.tan@intel.com>
+Date: Thu, 14 Jun 2018 18:45:20 +0800
+Subject: [PATCH 052/144] include: reset: Change to use
+ CONFIG_IS_ENABLED(DM_RESET)
+
+Change to use CONFIG_IS_ENABLED(DM_RESET), so this can work in SPL
+build (CONFIG_SPL_DM_RESET) and U-boot build (CONFIG_DM_RESET).
+
+Signed-off-by: Ley Foon Tan <ley.foon.tan@intel.com>
+Reviewed-by: Simon Glass <sjg@chromium.org>
+---
+ include/reset.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/reset.h b/include/reset.h
+index 201bafc67f..a7bbc1c331 100644
+--- a/include/reset.h
++++ b/include/reset.h
+@@ -77,7 +77,7 @@ struct reset_ctl_bulk {
+ 	unsigned int count;
+ };
+ 
+-#ifdef CONFIG_DM_RESET
++#if CONFIG_IS_ENABLED(DM_RESET)
+ /**
+  * reset_get_by_index - Get/request a reset signal by integer index.
+  *
+-- 
+2.18.0
+

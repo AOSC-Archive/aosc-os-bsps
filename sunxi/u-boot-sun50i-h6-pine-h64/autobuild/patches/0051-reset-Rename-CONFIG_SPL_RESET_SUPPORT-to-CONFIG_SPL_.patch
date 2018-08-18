@@ -1,0 +1,59 @@
+From bfc6bae8fa1f2d8a9c51548767b02f1a1e0ffe52 Mon Sep 17 00:00:00 2001
+From: Ley Foon Tan <ley.foon.tan@intel.com>
+Date: Thu, 14 Jun 2018 18:45:19 +0800
+Subject: [PATCH 051/144] reset: Rename CONFIG_SPL_RESET_SUPPORT to
+ CONFIG_SPL_DM_RESET
+
+Rename CONFIG_SPL_RESET_SUPPORT to CONFIG_SPL_DM_RESET, so can use
+CONFIG_IS_ENABLED(DM_RESET) checking in reset.h later.
+
+Signed-off-by: Ley Foon Tan <ley.foon.tan@intel.com>
+Reviewed-by: Simon Glass <sjg@chromium.org>
+---
+ arch/arm/mach-stm32mp/Kconfig | 2 +-
+ common/spl/Kconfig            | 2 +-
+ drivers/Makefile              | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/arch/arm/mach-stm32mp/Kconfig b/arch/arm/mach-stm32mp/Kconfig
+index abceeded24..898ad6bd37 100644
+--- a/arch/arm/mach-stm32mp/Kconfig
++++ b/arch/arm/mach-stm32mp/Kconfig
+@@ -13,7 +13,7 @@ config SPL
+ 	select SPL_OF_TRANSLATE
+ 	select SPL_PINCTRL
+ 	select SPL_REGMAP
+-	select SPL_RESET_SUPPORT
++	select SPL_DM_RESET
+ 	select SPL_SERIAL_SUPPORT
+ 	select SPL_SYSCON
+ 	select SPL_DRIVERS_MISC_SUPPORT
+diff --git a/common/spl/Kconfig b/common/spl/Kconfig
+index 0bbf8d5b02..99c9053ab8 100644
+--- a/common/spl/Kconfig
++++ b/common/spl/Kconfig
+@@ -578,7 +578,7 @@ config SPL_POST_MEM_SUPPORT
+ 	  performed before booting. This enables the drivers in post/drivers
+ 	  as part of an SPL build.
+ 
+-config SPL_RESET_SUPPORT
++config SPL_DM_RESET
+ 	bool "Support reset drivers"
+ 	depends on SPL
+ 	help
+diff --git a/drivers/Makefile b/drivers/Makefile
+index a213ea9671..66834c33e3 100644
+--- a/drivers/Makefile
++++ b/drivers/Makefile
+@@ -28,7 +28,7 @@ obj-$(CONFIG_ARMADA_XP) += ddr/marvell/axp/
+ obj-$(CONFIG_ALTERA_SDRAM) += ddr/altera/
+ obj-$(CONFIG_SPL_POWER_SUPPORT) += power/ power/pmic/
+ obj-$(CONFIG_SPL_POWER_SUPPORT) += power/regulator/
+-obj-$(CONFIG_SPL_RESET_SUPPORT) += reset/
++obj-$(CONFIG_SPL_DM_RESET) += reset/
+ obj-$(CONFIG_SPL_MTD_SUPPORT) += mtd/
+ obj-$(CONFIG_SPL_ONENAND_SUPPORT) += mtd/onenand/
+ obj-$(CONFIG_SPL_UBI) += mtd/ubispl/
+-- 
+2.18.0
+

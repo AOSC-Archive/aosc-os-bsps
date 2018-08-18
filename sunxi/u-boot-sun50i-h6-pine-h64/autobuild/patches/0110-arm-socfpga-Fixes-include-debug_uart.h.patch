@@ -1,0 +1,34 @@
+From aa529663368e97663d7ec16d6997cb69a2dd8afb Mon Sep 17 00:00:00 2001
+From: Ley Foon Tan <ley.foon.tan@intel.com>
+Date: Thu, 12 Jul 2018 21:44:24 +0800
+Subject: [PATCH 110/144] arm: socfpga: Fixes: include <debug_uart.h>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Fix compilation warning when enable CONFIG_DEBUG_UART.
+
+arch/arm/mach-socfpga/spl_s10.c: In function ‘board_init_f’:
+arch/arm/mach-socfpga/spl_s10.c:146:2: warning: implicit declaration of function ‘debug_uart_init’; did you mean ‘part_init’? [-Wimplicit-function-declaration]
+  debug_uart_init();
+
+Signed-off-by: Ley Foon Tan <ley.foon.tan@intel.com>
+---
+ arch/arm/mach-socfpga/spl_s10.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm/mach-socfpga/spl_s10.c b/arch/arm/mach-socfpga/spl_s10.c
+index 69c2ee3d69..69d6e919aa 100644
+--- a/arch/arm/mach-socfpga/spl_s10.c
++++ b/arch/arm/mach-socfpga/spl_s10.c
+@@ -8,6 +8,7 @@
+ #include <asm/u-boot.h>
+ #include <asm/utils.h>
+ #include <common.h>
++#include <debug_uart.h>
+ #include <image.h>
+ #include <spl.h>
+ #include <asm/arch/clock_manager.h>
+-- 
+2.18.0
+

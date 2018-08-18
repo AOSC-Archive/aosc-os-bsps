@@ -1,0 +1,88 @@
+From b8c455500a08c75c4809e523d348027e72cda7ec Mon Sep 17 00:00:00 2001
+From: Paul Burton <paul.burton@imgtec.com>
+Date: Thu, 14 Sep 2017 14:34:44 -0700
+Subject: [PATCH 057/144] test/py: Use range() rather than xrange()
+
+In python 3.x the xrange() function has been removed, and range()
+returns an iterator much like Python 2.x's xrange(). Simply use range()
+in place of xrange() in order to work on both python 2.x & 3.x. This
+will mean a small cost on python 2.x since range() will return a list
+there rather than an iterator, but the cost should be negligible.
+
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Reviewed-by: Stephen Warren <swarren@nvidia.com>
+---
+ test/py/u_boot_console_sandbox.py | 2 +-
+ test/py/u_boot_spawn.py           | 6 +++---
+ test/py/u_boot_utils.py           | 4 ++--
+ 3 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/test/py/u_boot_console_sandbox.py b/test/py/u_boot_console_sandbox.py
+index c901397e1c..778f6d0983 100644
+--- a/test/py/u_boot_console_sandbox.py
++++ b/test/py/u_boot_console_sandbox.py
+@@ -81,7 +81,7 @@ class ConsoleSandbox(ConsoleBase):
+ 
+         p = self.p
+         self.p = None
+-        for i in xrange(100):
++        for i in range(100):
+             ret = not p.isalive()
+             if ret:
+                 break
+diff --git a/test/py/u_boot_spawn.py b/test/py/u_boot_spawn.py
+index 77a010a33f..b011a3e3da 100644
+--- a/test/py/u_boot_spawn.py
++++ b/test/py/u_boot_spawn.py
+@@ -134,7 +134,7 @@ class Spawn(object):
+             the expected time.
+         """
+ 
+-        for pi in xrange(len(patterns)):
++        for pi in range(len(patterns)):
+             if type(patterns[pi]) == type(''):
+                 patterns[pi] = re.compile(patterns[pi])
+ 
+@@ -143,7 +143,7 @@ class Spawn(object):
+             while True:
+                 earliest_m = None
+                 earliest_pi = None
+-                for pi in xrange(len(patterns)):
++                for pi in range(len(patterns)):
+                     pattern = patterns[pi]
+                     m = pattern.search(self.buf)
+                     if not m:
+@@ -198,7 +198,7 @@ class Spawn(object):
+         """
+ 
+         os.close(self.fd)
+-        for i in xrange(100):
++        for i in range(100):
+             if not self.isalive():
+                 break
+             time.sleep(0.1)
+diff --git a/test/py/u_boot_utils.py b/test/py/u_boot_utils.py
+index bb31e57b27..d68d1dd105 100644
+--- a/test/py/u_boot_utils.py
++++ b/test/py/u_boot_utils.py
+@@ -120,7 +120,7 @@ def wait_until_open_succeeds(fn):
+         An open file handle to the file.
+     """
+ 
+-    for i in xrange(100):
++    for i in range(100):
+         fh = attempt_to_open_file(fn)
+         if fh:
+             return fh
+@@ -143,7 +143,7 @@ def wait_until_file_open_fails(fn, ignore_errors):
+         Nothing.
+     """
+ 
+-    for i in xrange(100):
++    for i in range(100):
+         fh = attempt_to_open_file(fn)
+         if not fh:
+             return
+-- 
+2.18.0
+

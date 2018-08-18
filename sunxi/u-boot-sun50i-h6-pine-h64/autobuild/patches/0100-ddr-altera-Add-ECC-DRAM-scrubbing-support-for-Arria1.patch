@@ -1,0 +1,66 @@
+From 07252f6f7e37e23cb43245dcddf8ea8f1d45dec1 Mon Sep 17 00:00:00 2001
+From: Marek Vasut <marex@denx.de>
+Date: Mon, 28 May 2018 17:22:47 +0200
+Subject: [PATCH 100/144] ddr: altera: Add ECC DRAM scrubbing support for
+ Arria10
+
+The SDRAM must first be rewritten by zeroes if ECC is used to initialize
+the ECC metadata. Make the CPU overwrite the DRAM with zeroes in such a
+case. This scrubbing implementation turns the caches on temporarily, then
+overwrites the whole RAM with zeroes, flushes the caches and turns them
+off again. This provides satisfactory performance.
+
+Signed-off-by: Marek Vasut <marex@denx.de>
+Cc: Chin Liang See <chin.liang.see@intel.com>
+Cc: Dinh Nguyen <dinguyen@kernel.org>
+---
+ drivers/ddr/altera/sdram_arria10.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+
+diff --git a/drivers/ddr/altera/sdram_arria10.c b/drivers/ddr/altera/sdram_arria10.c
+index 1f2b7f4819..29ea7492f3 100644
+--- a/drivers/ddr/altera/sdram_arria10.c
++++ b/drivers/ddr/altera/sdram_arria10.c
+@@ -215,6 +215,30 @@ static int ddr_setup(void)
+ 	return 0;
+ }
+ 
++static int sdram_is_ecc_enabled(void)
++{
++	return !!(readl(&socfpga_ecc_hmc_base->eccctrl) &
++		  ALT_ECC_HMC_OCP_ECCCTL_ECC_EN_SET_MSK);
++}
++
++/* Initialize SDRAM ECC bits to avoid false DBE */
++static void sdram_init_ecc_bits(u32 size)
++{
++	icache_enable();
++
++	memset(0, 0, 0x8000);
++	gd->arch.tlb_addr = 0x4000;
++	gd->arch.tlb_size = PGTABLE_SIZE;
++
++	dcache_enable();
++
++	printf("DDRCAL: Scrubbing ECC RAM (%i MiB).\n", size >> 20);
++	memset((void *)0x8000, 0, size - 0x8000);
++	flush_dcache_all();
++	printf("DDRCAL: Scrubbing ECC RAM done.\n");
++	dcache_disable();
++}
++
+ /* Function to startup the SDRAM*/
+ static int sdram_startup(void)
+ {
+@@ -711,5 +735,8 @@ int ddr_calibration_sequence(void)
+ 	if (of_sdram_firewall_setup(gd->fdt_blob))
+ 		puts("FW: Error Configuring Firewall\n");
+ 
++	if (sdram_is_ecc_enabled())
++		sdram_init_ecc_bits(gd->ram_size);
++
+ 	return 0;
+ }
+-- 
+2.18.0
+

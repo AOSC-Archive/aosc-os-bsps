@@ -1,0 +1,51 @@
+From d677b00cb62a4cf4d4a24468f218581b4f57c2fe Mon Sep 17 00:00:00 2001
+From: Simon Glass <sjg@chromium.org>
+Date: Mon, 11 Jun 2018 13:07:15 -0600
+Subject: [PATCH 007/144] dm: core: Add a way to bind a device by ofnode
+
+Add a new device_bind_ofnode() function which can bind a device given its
+ofnode. This allows binding devices more easily with livetree nodes.
+
+Signed-off-by: Simon Glass <sjg@chromium.org>
+---
+ drivers/core/device.c        | 8 ++++++++
+ include/dm/device-internal.h | 4 ++++
+ 2 files changed, 12 insertions(+)
+
+diff --git a/drivers/core/device.c b/drivers/core/device.c
+index e048e1a659..d5f5fc31b0 100644
+--- a/drivers/core/device.c
++++ b/drivers/core/device.c
+@@ -230,6 +230,14 @@ int device_bind(struct udevice *parent, const struct driver *drv,
+ 				  offset_to_ofnode(of_offset), 0, devp);
+ }
+ 
++int device_bind_ofnode(struct udevice *parent, const struct driver *drv,
++		       const char *name, void *platdata, ofnode node,
++		       struct udevice **devp)
++{
++	return device_bind_common(parent, drv, name, platdata, 0, node, 0,
++				  devp);
++}
++
+ int device_bind_by_name(struct udevice *parent, bool pre_reloc_only,
+ 			const struct driver_info *info, struct udevice **devp)
+ {
+diff --git a/include/dm/device-internal.h b/include/dm/device-internal.h
+index 5a4d50cbbe..f4af15448f 100644
+--- a/include/dm/device-internal.h
++++ b/include/dm/device-internal.h
+@@ -40,6 +40,10 @@ int device_bind(struct udevice *parent, const struct driver *drv,
+ 		const char *name, void *platdata, int of_offset,
+ 		struct udevice **devp);
+ 
++int device_bind_ofnode(struct udevice *parent, const struct driver *drv,
++		       const char *name, void *platdata, ofnode node,
++		       struct udevice **devp);
++
+ /**
+  * device_bind_with_driver_data() - Create a device and bind it to a driver
+  *
+-- 
+2.18.0
+

@@ -1,0 +1,67 @@
+From a8b36f22b22f46ef3f660c4c16ba88a8efdfb2cb Mon Sep 17 00:00:00 2001
+From: Lothar Felten <lothar.felten@gmail.com>
+Date: Fri, 13 Jul 2018 10:45:30 +0200
+Subject: [PATCH 125/144] configs: Bananapi_M2_Ultra: enable gigabit ethernet
+
+Enable the gigabit ethernet for the Bananapi M2 Ultra board.
+Tested on BananaPi M2 Berry (R40), custom board (V40)
+
+Reviewed-by: Joe Hershberger <joe.hershberger@ni.com>
+Signed-off-by: Lothar Felten <lothar.felten@gmail.com>
+Acked-by: Maxime Ripard <maxime.ripard@bootlin.com>
+Reviewed-by: Jagan Teki <jagan@openedev.com>
+Tested-by: Jagan Teki <jagan@openedev.com>
+---
+ arch/arm/dts/sun8i-r40-bananapi-m2-ultra.dts | 16 ++++++++++++++++
+ configs/Bananapi_M2_Ultra_defconfig          |  4 ++++
+ 2 files changed, 20 insertions(+)
+
+diff --git a/arch/arm/dts/sun8i-r40-bananapi-m2-ultra.dts b/arch/arm/dts/sun8i-r40-bananapi-m2-ultra.dts
+index ab471ab0bf..28c9158302 100644
+--- a/arch/arm/dts/sun8i-r40-bananapi-m2-ultra.dts
++++ b/arch/arm/dts/sun8i-r40-bananapi-m2-ultra.dts
+@@ -48,6 +48,7 @@
+ 	compatible = "sinovoip,bpi-m2-ultra", "allwinner,sun8i-r40";
+ 
+ 	aliases {
++		ethernet0 = &gmac;
+ 		serial0 = &uart0;
+ 	};
+ 
+@@ -67,3 +68,18 @@
+ 	pinctrl-0 = <&uart0_pb_pins>;
+ 	status = "okay";
+ };
++
++&gmac {
++	pinctrl-names = "default";
++	pinctrl-0 = <&gmac_rgmii_pins>;
++	phy-handle = <&phy1>;
++	phy-mode = "rgmii";
++	status = "okay";
++};
++
++&gmac_mdio {
++	phy1: ethernet-phy@1 {
++		compatible = "ethernet-phy-ieee802.3-c22";
++		reg = <1>;
++	};
++};
+diff --git a/configs/Bananapi_M2_Ultra_defconfig b/configs/Bananapi_M2_Ultra_defconfig
+index 37cc2df5dc..edcbb16cf6 100644
+--- a/configs/Bananapi_M2_Ultra_defconfig
++++ b/configs/Bananapi_M2_Ultra_defconfig
+@@ -14,6 +14,10 @@ CONFIG_SPL_I2C_SUPPORT=y
+ # CONFIG_CMD_FLASH is not set
+ CONFIG_SCSI_AHCI=y
+ CONFIG_AXP_DLDO4_VOLT=2500
++CONFIG_AXP_ALDO2_VOLT=2500
+ CONFIG_AXP_ELDO3_VOLT=1200
+ CONFIG_SCSI=y
+ CONFIG_SYS_USB_EVENT_POLL_VIA_INT_QUEUE=y
++CONFIG_SUN8I_EMAC=y
++CONFIG_RGMII=y
++CONFIG_MACPWR="PA17"
+-- 
+2.18.0
+

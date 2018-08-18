@@ -1,0 +1,38 @@
+From 5e9a9645816edcc68c09729f257e0c863292bf26 Mon Sep 17 00:00:00 2001
+From: Ley Foon Tan <ley.foon.tan@intel.com>
+Date: Wed, 11 Jul 2018 17:56:57 +0800
+Subject: [PATCH 111/144] mach-stm32: Rename CONFIG_SPL_RESET_SUPPORT to
+ CONFIG_SPL_DM_RESET
+
+CONFIG_SPL_RESET_SUPPORT has been renamed to CONFIG_SPL_DM_RESET, update
+this Kconfig file.
+
+Fixes: bfc6bae8fa1f ("reset: Rename CONFIG_SPL_RESET_SUPPORT to CONFIG_SPL_DM_RESET")
+Signed-off-by: Ley Foon Tan <ley.foon.tan@intel.com>
+---
+ arch/arm/mach-stm32/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/mach-stm32/Kconfig b/arch/arm/mach-stm32/Kconfig
+index 759f545176..a45f3fd77a 100644
+--- a/arch/arm/mach-stm32/Kconfig
++++ b/arch/arm/mach-stm32/Kconfig
+@@ -36,6 +36,7 @@ config STM32F7
+ 	select SPL_BOARD_INIT
+ 	select SPL_CLK
+ 	select SPL_DM
++	select SPL_DM_RESET
+ 	select SPL_DM_SEQ_ALIAS
+ 	select SPL_DRIVERS_MISC_SUPPORT
+ 	select SPL_GPIO_SUPPORT
+@@ -48,7 +49,6 @@ config STM32F7
+ 	imply SPL_OS_BOOT
+ 	select SPL_PINCTRL
+ 	select SPL_RAM
+-	select SPL_RESET_SUPPORT
+ 	select SPL_SERIAL_SUPPORT
+ 	select SPL_SYS_MALLOC_SIMPLE
+ 	select SPL_TIMER
+-- 
+2.18.0
+

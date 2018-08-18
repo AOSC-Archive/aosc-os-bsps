@@ -1,0 +1,62 @@
+From 30ff965c80424bdf7d5a44abe547d72d8fa07cbd Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Tue, 24 Jul 2018 10:20:03 +0800
+Subject: [PATCH 143/144] board: sunxi: add HDMI DDC enable pin support
+
+Some new boards (e.g. Pine H64) introduces a pin that controls the
+availability of HDMI DDC.
+
+Add support for that pin.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm/mach-sunxi/Kconfig | 7 +++++++
+ board/sunxi/board.c         | 7 ++++++-
+ 2 files changed, 13 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/mach-sunxi/Kconfig b/arch/arm/mach-sunxi/Kconfig
+index 43f75459ea..7f2065e4c1 100644
+--- a/arch/arm/mach-sunxi/Kconfig
++++ b/arch/arm/mach-sunxi/Kconfig
+@@ -663,6 +663,13 @@ config USB3_VBUS_PIN
+ 	---help---
+ 	See USB1_VBUS_PIN help text.
+ 
++config HDMI_DDC_EN
++	string "HDMI DDC enable pin"
++	default ""
++	---help---
++	Set the enable pin for HDMI DDC. This takes a string in the format
++	understood by sunxi_name_to_gpio, e.g. PH1 for pin 1 of port H.
++
+ config I2C0_ENABLE
+ 	bool "Enable I2C/TWI controller 0"
+ 	default y if MACH_SUN4I || MACH_SUN5I || MACH_SUN7I || MACH_SUN8I_R40
+diff --git a/board/sunxi/board.c b/board/sunxi/board.c
+index 857d5ff010..3e9b488fd2 100644
+--- a/board/sunxi/board.c
++++ b/board/sunxi/board.c
+@@ -193,7 +193,7 @@ enum env_location env_get_location(enum env_operation op, int prio)
+ /* add board specific code here */
+ int board_init(void)
+ {
+-	__maybe_unused int id_pfr1, ret, satapwr_pin, macpwr_pin;
++	__maybe_unused int id_pfr1, ret, satapwr_pin, macpwr_pin, ddc_en_pin;
+ 
+ 	gd->bd->bi_boot_params = (PHYS_SDRAM_0 + 0x100);
+ 
+@@ -242,6 +242,11 @@ int board_init(void)
+ 	gpio_request(macpwr_pin, "macpwr");
+ 	gpio_direction_output(macpwr_pin, 1);
+ #endif
++#ifdef CONFIG_HDMI_DDC_EN
++	ddc_en_pin = sunxi_name_to_gpio(CONFIG_HDMI_DDC_EN);
++	gpio_request(ddc_en_pin, "ddc_en");
++	gpio_direction_output(ddc_en_pin, 1);
++#endif
+ 
+ #ifdef CONFIG_DM_I2C
+ 	/*
+-- 
+2.18.0
+

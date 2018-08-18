@@ -1,0 +1,4011 @@
+From 0fd2290cfc3b5c907783772ded82a8dfad4eb0e8 Mon Sep 17 00:00:00 2001
+From: Siva Durga Prasad Paladugu <siva.durga.paladugu@xilinx.com>
+Date: Tue, 19 Jun 2018 12:24:23 +0200
+Subject: [PATCH 075/144] cmd: Kconfig: Move CONFIG_MP to Kconfig
+
+This patch moves CONFIG_MP to Kconfig
+
+Signed-off-by: Siva Durga Prasad Paladugu <sivadur@xilinx.com>
+Signed-off-by: Michal Simek <michal.simek@xilinx.com>
+---
+ cmd/Kconfig                                            | 7 +++++++
+ configs/B4420QDS_NAND_defconfig                        | 1 +
+ configs/B4420QDS_SPIFLASH_defconfig                    | 1 +
+ configs/B4420QDS_defconfig                             | 1 +
+ configs/B4860QDS_NAND_defconfig                        | 1 +
+ configs/B4860QDS_SECURE_BOOT_defconfig                 | 1 +
+ configs/B4860QDS_SPIFLASH_defconfig                    | 1 +
+ configs/B4860QDS_SRIO_PCIE_BOOT_defconfig              | 1 +
+ configs/B4860QDS_defconfig                             | 1 +
+ configs/BSC9132QDS_NAND_DDRCLK100_SECURE_defconfig     | 1 +
+ configs/BSC9132QDS_NAND_DDRCLK100_defconfig            | 1 +
+ configs/BSC9132QDS_NAND_DDRCLK133_SECURE_defconfig     | 1 +
+ configs/BSC9132QDS_NAND_DDRCLK133_defconfig            | 1 +
+ configs/BSC9132QDS_NOR_DDRCLK100_SECURE_defconfig      | 1 +
+ configs/BSC9132QDS_NOR_DDRCLK100_defconfig             | 1 +
+ configs/BSC9132QDS_NOR_DDRCLK133_SECURE_defconfig      | 1 +
+ configs/BSC9132QDS_NOR_DDRCLK133_defconfig             | 1 +
+ configs/BSC9132QDS_SDCARD_DDRCLK100_SECURE_defconfig   | 1 +
+ configs/BSC9132QDS_SDCARD_DDRCLK100_defconfig          | 1 +
+ configs/BSC9132QDS_SDCARD_DDRCLK133_SECURE_defconfig   | 1 +
+ configs/BSC9132QDS_SDCARD_DDRCLK133_defconfig          | 1 +
+ configs/BSC9132QDS_SPIFLASH_DDRCLK100_SECURE_defconfig | 1 +
+ configs/BSC9132QDS_SPIFLASH_DDRCLK100_defconfig        | 1 +
+ configs/BSC9132QDS_SPIFLASH_DDRCLK133_SECURE_defconfig | 1 +
+ configs/BSC9132QDS_SPIFLASH_DDRCLK133_defconfig        | 1 +
+ configs/Cyrus_P5020_defconfig                          | 1 +
+ configs/Cyrus_P5040_defconfig                          | 1 +
+ configs/MPC8572DS_36BIT_defconfig                      | 1 +
+ configs/MPC8572DS_defconfig                            | 1 +
+ configs/MPC8641HPCN_36BIT_defconfig                    | 1 +
+ configs/MPC8641HPCN_defconfig                          | 1 +
+ configs/P1020MBG-PC_36BIT_SDCARD_defconfig             | 1 +
+ configs/P1020MBG-PC_36BIT_defconfig                    | 1 +
+ configs/P1020MBG-PC_SDCARD_defconfig                   | 1 +
+ configs/P1020MBG-PC_defconfig                          | 1 +
+ configs/P1020RDB-PC_36BIT_NAND_defconfig               | 1 +
+ configs/P1020RDB-PC_36BIT_SDCARD_defconfig             | 1 +
+ configs/P1020RDB-PC_36BIT_SPIFLASH_defconfig           | 1 +
+ configs/P1020RDB-PC_36BIT_defconfig                    | 1 +
+ configs/P1020RDB-PC_NAND_defconfig                     | 1 +
+ configs/P1020RDB-PC_SDCARD_defconfig                   | 1 +
+ configs/P1020RDB-PC_SPIFLASH_defconfig                 | 1 +
+ configs/P1020RDB-PC_defconfig                          | 1 +
+ configs/P1020RDB-PD_NAND_defconfig                     | 1 +
+ configs/P1020RDB-PD_SDCARD_defconfig                   | 1 +
+ configs/P1020RDB-PD_SPIFLASH_defconfig                 | 1 +
+ configs/P1020RDB-PD_defconfig                          | 1 +
+ configs/P1020UTM-PC_36BIT_SDCARD_defconfig             | 1 +
+ configs/P1020UTM-PC_36BIT_defconfig                    | 1 +
+ configs/P1020UTM-PC_SDCARD_defconfig                   | 1 +
+ configs/P1020UTM-PC_defconfig                          | 1 +
+ configs/P1021RDB-PC_36BIT_NAND_defconfig               | 1 +
+ configs/P1021RDB-PC_36BIT_SDCARD_defconfig             | 1 +
+ configs/P1021RDB-PC_36BIT_SPIFLASH_defconfig           | 1 +
+ configs/P1021RDB-PC_36BIT_defconfig                    | 1 +
+ configs/P1021RDB-PC_NAND_defconfig                     | 1 +
+ configs/P1021RDB-PC_SDCARD_defconfig                   | 1 +
+ configs/P1021RDB-PC_SPIFLASH_defconfig                 | 1 +
+ configs/P1021RDB-PC_defconfig                          | 1 +
+ configs/P1022DS_36BIT_NAND_defconfig                   | 1 +
+ configs/P1022DS_36BIT_SDCARD_defconfig                 | 1 +
+ configs/P1022DS_36BIT_SPIFLASH_defconfig               | 1 +
+ configs/P1022DS_36BIT_defconfig                        | 1 +
+ configs/P1022DS_NAND_defconfig                         | 1 +
+ configs/P1022DS_SDCARD_defconfig                       | 1 +
+ configs/P1022DS_SPIFLASH_defconfig                     | 1 +
+ configs/P1022DS_defconfig                              | 1 +
+ configs/P1023RDB_defconfig                             | 1 +
+ configs/P1024RDB_36BIT_defconfig                       | 1 +
+ configs/P1024RDB_NAND_defconfig                        | 1 +
+ configs/P1024RDB_SDCARD_defconfig                      | 1 +
+ configs/P1024RDB_SPIFLASH_defconfig                    | 1 +
+ configs/P1024RDB_defconfig                             | 1 +
+ configs/P1025RDB_36BIT_defconfig                       | 1 +
+ configs/P1025RDB_NAND_defconfig                        | 1 +
+ configs/P1025RDB_SDCARD_defconfig                      | 1 +
+ configs/P1025RDB_SPIFLASH_defconfig                    | 1 +
+ configs/P1025RDB_defconfig                             | 1 +
+ configs/P2020RDB-PC_36BIT_NAND_defconfig               | 1 +
+ configs/P2020RDB-PC_36BIT_SDCARD_defconfig             | 1 +
+ configs/P2020RDB-PC_36BIT_SPIFLASH_defconfig           | 1 +
+ configs/P2020RDB-PC_36BIT_defconfig                    | 1 +
+ configs/P2020RDB-PC_NAND_defconfig                     | 1 +
+ configs/P2020RDB-PC_SDCARD_defconfig                   | 1 +
+ configs/P2020RDB-PC_SPIFLASH_defconfig                 | 1 +
+ configs/P2020RDB-PC_defconfig                          | 1 +
+ configs/P2041RDB_NAND_defconfig                        | 1 +
+ configs/P2041RDB_SDCARD_defconfig                      | 1 +
+ configs/P2041RDB_SECURE_BOOT_defconfig                 | 1 +
+ configs/P2041RDB_SPIFLASH_defconfig                    | 1 +
+ configs/P2041RDB_SRIO_PCIE_BOOT_defconfig              | 1 +
+ configs/P2041RDB_defconfig                             | 1 +
+ configs/P3041DS_NAND_SECURE_BOOT_defconfig             | 1 +
+ configs/P3041DS_NAND_defconfig                         | 1 +
+ configs/P3041DS_SDCARD_defconfig                       | 1 +
+ configs/P3041DS_SECURE_BOOT_defconfig                  | 1 +
+ configs/P3041DS_SPIFLASH_defconfig                     | 1 +
+ configs/P3041DS_SRIO_PCIE_BOOT_defconfig               | 1 +
+ configs/P3041DS_defconfig                              | 1 +
+ configs/P4080DS_SDCARD_defconfig                       | 1 +
+ configs/P4080DS_SECURE_BOOT_defconfig                  | 1 +
+ configs/P4080DS_SPIFLASH_defconfig                     | 1 +
+ configs/P4080DS_SRIO_PCIE_BOOT_defconfig               | 1 +
+ configs/P4080DS_defconfig                              | 1 +
+ configs/P5020DS_NAND_SECURE_BOOT_defconfig             | 1 +
+ configs/P5020DS_NAND_defconfig                         | 1 +
+ configs/P5020DS_SDCARD_defconfig                       | 1 +
+ configs/P5020DS_SECURE_BOOT_defconfig                  | 1 +
+ configs/P5020DS_SPIFLASH_defconfig                     | 1 +
+ configs/P5020DS_SRIO_PCIE_BOOT_defconfig               | 1 +
+ configs/P5020DS_defconfig                              | 1 +
+ configs/P5040DS_NAND_SECURE_BOOT_defconfig             | 1 +
+ configs/P5040DS_NAND_defconfig                         | 1 +
+ configs/P5040DS_SDCARD_defconfig                       | 1 +
+ configs/P5040DS_SECURE_BOOT_defconfig                  | 1 +
+ configs/P5040DS_SPIFLASH_defconfig                     | 1 +
+ configs/P5040DS_defconfig                              | 1 +
+ configs/T1023RDB_NAND_defconfig                        | 1 +
+ configs/T1023RDB_SDCARD_defconfig                      | 1 +
+ configs/T1023RDB_SECURE_BOOT_defconfig                 | 1 +
+ configs/T1023RDB_SPIFLASH_defconfig                    | 1 +
+ configs/T1023RDB_defconfig                             | 1 +
+ configs/T1024QDS_DDR4_SECURE_BOOT_defconfig            | 1 +
+ configs/T1024QDS_DDR4_defconfig                        | 1 +
+ configs/T1024QDS_NAND_defconfig                        | 1 +
+ configs/T1024QDS_SDCARD_defconfig                      | 1 +
+ configs/T1024QDS_SECURE_BOOT_defconfig                 | 1 +
+ configs/T1024QDS_SPIFLASH_defconfig                    | 1 +
+ configs/T1024QDS_defconfig                             | 1 +
+ configs/T1024RDB_NAND_defconfig                        | 1 +
+ configs/T1024RDB_SDCARD_defconfig                      | 1 +
+ configs/T1024RDB_SECURE_BOOT_defconfig                 | 1 +
+ configs/T1024RDB_SPIFLASH_defconfig                    | 1 +
+ configs/T1024RDB_defconfig                             | 1 +
+ configs/T1040D4RDB_NAND_defconfig                      | 1 +
+ configs/T1040D4RDB_SDCARD_defconfig                    | 1 +
+ configs/T1040D4RDB_SECURE_BOOT_defconfig               | 1 +
+ configs/T1040D4RDB_SPIFLASH_defconfig                  | 1 +
+ configs/T1040D4RDB_defconfig                           | 1 +
+ configs/T1040QDS_DDR4_defconfig                        | 1 +
+ configs/T1040QDS_SECURE_BOOT_defconfig                 | 1 +
+ configs/T1040QDS_defconfig                             | 1 +
+ configs/T1040RDB_NAND_defconfig                        | 1 +
+ configs/T1040RDB_SDCARD_defconfig                      | 1 +
+ configs/T1040RDB_SECURE_BOOT_defconfig                 | 1 +
+ configs/T1040RDB_SPIFLASH_defconfig                    | 1 +
+ configs/T1040RDB_defconfig                             | 1 +
+ configs/T1042D4RDB_NAND_defconfig                      | 1 +
+ configs/T1042D4RDB_SDCARD_defconfig                    | 1 +
+ configs/T1042D4RDB_SECURE_BOOT_defconfig               | 1 +
+ configs/T1042D4RDB_SPIFLASH_defconfig                  | 1 +
+ configs/T1042D4RDB_defconfig                           | 1 +
+ configs/T1042RDB_PI_NAND_SECURE_BOOT_defconfig         | 1 +
+ configs/T1042RDB_PI_NAND_defconfig                     | 1 +
+ configs/T1042RDB_PI_SDCARD_defconfig                   | 1 +
+ configs/T1042RDB_PI_SPIFLASH_defconfig                 | 1 +
+ configs/T1042RDB_PI_defconfig                          | 1 +
+ configs/T1042RDB_SECURE_BOOT_defconfig                 | 1 +
+ configs/T1042RDB_defconfig                             | 1 +
+ configs/T2080QDS_NAND_defconfig                        | 1 +
+ configs/T2080QDS_SDCARD_defconfig                      | 1 +
+ configs/T2080QDS_SECURE_BOOT_defconfig                 | 1 +
+ configs/T2080QDS_SPIFLASH_defconfig                    | 1 +
+ configs/T2080QDS_SRIO_PCIE_BOOT_defconfig              | 1 +
+ configs/T2080QDS_defconfig                             | 1 +
+ configs/T2080RDB_NAND_defconfig                        | 1 +
+ configs/T2080RDB_SDCARD_defconfig                      | 1 +
+ configs/T2080RDB_SECURE_BOOT_defconfig                 | 1 +
+ configs/T2080RDB_SPIFLASH_defconfig                    | 1 +
+ configs/T2080RDB_SRIO_PCIE_BOOT_defconfig              | 1 +
+ configs/T2080RDB_defconfig                             | 1 +
+ configs/T2081QDS_NAND_defconfig                        | 1 +
+ configs/T2081QDS_SDCARD_defconfig                      | 1 +
+ configs/T2081QDS_SPIFLASH_defconfig                    | 1 +
+ configs/T2081QDS_SRIO_PCIE_BOOT_defconfig              | 1 +
+ configs/T2081QDS_defconfig                             | 1 +
+ configs/T4160QDS_NAND_defconfig                        | 1 +
+ configs/T4160QDS_SDCARD_defconfig                      | 1 +
+ configs/T4160QDS_SECURE_BOOT_defconfig                 | 1 +
+ configs/T4160QDS_defconfig                             | 1 +
+ configs/T4160RDB_defconfig                             | 1 +
+ configs/T4240QDS_NAND_defconfig                        | 1 +
+ configs/T4240QDS_SDCARD_defconfig                      | 1 +
+ configs/T4240QDS_SECURE_BOOT_defconfig                 | 1 +
+ configs/T4240QDS_SRIO_PCIE_BOOT_defconfig              | 1 +
+ configs/T4240QDS_defconfig                             | 1 +
+ configs/T4240RDB_SDCARD_defconfig                      | 1 +
+ configs/T4240RDB_defconfig                             | 1 +
+ configs/TWR-P1025_defconfig                            | 1 +
+ configs/UCP1020_SPIFLASH_defconfig                     | 1 +
+ configs/UCP1020_defconfig                              | 1 +
+ configs/controlcenterd_36BIT_SDCARD_DEVELOP_defconfig  | 1 +
+ configs/controlcenterd_36BIT_SDCARD_defconfig          | 1 +
+ configs/controlcenterd_TRAILBLAZER_DEVELOP_defconfig   | 1 +
+ configs/controlcenterd_TRAILBLAZER_defconfig           | 1 +
+ configs/kmcoge4_defconfig                              | 1 +
+ configs/kmlion1_defconfig                              | 1 +
+ configs/ls1043aqds_defconfig                           | 1 +
+ configs/ls1043aqds_lpuart_defconfig                    | 1 +
+ configs/ls1043aqds_nand_defconfig                      | 1 +
+ configs/ls1043aqds_nor_ddr3_defconfig                  | 1 +
+ configs/ls1043aqds_qspi_defconfig                      | 1 +
+ configs/ls1043aqds_sdcard_ifc_defconfig                | 1 +
+ configs/ls1043aqds_sdcard_qspi_defconfig               | 1 +
+ configs/ls1043ardb_SECURE_BOOT_defconfig               | 1 +
+ configs/ls1043ardb_defconfig                           | 1 +
+ configs/ls1043ardb_nand_SECURE_BOOT_defconfig          | 1 +
+ configs/ls1043ardb_nand_defconfig                      | 1 +
+ configs/ls1043ardb_sdcard_SECURE_BOOT_defconfig        | 1 +
+ configs/ls1043ardb_sdcard_defconfig                    | 1 +
+ configs/ls1046aqds_SECURE_BOOT_defconfig               | 1 +
+ configs/ls1046aqds_defconfig                           | 1 +
+ configs/ls1046aqds_lpuart_defconfig                    | 1 +
+ configs/ls1046aqds_nand_defconfig                      | 1 +
+ configs/ls1046aqds_qspi_defconfig                      | 1 +
+ configs/ls1046aqds_sdcard_ifc_defconfig                | 1 +
+ configs/ls1046aqds_sdcard_qspi_defconfig               | 1 +
+ configs/ls1046ardb_emmc_defconfig                      | 1 +
+ configs/ls1046ardb_qspi_SECURE_BOOT_defconfig          | 1 +
+ configs/ls1046ardb_qspi_defconfig                      | 1 +
+ configs/ls1046ardb_sdcard_SECURE_BOOT_defconfig        | 1 +
+ configs/ls1046ardb_sdcard_defconfig                    | 1 +
+ configs/ls1088aqds_defconfig                           | 1 +
+ configs/ls1088aqds_qspi_SECURE_BOOT_defconfig          | 1 +
+ configs/ls1088aqds_qspi_defconfig                      | 1 +
+ configs/ls1088aqds_sdcard_ifc_defconfig                | 1 +
+ configs/ls1088aqds_sdcard_qspi_defconfig               | 1 +
+ configs/ls1088ardb_qspi_SECURE_BOOT_defconfig          | 1 +
+ configs/ls1088ardb_qspi_defconfig                      | 1 +
+ configs/ls1088ardb_sdcard_qspi_SECURE_BOOT_defconfig   | 1 +
+ configs/ls1088ardb_sdcard_qspi_defconfig               | 1 +
+ configs/ls2080a_emu_defconfig                          | 1 +
+ configs/ls2080a_simu_defconfig                         | 1 +
+ configs/ls2080aqds_SECURE_BOOT_defconfig               | 1 +
+ configs/ls2080aqds_defconfig                           | 1 +
+ configs/ls2080aqds_nand_defconfig                      | 1 +
+ configs/ls2080aqds_qspi_defconfig                      | 1 +
+ configs/ls2080aqds_sdcard_defconfig                    | 1 +
+ configs/ls2080ardb_SECURE_BOOT_defconfig               | 1 +
+ configs/ls2080ardb_defconfig                           | 1 +
+ configs/ls2080ardb_nand_defconfig                      | 1 +
+ configs/ls2081ardb_defconfig                           | 1 +
+ configs/ls2088ardb_qspi_SECURE_BOOT_defconfig          | 1 +
+ configs/ls2088ardb_qspi_defconfig                      | 1 +
+ configs/sbc8641d_defconfig                             | 1 +
+ configs/xilinx_zynqmp_zc1232_revA_defconfig            | 2 ++
+ configs/xilinx_zynqmp_zc1254_revA_defconfig            | 2 ++
+ configs/xilinx_zynqmp_zc1275_revA_defconfig            | 2 ++
+ configs/xilinx_zynqmp_zc1275_revB_defconfig            | 2 ++
+ configs/xilinx_zynqmp_zc1751_xm015_dc1_defconfig       | 2 ++
+ configs/xilinx_zynqmp_zc1751_xm016_dc2_defconfig       | 2 ++
+ configs/xilinx_zynqmp_zc1751_xm017_dc3_defconfig       | 2 ++
+ configs/xilinx_zynqmp_zc1751_xm018_dc4_defconfig       | 2 ++
+ configs/xilinx_zynqmp_zc1751_xm019_dc5_defconfig       | 2 ++
+ configs/xilinx_zynqmp_zcu100_revC_defconfig            | 2 ++
+ configs/xilinx_zynqmp_zcu102_rev1_0_defconfig          | 2 ++
+ configs/xilinx_zynqmp_zcu102_revA_defconfig            | 2 ++
+ configs/xilinx_zynqmp_zcu102_revB_defconfig            | 2 ++
+ configs/xilinx_zynqmp_zcu104_revA_defconfig            | 2 ++
+ configs/xilinx_zynqmp_zcu104_revC_defconfig            | 2 ++
+ configs/xilinx_zynqmp_zcu106_revA_defconfig            | 2 ++
+ configs/xilinx_zynqmp_zcu111_revA_defconfig            | 2 ++
+ configs/xpedite537x_defconfig                          | 1 +
+ configs/xpedite550x_defconfig                          | 1 +
+ include/configs/B4860QDS.h                             | 1 -
+ include/configs/BSC9132QDS.h                           | 2 --
+ include/configs/MPC8572DS.h                            | 1 -
+ include/configs/MPC8641HPCN.h                          | 1 -
+ include/configs/P1022DS.h                              | 1 -
+ include/configs/P1023RDB.h                             | 1 -
+ include/configs/P2041RDB.h                             | 1 -
+ include/configs/T102xQDS.h                             | 1 -
+ include/configs/T102xRDB.h                             | 1 -
+ include/configs/T1040QDS.h                             | 1 -
+ include/configs/T104xRDB.h                             | 1 -
+ include/configs/T208xQDS.h                             | 1 -
+ include/configs/T208xRDB.h                             | 1 -
+ include/configs/T4240RDB.h                             | 1 -
+ include/configs/UCP1020.h                              | 2 --
+ include/configs/controlcenterd.h                       | 1 -
+ include/configs/corenet_ds.h                           | 1 -
+ include/configs/cyrus.h                                | 1 -
+ include/configs/km/kmp204x-common.h                    | 1 -
+ include/configs/ls1043a_common.h                       | 1 -
+ include/configs/ls1046a_common.h                       | 1 -
+ include/configs/ls1088a_common.h                       | 1 -
+ include/configs/ls2080a_common.h                       | 1 -
+ include/configs/p1_p2_rdb_pc.h                         | 2 --
+ include/configs/p1_twr.h                               | 2 --
+ include/configs/sbc8641d.h                             | 1 -
+ include/configs/t4qds.h                                | 1 -
+ include/configs/xilinx_zynqmp.h                        | 3 ---
+ include/configs/xilinx_zynqmp_mini.h                   | 1 -
+ include/configs/xpedite537x.h                          | 1 -
+ include/configs/xpedite550x.h                          | 1 -
+ scripts/config_whitelist.txt                           | 1 -
+ 296 files changed, 287 insertions(+), 38 deletions(-)
+
+diff --git a/cmd/Kconfig b/cmd/Kconfig
+index aec209006d..2fa0829925 100644
+--- a/cmd/Kconfig
++++ b/cmd/Kconfig
+@@ -1356,6 +1356,13 @@ config CMD_MISC
+ 	help
+ 	  Delay execution for some time
+ 
++config MP
++	bool "support for multiprocessor"
++	help
++	  This provides an option to brinup
++	  different processors in multiprocessor
++	  cases.
++
+ config CMD_TIMER
+ 	bool "timer"
+ 	help
+diff --git a/configs/B4420QDS_NAND_defconfig b/configs/B4420QDS_NAND_defconfig
+index 41b731883b..05d2f35353 100644
+--- a/configs/B4420QDS_NAND_defconfig
++++ b/configs/B4420QDS_NAND_defconfig
+@@ -30,6 +30,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_ENV_IS_IN_NAND=y
+ CONFIG_FSL_CAAM=y
+diff --git a/configs/B4420QDS_SPIFLASH_defconfig b/configs/B4420QDS_SPIFLASH_defconfig
+index 1e51e8448e..05b82aaca2 100644
+--- a/configs/B4420QDS_SPIFLASH_defconfig
++++ b/configs/B4420QDS_SPIFLASH_defconfig
+@@ -20,6 +20,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_ENV_IS_IN_SPI_FLASH=y
+ CONFIG_FSL_CAAM=y
+diff --git a/configs/B4420QDS_defconfig b/configs/B4420QDS_defconfig
+index 3cf1935e31..7d472ce99d 100644
+--- a/configs/B4420QDS_defconfig
++++ b/configs/B4420QDS_defconfig
+@@ -19,6 +19,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_ENV_IS_IN_FLASH=y
+ CONFIG_FSL_CAAM=y
+diff --git a/configs/B4860QDS_NAND_defconfig b/configs/B4860QDS_NAND_defconfig
+index 2b1029bfe3..802ac75ae9 100644
+--- a/configs/B4860QDS_NAND_defconfig
++++ b/configs/B4860QDS_NAND_defconfig
+@@ -30,6 +30,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_ENV_IS_IN_NAND=y
+ CONFIG_FSL_CAAM=y
+diff --git a/configs/B4860QDS_SECURE_BOOT_defconfig b/configs/B4860QDS_SECURE_BOOT_defconfig
+index 40a2ba062c..ea2426f20f 100644
+--- a/configs/B4860QDS_SECURE_BOOT_defconfig
++++ b/configs/B4860QDS_SECURE_BOOT_defconfig
+@@ -21,6 +21,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_DM=y
+ # CONFIG_MMC is not set
+diff --git a/configs/B4860QDS_SPIFLASH_defconfig b/configs/B4860QDS_SPIFLASH_defconfig
+index 866aa2d0bf..ca35b5dcd4 100644
+--- a/configs/B4860QDS_SPIFLASH_defconfig
++++ b/configs/B4860QDS_SPIFLASH_defconfig
+@@ -20,6 +20,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_ENV_IS_IN_SPI_FLASH=y
+ CONFIG_FSL_CAAM=y
+diff --git a/configs/B4860QDS_SRIO_PCIE_BOOT_defconfig b/configs/B4860QDS_SRIO_PCIE_BOOT_defconfig
+index 774fc5d511..3819e8c0e7 100644
+--- a/configs/B4860QDS_SRIO_PCIE_BOOT_defconfig
++++ b/configs/B4860QDS_SRIO_PCIE_BOOT_defconfig
+@@ -20,6 +20,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_ENV_IS_IN_REMOTE=y
+ CONFIG_FSL_CAAM=y
+diff --git a/configs/B4860QDS_defconfig b/configs/B4860QDS_defconfig
+index 087ab6318e..ced3740c1f 100644
+--- a/configs/B4860QDS_defconfig
++++ b/configs/B4860QDS_defconfig
+@@ -19,6 +19,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_ENV_IS_IN_FLASH=y
+ CONFIG_FSL_CAAM=y
+diff --git a/configs/BSC9132QDS_NAND_DDRCLK100_SECURE_defconfig b/configs/BSC9132QDS_NAND_DDRCLK100_SECURE_defconfig
+index f418c91eb9..4e03cc08fc 100644
+--- a/configs/BSC9132QDS_NAND_DDRCLK100_SECURE_defconfig
++++ b/configs/BSC9132QDS_NAND_DDRCLK100_SECURE_defconfig
+@@ -22,6 +22,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=88000000.nor,nand0=ff800000.flash,"
+diff --git a/configs/BSC9132QDS_NAND_DDRCLK100_defconfig b/configs/BSC9132QDS_NAND_DDRCLK100_defconfig
+index 190be1e383..b06ea31a69 100644
+--- a/configs/BSC9132QDS_NAND_DDRCLK100_defconfig
++++ b/configs/BSC9132QDS_NAND_DDRCLK100_defconfig
+@@ -24,6 +24,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=88000000.nor,nand0=ff800000.flash,"
+diff --git a/configs/BSC9132QDS_NAND_DDRCLK133_SECURE_defconfig b/configs/BSC9132QDS_NAND_DDRCLK133_SECURE_defconfig
+index 3ee7684353..808b991a29 100644
+--- a/configs/BSC9132QDS_NAND_DDRCLK133_SECURE_defconfig
++++ b/configs/BSC9132QDS_NAND_DDRCLK133_SECURE_defconfig
+@@ -22,6 +22,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=88000000.nor,nand0=ff800000.flash,"
+diff --git a/configs/BSC9132QDS_NAND_DDRCLK133_defconfig b/configs/BSC9132QDS_NAND_DDRCLK133_defconfig
+index a28bc57d9b..ecee89b15f 100644
+--- a/configs/BSC9132QDS_NAND_DDRCLK133_defconfig
++++ b/configs/BSC9132QDS_NAND_DDRCLK133_defconfig
+@@ -24,6 +24,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=88000000.nor,nand0=ff800000.flash,"
+diff --git a/configs/BSC9132QDS_NOR_DDRCLK100_SECURE_defconfig b/configs/BSC9132QDS_NOR_DDRCLK100_SECURE_defconfig
+index 57bfbd0f06..62af90b829 100644
+--- a/configs/BSC9132QDS_NOR_DDRCLK100_SECURE_defconfig
++++ b/configs/BSC9132QDS_NOR_DDRCLK100_SECURE_defconfig
+@@ -22,6 +22,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=88000000.nor,nand0=ff800000.flash,"
+diff --git a/configs/BSC9132QDS_NOR_DDRCLK100_defconfig b/configs/BSC9132QDS_NOR_DDRCLK100_defconfig
+index 1063090332..09852f2ad3 100644
+--- a/configs/BSC9132QDS_NOR_DDRCLK100_defconfig
++++ b/configs/BSC9132QDS_NOR_DDRCLK100_defconfig
+@@ -20,6 +20,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=88000000.nor,nand0=ff800000.flash,"
+diff --git a/configs/BSC9132QDS_NOR_DDRCLK133_SECURE_defconfig b/configs/BSC9132QDS_NOR_DDRCLK133_SECURE_defconfig
+index 8fc3390db8..ce262f3d19 100644
+--- a/configs/BSC9132QDS_NOR_DDRCLK133_SECURE_defconfig
++++ b/configs/BSC9132QDS_NOR_DDRCLK133_SECURE_defconfig
+@@ -22,6 +22,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=88000000.nor,nand0=ff800000.flash,"
+diff --git a/configs/BSC9132QDS_NOR_DDRCLK133_defconfig b/configs/BSC9132QDS_NOR_DDRCLK133_defconfig
+index 7436ce63f5..e19c0605d3 100644
+--- a/configs/BSC9132QDS_NOR_DDRCLK133_defconfig
++++ b/configs/BSC9132QDS_NOR_DDRCLK133_defconfig
+@@ -20,6 +20,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=88000000.nor,nand0=ff800000.flash,"
+diff --git a/configs/BSC9132QDS_SDCARD_DDRCLK100_SECURE_defconfig b/configs/BSC9132QDS_SDCARD_DDRCLK100_SECURE_defconfig
+index 350d999649..a7e74a9143 100644
+--- a/configs/BSC9132QDS_SDCARD_DDRCLK100_SECURE_defconfig
++++ b/configs/BSC9132QDS_SDCARD_DDRCLK100_SECURE_defconfig
+@@ -22,6 +22,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=88000000.nor,nand0=ff800000.flash,"
+diff --git a/configs/BSC9132QDS_SDCARD_DDRCLK100_defconfig b/configs/BSC9132QDS_SDCARD_DDRCLK100_defconfig
+index 8cc76f4c3d..69d54b14a2 100644
+--- a/configs/BSC9132QDS_SDCARD_DDRCLK100_defconfig
++++ b/configs/BSC9132QDS_SDCARD_DDRCLK100_defconfig
+@@ -20,6 +20,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=88000000.nor,nand0=ff800000.flash,"
+diff --git a/configs/BSC9132QDS_SDCARD_DDRCLK133_SECURE_defconfig b/configs/BSC9132QDS_SDCARD_DDRCLK133_SECURE_defconfig
+index e6a7ac8bb9..5db4faddfa 100644
+--- a/configs/BSC9132QDS_SDCARD_DDRCLK133_SECURE_defconfig
++++ b/configs/BSC9132QDS_SDCARD_DDRCLK133_SECURE_defconfig
+@@ -22,6 +22,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=88000000.nor,nand0=ff800000.flash,"
+diff --git a/configs/BSC9132QDS_SDCARD_DDRCLK133_defconfig b/configs/BSC9132QDS_SDCARD_DDRCLK133_defconfig
+index e97a158e64..3d84cf9eb5 100644
+--- a/configs/BSC9132QDS_SDCARD_DDRCLK133_defconfig
++++ b/configs/BSC9132QDS_SDCARD_DDRCLK133_defconfig
+@@ -20,6 +20,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=88000000.nor,nand0=ff800000.flash,"
+diff --git a/configs/BSC9132QDS_SPIFLASH_DDRCLK100_SECURE_defconfig b/configs/BSC9132QDS_SPIFLASH_DDRCLK100_SECURE_defconfig
+index 023521b37d..4c31e7a5cc 100644
+--- a/configs/BSC9132QDS_SPIFLASH_DDRCLK100_SECURE_defconfig
++++ b/configs/BSC9132QDS_SPIFLASH_DDRCLK100_SECURE_defconfig
+@@ -22,6 +22,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=88000000.nor,nand0=ff800000.flash,"
+diff --git a/configs/BSC9132QDS_SPIFLASH_DDRCLK100_defconfig b/configs/BSC9132QDS_SPIFLASH_DDRCLK100_defconfig
+index b97f154386..9137f27e3d 100644
+--- a/configs/BSC9132QDS_SPIFLASH_DDRCLK100_defconfig
++++ b/configs/BSC9132QDS_SPIFLASH_DDRCLK100_defconfig
+@@ -20,6 +20,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=88000000.nor,nand0=ff800000.flash,"
+diff --git a/configs/BSC9132QDS_SPIFLASH_DDRCLK133_SECURE_defconfig b/configs/BSC9132QDS_SPIFLASH_DDRCLK133_SECURE_defconfig
+index 8d4087bb06..56e171042f 100644
+--- a/configs/BSC9132QDS_SPIFLASH_DDRCLK133_SECURE_defconfig
++++ b/configs/BSC9132QDS_SPIFLASH_DDRCLK133_SECURE_defconfig
+@@ -22,6 +22,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=88000000.nor,nand0=ff800000.flash,"
+diff --git a/configs/BSC9132QDS_SPIFLASH_DDRCLK133_defconfig b/configs/BSC9132QDS_SPIFLASH_DDRCLK133_defconfig
+index 95eef73f63..0c81114344 100644
+--- a/configs/BSC9132QDS_SPIFLASH_DDRCLK133_defconfig
++++ b/configs/BSC9132QDS_SPIFLASH_DDRCLK133_defconfig
+@@ -20,6 +20,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=88000000.nor,nand0=ff800000.flash,"
+diff --git a/configs/Cyrus_P5020_defconfig b/configs/Cyrus_P5020_defconfig
+index df4168ade4..d2e7e7364c 100644
+--- a/configs/Cyrus_P5020_defconfig
++++ b/configs/Cyrus_P5020_defconfig
+@@ -21,6 +21,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/Cyrus_P5040_defconfig b/configs/Cyrus_P5040_defconfig
+index c6a36393a4..33d010c28f 100644
+--- a/configs/Cyrus_P5040_defconfig
++++ b/configs/Cyrus_P5040_defconfig
+@@ -21,6 +21,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/MPC8572DS_36BIT_defconfig b/configs/MPC8572DS_36BIT_defconfig
+index 51f31ea356..f2b26af6b8 100644
+--- a/configs/MPC8572DS_36BIT_defconfig
++++ b/configs/MPC8572DS_36BIT_defconfig
+@@ -18,6 +18,7 @@ CONFIG_CMD_PCI=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_SCSI_AHCI=y
+diff --git a/configs/MPC8572DS_defconfig b/configs/MPC8572DS_defconfig
+index 043eb5f934..604ffc10bf 100644
+--- a/configs/MPC8572DS_defconfig
++++ b/configs/MPC8572DS_defconfig
+@@ -17,6 +17,7 @@ CONFIG_CMD_PCI=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_SCSI_AHCI=y
+diff --git a/configs/MPC8641HPCN_36BIT_defconfig b/configs/MPC8641HPCN_36BIT_defconfig
+index 8d3ac75c6b..4d4028a90a 100644
+--- a/configs/MPC8641HPCN_36BIT_defconfig
++++ b/configs/MPC8641HPCN_36BIT_defconfig
+@@ -15,6 +15,7 @@ CONFIG_CMD_PCI=y
+ CONFIG_CMD_USB=y
+ # CONFIG_CMD_SETEXPR is not set
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_DOS_PARTITION=y
+ CONFIG_SCSI_AHCI=y
+diff --git a/configs/MPC8641HPCN_defconfig b/configs/MPC8641HPCN_defconfig
+index 71c7e1f11b..b3dd6ac72b 100644
+--- a/configs/MPC8641HPCN_defconfig
++++ b/configs/MPC8641HPCN_defconfig
+@@ -15,6 +15,7 @@ CONFIG_CMD_USB=y
+ # CONFIG_CMD_SETEXPR is not set
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_DOS_PARTITION=y
+ CONFIG_SCSI_AHCI=y
+diff --git a/configs/P1020MBG-PC_36BIT_SDCARD_defconfig b/configs/P1020MBG-PC_36BIT_SDCARD_defconfig
+index ea514de06b..7bba663e23 100644
+--- a/configs/P1020MBG-PC_36BIT_SDCARD_defconfig
++++ b/configs/P1020MBG-PC_36BIT_SDCARD_defconfig
+@@ -31,6 +31,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1020MBG-PC_36BIT_defconfig b/configs/P1020MBG-PC_36BIT_defconfig
+index 131265122a..33b5f2ddea 100644
+--- a/configs/P1020MBG-PC_36BIT_defconfig
++++ b/configs/P1020MBG-PC_36BIT_defconfig
+@@ -21,6 +21,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1020MBG-PC_SDCARD_defconfig b/configs/P1020MBG-PC_SDCARD_defconfig
+index 6c11ffa8bf..d509732b59 100644
+--- a/configs/P1020MBG-PC_SDCARD_defconfig
++++ b/configs/P1020MBG-PC_SDCARD_defconfig
+@@ -30,6 +30,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1020MBG-PC_defconfig b/configs/P1020MBG-PC_defconfig
+index 0dedcb5285..5247b9c09a 100644
+--- a/configs/P1020MBG-PC_defconfig
++++ b/configs/P1020MBG-PC_defconfig
+@@ -20,6 +20,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1020RDB-PC_36BIT_NAND_defconfig b/configs/P1020RDB-PC_36BIT_NAND_defconfig
+index e9df6d4112..66830a9d8a 100644
+--- a/configs/P1020RDB-PC_36BIT_NAND_defconfig
++++ b/configs/P1020RDB-PC_36BIT_NAND_defconfig
+@@ -33,6 +33,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1020RDB-PC_36BIT_SDCARD_defconfig b/configs/P1020RDB-PC_36BIT_SDCARD_defconfig
+index d2d6bb4e3d..582bdd2f5a 100644
+--- a/configs/P1020RDB-PC_36BIT_SDCARD_defconfig
++++ b/configs/P1020RDB-PC_36BIT_SDCARD_defconfig
+@@ -31,6 +31,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1020RDB-PC_36BIT_SPIFLASH_defconfig b/configs/P1020RDB-PC_36BIT_SPIFLASH_defconfig
+index c1d167333a..c0588dd132 100644
+--- a/configs/P1020RDB-PC_36BIT_SPIFLASH_defconfig
++++ b/configs/P1020RDB-PC_36BIT_SPIFLASH_defconfig
+@@ -32,6 +32,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1020RDB-PC_36BIT_defconfig b/configs/P1020RDB-PC_36BIT_defconfig
+index ed69a2eb14..d9901b6391 100644
+--- a/configs/P1020RDB-PC_36BIT_defconfig
++++ b/configs/P1020RDB-PC_36BIT_defconfig
+@@ -21,6 +21,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1020RDB-PC_NAND_defconfig b/configs/P1020RDB-PC_NAND_defconfig
+index 5198322f3e..9ff8a6b098 100644
+--- a/configs/P1020RDB-PC_NAND_defconfig
++++ b/configs/P1020RDB-PC_NAND_defconfig
+@@ -32,6 +32,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1020RDB-PC_SDCARD_defconfig b/configs/P1020RDB-PC_SDCARD_defconfig
+index 0b2325583c..89a7f82af4 100644
+--- a/configs/P1020RDB-PC_SDCARD_defconfig
++++ b/configs/P1020RDB-PC_SDCARD_defconfig
+@@ -30,6 +30,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1020RDB-PC_SPIFLASH_defconfig b/configs/P1020RDB-PC_SPIFLASH_defconfig
+index 42f3a330cf..7e22d5dce8 100644
+--- a/configs/P1020RDB-PC_SPIFLASH_defconfig
++++ b/configs/P1020RDB-PC_SPIFLASH_defconfig
+@@ -31,6 +31,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1020RDB-PC_defconfig b/configs/P1020RDB-PC_defconfig
+index af238f44e9..99b373e183 100644
+--- a/configs/P1020RDB-PC_defconfig
++++ b/configs/P1020RDB-PC_defconfig
+@@ -20,6 +20,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1020RDB-PD_NAND_defconfig b/configs/P1020RDB-PD_NAND_defconfig
+index 560d278a93..80f4cb62c3 100644
+--- a/configs/P1020RDB-PD_NAND_defconfig
++++ b/configs/P1020RDB-PD_NAND_defconfig
+@@ -32,6 +32,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1020RDB-PD_SDCARD_defconfig b/configs/P1020RDB-PD_SDCARD_defconfig
+index 5c6d938834..e18bb4e319 100644
+--- a/configs/P1020RDB-PD_SDCARD_defconfig
++++ b/configs/P1020RDB-PD_SDCARD_defconfig
+@@ -30,6 +30,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1020RDB-PD_SPIFLASH_defconfig b/configs/P1020RDB-PD_SPIFLASH_defconfig
+index 830211abb2..fd9be9ce0d 100644
+--- a/configs/P1020RDB-PD_SPIFLASH_defconfig
++++ b/configs/P1020RDB-PD_SPIFLASH_defconfig
+@@ -31,6 +31,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1020RDB-PD_defconfig b/configs/P1020RDB-PD_defconfig
+index ece6e9bae2..f0eef99af1 100644
+--- a/configs/P1020RDB-PD_defconfig
++++ b/configs/P1020RDB-PD_defconfig
+@@ -20,6 +20,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1020UTM-PC_36BIT_SDCARD_defconfig b/configs/P1020UTM-PC_36BIT_SDCARD_defconfig
+index c9b3609629..744b60940c 100644
+--- a/configs/P1020UTM-PC_36BIT_SDCARD_defconfig
++++ b/configs/P1020UTM-PC_36BIT_SDCARD_defconfig
+@@ -31,6 +31,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1020UTM-PC_36BIT_defconfig b/configs/P1020UTM-PC_36BIT_defconfig
+index 96890a4108..c20d44aa4e 100644
+--- a/configs/P1020UTM-PC_36BIT_defconfig
++++ b/configs/P1020UTM-PC_36BIT_defconfig
+@@ -21,6 +21,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1020UTM-PC_SDCARD_defconfig b/configs/P1020UTM-PC_SDCARD_defconfig
+index da3f5cda14..b9b9aeebda 100644
+--- a/configs/P1020UTM-PC_SDCARD_defconfig
++++ b/configs/P1020UTM-PC_SDCARD_defconfig
+@@ -30,6 +30,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1020UTM-PC_defconfig b/configs/P1020UTM-PC_defconfig
+index e6a317f4f2..0d1acd55b0 100644
+--- a/configs/P1020UTM-PC_defconfig
++++ b/configs/P1020UTM-PC_defconfig
+@@ -20,6 +20,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1021RDB-PC_36BIT_NAND_defconfig b/configs/P1021RDB-PC_36BIT_NAND_defconfig
+index 1d15ad254a..7aa24213b6 100644
+--- a/configs/P1021RDB-PC_36BIT_NAND_defconfig
++++ b/configs/P1021RDB-PC_36BIT_NAND_defconfig
+@@ -34,6 +34,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1021RDB-PC_36BIT_SDCARD_defconfig b/configs/P1021RDB-PC_36BIT_SDCARD_defconfig
+index 5465a20fdd..193a5b3239 100644
+--- a/configs/P1021RDB-PC_36BIT_SDCARD_defconfig
++++ b/configs/P1021RDB-PC_36BIT_SDCARD_defconfig
+@@ -32,6 +32,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1021RDB-PC_36BIT_SPIFLASH_defconfig b/configs/P1021RDB-PC_36BIT_SPIFLASH_defconfig
+index d18e004817..fd50491691 100644
+--- a/configs/P1021RDB-PC_36BIT_SPIFLASH_defconfig
++++ b/configs/P1021RDB-PC_36BIT_SPIFLASH_defconfig
+@@ -33,6 +33,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1021RDB-PC_36BIT_defconfig b/configs/P1021RDB-PC_36BIT_defconfig
+index 0b2ef4383f..94a99ceb0d 100644
+--- a/configs/P1021RDB-PC_36BIT_defconfig
++++ b/configs/P1021RDB-PC_36BIT_defconfig
+@@ -22,6 +22,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1021RDB-PC_NAND_defconfig b/configs/P1021RDB-PC_NAND_defconfig
+index 6c91058892..de83d43db4 100644
+--- a/configs/P1021RDB-PC_NAND_defconfig
++++ b/configs/P1021RDB-PC_NAND_defconfig
+@@ -33,6 +33,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1021RDB-PC_SDCARD_defconfig b/configs/P1021RDB-PC_SDCARD_defconfig
+index 600b7e0729..5c2913efd0 100644
+--- a/configs/P1021RDB-PC_SDCARD_defconfig
++++ b/configs/P1021RDB-PC_SDCARD_defconfig
+@@ -31,6 +31,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1021RDB-PC_SPIFLASH_defconfig b/configs/P1021RDB-PC_SPIFLASH_defconfig
+index f934e8cd81..989d7a8a8e 100644
+--- a/configs/P1021RDB-PC_SPIFLASH_defconfig
++++ b/configs/P1021RDB-PC_SPIFLASH_defconfig
+@@ -32,6 +32,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1021RDB-PC_defconfig b/configs/P1021RDB-PC_defconfig
+index 8026eff080..a1fff9f3c3 100644
+--- a/configs/P1021RDB-PC_defconfig
++++ b/configs/P1021RDB-PC_defconfig
+@@ -21,6 +21,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1022DS_36BIT_NAND_defconfig b/configs/P1022DS_36BIT_NAND_defconfig
+index 45acdcb979..6ebb0d8880 100644
+--- a/configs/P1022DS_36BIT_NAND_defconfig
++++ b/configs/P1022DS_36BIT_NAND_defconfig
+@@ -33,6 +33,7 @@ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1022DS_36BIT_SDCARD_defconfig b/configs/P1022DS_36BIT_SDCARD_defconfig
+index 52c16400ea..0900bcf276 100644
+--- a/configs/P1022DS_36BIT_SDCARD_defconfig
++++ b/configs/P1022DS_36BIT_SDCARD_defconfig
+@@ -31,6 +31,7 @@ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1022DS_36BIT_SPIFLASH_defconfig b/configs/P1022DS_36BIT_SPIFLASH_defconfig
+index 44bed835fa..708232c918 100644
+--- a/configs/P1022DS_36BIT_SPIFLASH_defconfig
++++ b/configs/P1022DS_36BIT_SPIFLASH_defconfig
+@@ -32,6 +32,7 @@ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1022DS_36BIT_defconfig b/configs/P1022DS_36BIT_defconfig
+index d221d81494..0845d2f158 100644
+--- a/configs/P1022DS_36BIT_defconfig
++++ b/configs/P1022DS_36BIT_defconfig
+@@ -21,6 +21,7 @@ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1022DS_NAND_defconfig b/configs/P1022DS_NAND_defconfig
+index 47a3bbd2ad..667089efad 100644
+--- a/configs/P1022DS_NAND_defconfig
++++ b/configs/P1022DS_NAND_defconfig
+@@ -32,6 +32,7 @@ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1022DS_SDCARD_defconfig b/configs/P1022DS_SDCARD_defconfig
+index 7f92c07a02..c00708449e 100644
+--- a/configs/P1022DS_SDCARD_defconfig
++++ b/configs/P1022DS_SDCARD_defconfig
+@@ -30,6 +30,7 @@ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1022DS_SPIFLASH_defconfig b/configs/P1022DS_SPIFLASH_defconfig
+index 2d655c7b5a..8d3cb374c6 100644
+--- a/configs/P1022DS_SPIFLASH_defconfig
++++ b/configs/P1022DS_SPIFLASH_defconfig
+@@ -31,6 +31,7 @@ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1022DS_defconfig b/configs/P1022DS_defconfig
+index cfd74f9b3f..b135222d8e 100644
+--- a/configs/P1022DS_defconfig
++++ b/configs/P1022DS_defconfig
+@@ -20,6 +20,7 @@ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1023RDB_defconfig b/configs/P1023RDB_defconfig
+index ff64d994fc..d26e72f50e 100644
+--- a/configs/P1023RDB_defconfig
++++ b/configs/P1023RDB_defconfig
+@@ -21,6 +21,7 @@ CONFIG_CMD_PCI=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1024RDB_36BIT_defconfig b/configs/P1024RDB_36BIT_defconfig
+index e49de3631e..4024bbd4ec 100644
+--- a/configs/P1024RDB_36BIT_defconfig
++++ b/configs/P1024RDB_36BIT_defconfig
+@@ -21,6 +21,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1024RDB_NAND_defconfig b/configs/P1024RDB_NAND_defconfig
+index 415b774705..dc644ab923 100644
+--- a/configs/P1024RDB_NAND_defconfig
++++ b/configs/P1024RDB_NAND_defconfig
+@@ -32,6 +32,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1024RDB_SDCARD_defconfig b/configs/P1024RDB_SDCARD_defconfig
+index 3308ec1a63..e3401b019e 100644
+--- a/configs/P1024RDB_SDCARD_defconfig
++++ b/configs/P1024RDB_SDCARD_defconfig
+@@ -30,6 +30,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1024RDB_SPIFLASH_defconfig b/configs/P1024RDB_SPIFLASH_defconfig
+index 78cdb95d0f..ad34e9e439 100644
+--- a/configs/P1024RDB_SPIFLASH_defconfig
++++ b/configs/P1024RDB_SPIFLASH_defconfig
+@@ -31,6 +31,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1024RDB_defconfig b/configs/P1024RDB_defconfig
+index bc8d152678..de5e3b10e0 100644
+--- a/configs/P1024RDB_defconfig
++++ b/configs/P1024RDB_defconfig
+@@ -20,6 +20,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1025RDB_36BIT_defconfig b/configs/P1025RDB_36BIT_defconfig
+index 7b03cf7b55..42c3ffd99d 100644
+--- a/configs/P1025RDB_36BIT_defconfig
++++ b/configs/P1025RDB_36BIT_defconfig
+@@ -23,6 +23,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1025RDB_NAND_defconfig b/configs/P1025RDB_NAND_defconfig
+index cc55f3e466..9bdbbb13b1 100644
+--- a/configs/P1025RDB_NAND_defconfig
++++ b/configs/P1025RDB_NAND_defconfig
+@@ -34,6 +34,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1025RDB_SDCARD_defconfig b/configs/P1025RDB_SDCARD_defconfig
+index aeb6e24370..66d94b36af 100644
+--- a/configs/P1025RDB_SDCARD_defconfig
++++ b/configs/P1025RDB_SDCARD_defconfig
+@@ -32,6 +32,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1025RDB_SPIFLASH_defconfig b/configs/P1025RDB_SPIFLASH_defconfig
+index ae45120a3b..edf826f57b 100644
+--- a/configs/P1025RDB_SPIFLASH_defconfig
++++ b/configs/P1025RDB_SPIFLASH_defconfig
+@@ -33,6 +33,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P1025RDB_defconfig b/configs/P1025RDB_defconfig
+index 80e697e182..fb057bd213 100644
+--- a/configs/P1025RDB_defconfig
++++ b/configs/P1025RDB_defconfig
+@@ -22,6 +22,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P2020RDB-PC_36BIT_NAND_defconfig b/configs/P2020RDB-PC_36BIT_NAND_defconfig
+index bd8fe1989e..235e5bc385 100644
+--- a/configs/P2020RDB-PC_36BIT_NAND_defconfig
++++ b/configs/P2020RDB-PC_36BIT_NAND_defconfig
+@@ -34,6 +34,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P2020RDB-PC_36BIT_SDCARD_defconfig b/configs/P2020RDB-PC_36BIT_SDCARD_defconfig
+index 8115278744..8f6062f309 100644
+--- a/configs/P2020RDB-PC_36BIT_SDCARD_defconfig
++++ b/configs/P2020RDB-PC_36BIT_SDCARD_defconfig
+@@ -32,6 +32,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P2020RDB-PC_36BIT_SPIFLASH_defconfig b/configs/P2020RDB-PC_36BIT_SPIFLASH_defconfig
+index d1e70b6c35..f4d9db1525 100644
+--- a/configs/P2020RDB-PC_36BIT_SPIFLASH_defconfig
++++ b/configs/P2020RDB-PC_36BIT_SPIFLASH_defconfig
+@@ -33,6 +33,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P2020RDB-PC_36BIT_defconfig b/configs/P2020RDB-PC_36BIT_defconfig
+index f81d77867f..918c5486bf 100644
+--- a/configs/P2020RDB-PC_36BIT_defconfig
++++ b/configs/P2020RDB-PC_36BIT_defconfig
+@@ -22,6 +22,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P2020RDB-PC_NAND_defconfig b/configs/P2020RDB-PC_NAND_defconfig
+index d369fdb935..af522d3b81 100644
+--- a/configs/P2020RDB-PC_NAND_defconfig
++++ b/configs/P2020RDB-PC_NAND_defconfig
+@@ -33,6 +33,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P2020RDB-PC_SDCARD_defconfig b/configs/P2020RDB-PC_SDCARD_defconfig
+index 5e058194a9..eb3d5205c7 100644
+--- a/configs/P2020RDB-PC_SDCARD_defconfig
++++ b/configs/P2020RDB-PC_SDCARD_defconfig
+@@ -31,6 +31,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P2020RDB-PC_SPIFLASH_defconfig b/configs/P2020RDB-PC_SPIFLASH_defconfig
+index 025be4bc59..1971b0cfce 100644
+--- a/configs/P2020RDB-PC_SPIFLASH_defconfig
++++ b/configs/P2020RDB-PC_SPIFLASH_defconfig
+@@ -32,6 +32,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P2020RDB-PC_defconfig b/configs/P2020RDB-PC_defconfig
+index 4105a4d514..df53add46b 100644
+--- a/configs/P2020RDB-PC_defconfig
++++ b/configs/P2020RDB-PC_defconfig
+@@ -21,6 +21,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/P2041RDB_NAND_defconfig b/configs/P2041RDB_NAND_defconfig
+index e07fee79f8..774d7f12bc 100644
+--- a/configs/P2041RDB_NAND_defconfig
++++ b/configs/P2041RDB_NAND_defconfig
+@@ -20,6 +20,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_ENV_IS_IN_NAND=y
+diff --git a/configs/P2041RDB_SDCARD_defconfig b/configs/P2041RDB_SDCARD_defconfig
+index 2fb56eb9ea..2022f9bfac 100644
+--- a/configs/P2041RDB_SDCARD_defconfig
++++ b/configs/P2041RDB_SDCARD_defconfig
+@@ -20,6 +20,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_ENV_IS_IN_MMC=y
+diff --git a/configs/P2041RDB_SECURE_BOOT_defconfig b/configs/P2041RDB_SECURE_BOOT_defconfig
+index 5b111a816a..9c84397673 100644
+--- a/configs/P2041RDB_SECURE_BOOT_defconfig
++++ b/configs/P2041RDB_SECURE_BOOT_defconfig
+@@ -21,6 +21,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_DM=y
+diff --git a/configs/P2041RDB_SPIFLASH_defconfig b/configs/P2041RDB_SPIFLASH_defconfig
+index ab9eb410c7..51840a0492 100644
+--- a/configs/P2041RDB_SPIFLASH_defconfig
++++ b/configs/P2041RDB_SPIFLASH_defconfig
+@@ -20,6 +20,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_ENV_IS_IN_SPI_FLASH=y
+diff --git a/configs/P2041RDB_SRIO_PCIE_BOOT_defconfig b/configs/P2041RDB_SRIO_PCIE_BOOT_defconfig
+index 9970f7edca..5943992fa3 100644
+--- a/configs/P2041RDB_SRIO_PCIE_BOOT_defconfig
++++ b/configs/P2041RDB_SRIO_PCIE_BOOT_defconfig
+@@ -20,6 +20,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_ENV_IS_IN_REMOTE=y
+diff --git a/configs/P2041RDB_defconfig b/configs/P2041RDB_defconfig
+index 9fd7f43ea4..8c9e03316e 100644
+--- a/configs/P2041RDB_defconfig
++++ b/configs/P2041RDB_defconfig
+@@ -19,6 +19,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_ENV_IS_IN_FLASH=y
+diff --git a/configs/P3041DS_NAND_SECURE_BOOT_defconfig b/configs/P3041DS_NAND_SECURE_BOOT_defconfig
+index b2a243e54d..e8cd5ad390 100644
+--- a/configs/P3041DS_NAND_SECURE_BOOT_defconfig
++++ b/configs/P3041DS_NAND_SECURE_BOOT_defconfig
+@@ -22,6 +22,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_DM=y
+diff --git a/configs/P3041DS_NAND_defconfig b/configs/P3041DS_NAND_defconfig
+index 9c6c5c7017..faf1f1fe1a 100644
+--- a/configs/P3041DS_NAND_defconfig
++++ b/configs/P3041DS_NAND_defconfig
+@@ -20,6 +20,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_ENV_IS_IN_NAND=y
+diff --git a/configs/P3041DS_SDCARD_defconfig b/configs/P3041DS_SDCARD_defconfig
+index ba0b487b65..95ecbab632 100644
+--- a/configs/P3041DS_SDCARD_defconfig
++++ b/configs/P3041DS_SDCARD_defconfig
+@@ -20,6 +20,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_ENV_IS_IN_MMC=y
+diff --git a/configs/P3041DS_SECURE_BOOT_defconfig b/configs/P3041DS_SECURE_BOOT_defconfig
+index 5016f5c83c..023b75e8e4 100644
+--- a/configs/P3041DS_SECURE_BOOT_defconfig
++++ b/configs/P3041DS_SECURE_BOOT_defconfig
+@@ -21,6 +21,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_DM=y
+diff --git a/configs/P3041DS_SPIFLASH_defconfig b/configs/P3041DS_SPIFLASH_defconfig
+index b86534b8a1..256e4f9b3d 100644
+--- a/configs/P3041DS_SPIFLASH_defconfig
++++ b/configs/P3041DS_SPIFLASH_defconfig
+@@ -20,6 +20,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_ENV_IS_IN_SPI_FLASH=y
+diff --git a/configs/P3041DS_SRIO_PCIE_BOOT_defconfig b/configs/P3041DS_SRIO_PCIE_BOOT_defconfig
+index 09cfe218c9..a49f408f88 100644
+--- a/configs/P3041DS_SRIO_PCIE_BOOT_defconfig
++++ b/configs/P3041DS_SRIO_PCIE_BOOT_defconfig
+@@ -20,6 +20,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_ENV_IS_IN_REMOTE=y
+diff --git a/configs/P3041DS_defconfig b/configs/P3041DS_defconfig
+index 487627bcbb..3694eb41ea 100644
+--- a/configs/P3041DS_defconfig
++++ b/configs/P3041DS_defconfig
+@@ -19,6 +19,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_ENV_IS_IN_FLASH=y
+diff --git a/configs/P4080DS_SDCARD_defconfig b/configs/P4080DS_SDCARD_defconfig
+index 5ae9bacfd7..489188faa1 100644
+--- a/configs/P4080DS_SDCARD_defconfig
++++ b/configs/P4080DS_SDCARD_defconfig
+@@ -20,6 +20,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_ENV_IS_IN_MMC=y
+diff --git a/configs/P4080DS_SECURE_BOOT_defconfig b/configs/P4080DS_SECURE_BOOT_defconfig
+index ee3869bcbc..c9677e94d5 100644
+--- a/configs/P4080DS_SECURE_BOOT_defconfig
++++ b/configs/P4080DS_SECURE_BOOT_defconfig
+@@ -21,6 +21,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_DM=y
+diff --git a/configs/P4080DS_SPIFLASH_defconfig b/configs/P4080DS_SPIFLASH_defconfig
+index 9593a98ec0..74d5746ef5 100644
+--- a/configs/P4080DS_SPIFLASH_defconfig
++++ b/configs/P4080DS_SPIFLASH_defconfig
+@@ -20,6 +20,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_ENV_IS_IN_SPI_FLASH=y
+diff --git a/configs/P4080DS_SRIO_PCIE_BOOT_defconfig b/configs/P4080DS_SRIO_PCIE_BOOT_defconfig
+index 9f1e3fafa4..771e7250d8 100644
+--- a/configs/P4080DS_SRIO_PCIE_BOOT_defconfig
++++ b/configs/P4080DS_SRIO_PCIE_BOOT_defconfig
+@@ -20,6 +20,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_ENV_IS_IN_REMOTE=y
+diff --git a/configs/P4080DS_defconfig b/configs/P4080DS_defconfig
+index 0306eb2815..4f6f84eafe 100644
+--- a/configs/P4080DS_defconfig
++++ b/configs/P4080DS_defconfig
+@@ -19,6 +19,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_ENV_IS_IN_FLASH=y
+diff --git a/configs/P5020DS_NAND_SECURE_BOOT_defconfig b/configs/P5020DS_NAND_SECURE_BOOT_defconfig
+index eb1799e753..781f2fe850 100644
+--- a/configs/P5020DS_NAND_SECURE_BOOT_defconfig
++++ b/configs/P5020DS_NAND_SECURE_BOOT_defconfig
+@@ -23,6 +23,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_DM=y
+diff --git a/configs/P5020DS_NAND_defconfig b/configs/P5020DS_NAND_defconfig
+index b60ae5d097..6dab4a15c0 100644
+--- a/configs/P5020DS_NAND_defconfig
++++ b/configs/P5020DS_NAND_defconfig
+@@ -21,6 +21,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_ENV_IS_IN_NAND=y
+diff --git a/configs/P5020DS_SDCARD_defconfig b/configs/P5020DS_SDCARD_defconfig
+index 41418f0b6e..71b3d07320 100644
+--- a/configs/P5020DS_SDCARD_defconfig
++++ b/configs/P5020DS_SDCARD_defconfig
+@@ -21,6 +21,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_ENV_IS_IN_MMC=y
+diff --git a/configs/P5020DS_SECURE_BOOT_defconfig b/configs/P5020DS_SECURE_BOOT_defconfig
+index 5dcf1902b8..b3483e708f 100644
+--- a/configs/P5020DS_SECURE_BOOT_defconfig
++++ b/configs/P5020DS_SECURE_BOOT_defconfig
+@@ -22,6 +22,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_DM=y
+diff --git a/configs/P5020DS_SPIFLASH_defconfig b/configs/P5020DS_SPIFLASH_defconfig
+index 352acfbc88..082689d56d 100644
+--- a/configs/P5020DS_SPIFLASH_defconfig
++++ b/configs/P5020DS_SPIFLASH_defconfig
+@@ -21,6 +21,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_ENV_IS_IN_SPI_FLASH=y
+diff --git a/configs/P5020DS_SRIO_PCIE_BOOT_defconfig b/configs/P5020DS_SRIO_PCIE_BOOT_defconfig
+index 1b85099612..5739e5098a 100644
+--- a/configs/P5020DS_SRIO_PCIE_BOOT_defconfig
++++ b/configs/P5020DS_SRIO_PCIE_BOOT_defconfig
+@@ -21,6 +21,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_ENV_IS_IN_REMOTE=y
+diff --git a/configs/P5020DS_defconfig b/configs/P5020DS_defconfig
+index 157ec66fc0..ac96ccacbf 100644
+--- a/configs/P5020DS_defconfig
++++ b/configs/P5020DS_defconfig
+@@ -20,6 +20,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_ENV_IS_IN_FLASH=y
+diff --git a/configs/P5040DS_NAND_SECURE_BOOT_defconfig b/configs/P5040DS_NAND_SECURE_BOOT_defconfig
+index f7f56fe0ae..00a894db8f 100644
+--- a/configs/P5040DS_NAND_SECURE_BOOT_defconfig
++++ b/configs/P5040DS_NAND_SECURE_BOOT_defconfig
+@@ -23,6 +23,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_DM=y
+diff --git a/configs/P5040DS_NAND_defconfig b/configs/P5040DS_NAND_defconfig
+index 71ecf0f990..572a979776 100644
+--- a/configs/P5040DS_NAND_defconfig
++++ b/configs/P5040DS_NAND_defconfig
+@@ -21,6 +21,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_ENV_IS_IN_NAND=y
+diff --git a/configs/P5040DS_SDCARD_defconfig b/configs/P5040DS_SDCARD_defconfig
+index 30eafb7ad2..501f336963 100644
+--- a/configs/P5040DS_SDCARD_defconfig
++++ b/configs/P5040DS_SDCARD_defconfig
+@@ -21,6 +21,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_ENV_IS_IN_MMC=y
+diff --git a/configs/P5040DS_SECURE_BOOT_defconfig b/configs/P5040DS_SECURE_BOOT_defconfig
+index 05d6ba2dd1..159842edf2 100644
+--- a/configs/P5040DS_SECURE_BOOT_defconfig
++++ b/configs/P5040DS_SECURE_BOOT_defconfig
+@@ -22,6 +22,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_DM=y
+diff --git a/configs/P5040DS_SPIFLASH_defconfig b/configs/P5040DS_SPIFLASH_defconfig
+index 3bfb4228c7..0486585bc1 100644
+--- a/configs/P5040DS_SPIFLASH_defconfig
++++ b/configs/P5040DS_SPIFLASH_defconfig
+@@ -21,6 +21,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_ENV_IS_IN_SPI_FLASH=y
+diff --git a/configs/P5040DS_defconfig b/configs/P5040DS_defconfig
+index dddf46c271..5fb5742139 100644
+--- a/configs/P5040DS_defconfig
++++ b/configs/P5040DS_defconfig
+@@ -20,6 +20,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_ENV_IS_IN_FLASH=y
+diff --git a/configs/T1023RDB_NAND_defconfig b/configs/T1023RDB_NAND_defconfig
+index efafe22df7..aa6c556d48 100644
+--- a/configs/T1023RDB_NAND_defconfig
++++ b/configs/T1023RDB_NAND_defconfig
+@@ -33,6 +33,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_CMD_MTDPARTS=y
+diff --git a/configs/T1023RDB_SDCARD_defconfig b/configs/T1023RDB_SDCARD_defconfig
+index 81f6f3ab99..97931ef8c2 100644
+--- a/configs/T1023RDB_SDCARD_defconfig
++++ b/configs/T1023RDB_SDCARD_defconfig
+@@ -33,6 +33,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_CMD_MTDPARTS=y
+diff --git a/configs/T1023RDB_SECURE_BOOT_defconfig b/configs/T1023RDB_SECURE_BOOT_defconfig
+index 62ae4a20b5..d060d29a53 100644
+--- a/configs/T1023RDB_SECURE_BOOT_defconfig
++++ b/configs/T1023RDB_SECURE_BOOT_defconfig
+@@ -24,6 +24,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_CMD_MTDPARTS=y
+diff --git a/configs/T1023RDB_SPIFLASH_defconfig b/configs/T1023RDB_SPIFLASH_defconfig
+index 7b423ebb96..800291713d 100644
+--- a/configs/T1023RDB_SPIFLASH_defconfig
++++ b/configs/T1023RDB_SPIFLASH_defconfig
+@@ -34,6 +34,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_CMD_MTDPARTS=y
+diff --git a/configs/T1023RDB_defconfig b/configs/T1023RDB_defconfig
+index efde0f0652..6235133b2b 100644
+--- a/configs/T1023RDB_defconfig
++++ b/configs/T1023RDB_defconfig
+@@ -22,6 +22,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_CMD_MTDPARTS=y
+diff --git a/configs/T1024QDS_DDR4_SECURE_BOOT_defconfig b/configs/T1024QDS_DDR4_SECURE_BOOT_defconfig
+index 7a814df986..14ed4599b8 100644
+--- a/configs/T1024QDS_DDR4_SECURE_BOOT_defconfig
++++ b/configs/T1024QDS_DDR4_SECURE_BOOT_defconfig
+@@ -26,6 +26,7 @@ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_BMP=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=fe8000000.nor,nand0=fff800000.flash,spi0=spife110000.0"
+diff --git a/configs/T1024QDS_DDR4_defconfig b/configs/T1024QDS_DDR4_defconfig
+index 5b8f016f5f..7e9ecd2e21 100644
+--- a/configs/T1024QDS_DDR4_defconfig
++++ b/configs/T1024QDS_DDR4_defconfig
+@@ -24,6 +24,7 @@ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_BMP=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=fe8000000.nor,nand0=fff800000.flash,spi0=spife110000.0"
+diff --git a/configs/T1024QDS_NAND_defconfig b/configs/T1024QDS_NAND_defconfig
+index 1a97c03704..69809c1e5f 100644
+--- a/configs/T1024QDS_NAND_defconfig
++++ b/configs/T1024QDS_NAND_defconfig
+@@ -35,6 +35,7 @@ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_BMP=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=fe8000000.nor,nand0=fff800000.flash,spi0=spife110000.0"
+diff --git a/configs/T1024QDS_SDCARD_defconfig b/configs/T1024QDS_SDCARD_defconfig
+index 90c11ff70e..e2e390772e 100644
+--- a/configs/T1024QDS_SDCARD_defconfig
++++ b/configs/T1024QDS_SDCARD_defconfig
+@@ -35,6 +35,7 @@ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_BMP=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=fe8000000.nor,nand0=fff800000.flash,spi0=spife110000.0"
+diff --git a/configs/T1024QDS_SECURE_BOOT_defconfig b/configs/T1024QDS_SECURE_BOOT_defconfig
+index e68d0722fa..4ad6fc6782 100644
+--- a/configs/T1024QDS_SECURE_BOOT_defconfig
++++ b/configs/T1024QDS_SECURE_BOOT_defconfig
+@@ -26,6 +26,7 @@ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_BMP=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=fe8000000.nor,nand0=fff800000.flash,spi0=spife110000.0"
+diff --git a/configs/T1024QDS_SPIFLASH_defconfig b/configs/T1024QDS_SPIFLASH_defconfig
+index 921892e641..6453fe37a6 100644
+--- a/configs/T1024QDS_SPIFLASH_defconfig
++++ b/configs/T1024QDS_SPIFLASH_defconfig
+@@ -36,6 +36,7 @@ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_BMP=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=fe8000000.nor,nand0=fff800000.flash,spi0=spife110000.0"
+diff --git a/configs/T1024QDS_defconfig b/configs/T1024QDS_defconfig
+index 0f92e2f290..b12b5c0a0a 100644
+--- a/configs/T1024QDS_defconfig
++++ b/configs/T1024QDS_defconfig
+@@ -24,6 +24,7 @@ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_BMP=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=fe8000000.nor,nand0=fff800000.flash,spi0=spife110000.0"
+diff --git a/configs/T1024RDB_NAND_defconfig b/configs/T1024RDB_NAND_defconfig
+index 384cae1078..b8ddaed721 100644
+--- a/configs/T1024RDB_NAND_defconfig
++++ b/configs/T1024RDB_NAND_defconfig
+@@ -35,6 +35,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=fe8000000.nor,nand0=fff800000.flash,spi0=spife110000.1"
+diff --git a/configs/T1024RDB_SDCARD_defconfig b/configs/T1024RDB_SDCARD_defconfig
+index a5073d378d..cfc44aed34 100644
+--- a/configs/T1024RDB_SDCARD_defconfig
++++ b/configs/T1024RDB_SDCARD_defconfig
+@@ -35,6 +35,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=fe8000000.nor,nand0=fff800000.flash,spi0=spife110000.1"
+diff --git a/configs/T1024RDB_SECURE_BOOT_defconfig b/configs/T1024RDB_SECURE_BOOT_defconfig
+index fcd2049c89..534948783a 100644
+--- a/configs/T1024RDB_SECURE_BOOT_defconfig
++++ b/configs/T1024RDB_SECURE_BOOT_defconfig
+@@ -26,6 +26,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=fe8000000.nor,nand0=fff800000.flash,spi0=spife110000.1"
+diff --git a/configs/T1024RDB_SPIFLASH_defconfig b/configs/T1024RDB_SPIFLASH_defconfig
+index 806b72fdb0..9ab33824d3 100644
+--- a/configs/T1024RDB_SPIFLASH_defconfig
++++ b/configs/T1024RDB_SPIFLASH_defconfig
+@@ -36,6 +36,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=fe8000000.nor,nand0=fff800000.flash,spi0=spife110000.1"
+diff --git a/configs/T1024RDB_defconfig b/configs/T1024RDB_defconfig
+index 73cd63b7d6..164e14b3e4 100644
+--- a/configs/T1024RDB_defconfig
++++ b/configs/T1024RDB_defconfig
+@@ -24,6 +24,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=fe8000000.nor,nand0=fff800000.flash,spi0=spife110000.1"
+diff --git a/configs/T1040D4RDB_NAND_defconfig b/configs/T1040D4RDB_NAND_defconfig
+index f6a4835a37..bd712da82d 100644
+--- a/configs/T1040D4RDB_NAND_defconfig
++++ b/configs/T1040D4RDB_NAND_defconfig
+@@ -33,6 +33,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_ETHSW=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=fe8000000.nor,nand0=fff800000.flash,spi0=spife110000.0"
+diff --git a/configs/T1040D4RDB_SDCARD_defconfig b/configs/T1040D4RDB_SDCARD_defconfig
+index 5b80494028..f47a10adb4 100644
+--- a/configs/T1040D4RDB_SDCARD_defconfig
++++ b/configs/T1040D4RDB_SDCARD_defconfig
+@@ -33,6 +33,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_ETHSW=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=fe8000000.nor,nand0=fff800000.flash,spi0=spife110000.0"
+diff --git a/configs/T1040D4RDB_SECURE_BOOT_defconfig b/configs/T1040D4RDB_SECURE_BOOT_defconfig
+index 5bf8fb4769..0bc5efc8eb 100644
+--- a/configs/T1040D4RDB_SECURE_BOOT_defconfig
++++ b/configs/T1040D4RDB_SECURE_BOOT_defconfig
+@@ -24,6 +24,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_ETHSW=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=fe8000000.nor,nand0=fff800000.flash,spi0=spife110000.0"
+diff --git a/configs/T1040D4RDB_SPIFLASH_defconfig b/configs/T1040D4RDB_SPIFLASH_defconfig
+index a7ec2c78bf..82678f18f8 100644
+--- a/configs/T1040D4RDB_SPIFLASH_defconfig
++++ b/configs/T1040D4RDB_SPIFLASH_defconfig
+@@ -34,6 +34,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_ETHSW=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=fe8000000.nor,nand0=fff800000.flash,spi0=spife110000.0"
+diff --git a/configs/T1040D4RDB_defconfig b/configs/T1040D4RDB_defconfig
+index 7ce8a0a477..c461e7964a 100644
+--- a/configs/T1040D4RDB_defconfig
++++ b/configs/T1040D4RDB_defconfig
+@@ -22,6 +22,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_ETHSW=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=fe8000000.nor,nand0=fff800000.flash,spi0=spife110000.0"
+diff --git a/configs/T1040QDS_DDR4_defconfig b/configs/T1040QDS_DDR4_defconfig
+index 1ae33dbafd..213f96778b 100644
+--- a/configs/T1040QDS_DDR4_defconfig
++++ b/configs/T1040QDS_DDR4_defconfig
+@@ -25,6 +25,7 @@ CONFIG_CMD_PING=y
+ CONFIG_CMD_ETHSW=y
+ CONFIG_CMD_BMP=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=fe8000000.nor,nand0=fff800000.flash,spi0=spife110000.0"
+diff --git a/configs/T1040QDS_SECURE_BOOT_defconfig b/configs/T1040QDS_SECURE_BOOT_defconfig
+index 966685bd81..ba06d92321 100644
+--- a/configs/T1040QDS_SECURE_BOOT_defconfig
++++ b/configs/T1040QDS_SECURE_BOOT_defconfig
+@@ -27,6 +27,7 @@ CONFIG_CMD_PING=y
+ CONFIG_CMD_ETHSW=y
+ CONFIG_CMD_BMP=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=fe8000000.nor,nand0=fff800000.flash,spi0=spife110000.0"
+diff --git a/configs/T1040QDS_defconfig b/configs/T1040QDS_defconfig
+index 4040a10b4c..7ca5e5bcc7 100644
+--- a/configs/T1040QDS_defconfig
++++ b/configs/T1040QDS_defconfig
+@@ -25,6 +25,7 @@ CONFIG_CMD_PING=y
+ CONFIG_CMD_ETHSW=y
+ CONFIG_CMD_BMP=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=fe8000000.nor,nand0=fff800000.flash,spi0=spife110000.0"
+diff --git a/configs/T1040RDB_NAND_defconfig b/configs/T1040RDB_NAND_defconfig
+index e898dbbe5b..5cbc08e3b1 100644
+--- a/configs/T1040RDB_NAND_defconfig
++++ b/configs/T1040RDB_NAND_defconfig
+@@ -33,6 +33,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_ETHSW=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=fe8000000.nor,nand0=fff800000.flash,spi0=spife110000.0"
+diff --git a/configs/T1040RDB_SDCARD_defconfig b/configs/T1040RDB_SDCARD_defconfig
+index fbc498890a..554daaa7b0 100644
+--- a/configs/T1040RDB_SDCARD_defconfig
++++ b/configs/T1040RDB_SDCARD_defconfig
+@@ -33,6 +33,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_ETHSW=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=fe8000000.nor,nand0=fff800000.flash,spi0=spife110000.0"
+diff --git a/configs/T1040RDB_SECURE_BOOT_defconfig b/configs/T1040RDB_SECURE_BOOT_defconfig
+index cac97fe89c..e7ecba42b3 100644
+--- a/configs/T1040RDB_SECURE_BOOT_defconfig
++++ b/configs/T1040RDB_SECURE_BOOT_defconfig
+@@ -24,6 +24,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_ETHSW=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=fe8000000.nor,nand0=fff800000.flash,spi0=spife110000.0"
+diff --git a/configs/T1040RDB_SPIFLASH_defconfig b/configs/T1040RDB_SPIFLASH_defconfig
+index 994e94d76f..72b51ef701 100644
+--- a/configs/T1040RDB_SPIFLASH_defconfig
++++ b/configs/T1040RDB_SPIFLASH_defconfig
+@@ -34,6 +34,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_ETHSW=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=fe8000000.nor,nand0=fff800000.flash,spi0=spife110000.0"
+diff --git a/configs/T1040RDB_defconfig b/configs/T1040RDB_defconfig
+index d85885e24c..228a02293a 100644
+--- a/configs/T1040RDB_defconfig
++++ b/configs/T1040RDB_defconfig
+@@ -22,6 +22,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_ETHSW=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=fe8000000.nor,nand0=fff800000.flash,spi0=spife110000.0"
+diff --git a/configs/T1042D4RDB_NAND_defconfig b/configs/T1042D4RDB_NAND_defconfig
+index b9058b7f45..0f410e193e 100644
+--- a/configs/T1042D4RDB_NAND_defconfig
++++ b/configs/T1042D4RDB_NAND_defconfig
+@@ -34,6 +34,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_BMP=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=fe8000000.nor,nand0=fff800000.flash,spi0=spife110000.0"
+diff --git a/configs/T1042D4RDB_SDCARD_defconfig b/configs/T1042D4RDB_SDCARD_defconfig
+index 6f12ac6a0a..601b9d1988 100644
+--- a/configs/T1042D4RDB_SDCARD_defconfig
++++ b/configs/T1042D4RDB_SDCARD_defconfig
+@@ -34,6 +34,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_BMP=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=fe8000000.nor,nand0=fff800000.flash,spi0=spife110000.0"
+diff --git a/configs/T1042D4RDB_SECURE_BOOT_defconfig b/configs/T1042D4RDB_SECURE_BOOT_defconfig
+index 2f6b37d2e4..23d34012e7 100644
+--- a/configs/T1042D4RDB_SECURE_BOOT_defconfig
++++ b/configs/T1042D4RDB_SECURE_BOOT_defconfig
+@@ -25,6 +25,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_BMP=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=fe8000000.nor,nand0=fff800000.flash,spi0=spife110000.0"
+diff --git a/configs/T1042D4RDB_SPIFLASH_defconfig b/configs/T1042D4RDB_SPIFLASH_defconfig
+index 2ed1b39430..1359695284 100644
+--- a/configs/T1042D4RDB_SPIFLASH_defconfig
++++ b/configs/T1042D4RDB_SPIFLASH_defconfig
+@@ -35,6 +35,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_BMP=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=fe8000000.nor,nand0=fff800000.flash,spi0=spife110000.0"
+diff --git a/configs/T1042D4RDB_defconfig b/configs/T1042D4RDB_defconfig
+index b645fe278f..8c941b0e09 100644
+--- a/configs/T1042D4RDB_defconfig
++++ b/configs/T1042D4RDB_defconfig
+@@ -23,6 +23,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_BMP=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=fe8000000.nor,nand0=fff800000.flash,spi0=spife110000.0"
+diff --git a/configs/T1042RDB_PI_NAND_SECURE_BOOT_defconfig b/configs/T1042RDB_PI_NAND_SECURE_BOOT_defconfig
+index 963fd9bafe..a7a3d90437 100644
+--- a/configs/T1042RDB_PI_NAND_SECURE_BOOT_defconfig
++++ b/configs/T1042RDB_PI_NAND_SECURE_BOOT_defconfig
+@@ -38,6 +38,7 @@ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_BMP=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=fe8000000.nor,nand0=fff800000.flash,spi0=spife110000.0"
+diff --git a/configs/T1042RDB_PI_NAND_defconfig b/configs/T1042RDB_PI_NAND_defconfig
+index 885516410e..268ddc2d26 100644
+--- a/configs/T1042RDB_PI_NAND_defconfig
++++ b/configs/T1042RDB_PI_NAND_defconfig
+@@ -35,6 +35,7 @@ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_BMP=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=fe8000000.nor,nand0=fff800000.flash,spi0=spife110000.0"
+diff --git a/configs/T1042RDB_PI_SDCARD_defconfig b/configs/T1042RDB_PI_SDCARD_defconfig
+index f8e4b33e99..201a61523b 100644
+--- a/configs/T1042RDB_PI_SDCARD_defconfig
++++ b/configs/T1042RDB_PI_SDCARD_defconfig
+@@ -35,6 +35,7 @@ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_BMP=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=fe8000000.nor,nand0=fff800000.flash,spi0=spife110000.0"
+diff --git a/configs/T1042RDB_PI_SPIFLASH_defconfig b/configs/T1042RDB_PI_SPIFLASH_defconfig
+index 77855fc74d..8ba4dc18b9 100644
+--- a/configs/T1042RDB_PI_SPIFLASH_defconfig
++++ b/configs/T1042RDB_PI_SPIFLASH_defconfig
+@@ -36,6 +36,7 @@ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_BMP=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=fe8000000.nor,nand0=fff800000.flash,spi0=spife110000.0"
+diff --git a/configs/T1042RDB_PI_defconfig b/configs/T1042RDB_PI_defconfig
+index ebeaf9380f..2598ea17f1 100644
+--- a/configs/T1042RDB_PI_defconfig
++++ b/configs/T1042RDB_PI_defconfig
+@@ -24,6 +24,7 @@ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_BMP=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=fe8000000.nor,nand0=fff800000.flash,spi0=spife110000.0"
+diff --git a/configs/T1042RDB_SECURE_BOOT_defconfig b/configs/T1042RDB_SECURE_BOOT_defconfig
+index 654f8a6878..a2e584f541 100644
+--- a/configs/T1042RDB_SECURE_BOOT_defconfig
++++ b/configs/T1042RDB_SECURE_BOOT_defconfig
+@@ -23,6 +23,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=fe8000000.nor,nand0=fff800000.flash,spi0=spife110000.0"
+diff --git a/configs/T1042RDB_defconfig b/configs/T1042RDB_defconfig
+index 10bb12d1b4..7946429173 100644
+--- a/configs/T1042RDB_defconfig
++++ b/configs/T1042RDB_defconfig
+@@ -21,6 +21,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_MTDIDS_DEFAULT="nor0=fe8000000.nor,nand0=fff800000.flash,spi0=spife110000.0"
+diff --git a/configs/T2080QDS_NAND_defconfig b/configs/T2080QDS_NAND_defconfig
+index 2addaac983..4b45fe40c6 100644
+--- a/configs/T2080QDS_NAND_defconfig
++++ b/configs/T2080QDS_NAND_defconfig
+@@ -29,6 +29,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_CMD_MTDPARTS=y
+diff --git a/configs/T2080QDS_SDCARD_defconfig b/configs/T2080QDS_SDCARD_defconfig
+index 6588f14149..0ab77f7113 100644
+--- a/configs/T2080QDS_SDCARD_defconfig
++++ b/configs/T2080QDS_SDCARD_defconfig
+@@ -29,6 +29,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_CMD_MTDPARTS=y
+diff --git a/configs/T2080QDS_SECURE_BOOT_defconfig b/configs/T2080QDS_SECURE_BOOT_defconfig
+index 34b1a385cf..4139e2ebd4 100644
+--- a/configs/T2080QDS_SECURE_BOOT_defconfig
++++ b/configs/T2080QDS_SECURE_BOOT_defconfig
+@@ -20,6 +20,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_CMD_MTDPARTS=y
+diff --git a/configs/T2080QDS_SPIFLASH_defconfig b/configs/T2080QDS_SPIFLASH_defconfig
+index e3cd7911ba..fc160434d2 100644
+--- a/configs/T2080QDS_SPIFLASH_defconfig
++++ b/configs/T2080QDS_SPIFLASH_defconfig
+@@ -30,6 +30,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_CMD_MTDPARTS=y
+diff --git a/configs/T2080QDS_SRIO_PCIE_BOOT_defconfig b/configs/T2080QDS_SRIO_PCIE_BOOT_defconfig
+index d2f01de6a5..a0e935e184 100644
+--- a/configs/T2080QDS_SRIO_PCIE_BOOT_defconfig
++++ b/configs/T2080QDS_SRIO_PCIE_BOOT_defconfig
+@@ -19,6 +19,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_ENV_IS_IN_REMOTE=y
+diff --git a/configs/T2080QDS_defconfig b/configs/T2080QDS_defconfig
+index 626feddff8..a3bf7ac992 100644
+--- a/configs/T2080QDS_defconfig
++++ b/configs/T2080QDS_defconfig
+@@ -18,6 +18,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_CMD_MTDPARTS=y
+diff --git a/configs/T2080RDB_NAND_defconfig b/configs/T2080RDB_NAND_defconfig
+index b7f55208af..3b10049ee1 100644
+--- a/configs/T2080RDB_NAND_defconfig
++++ b/configs/T2080RDB_NAND_defconfig
+@@ -30,6 +30,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_CMD_MTDPARTS=y
+diff --git a/configs/T2080RDB_SDCARD_defconfig b/configs/T2080RDB_SDCARD_defconfig
+index dc3a2231fb..828c4d6f3c 100644
+--- a/configs/T2080RDB_SDCARD_defconfig
++++ b/configs/T2080RDB_SDCARD_defconfig
+@@ -30,6 +30,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_CMD_MTDPARTS=y
+diff --git a/configs/T2080RDB_SECURE_BOOT_defconfig b/configs/T2080RDB_SECURE_BOOT_defconfig
+index 44730c97cd..59340b337b 100644
+--- a/configs/T2080RDB_SECURE_BOOT_defconfig
++++ b/configs/T2080RDB_SECURE_BOOT_defconfig
+@@ -21,6 +21,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_CMD_MTDPARTS=y
+diff --git a/configs/T2080RDB_SPIFLASH_defconfig b/configs/T2080RDB_SPIFLASH_defconfig
+index 8a1194764b..d738c85b82 100644
+--- a/configs/T2080RDB_SPIFLASH_defconfig
++++ b/configs/T2080RDB_SPIFLASH_defconfig
+@@ -31,6 +31,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_CMD_MTDPARTS=y
+diff --git a/configs/T2080RDB_SRIO_PCIE_BOOT_defconfig b/configs/T2080RDB_SRIO_PCIE_BOOT_defconfig
+index 17d3ee97c9..7e367124dd 100644
+--- a/configs/T2080RDB_SRIO_PCIE_BOOT_defconfig
++++ b/configs/T2080RDB_SRIO_PCIE_BOOT_defconfig
+@@ -20,6 +20,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ # CONFIG_CMD_IRQ is not set
+diff --git a/configs/T2080RDB_defconfig b/configs/T2080RDB_defconfig
+index 9dfc6c9e13..49ba327194 100644
+--- a/configs/T2080RDB_defconfig
++++ b/configs/T2080RDB_defconfig
+@@ -19,6 +19,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_CMD_MTDPARTS=y
+diff --git a/configs/T2081QDS_NAND_defconfig b/configs/T2081QDS_NAND_defconfig
+index 3f8d6117ac..24b27c09c3 100644
+--- a/configs/T2081QDS_NAND_defconfig
++++ b/configs/T2081QDS_NAND_defconfig
+@@ -29,6 +29,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_CMD_MTDPARTS=y
+diff --git a/configs/T2081QDS_SDCARD_defconfig b/configs/T2081QDS_SDCARD_defconfig
+index 9a15eabe6e..bb012d38de 100644
+--- a/configs/T2081QDS_SDCARD_defconfig
++++ b/configs/T2081QDS_SDCARD_defconfig
+@@ -29,6 +29,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_CMD_MTDPARTS=y
+diff --git a/configs/T2081QDS_SPIFLASH_defconfig b/configs/T2081QDS_SPIFLASH_defconfig
+index fc7115a6e3..e689caaa4e 100644
+--- a/configs/T2081QDS_SPIFLASH_defconfig
++++ b/configs/T2081QDS_SPIFLASH_defconfig
+@@ -30,6 +30,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_CMD_MTDPARTS=y
+diff --git a/configs/T2081QDS_SRIO_PCIE_BOOT_defconfig b/configs/T2081QDS_SRIO_PCIE_BOOT_defconfig
+index 545913a64e..6c274246da 100644
+--- a/configs/T2081QDS_SRIO_PCIE_BOOT_defconfig
++++ b/configs/T2081QDS_SRIO_PCIE_BOOT_defconfig
+@@ -19,6 +19,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_ENV_IS_IN_REMOTE=y
+diff --git a/configs/T2081QDS_defconfig b/configs/T2081QDS_defconfig
+index 1c15a7ee47..ab39f2fb77 100644
+--- a/configs/T2081QDS_defconfig
++++ b/configs/T2081QDS_defconfig
+@@ -18,6 +18,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_CMD_MTDPARTS=y
+diff --git a/configs/T4160QDS_NAND_defconfig b/configs/T4160QDS_NAND_defconfig
+index b88caa2ca3..4a41351eb0 100644
+--- a/configs/T4160QDS_NAND_defconfig
++++ b/configs/T4160QDS_NAND_defconfig
+@@ -29,6 +29,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_ENV_IS_IN_NAND=y
+diff --git a/configs/T4160QDS_SDCARD_defconfig b/configs/T4160QDS_SDCARD_defconfig
+index f1a9439c41..1f3bbb4b6b 100644
+--- a/configs/T4160QDS_SDCARD_defconfig
++++ b/configs/T4160QDS_SDCARD_defconfig
+@@ -29,6 +29,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_ENV_IS_IN_MMC=y
+diff --git a/configs/T4160QDS_SECURE_BOOT_defconfig b/configs/T4160QDS_SECURE_BOOT_defconfig
+index 6a5e4c262a..71533606be 100644
+--- a/configs/T4160QDS_SECURE_BOOT_defconfig
++++ b/configs/T4160QDS_SECURE_BOOT_defconfig
+@@ -20,6 +20,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_DM=y
+diff --git a/configs/T4160QDS_defconfig b/configs/T4160QDS_defconfig
+index e52636b57f..cf75e4396e 100644
+--- a/configs/T4160QDS_defconfig
++++ b/configs/T4160QDS_defconfig
+@@ -18,6 +18,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_ENV_IS_IN_FLASH=y
+diff --git a/configs/T4160RDB_defconfig b/configs/T4160RDB_defconfig
+index 36223ad06b..484e2046b2 100644
+--- a/configs/T4160RDB_defconfig
++++ b/configs/T4160RDB_defconfig
+@@ -18,6 +18,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_ENV_IS_IN_FLASH=y
+diff --git a/configs/T4240QDS_NAND_defconfig b/configs/T4240QDS_NAND_defconfig
+index 77a98dac59..4219859a3a 100644
+--- a/configs/T4240QDS_NAND_defconfig
++++ b/configs/T4240QDS_NAND_defconfig
+@@ -29,6 +29,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_ENV_IS_IN_NAND=y
+diff --git a/configs/T4240QDS_SDCARD_defconfig b/configs/T4240QDS_SDCARD_defconfig
+index 269509a79e..7e23257255 100644
+--- a/configs/T4240QDS_SDCARD_defconfig
++++ b/configs/T4240QDS_SDCARD_defconfig
+@@ -29,6 +29,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_ENV_IS_IN_MMC=y
+diff --git a/configs/T4240QDS_SECURE_BOOT_defconfig b/configs/T4240QDS_SECURE_BOOT_defconfig
+index ffce440183..ce40b2bd9f 100644
+--- a/configs/T4240QDS_SECURE_BOOT_defconfig
++++ b/configs/T4240QDS_SECURE_BOOT_defconfig
+@@ -20,6 +20,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_DM=y
+diff --git a/configs/T4240QDS_SRIO_PCIE_BOOT_defconfig b/configs/T4240QDS_SRIO_PCIE_BOOT_defconfig
+index 5f5ceda666..a8856fbf4c 100644
+--- a/configs/T4240QDS_SRIO_PCIE_BOOT_defconfig
++++ b/configs/T4240QDS_SRIO_PCIE_BOOT_defconfig
+@@ -19,6 +19,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_ENV_IS_IN_REMOTE=y
+diff --git a/configs/T4240QDS_defconfig b/configs/T4240QDS_defconfig
+index 17b63baf60..a8c2f62f1a 100644
+--- a/configs/T4240QDS_defconfig
++++ b/configs/T4240QDS_defconfig
+@@ -18,6 +18,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_ENV_IS_IN_FLASH=y
+diff --git a/configs/T4240RDB_SDCARD_defconfig b/configs/T4240RDB_SDCARD_defconfig
+index 10f869ac18..9e0b148392 100644
+--- a/configs/T4240RDB_SDCARD_defconfig
++++ b/configs/T4240RDB_SDCARD_defconfig
+@@ -29,6 +29,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_ENV_IS_IN_MMC=y
+diff --git a/configs/T4240RDB_defconfig b/configs/T4240RDB_defconfig
+index 101c7a7f76..4877973fca 100644
+--- a/configs/T4240RDB_defconfig
++++ b/configs/T4240RDB_defconfig
+@@ -18,6 +18,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+ CONFIG_ENV_IS_IN_FLASH=y
+diff --git a/configs/TWR-P1025_defconfig b/configs/TWR-P1025_defconfig
+index 2770e47ed0..30ab4f61b0 100644
+--- a/configs/TWR-P1025_defconfig
++++ b/configs/TWR-P1025_defconfig
+@@ -21,6 +21,7 @@ CONFIG_CMD_PCI=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_EXT2=y
+ CONFIG_CMD_FAT=y
+diff --git a/configs/UCP1020_SPIFLASH_defconfig b/configs/UCP1020_SPIFLASH_defconfig
+index fb5e7129d5..9ace07c0bf 100644
+--- a/configs/UCP1020_SPIFLASH_defconfig
++++ b/configs/UCP1020_SPIFLASH_defconfig
+@@ -28,6 +28,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_CRAMFS=y
+ CONFIG_CMD_EXT2=y
+diff --git a/configs/UCP1020_defconfig b/configs/UCP1020_defconfig
+index 42206c1075..e8d6e53d77 100644
+--- a/configs/UCP1020_defconfig
++++ b/configs/UCP1020_defconfig
+@@ -28,6 +28,7 @@ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_CRAMFS=y
+ CONFIG_CMD_EXT2=y
+diff --git a/configs/controlcenterd_36BIT_SDCARD_DEVELOP_defconfig b/configs/controlcenterd_36BIT_SDCARD_DEVELOP_defconfig
+index 6a4efa6635..4fc001f681 100644
+--- a/configs/controlcenterd_36BIT_SDCARD_DEVELOP_defconfig
++++ b/configs/controlcenterd_36BIT_SDCARD_DEVELOP_defconfig
+@@ -29,6 +29,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_BMP=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_TPM=y
+ CONFIG_CMD_EXT2=y
+diff --git a/configs/controlcenterd_36BIT_SDCARD_defconfig b/configs/controlcenterd_36BIT_SDCARD_defconfig
+index cf0c9551d8..ad4babda16 100644
+--- a/configs/controlcenterd_36BIT_SDCARD_defconfig
++++ b/configs/controlcenterd_36BIT_SDCARD_defconfig
+@@ -29,6 +29,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_BMP=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_TPM=y
+ CONFIG_CMD_EXT2=y
+diff --git a/configs/controlcenterd_TRAILBLAZER_DEVELOP_defconfig b/configs/controlcenterd_TRAILBLAZER_DEVELOP_defconfig
+index a57837ac6b..9b118db317 100644
+--- a/configs/controlcenterd_TRAILBLAZER_DEVELOP_defconfig
++++ b/configs/controlcenterd_TRAILBLAZER_DEVELOP_defconfig
+@@ -19,6 +19,7 @@ CONFIG_CMD_EEPROM=y
+ # CONFIG_CMD_FLASH is not set
+ CONFIG_CMD_MMC=y
+ # CONFIG_CMD_SETEXPR is not set
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_TPM=y
+ # CONFIG_CMD_IRQ is not set
+diff --git a/configs/controlcenterd_TRAILBLAZER_defconfig b/configs/controlcenterd_TRAILBLAZER_defconfig
+index c589507849..1aa1d72943 100644
+--- a/configs/controlcenterd_TRAILBLAZER_defconfig
++++ b/configs/controlcenterd_TRAILBLAZER_defconfig
+@@ -19,6 +19,7 @@ CONFIG_CMD_EEPROM=y
+ # CONFIG_CMD_FLASH is not set
+ CONFIG_CMD_MMC=y
+ # CONFIG_CMD_SETEXPR is not set
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_TPM=y
+ # CONFIG_CMD_IRQ is not set
+diff --git a/configs/kmcoge4_defconfig b/configs/kmcoge4_defconfig
+index 4e5b3fc416..c8473ca08a 100644
+--- a/configs/kmcoge4_defconfig
++++ b/configs/kmcoge4_defconfig
+@@ -24,6 +24,7 @@ CONFIG_CMD_SF=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_JFFS2=y
+ CONFIG_MTDIDS_DEFAULT="nand0=fsl_elbc_nand"
+diff --git a/configs/kmlion1_defconfig b/configs/kmlion1_defconfig
+index 9e6c92b758..7ffeaf9019 100644
+--- a/configs/kmlion1_defconfig
++++ b/configs/kmlion1_defconfig
+@@ -24,6 +24,7 @@ CONFIG_CMD_SF=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_JFFS2=y
+ CONFIG_MTDIDS_DEFAULT="nand0=fsl_elbc_nand"
+diff --git a/configs/ls1043aqds_defconfig b/configs/ls1043aqds_defconfig
+index 3c7e6403a6..f6a8b74b07 100644
+--- a/configs/ls1043aqds_defconfig
++++ b/configs/ls1043aqds_defconfig
+@@ -22,6 +22,7 @@ CONFIG_CMD_NAND=y
+ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_CACHE=y
++CONFIG_MP=y
+ CONFIG_MTDPARTS_DEFAULT="mtdparts=60000000.nor:2m@0x100000(nor_bank0_uboot),40m@0x1100000(nor_bank0_fit),7m(nor_bank0_user),2m@0x4100000(nor_bank4_uboot),40m@0x5100000(nor_bank4_fit),-(nor_bank4_user);7e800000.flash:1m(nand_uboot),1m(nand_uboot_env),20m(nand_fit);spi0.0:1m(uboot),5m(kernel),1m(dtb),9m(file_system)"
+ CONFIG_OF_CONTROL=y
+ CONFIG_ENV_IS_IN_FLASH=y
+diff --git a/configs/ls1043aqds_lpuart_defconfig b/configs/ls1043aqds_lpuart_defconfig
+index 4e27e11150..b23ecf2ec9 100644
+--- a/configs/ls1043aqds_lpuart_defconfig
++++ b/configs/ls1043aqds_lpuart_defconfig
+@@ -23,6 +23,7 @@ CONFIG_CMD_NAND=y
+ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_CACHE=y
++CONFIG_MP=y
+ CONFIG_MTDPARTS_DEFAULT="mtdparts=60000000.nor:2m@0x100000(nor_bank0_uboot),40m@0x1100000(nor_bank0_fit),7m(nor_bank0_user),2m@0x4100000(nor_bank4_uboot),40m@0x5100000(nor_bank4_fit),-(nor_bank4_user);7e800000.flash:1m(nand_uboot),1m(nand_uboot_env),20m(nand_fit);spi0.0:1m(uboot),5m(kernel),1m(dtb),9m(file_system)"
+ CONFIG_OF_CONTROL=y
+ CONFIG_ENV_IS_IN_FLASH=y
+diff --git a/configs/ls1043aqds_nand_defconfig b/configs/ls1043aqds_nand_defconfig
+index 39d9eddc22..28131b22d6 100644
+--- a/configs/ls1043aqds_nand_defconfig
++++ b/configs/ls1043aqds_nand_defconfig
+@@ -36,6 +36,7 @@ CONFIG_CMD_NAND=y
+ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_CACHE=y
++CONFIG_MP=y
+ CONFIG_MTDPARTS_DEFAULT="mtdparts=60000000.nor:2m@0x100000(nor_bank0_uboot),40m@0x1100000(nor_bank0_fit),7m(nor_bank0_user),2m@0x4100000(nor_bank4_uboot),40m@0x5100000(nor_bank4_fit),-(nor_bank4_user);7e800000.flash:1m(nand_uboot),1m(nand_uboot_env),20m(nand_fit);spi0.0:1m(uboot),5m(kernel),1m(dtb),9m(file_system)"
+ # CONFIG_SPL_EFI_PARTITION is not set
+ CONFIG_OF_CONTROL=y
+diff --git a/configs/ls1043aqds_nor_ddr3_defconfig b/configs/ls1043aqds_nor_ddr3_defconfig
+index ae4c0febd0..800f88407a 100644
+--- a/configs/ls1043aqds_nor_ddr3_defconfig
++++ b/configs/ls1043aqds_nor_ddr3_defconfig
+@@ -22,6 +22,7 @@ CONFIG_CMD_NAND=y
+ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_CACHE=y
++CONFIG_MP=y
+ CONFIG_MTDPARTS_DEFAULT="mtdparts=60000000.nor:2m@0x100000(nor_bank0_uboot),40m@0x1100000(nor_bank0_fit),7m(nor_bank0_user),2m@0x4100000(nor_bank4_uboot),40m@0x5100000(nor_bank4_fit),-(nor_bank4_user);7e800000.flash:1m(nand_uboot),1m(nand_uboot_env),20m(nand_fit);spi0.0:1m(uboot),5m(kernel),1m(dtb),9m(file_system)"
+ CONFIG_OF_CONTROL=y
+ CONFIG_ENV_IS_IN_FLASH=y
+diff --git a/configs/ls1043aqds_qspi_defconfig b/configs/ls1043aqds_qspi_defconfig
+index da438d7e8e..fdbcf7c2d2 100644
+--- a/configs/ls1043aqds_qspi_defconfig
++++ b/configs/ls1043aqds_qspi_defconfig
+@@ -22,6 +22,7 @@ CONFIG_CMD_MMC=y
+ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_CACHE=y
++CONFIG_MP=y
+ CONFIG_MTDPARTS_DEFAULT="mtdparts=spi0.0:1m(uboot),5m(kernel),1m(dtb),9m(file_system)"
+ CONFIG_OF_CONTROL=y
+ CONFIG_ENV_IS_IN_SPI_FLASH=y
+diff --git a/configs/ls1043aqds_sdcard_ifc_defconfig b/configs/ls1043aqds_sdcard_ifc_defconfig
+index aa8b88bb96..b6ad63877c 100644
+--- a/configs/ls1043aqds_sdcard_ifc_defconfig
++++ b/configs/ls1043aqds_sdcard_ifc_defconfig
+@@ -36,6 +36,7 @@ CONFIG_CMD_NAND=y
+ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_CACHE=y
++CONFIG_MP=y
+ CONFIG_MTDPARTS_DEFAULT="mtdparts=60000000.nor:2m@0x100000(nor_bank0_uboot),40m@0x1100000(nor_bank0_fit),7m(nor_bank0_user),2m@0x4100000(nor_bank4_uboot),40m@0x5100000(nor_bank4_fit),-(nor_bank4_user);7e800000.flash:1m(nand_uboot),1m(nand_uboot_env),20m(nand_fit);spi0.0:1m(uboot),5m(kernel),1m(dtb),9m(file_system)"
+ # CONFIG_SPL_EFI_PARTITION is not set
+ CONFIG_OF_CONTROL=y
+diff --git a/configs/ls1043aqds_sdcard_qspi_defconfig b/configs/ls1043aqds_sdcard_qspi_defconfig
+index 9c87674ea2..054fc0d6ea 100644
+--- a/configs/ls1043aqds_sdcard_qspi_defconfig
++++ b/configs/ls1043aqds_sdcard_qspi_defconfig
+@@ -34,6 +34,7 @@ CONFIG_CMD_MMC=y
+ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_CACHE=y
++CONFIG_MP=y
+ CONFIG_MTDPARTS_DEFAULT="mtdparts=spi0.0:1m(uboot),5m(kernel),1m(dtb),9m(file_system)"
+ # CONFIG_SPL_EFI_PARTITION is not set
+ CONFIG_OF_CONTROL=y
+diff --git a/configs/ls1043ardb_SECURE_BOOT_defconfig b/configs/ls1043ardb_SECURE_BOOT_defconfig
+index 2de6ee6815..478fdc8c47 100644
+--- a/configs/ls1043ardb_SECURE_BOOT_defconfig
++++ b/configs/ls1043ardb_SECURE_BOOT_defconfig
+@@ -18,6 +18,7 @@ CONFIG_CMD_NAND=y
+ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_CACHE=y
++CONFIG_MP=y
+ CONFIG_MTDPARTS_DEFAULT="mtdparts=60000000.nor:2m@0x100000(nor_bank0_uboot),40m@0x1100000(nor_bank0_fit),7m(nor_bank0_user),2m@0x4100000(nor_bank4_uboot),40m@0x5100000(nor_bank4_fit),-(nor_bank4_user);7e800000.flash:1m(nand_uboot),1m(nand_uboot_env),20m(nand_fit);spi0.0:1m(uboot),5m(kernel),1m(dtb),9m(file_system)"
+ CONFIG_OF_CONTROL=y
+ CONFIG_DM=y
+diff --git a/configs/ls1043ardb_defconfig b/configs/ls1043ardb_defconfig
+index 0416a02bf1..c308882e4e 100644
+--- a/configs/ls1043ardb_defconfig
++++ b/configs/ls1043ardb_defconfig
+@@ -17,6 +17,7 @@ CONFIG_CMD_NAND=y
+ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_CACHE=y
++CONFIG_MP=y
+ CONFIG_MTDPARTS_DEFAULT="mtdparts=60000000.nor:2m@0x100000(nor_bank0_uboot),40m@0x1100000(nor_bank0_fit),7m(nor_bank0_user),2m@0x4100000(nor_bank4_uboot),40m@0x5100000(nor_bank4_fit),-(nor_bank4_user);7e800000.flash:1m(nand_uboot),1m(nand_uboot_env),20m(nand_fit);spi0.0:1m(uboot),5m(kernel),1m(dtb),9m(file_system)"
+ CONFIG_OF_CONTROL=y
+ CONFIG_ENV_IS_IN_FLASH=y
+diff --git a/configs/ls1043ardb_nand_SECURE_BOOT_defconfig b/configs/ls1043ardb_nand_SECURE_BOOT_defconfig
+index 142587ffc4..ec90e48233 100644
+--- a/configs/ls1043ardb_nand_SECURE_BOOT_defconfig
++++ b/configs/ls1043ardb_nand_SECURE_BOOT_defconfig
+@@ -34,6 +34,7 @@ CONFIG_CMD_NAND=y
+ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_CACHE=y
++CONFIG_MP=y
+ CONFIG_MTDPARTS_DEFAULT="mtdparts=60000000.nor:2m@0x100000(nor_bank0_uboot),40m@0x1100000(nor_bank0_fit),7m(nor_bank0_user),2m@0x4100000(nor_bank4_uboot),40m@0x5100000(nor_bank4_fit),-(nor_bank4_user);7e800000.flash:1m(nand_uboot),1m(nand_uboot_env),20m(nand_fit);spi0.0:1m(uboot),5m(kernel),1m(dtb),9m(file_system)"
+ # CONFIG_SPL_EFI_PARTITION is not set
+ CONFIG_OF_CONTROL=y
+diff --git a/configs/ls1043ardb_nand_defconfig b/configs/ls1043ardb_nand_defconfig
+index f94be24151..04d2934524 100644
+--- a/configs/ls1043ardb_nand_defconfig
++++ b/configs/ls1043ardb_nand_defconfig
+@@ -33,6 +33,7 @@ CONFIG_CMD_NAND=y
+ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_CACHE=y
++CONFIG_MP=y
+ CONFIG_MTDPARTS_DEFAULT="mtdparts=60000000.nor:2m@0x100000(nor_bank0_uboot),40m@0x1100000(nor_bank0_fit),7m(nor_bank0_user),2m@0x4100000(nor_bank4_uboot),40m@0x5100000(nor_bank4_fit),-(nor_bank4_user);7e800000.flash:1m(nand_uboot),1m(nand_uboot_env),20m(nand_fit);spi0.0:1m(uboot),5m(kernel),1m(dtb),9m(file_system)"
+ # CONFIG_SPL_EFI_PARTITION is not set
+ CONFIG_OF_CONTROL=y
+diff --git a/configs/ls1043ardb_sdcard_SECURE_BOOT_defconfig b/configs/ls1043ardb_sdcard_SECURE_BOOT_defconfig
+index f3e9d5a6f9..4bce1a9d17 100644
+--- a/configs/ls1043ardb_sdcard_SECURE_BOOT_defconfig
++++ b/configs/ls1043ardb_sdcard_SECURE_BOOT_defconfig
+@@ -33,6 +33,7 @@ CONFIG_CMD_NAND=y
+ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_CACHE=y
++CONFIG_MP=y
+ CONFIG_MTDPARTS_DEFAULT="mtdparts=60000000.nor:2m@0x100000(nor_bank0_uboot),40m@0x1100000(nor_bank0_fit),7m(nor_bank0_user),2m@0x4100000(nor_bank4_uboot),40m@0x5100000(nor_bank4_fit),-(nor_bank4_user);7e800000.flash:1m(nand_uboot),1m(nand_uboot_env),20m(nand_fit);spi0.0:1m(uboot),5m(kernel),1m(dtb),9m(file_system)"
+ # CONFIG_SPL_EFI_PARTITION is not set
+ CONFIG_OF_CONTROL=y
+diff --git a/configs/ls1043ardb_sdcard_defconfig b/configs/ls1043ardb_sdcard_defconfig
+index aa6342e574..64b5bb69aa 100644
+--- a/configs/ls1043ardb_sdcard_defconfig
++++ b/configs/ls1043ardb_sdcard_defconfig
+@@ -32,6 +32,7 @@ CONFIG_CMD_NAND=y
+ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_CACHE=y
++CONFIG_MP=y
+ CONFIG_MTDPARTS_DEFAULT="mtdparts=60000000.nor:2m@0x100000(nor_bank0_uboot),40m@0x1100000(nor_bank0_fit),7m(nor_bank0_user),2m@0x4100000(nor_bank4_uboot),40m@0x5100000(nor_bank4_fit),-(nor_bank4_user);7e800000.flash:1m(nand_uboot),1m(nand_uboot_env),20m(nand_fit);spi0.0:1m(uboot),5m(kernel),1m(dtb),9m(file_system)"
+ # CONFIG_SPL_EFI_PARTITION is not set
+ CONFIG_OF_CONTROL=y
+diff --git a/configs/ls1046aqds_SECURE_BOOT_defconfig b/configs/ls1046aqds_SECURE_BOOT_defconfig
+index 270188b400..9649919d5e 100644
+--- a/configs/ls1046aqds_SECURE_BOOT_defconfig
++++ b/configs/ls1046aqds_SECURE_BOOT_defconfig
+@@ -24,6 +24,7 @@ CONFIG_CMD_PCI=y
+ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_CACHE=y
++CONFIG_MP=y
+ CONFIG_MTDPARTS_DEFAULT="mtdparts=60000000.nor:2m@0x100000(nor_bank0_uboot),40m@0x1100000(nor_bank0_fit),7m(nor_bank0_user),2m@0x4100000(nor_bank4_uboot),40m@0x5100000(nor_bank4_fit),-(nor_bank4_user);7e800000.flash:4m(nand_uboot),36m(nand_kernel),472m(nand_free);spi0.0:2m(uboot),14m(free)"
+ CONFIG_OF_CONTROL=y
+ CONFIG_DM=y
+diff --git a/configs/ls1046aqds_defconfig b/configs/ls1046aqds_defconfig
+index 191d2f9cc2..6a3e4f839a 100644
+--- a/configs/ls1046aqds_defconfig
++++ b/configs/ls1046aqds_defconfig
+@@ -23,6 +23,7 @@ CONFIG_CMD_PCI=y
+ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_CACHE=y
++CONFIG_MP=y
+ CONFIG_MTDPARTS_DEFAULT="mtdparts=60000000.nor:2m@0x100000(nor_bank0_uboot),40m@0x1100000(nor_bank0_fit),7m(nor_bank0_user),2m@0x4100000(nor_bank4_uboot),40m@0x5100000(nor_bank4_fit),-(nor_bank4_user);7e800000.flash:4m(nand_uboot),36m(nand_kernel),472m(nand_free);spi0.0:2m(uboot),14m(free)"
+ CONFIG_OF_CONTROL=y
+ CONFIG_ENV_IS_IN_FLASH=y
+diff --git a/configs/ls1046aqds_lpuart_defconfig b/configs/ls1046aqds_lpuart_defconfig
+index 25e5526e84..cb4c5f0662 100644
+--- a/configs/ls1046aqds_lpuart_defconfig
++++ b/configs/ls1046aqds_lpuart_defconfig
+@@ -24,6 +24,7 @@ CONFIG_CMD_PCI=y
+ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_CACHE=y
++CONFIG_MP=y
+ CONFIG_MTDPARTS_DEFAULT="mtdparts=60000000.nor:2m@0x100000(nor_bank0_uboot),40m@0x1100000(nor_bank0_fit),7m(nor_bank0_user),2m@0x4100000(nor_bank4_uboot),40m@0x5100000(nor_bank4_fit),-(nor_bank4_user);7e800000.flash:4m(nand_uboot),36m(nand_kernel),472m(nand_free);spi0.0:2m(uboot),14m(free)"
+ CONFIG_OF_CONTROL=y
+ CONFIG_ENV_IS_IN_FLASH=y
+diff --git a/configs/ls1046aqds_nand_defconfig b/configs/ls1046aqds_nand_defconfig
+index c5bd6bfecf..c6b6986f95 100644
+--- a/configs/ls1046aqds_nand_defconfig
++++ b/configs/ls1046aqds_nand_defconfig
+@@ -30,6 +30,7 @@ CONFIG_CMD_PCI=y
+ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_CACHE=y
++CONFIG_MP=y
+ CONFIG_MTDPARTS_DEFAULT="mtdparts=60000000.nor:2m@0x100000(nor_bank0_uboot),40m@0x1100000(nor_bank0_fit),7m(nor_bank0_user),2m@0x4100000(nor_bank4_uboot),40m@0x5100000(nor_bank4_fit),-(nor_bank4_user);7e800000.flash:4m(nand_uboot),36m(nand_kernel),472m(nand_free);spi0.0:2m(uboot),14m(free)"
+ CONFIG_OF_CONTROL=y
+ CONFIG_ENV_IS_IN_NAND=y
+diff --git a/configs/ls1046aqds_qspi_defconfig b/configs/ls1046aqds_qspi_defconfig
+index 4f3290c205..f89c5546d5 100644
+--- a/configs/ls1046aqds_qspi_defconfig
++++ b/configs/ls1046aqds_qspi_defconfig
+@@ -22,6 +22,7 @@ CONFIG_CMD_PCI=y
+ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_CACHE=y
++CONFIG_MP=y
+ CONFIG_MTDPARTS_DEFAULT="mtdparts=1550000.quadspi:2m(uboot),14m(free)"
+ CONFIG_OF_CONTROL=y
+ CONFIG_ENV_IS_IN_SPI_FLASH=y
+diff --git a/configs/ls1046aqds_sdcard_ifc_defconfig b/configs/ls1046aqds_sdcard_ifc_defconfig
+index 405df66640..2cee1338b8 100644
+--- a/configs/ls1046aqds_sdcard_ifc_defconfig
++++ b/configs/ls1046aqds_sdcard_ifc_defconfig
+@@ -30,6 +30,7 @@ CONFIG_CMD_PCI=y
+ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_CACHE=y
++CONFIG_MP=y
+ CONFIG_MTDPARTS_DEFAULT="mtdparts=60000000.nor:2m@0x100000(nor_bank0_uboot),40m@0x1100000(nor_bank0_fit),7m(nor_bank0_user),2m@0x4100000(nor_bank4_uboot),40m@0x5100000(nor_bank4_fit),-(nor_bank4_user);7e800000.flash:4m(nand_uboot),36m(nand_kernel),472m(nand_free);spi0.0:2m(uboot),14m(free)"
+ # CONFIG_SPL_EFI_PARTITION is not set
+ CONFIG_OF_CONTROL=y
+diff --git a/configs/ls1046aqds_sdcard_qspi_defconfig b/configs/ls1046aqds_sdcard_qspi_defconfig
+index 45d80b9835..e3b2fccc55 100644
+--- a/configs/ls1046aqds_sdcard_qspi_defconfig
++++ b/configs/ls1046aqds_sdcard_qspi_defconfig
+@@ -28,6 +28,7 @@ CONFIG_CMD_PCI=y
+ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_CACHE=y
++CONFIG_MP=y
+ CONFIG_MTDPARTS_DEFAULT="mtdparts=1550000.quadspi:2m(uboot),14m(free)"
+ # CONFIG_SPL_EFI_PARTITION is not set
+ CONFIG_OF_CONTROL=y
+diff --git a/configs/ls1046ardb_emmc_defconfig b/configs/ls1046ardb_emmc_defconfig
+index 4f74dc549e..3dfc1647f6 100644
+--- a/configs/ls1046ardb_emmc_defconfig
++++ b/configs/ls1046ardb_emmc_defconfig
+@@ -25,6 +25,7 @@ CONFIG_CMD_PCI=y
+ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_CACHE=y
++CONFIG_MP=y
+ CONFIG_MTDPARTS_DEFAULT="mtdparts=1550000.quadspi:1m(rcw),15m(u-boot),48m(kernel.itb);7e800000.flash:16m(nand_uboot),48m(nand_kernel),448m(nand_free)"
+ # CONFIG_SPL_EFI_PARTITION is not set
+ CONFIG_OF_CONTROL=y
+diff --git a/configs/ls1046ardb_qspi_SECURE_BOOT_defconfig b/configs/ls1046ardb_qspi_SECURE_BOOT_defconfig
+index adc5db342b..7405c87437 100644
+--- a/configs/ls1046ardb_qspi_SECURE_BOOT_defconfig
++++ b/configs/ls1046ardb_qspi_SECURE_BOOT_defconfig
+@@ -20,6 +20,7 @@ CONFIG_CMD_PCI=y
+ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_CACHE=y
++CONFIG_MP=y
+ CONFIG_MTDPARTS_DEFAULT="mtdparts=1550000.quadspi:1m(rcw),15m(u-boot),48m(kernel.itb);7e800000.flash:16m(nand_uboot),48m(nand_kernel),448m(nand_free)"
+ CONFIG_OF_CONTROL=y
+ CONFIG_DM=y
+diff --git a/configs/ls1046ardb_qspi_defconfig b/configs/ls1046ardb_qspi_defconfig
+index c87fe9785d..feab749ab2 100644
+--- a/configs/ls1046ardb_qspi_defconfig
++++ b/configs/ls1046ardb_qspi_defconfig
+@@ -19,6 +19,7 @@ CONFIG_CMD_PCI=y
+ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_CACHE=y
++CONFIG_MP=y
+ CONFIG_MTDPARTS_DEFAULT="mtdparts=1550000.quadspi:1m(rcw),15m(u-boot),48m(kernel.itb);7e800000.flash:16m(nand_uboot),48m(nand_kernel),448m(nand_free)"
+ CONFIG_OF_CONTROL=y
+ CONFIG_ENV_IS_IN_SPI_FLASH=y
+diff --git a/configs/ls1046ardb_sdcard_SECURE_BOOT_defconfig b/configs/ls1046ardb_sdcard_SECURE_BOOT_defconfig
+index 04861b755a..67467df3ba 100644
+--- a/configs/ls1046ardb_sdcard_SECURE_BOOT_defconfig
++++ b/configs/ls1046ardb_sdcard_SECURE_BOOT_defconfig
+@@ -26,6 +26,7 @@ CONFIG_CMD_PCI=y
+ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_CACHE=y
++CONFIG_MP=y
+ CONFIG_MTDPARTS_DEFAULT="mtdparts=1550000.quadspi:1m(rcw),15m(u-boot),48m(kernel.itb);7e800000.flash:16m(nand_uboot),48m(nand_kernel),448m(nand_free)"
+ # CONFIG_SPL_EFI_PARTITION is not set
+ CONFIG_OF_CONTROL=y
+diff --git a/configs/ls1046ardb_sdcard_defconfig b/configs/ls1046ardb_sdcard_defconfig
+index 22814179e6..e8a0155fd2 100644
+--- a/configs/ls1046ardb_sdcard_defconfig
++++ b/configs/ls1046ardb_sdcard_defconfig
+@@ -24,6 +24,7 @@ CONFIG_CMD_PCI=y
+ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_CACHE=y
++CONFIG_MP=y
+ CONFIG_MTDPARTS_DEFAULT="mtdparts=1550000.quadspi:1m(rcw),15m(u-boot),48m(kernel.itb);7e800000.flash:16m(nand_uboot),48m(nand_kernel),448m(nand_free)"
+ # CONFIG_SPL_EFI_PARTITION is not set
+ CONFIG_OF_CONTROL=y
+diff --git a/configs/ls1088aqds_defconfig b/configs/ls1088aqds_defconfig
+index 05dc2ac446..8f9c491afb 100644
+--- a/configs/ls1088aqds_defconfig
++++ b/configs/ls1088aqds_defconfig
+@@ -21,6 +21,7 @@ CONFIG_CMD_USB=y
+ # CONFIG_CMD_SETEXPR is not set
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_OF_CONTROL=y
+ CONFIG_ENV_IS_IN_FLASH=y
+ CONFIG_NET_RANDOM_ETHADDR=y
+diff --git a/configs/ls1088aqds_qspi_SECURE_BOOT_defconfig b/configs/ls1088aqds_qspi_SECURE_BOOT_defconfig
+index 20376be2d1..6c2ed9af3d 100644
+--- a/configs/ls1088aqds_qspi_SECURE_BOOT_defconfig
++++ b/configs/ls1088aqds_qspi_SECURE_BOOT_defconfig
+@@ -23,6 +23,7 @@ CONFIG_CMD_MMC=y
+ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ # CONFIG_CMD_SETEXPR is not set
++CONFIG_MP=y
+ CONFIG_OF_CONTROL=y
+ CONFIG_NET_RANDOM_ETHADDR=y
+ CONFIG_DM=y
+diff --git a/configs/ls1088aqds_qspi_defconfig b/configs/ls1088aqds_qspi_defconfig
+index cf2b4e3aba..f066412393 100644
+--- a/configs/ls1088aqds_qspi_defconfig
++++ b/configs/ls1088aqds_qspi_defconfig
+@@ -22,6 +22,7 @@ CONFIG_CMD_MMC=y
+ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ # CONFIG_CMD_SETEXPR is not set
++CONFIG_MP=y
+ CONFIG_OF_CONTROL=y
+ CONFIG_ENV_IS_IN_SPI_FLASH=y
+ CONFIG_NET_RANDOM_ETHADDR=y
+diff --git a/configs/ls1088aqds_sdcard_ifc_defconfig b/configs/ls1088aqds_sdcard_ifc_defconfig
+index 39fa3d716f..a7efd682b2 100644
+--- a/configs/ls1088aqds_sdcard_ifc_defconfig
++++ b/configs/ls1088aqds_sdcard_ifc_defconfig
+@@ -31,6 +31,7 @@ CONFIG_CMD_USB=y
+ # CONFIG_CMD_SETEXPR is not set
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_OF_CONTROL=y
+ CONFIG_ENV_IS_IN_MMC=y
+ CONFIG_NET_RANDOM_ETHADDR=y
+diff --git a/configs/ls1088aqds_sdcard_qspi_defconfig b/configs/ls1088aqds_sdcard_qspi_defconfig
+index 8d854da3dd..e4724c7a0d 100644
+--- a/configs/ls1088aqds_sdcard_qspi_defconfig
++++ b/configs/ls1088aqds_sdcard_qspi_defconfig
+@@ -32,6 +32,7 @@ CONFIG_CMD_MMC=y
+ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ # CONFIG_CMD_SETEXPR is not set
++CONFIG_MP=y
+ CONFIG_OF_CONTROL=y
+ CONFIG_ENV_IS_IN_MMC=y
+ CONFIG_NET_RANDOM_ETHADDR=y
+diff --git a/configs/ls1088ardb_qspi_SECURE_BOOT_defconfig b/configs/ls1088ardb_qspi_SECURE_BOOT_defconfig
+index db95289733..3212704651 100644
+--- a/configs/ls1088ardb_qspi_SECURE_BOOT_defconfig
++++ b/configs/ls1088ardb_qspi_SECURE_BOOT_defconfig
+@@ -23,6 +23,7 @@ CONFIG_CMD_MMC=y
+ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ # CONFIG_CMD_SETEXPR is not set
++CONFIG_MP=y
+ CONFIG_OF_CONTROL=y
+ CONFIG_NET_RANDOM_ETHADDR=y
+ CONFIG_DM=y
+diff --git a/configs/ls1088ardb_qspi_defconfig b/configs/ls1088ardb_qspi_defconfig
+index fbb75df7a3..cb8a1075e3 100644
+--- a/configs/ls1088ardb_qspi_defconfig
++++ b/configs/ls1088ardb_qspi_defconfig
+@@ -22,6 +22,7 @@ CONFIG_CMD_MMC=y
+ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ # CONFIG_CMD_SETEXPR is not set
++CONFIG_MP=y
+ CONFIG_OF_CONTROL=y
+ CONFIG_ENV_IS_IN_SPI_FLASH=y
+ CONFIG_NET_RANDOM_ETHADDR=y
+diff --git a/configs/ls1088ardb_sdcard_qspi_SECURE_BOOT_defconfig b/configs/ls1088ardb_sdcard_qspi_SECURE_BOOT_defconfig
+index e4f0068d95..62db1c1e0d 100644
+--- a/configs/ls1088ardb_sdcard_qspi_SECURE_BOOT_defconfig
++++ b/configs/ls1088ardb_sdcard_qspi_SECURE_BOOT_defconfig
+@@ -35,6 +35,7 @@ CONFIG_CMD_MMC=y
+ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ # CONFIG_CMD_SETEXPR is not set
++CONFIG_MP=y
+ CONFIG_OF_CONTROL=y
+ CONFIG_NET_RANDOM_ETHADDR=y
+ CONFIG_DM=y
+diff --git a/configs/ls1088ardb_sdcard_qspi_defconfig b/configs/ls1088ardb_sdcard_qspi_defconfig
+index 26966aa7a9..8ae3faee95 100644
+--- a/configs/ls1088ardb_sdcard_qspi_defconfig
++++ b/configs/ls1088ardb_sdcard_qspi_defconfig
+@@ -32,6 +32,7 @@ CONFIG_CMD_MMC=y
+ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ # CONFIG_CMD_SETEXPR is not set
++CONFIG_MP=y
+ CONFIG_OF_CONTROL=y
+ CONFIG_ENV_IS_IN_MMC=y
+ CONFIG_NET_RANDOM_ETHADDR=y
+diff --git a/configs/ls2080a_emu_defconfig b/configs/ls2080a_emu_defconfig
+index 582486ca36..5d81d065d7 100644
+--- a/configs/ls2080a_emu_defconfig
++++ b/configs/ls2080a_emu_defconfig
+@@ -23,6 +23,7 @@ CONFIG_CMD_I2C=y
+ # CONFIG_CMD_NFS is not set
+ CONFIG_CMD_CACHE=y
+ # CONFIG_CMD_MISC is not set
++CONFIG_MP=y
+ # CONFIG_DOS_PARTITION is not set
+ # CONFIG_ISO_PARTITION is not set
+ # CONFIG_EFI_PARTITION is not set
+diff --git a/configs/ls2080a_simu_defconfig b/configs/ls2080a_simu_defconfig
+index 1cf5796d42..b6de767eeb 100644
+--- a/configs/ls2080a_simu_defconfig
++++ b/configs/ls2080a_simu_defconfig
+@@ -25,6 +25,7 @@ CONFIG_CMD_NAND=y
+ # CONFIG_CMD_NFS is not set
+ CONFIG_CMD_CACHE=y
+ # CONFIG_CMD_MISC is not set
++CONFIG_MP=y
+ # CONFIG_ISO_PARTITION is not set
+ # CONFIG_EFI_PARTITION is not set
+ CONFIG_NET_RANDOM_ETHADDR=y
+diff --git a/configs/ls2080aqds_SECURE_BOOT_defconfig b/configs/ls2080aqds_SECURE_BOOT_defconfig
+index 74ff331b5f..c879f805a4 100644
+--- a/configs/ls2080aqds_SECURE_BOOT_defconfig
++++ b/configs/ls2080aqds_SECURE_BOOT_defconfig
+@@ -25,6 +25,7 @@ CONFIG_CMD_USB=y
+ # CONFIG_CMD_SETEXPR is not set
+ CONFIG_CMD_CACHE=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_ISO_PARTITION is not set
+ CONFIG_OF_CONTROL=y
+ CONFIG_NET_RANDOM_ETHADDR=y
+diff --git a/configs/ls2080aqds_defconfig b/configs/ls2080aqds_defconfig
+index 26548be550..9ee003df90 100644
+--- a/configs/ls2080aqds_defconfig
++++ b/configs/ls2080aqds_defconfig
+@@ -24,6 +24,7 @@ CONFIG_CMD_USB=y
+ # CONFIG_CMD_SETEXPR is not set
+ CONFIG_CMD_CACHE=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_ISO_PARTITION is not set
+ CONFIG_OF_CONTROL=y
+ CONFIG_ENV_IS_IN_FLASH=y
+diff --git a/configs/ls2080aqds_nand_defconfig b/configs/ls2080aqds_nand_defconfig
+index cbb6133266..8084e97bd2 100644
+--- a/configs/ls2080aqds_nand_defconfig
++++ b/configs/ls2080aqds_nand_defconfig
+@@ -32,6 +32,7 @@ CONFIG_CMD_USB=y
+ # CONFIG_CMD_SETEXPR is not set
+ CONFIG_CMD_CACHE=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_ISO_PARTITION is not set
+ # CONFIG_SPL_EFI_PARTITION is not set
+ CONFIG_OF_CONTROL=y
+diff --git a/configs/ls2080aqds_qspi_defconfig b/configs/ls2080aqds_qspi_defconfig
+index b70879076b..53e55c80f9 100644
+--- a/configs/ls2080aqds_qspi_defconfig
++++ b/configs/ls2080aqds_qspi_defconfig
+@@ -24,6 +24,7 @@ CONFIG_CMD_USB=y
+ # CONFIG_CMD_SETEXPR is not set
+ CONFIG_CMD_CACHE=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_ISO_PARTITION is not set
+ CONFIG_OF_CONTROL=y
+ CONFIG_OF_EMBED=y
+diff --git a/configs/ls2080aqds_sdcard_defconfig b/configs/ls2080aqds_sdcard_defconfig
+index eef7718b11..efea22f31e 100644
+--- a/configs/ls2080aqds_sdcard_defconfig
++++ b/configs/ls2080aqds_sdcard_defconfig
+@@ -33,6 +33,7 @@ CONFIG_CMD_USB=y
+ # CONFIG_CMD_SETEXPR is not set
+ CONFIG_CMD_CACHE=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_OF_CONTROL=y
+ CONFIG_OF_EMBED=y
+ CONFIG_ENV_IS_IN_MMC=y
+diff --git a/configs/ls2080ardb_SECURE_BOOT_defconfig b/configs/ls2080ardb_SECURE_BOOT_defconfig
+index 89865a8475..906fa9a438 100644
+--- a/configs/ls2080ardb_SECURE_BOOT_defconfig
++++ b/configs/ls2080ardb_SECURE_BOOT_defconfig
+@@ -25,6 +25,7 @@ CONFIG_CMD_USB=y
+ # CONFIG_CMD_SETEXPR is not set
+ CONFIG_CMD_CACHE=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_OF_CONTROL=y
+ CONFIG_NET_RANDOM_ETHADDR=y
+ CONFIG_DM=y
+diff --git a/configs/ls2080ardb_defconfig b/configs/ls2080ardb_defconfig
+index 1bd16412f0..ea543833ce 100644
+--- a/configs/ls2080ardb_defconfig
++++ b/configs/ls2080ardb_defconfig
+@@ -24,6 +24,7 @@ CONFIG_CMD_USB=y
+ # CONFIG_CMD_SETEXPR is not set
+ CONFIG_CMD_CACHE=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_OF_CONTROL=y
+ CONFIG_ENV_IS_IN_FLASH=y
+ CONFIG_NET_RANDOM_ETHADDR=y
+diff --git a/configs/ls2080ardb_nand_defconfig b/configs/ls2080ardb_nand_defconfig
+index 590d0ba9dd..5f896ea72c 100644
+--- a/configs/ls2080ardb_nand_defconfig
++++ b/configs/ls2080ardb_nand_defconfig
+@@ -32,6 +32,7 @@ CONFIG_CMD_USB=y
+ # CONFIG_CMD_SETEXPR is not set
+ CONFIG_CMD_CACHE=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ CONFIG_OF_CONTROL=y
+ CONFIG_ENV_IS_IN_NAND=y
+ CONFIG_NET_RANDOM_ETHADDR=y
+diff --git a/configs/ls2081ardb_defconfig b/configs/ls2081ardb_defconfig
+index 001e844eb7..6a28120c76 100644
+--- a/configs/ls2081ardb_defconfig
++++ b/configs/ls2081ardb_defconfig
+@@ -22,6 +22,7 @@ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ # CONFIG_CMD_SETEXPR is not set
+ CONFIG_CMD_CACHE=y
++CONFIG_MP=y
+ CONFIG_OF_CONTROL=y
+ CONFIG_ENV_IS_IN_SPI_FLASH=y
+ CONFIG_NET_RANDOM_ETHADDR=y
+diff --git a/configs/ls2088ardb_qspi_SECURE_BOOT_defconfig b/configs/ls2088ardb_qspi_SECURE_BOOT_defconfig
+index 7c50834b00..24bcd573dc 100644
+--- a/configs/ls2088ardb_qspi_SECURE_BOOT_defconfig
++++ b/configs/ls2088ardb_qspi_SECURE_BOOT_defconfig
+@@ -20,6 +20,7 @@ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ # CONFIG_CMD_SETEXPR is not set
+ CONFIG_CMD_CACHE=y
++CONFIG_MP=y
+ CONFIG_OF_CONTROL=y
+ CONFIG_NET_RANDOM_ETHADDR=y
+ CONFIG_DM=y
+diff --git a/configs/ls2088ardb_qspi_defconfig b/configs/ls2088ardb_qspi_defconfig
+index d9ba7b7dc1..18a9634342 100644
+--- a/configs/ls2088ardb_qspi_defconfig
++++ b/configs/ls2088ardb_qspi_defconfig
+@@ -22,6 +22,7 @@ CONFIG_CMD_SF=y
+ CONFIG_CMD_USB=y
+ # CONFIG_CMD_SETEXPR is not set
+ CONFIG_CMD_CACHE=y
++CONFIG_MP=y
+ CONFIG_OF_CONTROL=y
+ CONFIG_ENV_IS_IN_SPI_FLASH=y
+ CONFIG_NET_RANDOM_ETHADDR=y
+diff --git a/configs/sbc8641d_defconfig b/configs/sbc8641d_defconfig
+index 9779596e17..9b1ce6ed49 100644
+--- a/configs/sbc8641d_defconfig
++++ b/configs/sbc8641d_defconfig
+@@ -13,6 +13,7 @@ CONFIG_CMD_I2C=y
+ CONFIG_CMD_PCI=y
+ # CONFIG_CMD_SETEXPR is not set
+ CONFIG_CMD_PING=y
++CONFIG_MP=y
+ CONFIG_DOS_PARTITION=y
+ # CONFIG_MMC is not set
+ CONFIG_MTD_NOR_FLASH=y
+diff --git a/configs/xilinx_zynqmp_zc1232_revA_defconfig b/configs/xilinx_zynqmp_zc1232_revA_defconfig
+index cb568c0cdb..b4a8004067 100644
+--- a/configs/xilinx_zynqmp_zc1232_revA_defconfig
++++ b/configs/xilinx_zynqmp_zc1232_revA_defconfig
+@@ -7,6 +7,7 @@ CONFIG_DEBUG_UART_BASE=0xff000000
+ CONFIG_DEBUG_UART_CLOCK=100000000
+ # CONFIG_SPL_FAT_SUPPORT is not set
+ # CONFIG_SPL_LIBDISK_SUPPORT is not set
++CONFIG_DEFINE_TCM_OCM_MMAP=y
+ CONFIG_DEFAULT_DEVICE_TREE="zynqmp-zc1232-revA"
+ CONFIG_DEBUG_UART=y
+ CONFIG_DISTRO_DEFAULTS=y
+@@ -26,6 +27,7 @@ CONFIG_CMD_FPGA_LOADBP=y
+ CONFIG_CMD_FPGA_LOADP=y
+ # CONFIG_CMD_NET is not set
+ CONFIG_CMD_TIME=y
++CONFIG_MP=y
+ CONFIG_CMD_TIMER=y
+ CONFIG_SPL_OF_CONTROL=y
+ CONFIG_OF_EMBED=y
+diff --git a/configs/xilinx_zynqmp_zc1254_revA_defconfig b/configs/xilinx_zynqmp_zc1254_revA_defconfig
+index c4cefdfffe..cd2214c26d 100644
+--- a/configs/xilinx_zynqmp_zc1254_revA_defconfig
++++ b/configs/xilinx_zynqmp_zc1254_revA_defconfig
+@@ -7,6 +7,7 @@ CONFIG_DEBUG_UART_BASE=0xff000000
+ CONFIG_DEBUG_UART_CLOCK=100000000
+ # CONFIG_SPL_FAT_SUPPORT is not set
+ # CONFIG_SPL_LIBDISK_SUPPORT is not set
++CONFIG_DEFINE_TCM_OCM_MMAP=y
+ CONFIG_DEFAULT_DEVICE_TREE="zynqmp-zc1254-revA"
+ CONFIG_DEBUG_UART=y
+ CONFIG_DISTRO_DEFAULTS=y
+@@ -26,6 +27,7 @@ CONFIG_CMD_FPGA_LOADBP=y
+ CONFIG_CMD_FPGA_LOADP=y
+ # CONFIG_CMD_NET is not set
+ CONFIG_CMD_TIME=y
++CONFIG_MP=y
+ CONFIG_CMD_TIMER=y
+ CONFIG_SPL_OF_CONTROL=y
+ CONFIG_OF_EMBED=y
+diff --git a/configs/xilinx_zynqmp_zc1275_revA_defconfig b/configs/xilinx_zynqmp_zc1275_revA_defconfig
+index eef90e05bf..a4543fbacf 100644
+--- a/configs/xilinx_zynqmp_zc1275_revA_defconfig
++++ b/configs/xilinx_zynqmp_zc1275_revA_defconfig
+@@ -7,6 +7,7 @@ CONFIG_DEBUG_UART_BASE=0xff000000
+ CONFIG_DEBUG_UART_CLOCK=100000000
+ # CONFIG_SPL_FAT_SUPPORT is not set
+ # CONFIG_SPL_LIBDISK_SUPPORT is not set
++CONFIG_DEFINE_TCM_OCM_MMAP=y
+ CONFIG_DEFAULT_DEVICE_TREE="zynqmp-zc1275-revA"
+ CONFIG_DEBUG_UART=y
+ CONFIG_DISTRO_DEFAULTS=y
+@@ -26,6 +27,7 @@ CONFIG_CMD_FPGA_LOADBP=y
+ CONFIG_CMD_FPGA_LOADP=y
+ # CONFIG_CMD_NET is not set
+ CONFIG_CMD_TIME=y
++CONFIG_MP=y
+ CONFIG_CMD_TIMER=y
+ CONFIG_SPL_OF_CONTROL=y
+ CONFIG_OF_EMBED=y
+diff --git a/configs/xilinx_zynqmp_zc1275_revB_defconfig b/configs/xilinx_zynqmp_zc1275_revB_defconfig
+index 876cd3cf2f..93be68f882 100644
+--- a/configs/xilinx_zynqmp_zc1275_revB_defconfig
++++ b/configs/xilinx_zynqmp_zc1275_revB_defconfig
+@@ -8,6 +8,7 @@ CONFIG_DEBUG_UART_BASE=0xff000000
+ CONFIG_DEBUG_UART_CLOCK=100000000
+ # CONFIG_SPL_FAT_SUPPORT is not set
+ # CONFIG_SPL_LIBDISK_SUPPORT is not set
++CONFIG_DEFINE_TCM_OCM_MMAP=y
+ CONFIG_DEFAULT_DEVICE_TREE="zynqmp-zc1275-revB"
+ CONFIG_DEBUG_UART=y
+ CONFIG_DISTRO_DEFAULTS=y
+@@ -28,6 +29,7 @@ CONFIG_CMD_FPGA_LOADP=y
+ CONFIG_CMD_MMC=y
+ # CONFIG_CMD_NET is not set
+ CONFIG_CMD_TIME=y
++CONFIG_MP=y
+ CONFIG_CMD_TIMER=y
+ CONFIG_SPL_OF_CONTROL=y
+ CONFIG_OF_EMBED=y
+diff --git a/configs/xilinx_zynqmp_zc1751_xm015_dc1_defconfig b/configs/xilinx_zynqmp_zc1751_xm015_dc1_defconfig
+index cf84e7612d..725873366f 100644
+--- a/configs/xilinx_zynqmp_zc1751_xm015_dc1_defconfig
++++ b/configs/xilinx_zynqmp_zc1751_xm015_dc1_defconfig
+@@ -7,6 +7,7 @@ CONFIG_SPL=y
+ CONFIG_DEBUG_UART_BASE=0xff000000
+ CONFIG_DEBUG_UART_CLOCK=100000000
+ CONFIG_ZYNQMP_USB=y
++CONFIG_DEFINE_TCM_OCM_MMAP=y
+ CONFIG_DEFAULT_DEVICE_TREE="zynqmp-zc1751-xm015-dc1"
+ CONFIG_DEBUG_UART=y
+ CONFIG_AHCI=y
+@@ -36,6 +37,7 @@ CONFIG_CMD_MMC=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_TFTPPUT=y
+ CONFIG_CMD_TIME=y
++CONFIG_MP=y
+ CONFIG_CMD_TIMER=y
+ CONFIG_CMD_EXT4_WRITE=y
+ CONFIG_SPL_OF_CONTROL=y
+diff --git a/configs/xilinx_zynqmp_zc1751_xm016_dc2_defconfig b/configs/xilinx_zynqmp_zc1751_xm016_dc2_defconfig
+index b614acd79e..f9246a1d92 100644
+--- a/configs/xilinx_zynqmp_zc1751_xm016_dc2_defconfig
++++ b/configs/xilinx_zynqmp_zc1751_xm016_dc2_defconfig
+@@ -8,6 +8,7 @@ CONFIG_DEBUG_UART_CLOCK=100000000
+ # CONFIG_SPL_FAT_SUPPORT is not set
+ # CONFIG_SPL_LIBDISK_SUPPORT is not set
+ CONFIG_ZYNQMP_USB=y
++CONFIG_DEFINE_TCM_OCM_MMAP=y
+ CONFIG_DEFAULT_DEVICE_TREE="zynqmp-zc1751-xm016-dc2"
+ CONFIG_DEBUG_UART=y
+ CONFIG_DISTRO_DEFAULTS=y
+@@ -36,6 +37,7 @@ CONFIG_CMD_NAND_LOCK_UNLOCK=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_TFTPPUT=y
+ CONFIG_CMD_TIME=y
++CONFIG_MP=y
+ CONFIG_CMD_TIMER=y
+ CONFIG_CMD_EXT4_WRITE=y
+ CONFIG_SPL_OF_CONTROL=y
+diff --git a/configs/xilinx_zynqmp_zc1751_xm017_dc3_defconfig b/configs/xilinx_zynqmp_zc1751_xm017_dc3_defconfig
+index aa7cf978ce..cd752f44c4 100644
+--- a/configs/xilinx_zynqmp_zc1751_xm017_dc3_defconfig
++++ b/configs/xilinx_zynqmp_zc1751_xm017_dc3_defconfig
+@@ -7,6 +7,7 @@ CONFIG_SPL=y
+ CONFIG_DEBUG_UART_BASE=0xff010000
+ CONFIG_DEBUG_UART_CLOCK=100000000
+ CONFIG_ZYNQMP_USB=y
++CONFIG_DEFINE_TCM_OCM_MMAP=y
+ CONFIG_DEFAULT_DEVICE_TREE="zynqmp-zc1751-xm017-dc3"
+ CONFIG_DEBUG_UART=y
+ CONFIG_AHCI=y
+@@ -33,6 +34,7 @@ CONFIG_CMD_MMC=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_TFTPPUT=y
+ CONFIG_CMD_TIME=y
++CONFIG_MP=y
+ CONFIG_CMD_TIMER=y
+ CONFIG_CMD_EXT4_WRITE=y
+ CONFIG_SPL_OF_CONTROL=y
+diff --git a/configs/xilinx_zynqmp_zc1751_xm018_dc4_defconfig b/configs/xilinx_zynqmp_zc1751_xm018_dc4_defconfig
+index 2819c02c6d..baa3f38deb 100644
+--- a/configs/xilinx_zynqmp_zc1751_xm018_dc4_defconfig
++++ b/configs/xilinx_zynqmp_zc1751_xm018_dc4_defconfig
+@@ -5,6 +5,7 @@ CONFIG_SYS_MALLOC_F_LEN=0x8000
+ CONFIG_SPL=y
+ CONFIG_DEBUG_UART_BASE=0xff000000
+ CONFIG_DEBUG_UART_CLOCK=100000000
++CONFIG_DEFINE_TCM_OCM_MMAP=y
+ CONFIG_DEFAULT_DEVICE_TREE="zynqmp-zc1751-xm018-dc4"
+ CONFIG_DEBUG_UART=y
+ CONFIG_DISTRO_DEFAULTS=y
+@@ -28,6 +29,7 @@ CONFIG_CMD_I2C=y
+ CONFIG_CMD_MMC=y
+ CONFIG_CMD_TFTPPUT=y
+ CONFIG_CMD_TIME=y
++CONFIG_MP=y
+ CONFIG_CMD_TIMER=y
+ CONFIG_CMD_EXT4_WRITE=y
+ CONFIG_SPL_OF_CONTROL=y
+diff --git a/configs/xilinx_zynqmp_zc1751_xm019_dc5_defconfig b/configs/xilinx_zynqmp_zc1751_xm019_dc5_defconfig
+index 11b72e3789..ca19e935f5 100644
+--- a/configs/xilinx_zynqmp_zc1751_xm019_dc5_defconfig
++++ b/configs/xilinx_zynqmp_zc1751_xm019_dc5_defconfig
+@@ -6,6 +6,7 @@ CONFIG_SYS_MALLOC_F_LEN=0x8000
+ CONFIG_SPL=y
+ CONFIG_DEBUG_UART_BASE=0xff000000
+ CONFIG_DEBUG_UART_CLOCK=100000000
++CONFIG_DEFINE_TCM_OCM_MMAP=y
+ CONFIG_DEFAULT_DEVICE_TREE="zynqmp-zc1751-xm019-dc5"
+ CONFIG_DEBUG_UART=y
+ CONFIG_DISTRO_DEFAULTS=y
+@@ -29,6 +30,7 @@ CONFIG_CMD_I2C=y
+ CONFIG_CMD_MMC=y
+ CONFIG_CMD_TFTPPUT=y
+ CONFIG_CMD_TIME=y
++CONFIG_MP=y
+ CONFIG_CMD_TIMER=y
+ CONFIG_CMD_EXT4_WRITE=y
+ CONFIG_SPL_OF_CONTROL=y
+diff --git a/configs/xilinx_zynqmp_zcu100_revC_defconfig b/configs/xilinx_zynqmp_zcu100_revC_defconfig
+index d73e56a168..7ddb8358a0 100644
+--- a/configs/xilinx_zynqmp_zcu100_revC_defconfig
++++ b/configs/xilinx_zynqmp_zcu100_revC_defconfig
+@@ -8,6 +8,7 @@ CONFIG_DEBUG_UART_BASE=0xff010000
+ CONFIG_DEBUG_UART_CLOCK=100000000
+ CONFIG_ZYNQ_SDHCI_MAX_FREQ=15000000
+ CONFIG_ZYNQMP_USB=y
++CONFIG_DEFINE_TCM_OCM_MMAP=y
+ CONFIG_DEFAULT_DEVICE_TREE="zynqmp-zcu100-revC"
+ CONFIG_DEBUG_UART=y
+ CONFIG_DISTRO_DEFAULTS=y
+@@ -35,6 +36,7 @@ CONFIG_CMD_SPI=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_TFTPPUT=y
+ CONFIG_CMD_TIME=y
++CONFIG_MP=y
+ CONFIG_CMD_TIMER=y
+ CONFIG_CMD_EXT4_WRITE=y
+ CONFIG_SPL_OF_CONTROL=y
+diff --git a/configs/xilinx_zynqmp_zcu102_rev1_0_defconfig b/configs/xilinx_zynqmp_zcu102_rev1_0_defconfig
+index 49a14d87a8..b89b87dd66 100644
+--- a/configs/xilinx_zynqmp_zcu102_rev1_0_defconfig
++++ b/configs/xilinx_zynqmp_zcu102_rev1_0_defconfig
+@@ -7,6 +7,7 @@ CONFIG_SPL=y
+ CONFIG_DEBUG_UART_BASE=0xff000000
+ CONFIG_DEBUG_UART_CLOCK=100000000
+ CONFIG_ZYNQMP_USB=y
++CONFIG_DEFINE_TCM_OCM_MMAP=y
+ CONFIG_DEFAULT_DEVICE_TREE="zynqmp-zcu102-rev1.0"
+ CONFIG_DEBUG_UART=y
+ CONFIG_AHCI=y
+@@ -39,6 +40,7 @@ CONFIG_CMD_SDRAM=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_TFTPPUT=y
+ CONFIG_CMD_TIME=y
++CONFIG_MP=y
+ CONFIG_CMD_TIMER=y
+ CONFIG_CMD_EXT4_WRITE=y
+ CONFIG_SPL_OF_CONTROL=y
+diff --git a/configs/xilinx_zynqmp_zcu102_revA_defconfig b/configs/xilinx_zynqmp_zcu102_revA_defconfig
+index 05dad41acb..e36b4a7f40 100644
+--- a/configs/xilinx_zynqmp_zcu102_revA_defconfig
++++ b/configs/xilinx_zynqmp_zcu102_revA_defconfig
+@@ -7,6 +7,7 @@ CONFIG_SPL=y
+ CONFIG_DEBUG_UART_BASE=0xff000000
+ CONFIG_DEBUG_UART_CLOCK=100000000
+ CONFIG_ZYNQMP_USB=y
++CONFIG_DEFINE_TCM_OCM_MMAP=y
+ CONFIG_DEFAULT_DEVICE_TREE="zynqmp-zcu102-revA"
+ CONFIG_DEBUG_UART=y
+ CONFIG_AHCI=y
+@@ -38,6 +39,7 @@ CONFIG_CMD_SDRAM=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_TFTPPUT=y
+ CONFIG_CMD_TIME=y
++CONFIG_MP=y
+ CONFIG_CMD_TIMER=y
+ CONFIG_CMD_EXT4_WRITE=y
+ CONFIG_SPL_OF_CONTROL=y
+diff --git a/configs/xilinx_zynqmp_zcu102_revB_defconfig b/configs/xilinx_zynqmp_zcu102_revB_defconfig
+index b3711b43e8..c941cb2edb 100644
+--- a/configs/xilinx_zynqmp_zcu102_revB_defconfig
++++ b/configs/xilinx_zynqmp_zcu102_revB_defconfig
+@@ -7,6 +7,7 @@ CONFIG_SPL=y
+ CONFIG_DEBUG_UART_BASE=0xff000000
+ CONFIG_DEBUG_UART_CLOCK=100000000
+ CONFIG_ZYNQMP_USB=y
++CONFIG_DEFINE_TCM_OCM_MMAP=y
+ CONFIG_DEFAULT_DEVICE_TREE="zynqmp-zcu102-revB"
+ CONFIG_DEBUG_UART=y
+ CONFIG_AHCI=y
+@@ -38,6 +39,7 @@ CONFIG_CMD_SDRAM=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_TFTPPUT=y
+ CONFIG_CMD_TIME=y
++CONFIG_MP=y
+ CONFIG_CMD_TIMER=y
+ CONFIG_CMD_EXT4_WRITE=y
+ CONFIG_SPL_OF_CONTROL=y
+diff --git a/configs/xilinx_zynqmp_zcu104_revA_defconfig b/configs/xilinx_zynqmp_zcu104_revA_defconfig
+index ab41023864..18d12a6dab 100644
+--- a/configs/xilinx_zynqmp_zcu104_revA_defconfig
++++ b/configs/xilinx_zynqmp_zcu104_revA_defconfig
+@@ -7,6 +7,7 @@ CONFIG_SPL=y
+ CONFIG_DEBUG_UART_BASE=0xff000000
+ CONFIG_DEBUG_UART_CLOCK=100000000
+ CONFIG_ZYNQMP_USB=y
++CONFIG_DEFINE_TCM_OCM_MMAP=y
+ CONFIG_DEFAULT_DEVICE_TREE="zynqmp-zcu104-revA"
+ CONFIG_DEBUG_UART=y
+ CONFIG_AHCI=y
+@@ -34,6 +35,7 @@ CONFIG_CMD_MMC=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_TFTPPUT=y
+ CONFIG_CMD_TIME=y
++CONFIG_MP=y
+ CONFIG_CMD_TIMER=y
+ CONFIG_CMD_EXT4_WRITE=y
+ CONFIG_SPL_OF_CONTROL=y
+diff --git a/configs/xilinx_zynqmp_zcu104_revC_defconfig b/configs/xilinx_zynqmp_zcu104_revC_defconfig
+index 77b93a7eff..ec8218c4e9 100644
+--- a/configs/xilinx_zynqmp_zcu104_revC_defconfig
++++ b/configs/xilinx_zynqmp_zcu104_revC_defconfig
+@@ -7,6 +7,7 @@ CONFIG_SPL=y
+ CONFIG_DEBUG_UART_BASE=0xff000000
+ CONFIG_DEBUG_UART_CLOCK=100000000
+ CONFIG_ZYNQMP_USB=y
++CONFIG_DEFINE_TCM_OCM_MMAP=y
+ CONFIG_DEFAULT_DEVICE_TREE="zynqmp-zcu104-revC"
+ CONFIG_DEBUG_UART=y
+ CONFIG_AHCI=y
+@@ -34,6 +35,7 @@ CONFIG_CMD_MMC=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_TFTPPUT=y
+ CONFIG_CMD_TIME=y
++CONFIG_MP=y
+ CONFIG_CMD_TIMER=y
+ CONFIG_CMD_EXT4_WRITE=y
+ CONFIG_SPL_OF_CONTROL=y
+diff --git a/configs/xilinx_zynqmp_zcu106_revA_defconfig b/configs/xilinx_zynqmp_zcu106_revA_defconfig
+index e644914070..15eeb95e40 100644
+--- a/configs/xilinx_zynqmp_zcu106_revA_defconfig
++++ b/configs/xilinx_zynqmp_zcu106_revA_defconfig
+@@ -7,6 +7,7 @@ CONFIG_SPL=y
+ CONFIG_DEBUG_UART_BASE=0xff000000
+ CONFIG_DEBUG_UART_CLOCK=100000000
+ CONFIG_ZYNQMP_USB=y
++CONFIG_DEFINE_TCM_OCM_MMAP=y
+ CONFIG_DEFAULT_DEVICE_TREE="zynqmp-zcu106-revA"
+ CONFIG_DEBUG_UART=y
+ CONFIG_AHCI=y
+@@ -35,6 +36,7 @@ CONFIG_CMD_MMC=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_TFTPPUT=y
+ CONFIG_CMD_TIME=y
++CONFIG_MP=y
+ CONFIG_CMD_TIMER=y
+ CONFIG_CMD_EXT4_WRITE=y
+ CONFIG_SPL_OF_CONTROL=y
+diff --git a/configs/xilinx_zynqmp_zcu111_revA_defconfig b/configs/xilinx_zynqmp_zcu111_revA_defconfig
+index c88ba522c7..55232e1ce3 100644
+--- a/configs/xilinx_zynqmp_zcu111_revA_defconfig
++++ b/configs/xilinx_zynqmp_zcu111_revA_defconfig
+@@ -7,6 +7,7 @@ CONFIG_SPL=y
+ CONFIG_DEBUG_UART_BASE=0xff000000
+ CONFIG_DEBUG_UART_CLOCK=100000000
+ CONFIG_ZYNQMP_USB=y
++CONFIG_DEFINE_TCM_OCM_MMAP=y
+ CONFIG_DEFAULT_DEVICE_TREE="zynqmp-zcu111-revA"
+ CONFIG_DEBUG_UART=y
+ CONFIG_AHCI=y
+@@ -33,6 +34,7 @@ CONFIG_CMD_MMC=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_TFTPPUT=y
+ CONFIG_CMD_TIME=y
++CONFIG_MP=y
+ CONFIG_CMD_TIMER=y
+ CONFIG_CMD_EXT4_WRITE=y
+ CONFIG_SPL_OF_CONTROL=y
+diff --git a/configs/xpedite537x_defconfig b/configs/xpedite537x_defconfig
+index 26a40067a3..29e4fada85 100644
+--- a/configs/xpedite537x_defconfig
++++ b/configs/xpedite537x_defconfig
+@@ -22,6 +22,7 @@ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_SNTP=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_JFFS2=y
+ # CONFIG_CMD_IRQ is not set
+diff --git a/configs/xpedite550x_defconfig b/configs/xpedite550x_defconfig
+index b721e840ff..89f9300723 100644
+--- a/configs/xpedite550x_defconfig
++++ b/configs/xpedite550x_defconfig
+@@ -21,6 +21,7 @@ CONFIG_CMD_MII=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_SNTP=y
+ CONFIG_CMD_DATE=y
++CONFIG_MP=y
+ # CONFIG_CMD_HASH is not set
+ CONFIG_CMD_JFFS2=y
+ # CONFIG_CMD_IRQ is not set
+diff --git a/include/configs/B4860QDS.h b/include/configs/B4860QDS.h
+index 1c67153ece..9aa082bf60 100644
+--- a/include/configs/B4860QDS.h
++++ b/include/configs/B4860QDS.h
+@@ -47,7 +47,6 @@
+ 
+ /* High Level Configuration Options */
+ #define CONFIG_SYS_BOOK3E_HV		/* Category E.HV supported */
+-#define CONFIG_MP			/* support multiple processors */
+ 
+ #ifndef CONFIG_RESET_VECTOR_ADDRESS
+ #define CONFIG_RESET_VECTOR_ADDRESS	0xeffffffc
+diff --git a/include/configs/BSC9132QDS.h b/include/configs/BSC9132QDS.h
+index 0756488d8e..a99bdc447e 100644
+--- a/include/configs/BSC9132QDS.h
++++ b/include/configs/BSC9132QDS.h
+@@ -96,8 +96,6 @@
+ #define CONFIG_DDR_CLK_FREQ	133000000
+ #endif
+ 
+-#define CONFIG_MP
+-
+ #define CONFIG_HWCONFIG
+ /*
+  * These can be toggled for performance analysis, otherwise use default.
+diff --git a/include/configs/MPC8572DS.h b/include/configs/MPC8572DS.h
+index c04037720e..a5b3db3151 100644
+--- a/include/configs/MPC8572DS.h
++++ b/include/configs/MPC8572DS.h
+@@ -21,7 +21,6 @@
+ #endif
+ 
+ /* High Level Configuration Options */
+-#define CONFIG_MP		1	/* support multiple processors */
+ 
+ #define CONFIG_PCIE1		1	/* PCIE controller 1 (slot 1) */
+ #define CONFIG_PCIE2		1	/* PCIE controller 2 (slot 2) */
+diff --git a/include/configs/MPC8641HPCN.h b/include/configs/MPC8641HPCN.h
+index dcc78b1e58..489f599086 100644
+--- a/include/configs/MPC8641HPCN.h
++++ b/include/configs/MPC8641HPCN.h
+@@ -16,7 +16,6 @@
+ #define __CONFIG_H
+ 
+ /* High Level Configuration Options */
+-#define CONFIG_MP		1	/* support multiple processors */
+ #define CONFIG_LINUX_RESET_VEC	0x100	/* Reset vector used by Linux */
+ #define CONFIG_ADDR_MAP		1	/* Use addr map */
+ 
+diff --git a/include/configs/P1022DS.h b/include/configs/P1022DS.h
+index 63a4d12560..582dd360cd 100644
+--- a/include/configs/P1022DS.h
++++ b/include/configs/P1022DS.h
+@@ -81,7 +81,6 @@
+ #endif
+ 
+ /* High Level Configuration Options */
+-#define CONFIG_MP			/* support multiple processors */
+ 
+ #ifndef CONFIG_RESET_VECTOR_ADDRESS
+ #define CONFIG_RESET_VECTOR_ADDRESS	0xeffffffc
+diff --git a/include/configs/P1023RDB.h b/include/configs/P1023RDB.h
+index 44e99ab368..b69d521252 100644
+--- a/include/configs/P1023RDB.h
++++ b/include/configs/P1023RDB.h
+@@ -18,7 +18,6 @@
+ #endif
+ 
+ /* High Level Configuration Options */
+-#define CONFIG_MP		/* support multiple processors */
+ 
+ #define CONFIG_PCI_INDIRECT_BRIDGE     /* indirect PCI bridge support */
+ #define CONFIG_PCIE1		/* PCIE controller 1 (slot 1) */
+diff --git a/include/configs/P2041RDB.h b/include/configs/P2041RDB.h
+index 730082ee3d..82ee37616e 100644
+--- a/include/configs/P2041RDB.h
++++ b/include/configs/P2041RDB.h
+@@ -27,7 +27,6 @@
+ 
+ /* High Level Configuration Options */
+ #define CONFIG_SYS_BOOK3E_HV		/* Category E.HV supported */
+-#define CONFIG_MP			/* support multiple processors */
+ 
+ #ifndef CONFIG_RESET_VECTOR_ADDRESS
+ #define CONFIG_RESET_VECTOR_ADDRESS	0xeffffffc
+diff --git a/include/configs/T102xQDS.h b/include/configs/T102xQDS.h
+index 042cc360ad..f0ba796b4e 100644
+--- a/include/configs/T102xQDS.h
++++ b/include/configs/T102xQDS.h
+@@ -12,7 +12,6 @@
+ 
+ /* High Level Configuration Options */
+ #define CONFIG_SYS_BOOK3E_HV		/* Category E.HV supported */
+-#define CONFIG_MP			/* support multiple processors */
+ #define CONFIG_ENABLE_36BIT_PHYS
+ 
+ #ifdef CONFIG_PHYS_64BIT
+diff --git a/include/configs/T102xRDB.h b/include/configs/T102xRDB.h
+index 07ba1cfaeb..3778095760 100644
+--- a/include/configs/T102xRDB.h
++++ b/include/configs/T102xRDB.h
+@@ -12,7 +12,6 @@
+ 
+ /* High Level Configuration Options */
+ #define CONFIG_SYS_BOOK3E_HV		/* Category E.HV supported */
+-#define CONFIG_MP			/* support multiple processors */
+ #define CONFIG_ENABLE_36BIT_PHYS
+ 
+ #ifdef CONFIG_PHYS_64BIT
+diff --git a/include/configs/T1040QDS.h b/include/configs/T1040QDS.h
+index df5b0f57e8..b73d914e55 100644
+--- a/include/configs/T1040QDS.h
++++ b/include/configs/T1040QDS.h
+@@ -36,7 +36,6 @@
+ 
+ /* High Level Configuration Options */
+ #define CONFIG_SYS_BOOK3E_HV		/* Category E.HV supported */
+-#define CONFIG_MP			/* support multiple processors */
+ 
+ /* support deep sleep */
+ #define CONFIG_DEEP_SLEEP
+diff --git a/include/configs/T104xRDB.h b/include/configs/T104xRDB.h
+index f34f5187ee..8dbadc0f38 100644
+--- a/include/configs/T104xRDB.h
++++ b/include/configs/T104xRDB.h
+@@ -143,7 +143,6 @@ $(SRCTREE)/board/freescale/t104xrdb/t1042d4_sd_rcw.cfg
+ 
+ /* High Level Configuration Options */
+ #define CONFIG_SYS_BOOK3E_HV		/* Category E.HV supported */
+-#define CONFIG_MP			/* support multiple processors */
+ 
+ /* support deep sleep */
+ #define CONFIG_DEEP_SLEEP
+diff --git a/include/configs/T208xQDS.h b/include/configs/T208xQDS.h
+index ba7980a22d..8f99fb808d 100644
+--- a/include/configs/T208xQDS.h
++++ b/include/configs/T208xQDS.h
+@@ -21,7 +21,6 @@
+ 
+ /* High Level Configuration Options */
+ #define CONFIG_SYS_BOOK3E_HV	/* Category E.HV supported */
+-#define CONFIG_MP		/* support multiple processors */
+ #define CONFIG_ENABLE_36BIT_PHYS
+ 
+ #ifdef CONFIG_PHYS_64BIT
+diff --git a/include/configs/T208xRDB.h b/include/configs/T208xRDB.h
+index 934e6e4741..e1fe4c759e 100644
+--- a/include/configs/T208xRDB.h
++++ b/include/configs/T208xRDB.h
+@@ -15,7 +15,6 @@
+ 
+ /* High Level Configuration Options */
+ #define CONFIG_SYS_BOOK3E_HV	/* Category E.HV supported */
+-#define CONFIG_MP		/* support multiple processors */
+ #define CONFIG_ENABLE_36BIT_PHYS
+ 
+ #ifdef CONFIG_PHYS_64BIT
+diff --git a/include/configs/T4240RDB.h b/include/configs/T4240RDB.h
+index 43ae30960b..2399a5a058 100644
+--- a/include/configs/T4240RDB.h
++++ b/include/configs/T4240RDB.h
+@@ -55,7 +55,6 @@
+ 
+ /* High Level Configuration Options */
+ #define CONFIG_SYS_BOOK3E_HV		/* Category E.HV supported */
+-#define CONFIG_MP			/* support multiple processors */
+ 
+ #ifndef CONFIG_RESET_VECTOR_ADDRESS
+ #define CONFIG_RESET_VECTOR_ADDRESS	0xeffffffc
+diff --git a/include/configs/UCP1020.h b/include/configs/UCP1020.h
+index f5c647870f..ab69c45bae 100644
+--- a/include/configs/UCP1020.h
++++ b/include/configs/UCP1020.h
+@@ -98,8 +98,6 @@
+ #define CONFIG_SYS_MONITOR_BASE	CONFIG_SYS_TEXT_BASE	/* start of monitor */
+ #endif
+ 
+-#define CONFIG_MP
+-
+ #define CONFIG_ENV_OVERWRITE
+ 
+ #define CONFIG_SYS_SATA_MAX_DEVICE	2
+diff --git a/include/configs/controlcenterd.h b/include/configs/controlcenterd.h
+index e5bf048398..bfd77c8299 100644
+--- a/include/configs/controlcenterd.h
++++ b/include/configs/controlcenterd.h
+@@ -36,7 +36,6 @@
+ 
+ /* High Level Configuration Options */
+ #define CONFIG_CONTROLCENTERD
+-#define CONFIG_MP			/* support multiple processors */
+ 
+ #define CONFIG_ENABLE_36BIT_PHYS
+ 
+diff --git a/include/configs/corenet_ds.h b/include/configs/corenet_ds.h
+index 7551273dea..366e8ea65b 100644
+--- a/include/configs/corenet_ds.h
++++ b/include/configs/corenet_ds.h
+@@ -45,7 +45,6 @@
+ 
+ /* High Level Configuration Options */
+ #define CONFIG_SYS_BOOK3E_HV		/* Category E.HV supported */
+-#define CONFIG_MP			/* support multiple processors */
+ 
+ #ifndef CONFIG_RESET_VECTOR_ADDRESS
+ #define CONFIG_RESET_VECTOR_ADDRESS	0xeffffffc
+diff --git a/include/configs/cyrus.h b/include/configs/cyrus.h
+index 0ce9a35f11..8284a97ae3 100644
+--- a/include/configs/cyrus.h
++++ b/include/configs/cyrus.h
+@@ -36,7 +36,6 @@
+ 
+ /* High Level Configuration Options */
+ #define CONFIG_SYS_BOOK3E_HV		/* Category E.HV supported */
+-#define CONFIG_MP			/* support multiple processors */
+ 
+ #define CONFIG_SYS_MMC_MAX_DEVICE     1
+ 
+diff --git a/include/configs/km/kmp204x-common.h b/include/configs/km/kmp204x-common.h
+index 3ae751eca5..73506c4e57 100644
+--- a/include/configs/km/kmp204x-common.h
++++ b/include/configs/km/kmp204x-common.h
+@@ -28,7 +28,6 @@
+ /* High Level Configuration Options */
+ #define CONFIG_SYS_BOOK3E_HV		/* Category E.HV supported */
+ #define CONFIG_FSL_CORENET		/* Freescale CoreNet platform */
+-#define CONFIG_MP			/* support multiple processors */
+ 
+ #define CONFIG_SYS_FSL_CPC		/* Corenet Platform Cache */
+ #define CONFIG_SYS_NUM_CPC		CONFIG_SYS_NUM_DDR_CTLRS
+diff --git a/include/configs/ls1043a_common.h b/include/configs/ls1043a_common.h
+index 1faed4e69a..73f23a63dd 100644
+--- a/include/configs/ls1043a_common.h
++++ b/include/configs/ls1043a_common.h
+@@ -27,7 +27,6 @@
+ 
+ #define CONFIG_REMAKE_ELF
+ #define CONFIG_FSL_LAYERSCAPE
+-#define CONFIG_MP
+ #define CONFIG_GICV2
+ 
+ #include <asm/arch/stream_id_lsch2.h>
+diff --git a/include/configs/ls1046a_common.h b/include/configs/ls1046a_common.h
+index c687c9ec64..65ce098f76 100644
+--- a/include/configs/ls1046a_common.h
++++ b/include/configs/ls1046a_common.h
+@@ -25,7 +25,6 @@
+ 
+ #define CONFIG_REMAKE_ELF
+ #define CONFIG_FSL_LAYERSCAPE
+-#define CONFIG_MP
+ #define CONFIG_GICV2
+ 
+ #include <asm/arch/config.h>
+diff --git a/include/configs/ls1088a_common.h b/include/configs/ls1088a_common.h
+index ea48421bbe..c70474cdfa 100644
+--- a/include/configs/ls1088a_common.h
++++ b/include/configs/ls1088a_common.h
+@@ -22,7 +22,6 @@
+ 
+ #define CONFIG_REMAKE_ELF
+ #define CONFIG_FSL_LAYERSCAPE
+-#define CONFIG_MP
+ 
+ #include <asm/arch/stream_id_lsch3.h>
+ #include <asm/arch/config.h>
+diff --git a/include/configs/ls2080a_common.h b/include/configs/ls2080a_common.h
+index f1717ce579..cc101fd01b 100644
+--- a/include/configs/ls2080a_common.h
++++ b/include/configs/ls2080a_common.h
+@@ -9,7 +9,6 @@
+ 
+ #define CONFIG_REMAKE_ELF
+ #define CONFIG_FSL_LAYERSCAPE
+-#define CONFIG_MP
+ #define CONFIG_GICV3
+ #define CONFIG_FSL_TZPC_BP147
+ 
+diff --git a/include/configs/p1_p2_rdb_pc.h b/include/configs/p1_p2_rdb_pc.h
+index 115ad7ff7a..6a6e000ca0 100644
+--- a/include/configs/p1_p2_rdb_pc.h
++++ b/include/configs/p1_p2_rdb_pc.h
+@@ -223,8 +223,6 @@
+ #endif
+ #endif
+ 
+-#define CONFIG_MP
+-
+ #define CONFIG_PCIE1	/* PCIE controller 1 (slot 1) */
+ #define CONFIG_PCIE2	/* PCIE controller 2 (slot 2) */
+ #define CONFIG_FSL_PCI_INIT	/* Use common FSL init code */
+diff --git a/include/configs/p1_twr.h b/include/configs/p1_twr.h
+index 32b5c62985..da5018cad2 100644
+--- a/include/configs/p1_twr.h
++++ b/include/configs/p1_twr.h
+@@ -32,8 +32,6 @@
+ #define CONFIG_SYS_MONITOR_BASE	CONFIG_SYS_TEXT_BASE	/* start of monitor */
+ #endif
+ 
+-#define CONFIG_MP
+-
+ #define CONFIG_PCIE1	/* PCIE controller 1 (slot 1) */
+ #define CONFIG_PCIE2	/* PCIE controller 2 (slot 2) */
+ #define CONFIG_FSL_PCI_INIT	/* Use common FSL init code */
+diff --git a/include/configs/sbc8641d.h b/include/configs/sbc8641d.h
+index 1b2e416181..a620f0d2b4 100644
+--- a/include/configs/sbc8641d.h
++++ b/include/configs/sbc8641d.h
+@@ -20,7 +20,6 @@
+ #define __CONFIG_H
+ 
+ /* High Level Configuration Options */
+-#define CONFIG_MP		1	/* support multiple processors */
+ #define CONFIG_LINUX_RESET_VEC  0x100   /* Reset vector used by Linux */
+ 
+ #ifdef RUN_DIAG
+diff --git a/include/configs/t4qds.h b/include/configs/t4qds.h
+index 3e1a07f6ef..92f8111bd4 100644
+--- a/include/configs/t4qds.h
++++ b/include/configs/t4qds.h
+@@ -11,7 +11,6 @@
+ 
+ /* High Level Configuration Options */
+ #define CONFIG_SYS_BOOK3E_HV		/* Category E.HV supported */
+-#define CONFIG_MP			/* support multiple processors */
+ 
+ #ifndef CONFIG_RESET_VECTOR_ADDRESS
+ #define CONFIG_RESET_VECTOR_ADDRESS	0xeffffffc
+diff --git a/include/configs/xilinx_zynqmp.h b/include/configs/xilinx_zynqmp.h
+index e9086f9906..ebc6c6f3e0 100644
+--- a/include/configs/xilinx_zynqmp.h
++++ b/include/configs/xilinx_zynqmp.h
+@@ -46,9 +46,6 @@
+ #define CONFIG_SYS_BAUDRATE_TABLE \
+ 	{ 4800, 9600, 19200, 38400, 57600, 115200 }
+ 
+-/* Command line configuration */
+-#define CONFIG_MP
+-
+ /* BOOTP options */
+ #define CONFIG_BOOTP_BOOTFILESIZE
+ #define CONFIG_BOOTP_MAY_FAIL
+diff --git a/include/configs/xilinx_zynqmp_mini.h b/include/configs/xilinx_zynqmp_mini.h
+index 96ff6c9f02..118779a0a0 100644
+--- a/include/configs/xilinx_zynqmp_mini.h
++++ b/include/configs/xilinx_zynqmp_mini.h
+@@ -21,7 +21,6 @@
+ #undef CONFIG_ZLIB
+ #undef CONFIG_GZIP
+ #undef CONFIG_CMD_ENV
+-#undef CONFIG_MP
+ #undef CONFIG_SYS_INIT_SP_ADDR
+ #undef CONFIG_MTD_DEVICE
+ #undef CONFIG_BOOTM_NETBSD
+diff --git a/include/configs/xpedite537x.h b/include/configs/xpedite537x.h
+index bafb8c5445..cc95bbaf3b 100644
+--- a/include/configs/xpedite537x.h
++++ b/include/configs/xpedite537x.h
+@@ -27,7 +27,6 @@
+ /*
+  * Multicore config
+  */
+-#define CONFIG_MP
+ #define CONFIG_BPTR_VIRT_ADDR	0xee000000	/* virt boot page address */
+ #define CONFIG_MPC8xxx_DISABLE_BPTR		/* Don't leave BPTR enabled */
+ 
+diff --git a/include/configs/xpedite550x.h b/include/configs/xpedite550x.h
+index 372df752fd..7e8daa8cfb 100644
+--- a/include/configs/xpedite550x.h
++++ b/include/configs/xpedite550x.h
+@@ -27,7 +27,6 @@
+ /*
+  * Multicore config
+  */
+-#define CONFIG_MP
+ #define CONFIG_BPTR_VIRT_ADDR	0xee000000	/* virt boot page address */
+ #define CONFIG_MPC8xxx_DISABLE_BPTR		/* Don't leave BPTR enabled */
+ 
+diff --git a/scripts/config_whitelist.txt b/scripts/config_whitelist.txt
+index 97e27ae7fe..2f6c9557a5 100644
+--- a/scripts/config_whitelist.txt
++++ b/scripts/config_whitelist.txt
+@@ -1273,7 +1273,6 @@ CONFIG_MMC_SPI_SPEED
+ CONFIG_MMC_SUNXI_SLOT
+ CONFIG_MMU
+ CONFIG_MONITOR_IS_IN_RAM
+-CONFIG_MP
+ CONFIG_MPC8308
+ CONFIG_MPC8309
+ CONFIG_MPC830x
+-- 
+2.18.0
+

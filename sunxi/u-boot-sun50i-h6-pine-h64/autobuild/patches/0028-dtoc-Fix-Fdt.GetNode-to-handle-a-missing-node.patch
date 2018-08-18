@@ -1,0 +1,48 @@
+From b9066ffc136afd2e46e8d033c4edce98f5557afc Mon Sep 17 00:00:00 2001
+From: Simon Glass <sjg@chromium.org>
+Date: Fri, 6 Jul 2018 10:27:30 -0600
+Subject: [PATCH 028/144] dtoc: Fix Fdt.GetNode() to handle a missing node
+
+At present the algortihm is not correct since it will return the root node
+if the requested node is not found and there are no slashes in the
+requested node name. Fix this and add a test.
+
+Signed-off-by: Simon Glass <sjg@chromium.org>
+---
+ tools/dtoc/fdt.py      | 5 ++++-
+ tools/dtoc/test_fdt.py | 3 +++
+ 2 files changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/tools/dtoc/fdt.py b/tools/dtoc/fdt.py
+index 274c142e7a..c1d04d48e8 100644
+--- a/tools/dtoc/fdt.py
++++ b/tools/dtoc/fdt.py
+@@ -318,7 +318,10 @@ class Fdt:
+             Node object, or None if not found
+         """
+         node = self._root
+-        for part in path.split('/')[1:]:
++        parts = path.split('/')
++        if len(parts) < 2:
++            return None
++        for part in parts[1:]:
+             node = node._FindNode(part)
+             if not node:
+                 return None
+diff --git a/tools/dtoc/test_fdt.py b/tools/dtoc/test_fdt.py
+index e57298dbe7..9fef8ed549 100755
+--- a/tools/dtoc/test_fdt.py
++++ b/tools/dtoc/test_fdt.py
+@@ -205,6 +205,9 @@ class TestProp(unittest.TestCase):
+         self.node = self.dtb.GetNode('/spl-test')
+         self.fdt = self.dtb.GetFdtObj()
+ 
++    def testMissingNode(self):
++        self.assertEqual(None, self.dtb.GetNode('missing'))
++
+     def testPhandle(self):
+         dtb = fdt.FdtScan('tools/dtoc/dtoc_test_phandle.dts')
+         node = dtb.GetNode('/phandle-source')
+-- 
+2.18.0
+

@@ -1,0 +1,34 @@
+From 0a4357c4c2b29d787d70775dd6ad64b50e23082a Mon Sep 17 00:00:00 2001
+From: Simon Glass <sjg@chromium.org>
+Date: Fri, 6 Jul 2018 10:27:39 -0600
+Subject: [PATCH 037/144] binman: Complete documentation of stages
+
+At present one of the stages is badly numbered and not described. Fix
+this.
+
+Signed-off-by: Simon Glass <sjg@chromium.org>
+---
+ tools/binman/README | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/tools/binman/README b/tools/binman/README
+index f74e39242f..3cfcf84d92 100644
+--- a/tools/binman/README
++++ b/tools/binman/README
+@@ -495,9 +495,11 @@ contents of an entry in some way. For example, it would be possible to create
+ an entry containing a hash of the contents of some other entries. At this
+ stage the position and size of entries should not be adjusted.
+ 
+-6. WriteEntryInfo()
++7. WriteSymbols() - write the value of symbols into the U-Boot SPL binary.
++See 'Access to binman entry positions at run time' below for a description of
++what happens in this stage.
+ 
+-7. BuildImage() - builds the image and writes it to a file. This is the final
++8. BuildImage() - builds the image and writes it to a file. This is the final
+ step.
+ 
+ 
+-- 
+2.18.0
+

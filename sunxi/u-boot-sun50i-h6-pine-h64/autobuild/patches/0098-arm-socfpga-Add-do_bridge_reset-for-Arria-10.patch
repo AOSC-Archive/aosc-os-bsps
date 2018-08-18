@@ -1,0 +1,43 @@
+From 2e1de5bd97e6330c01c38efe788672bafda86f81 Mon Sep 17 00:00:00 2001
+From: Ley Foon Tan <ley.foon.tan@intel.com>
+Date: Fri, 1 Jun 2018 16:13:19 +0800
+Subject: [PATCH 098/144] arm: socfpga: Add do_bridge_reset for Arria 10
+
+Add do_bridge_reset() function for Arria 10, it is required by misc.c.
+
+arch/arm/mach-socfpga/built-in.o: In function `do_bridge':
+arch/arm/mach-socfpga/misc.c:221: undefined reference to `do_bridge_reset'
+make[1]: *** [u-boot] Error 1
+
+Signed-off-by: Ley Foon Tan <ley.foon.tan@intel.com>
+---
+ arch/arm/mach-socfpga/misc_arria10.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/arch/arm/mach-socfpga/misc_arria10.c b/arch/arm/mach-socfpga/misc_arria10.c
+index 47a9d50ef1..a75cbc4ce6 100644
+--- a/arch/arm/mach-socfpga/misc_arria10.c
++++ b/arch/arm/mach-socfpga/misc_arria10.c
+@@ -14,6 +14,7 @@
+ #include <asm/arch/misc.h>
+ #include <asm/arch/pinmux.h>
+ #include <asm/arch/reset_manager.h>
++#include <asm/arch/reset_manager_arria10.h>
+ #include <asm/arch/sdram_arria10.h>
+ #include <asm/arch/system_manager.h>
+ #include <asm/arch/nic301.h>
+@@ -262,3 +263,11 @@ int arch_misc_init(void)
+ 	return socfpga_eth_reset();
+ }
+ #endif
++
++void do_bridge_reset(int enable)
++{
++	if (enable)
++		socfpga_reset_deassert_bridges_handoff();
++	else
++		socfpga_bridges_reset();
++}
+-- 
+2.18.0
+

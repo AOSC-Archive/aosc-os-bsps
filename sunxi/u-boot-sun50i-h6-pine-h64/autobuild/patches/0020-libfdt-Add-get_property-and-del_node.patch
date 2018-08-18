@@ -1,0 +1,66 @@
+From c640ed0ce6b029f8cda62f2674a671a9c198410a Mon Sep 17 00:00:00 2001
+From: Simon Glass <sjg@chromium.org>
+Date: Fri, 6 Jul 2018 10:27:22 -0600
+Subject: [PATCH 020/144] libfdt: Add get_property() and del_node()
+
+Add support for these functions in the Python binding. This patch stands
+in for a pending upstream change.
+
+Signed-off-by: Simon Glass <sjg@chromium.org>
+---
+ scripts/dtc/pylibfdt/libfdt.i_shipped | 32 +++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
+
+diff --git a/scripts/dtc/pylibfdt/libfdt.i_shipped b/scripts/dtc/pylibfdt/libfdt.i_shipped
+index 5b38e63b26..e180ee9308 100644
+--- a/scripts/dtc/pylibfdt/libfdt.i_shipped
++++ b/scripts/dtc/pylibfdt/libfdt.i_shipped
+@@ -398,6 +398,27 @@ class Fdt:
+             return pdata
+         return Property(pdata[0], pdata[1])
+ 
++    def get_property(self, nodeoffset, prop_name, quiet=()):
++        """Obtains a property by name
++
++        Args:
++            nodeoffset: Offset to the node to check
++            prop_name: Name of property to get
++            quiet: Errors to ignore (empty to raise on all errors)
++
++        Returns:
++            Property object, or None if not found
++
++        Raises:
++            FdtException on error (e.g. invalid prop_offset or device
++            tree format)
++        """
++        pdata = check_err_null(
++                fdt_get_property(self._fdt, nodeoffset, prop_name), quiet)
++        if isinstance(pdata, (int)):
++            return pdata
++        return Property(pdata[0], pdata[1])
++
+     @staticmethod
+     def create_empty_tree(size, quiet=()):
+         """Create an empty device tree ready for use
+@@ -632,6 +653,17 @@ class Fdt:
+         """
+         return check_err(fdt_node_offset_by_phandle(self._fdt, phandle), quiet)
+ 
++    def del_node(self, nodeoffset):
++        """Delete a node
++
++        Args:
++            nodeoffset: Node offset containing property to delete
++
++        Raises:
++            FdtError if the node does not exist, or another error occurs
++        """
++        return check_err(fdt_del_node(self._fdt, nodeoffset))
++
+ 
+ class Property(bytearray):
+     """Holds a device tree property name and value.
+-- 
+2.18.0
+

@@ -1,0 +1,409 @@
+From a684729a15e41c757d443d064109d94357d6e76a Mon Sep 17 00:00:00 2001
+From: Ley Foon Tan <ley.foon.tan@intel.com>
+Date: Thu, 24 May 2018 00:17:32 +0800
+Subject: [PATCH 097/144] arm: socfpga: stratix10: Enable Stratix10 SoC build
+
+Add build support for Stratix SoC
+
+Signed-off-by: Chin Liang See <chin.liang.see@intel.com>
+Signed-off-by: Ley Foon Tan <ley.foon.tan@intel.com>
+
+Conflicts:
+
+	arch/arm/Kconfig
+	arch/arm/mach-socfpga/Kconfig
+---
+ arch/arm/Kconfig                          |  10 +-
+ arch/arm/mach-socfpga/Kconfig             |  13 ++
+ configs/socfpga_stratix10_defconfig       |  56 ++++++
+ include/configs/socfpga_stratix10_socdk.h | 222 ++++++++++++++++++++++
+ 4 files changed, 297 insertions(+), 4 deletions(-)
+ create mode 100644 configs/socfpga_stratix10_defconfig
+ create mode 100644 include/configs/socfpga_stratix10_socdk.h
+
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 4fbb424037..5b3746c80b 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -759,10 +759,10 @@ config ARCH_SOCFPGA
+ 	bool "Altera SOCFPGA family"
+ 	select ARCH_EARLY_INIT_R
+ 	select ARCH_MISC_INIT
+-	select CPU_V7A
++	select CPU_V7A if TARGET_SOCFPGA_GEN5 || TARGET_SOCFPGA_ARRIA10
+ 	select DM
+ 	select DM_SERIAL
+-	select ENABLE_ARM_SOC_BOOT0_HOOK
++	select ENABLE_ARM_SOC_BOOT0_HOOK if TARGET_SOCFPGA_GEN5 || TARGET_SOCFPGA_ARRIA10
+ 	select OF_CONTROL
+ 	select SPL_LIBCOMMON_SUPPORT
+ 	select SPL_LIBDISK_SUPPORT
+@@ -772,20 +772,22 @@ config ARCH_SOCFPGA
+ 	select SPL_OF_CONTROL
+ 	select SPL_SERIAL_SUPPORT
+ 	select SPL_DM_SERIAL
++	select SPL_RESET_SUPPORT
+ 	select SPL_SPI_FLASH_SUPPORT if SPL_SPI_SUPPORT
+ 	select SPL_SPI_SUPPORT if DM_SPI
+ 	select SPL_WATCHDOG_SUPPORT
+ 	select SUPPORT_SPL
+ 	select SYS_MMCSD_RAW_MODE_U_BOOT_USE_PARTITION_TYPE
+ 	select SYS_NS16550
+-	select SYS_THUMB_BUILD
++	select SYS_THUMB_BUILD if TARGET_SOCFPGA_GEN5 || TARGET_SOCFPGA_ARRIA10
++	select ARM64 if TARGET_SOCFPGA_STRATIX10
+ 	imply CMD_MTDPARTS
+ 	imply CRC32_VERIFY
+ 	imply DM_SPI
+ 	imply DM_SPI_FLASH
+ 	imply FAT_WRITE
+-	imply HW_WATCHDOG
+ 	imply SYS_MMCSD_RAW_MODE_U_BOOT_USE_PARTITION
++	select SPL_SEPARATE_BSS if TARGET_SOCFPGA_STRATIX10
+ 
+ config ARCH_SUNXI
+ 	bool "Support sunxi (Allwinner) SoCs"
+diff --git a/arch/arm/mach-socfpga/Kconfig b/arch/arm/mach-socfpga/Kconfig
+index 30b475254c..91ea742f3b 100644
+--- a/arch/arm/mach-socfpga/Kconfig
++++ b/arch/arm/mach-socfpga/Kconfig
+@@ -20,6 +20,12 @@ config TARGET_SOCFPGA_GEN5
+ 	bool
+ 	select ALTERA_SDRAM
+ 
++config TARGET_SOCFPGA_STRATIX10
++	bool
++	select ARMV8_MULTIENTRY
++	select ARMV8_SPIN_TABLE
++	select ARMV8_SET_SMPEN
++
+ choice
+ 	prompt "Altera SOCFPGA board select"
+ 	optional
+@@ -57,6 +63,10 @@ config TARGET_SOCFPGA_SR1500
+ 	bool "SR1500 (Cyclone V)"
+ 	select TARGET_SOCFPGA_CYCLONE5
+ 
++config TARGET_SOCFPGA_STRATIX10_SOCDK
++	bool "Intel SOCFPGA SoCDK (Stratix 10)"
++	select TARGET_SOCFPGA_STRATIX10
++
+ config TARGET_SOCFPGA_TERASIC_DE0_NANO
+ 	bool "Terasic DE0-Nano-Atlas (Cyclone V)"
+ 	select TARGET_SOCFPGA_CYCLONE5
+@@ -87,12 +97,14 @@ config SYS_BOARD
+ 	default "sockit" if TARGET_SOCFPGA_TERASIC_SOCKIT
+ 	default "socrates" if TARGET_SOCFPGA_EBV_SOCRATES
+ 	default "sr1500" if TARGET_SOCFPGA_SR1500
++	default "stratix10-socdk" if TARGET_SOCFPGA_STRATIX10_SOCDK
+ 	default "vining_fpga" if TARGET_SOCFPGA_SAMTEC_VINING_FPGA
+ 
+ config SYS_VENDOR
+ 	default "altera" if TARGET_SOCFPGA_ARRIA5_SOCDK
+ 	default "altera" if TARGET_SOCFPGA_ARRIA10_SOCDK
+ 	default "altera" if TARGET_SOCFPGA_CYCLONE5_SOCDK
++	default "altera" if TARGET_SOCFPGA_STRATIX10_SOCDK
+ 	default "devboards" if TARGET_SOCFPGA_DEVBOARDS_DBM_SOC1
+ 	default "ebv" if TARGET_SOCFPGA_EBV_SOCRATES
+ 	default "samtec" if TARGET_SOCFPGA_SAMTEC_VINING_FPGA
+@@ -116,6 +128,7 @@ config SYS_CONFIG_NAME
+ 	default "socfpga_sockit" if TARGET_SOCFPGA_TERASIC_SOCKIT
+ 	default "socfpga_socrates" if TARGET_SOCFPGA_EBV_SOCRATES
+ 	default "socfpga_sr1500" if TARGET_SOCFPGA_SR1500
++	default "socfpga_stratix10_socdk" if TARGET_SOCFPGA_STRATIX10_SOCDK
+ 	default "socfpga_vining_fpga" if TARGET_SOCFPGA_SAMTEC_VINING_FPGA
+ 
+ endif
+diff --git a/configs/socfpga_stratix10_defconfig b/configs/socfpga_stratix10_defconfig
+new file mode 100644
+index 0000000000..b13518aca1
+--- /dev/null
++++ b/configs/socfpga_stratix10_defconfig
+@@ -0,0 +1,56 @@
++CONFIG_ARM=y
++CONFIG_ARCH_SOCFPGA=y
++CONFIG_SYS_TEXT_BASE=0x1000
++CONFIG_SYS_MALLOC_F_LEN=0x2000
++CONFIG_TARGET_SOCFPGA_STRATIX10_SOCDK=y
++CONFIG_SPL=y
++CONFIG_IDENT_STRING="socfpga_stratix10"
++CONFIG_SPL_FAT_SUPPORT=y
++CONFIG_DEFAULT_DEVICE_TREE="socfpga_stratix10_socdk"
++CONFIG_BOOTDELAY=5
++CONFIG_SPL_SPI_LOAD=y
++CONFIG_HUSH_PARSER=y
++CONFIG_SYS_PROMPT="SOCFPGA_STRATIX10 # "
++CONFIG_CMD_MEMTEST=y
++# CONFIG_CMD_FLASH is not set
++CONFIG_CMD_GPIO=y
++CONFIG_CMD_I2C=y
++CONFIG_CMD_MMC=y
++CONFIG_CMD_SF=y
++CONFIG_CMD_SPI=y
++CONFIG_CMD_USB=y
++CONFIG_CMD_DHCP=y
++CONFIG_CMD_MII=y
++CONFIG_CMD_PING=y
++CONFIG_CMD_CACHE=y
++CONFIG_CMD_EXT4=y
++CONFIG_CMD_FAT=y
++CONFIG_CMD_FS_GENERIC=y
++CONFIG_ENV_IS_IN_MMC=y
++CONFIG_NET_RANDOM_ETHADDR=y
++CONFIG_SPL_DM=y
++CONFIG_SPL_DM_SEQ_ALIAS=y
++CONFIG_DM_GPIO=y
++CONFIG_DWAPB_GPIO=y
++CONFIG_DM_I2C=y
++CONFIG_SYS_I2C_DW=y
++CONFIG_DM_MMC=y
++CONFIG_MMC_DW=y
++CONFIG_SPI_FLASH=y
++CONFIG_SPI_FLASH_BAR=y
++CONFIG_SPI_FLASH_SPANSION=y
++CONFIG_SPI_FLASH_STMICRO=y
++# CONFIG_SPI_FLASH_USE_4K_SECTORS is not set
++CONFIG_PHY_MICREL=y
++CONFIG_PHY_MICREL_KSZ90X1=y
++CONFIG_DM_ETH=y
++CONFIG_ETH_DESIGNWARE=y
++CONFIG_DM_RESET=y
++CONFIG_SPI=y
++CONFIG_CADENCE_QSPI=y
++CONFIG_DESIGNWARE_SPI=y
++CONFIG_USB=y
++CONFIG_DM_USB=y
++CONFIG_USB_DWC2=y
++CONFIG_USB_STORAGE=y
++CONFIG_USE_TINY_PRINTF=y
+diff --git a/include/configs/socfpga_stratix10_socdk.h b/include/configs/socfpga_stratix10_socdk.h
+new file mode 100644
+index 0000000000..e63fe29078
+--- /dev/null
++++ b/include/configs/socfpga_stratix10_socdk.h
+@@ -0,0 +1,222 @@
++/* SPDX-License-Identifier: GPL-2.0
++ *
++ * Copyright (C) 2017-2018 Intel Corporation <www.intel.com>
++ *
++ */
++
++#ifndef __CONFIG_SOCFGPA_STRATIX10_H__
++#define __CONFIG_SOCFGPA_STRATIX10_H__
++
++#include <asm/arch/base_addr_s10.h>
++#include <asm/arch/handoff_s10.h>
++
++/*
++ * U-Boot general configurations
++ */
++#define CONFIG_SYS_MONITOR_BASE		CONFIG_SYS_TEXT_BASE
++#define CONFIG_LOADADDR			0x2000000
++#define CONFIG_SYS_LOAD_ADDR		CONFIG_LOADADDR
++#define CONFIG_REMAKE_ELF
++/* sysmgr.boot_scratch_cold4 & 5 (64bit) will be used for PSCI_CPU_ON call */
++#define CPU_RELEASE_ADDR		0xFFD12210
++#define CONFIG_SYS_CACHELINE_SIZE	64
++#define CONFIG_SYS_MEM_RESERVE_SECURE	0	/* using OCRAM, not DDR */
++
++/*
++ * U-Boot console configurations
++ */
++#define CONFIG_SYS_MAXARGS		64
++#define CONFIG_SYS_CBSIZE		2048
++#define CONFIG_SYS_PBSIZE		(CONFIG_SYS_CBSIZE + \
++					sizeof(CONFIG_SYS_PROMPT) + 16)
++#define CONFIG_SYS_BARGSIZE		CONFIG_SYS_CBSIZE
++
++/* Extend size of kernel image for uncompression */
++#define CONFIG_SYS_BOOTM_LEN		(32 * 1024 * 1024)
++
++/*
++ * U-Boot run time memory configurations
++ */
++#define CONFIG_SYS_INIT_RAM_ADDR	0xFFE00000
++#define CONFIG_SYS_INIT_RAM_SIZE	0x40000
++#define CONFIG_SYS_INIT_SP_ADDR		(CONFIG_SYS_INIT_RAM_ADDR  \
++					+ CONFIG_SYS_INIT_RAM_SIZE \
++					- S10_HANDOFF_SIZE)
++#define CONFIG_SYS_INIT_SP_OFFSET	(CONFIG_SYS_INIT_SP_ADDR)
++#define CONFIG_SYS_MALLOC_LEN		(5 * 1024 * 1024)
++
++/*
++ * U-Boot environment configurations
++ */
++#define CONFIG_ENV_SIZE			0x1000
++#define CONFIG_SYS_MMC_ENV_DEV		0	/* device 0 */
++#define CONFIG_ENV_OFFSET		512	/* just after the MBR */
++
++/*
++ * QSPI support
++ */
++ #ifdef CONFIG_CADENCE_QSPI
++/* Enable it if you want to use dual-stacked mode */
++#undef CONFIG_SF_DUAL_FLASH
++/*#define CONFIG_QSPI_RBF_ADDR		0x720000*/
++
++/* Flash device info */
++#define CONFIG_SF_DEFAULT_SPEED		(50000000)
++#define CONFIG_SF_DEFAULT_MODE		(SPI_MODE_3 | SPI_RX_QUAD)
++#define CONFIG_SF_DEFAULT_BUS		0
++#define CONFIG_SF_DEFAULT_CS		0
++
++/*#define CONFIG_ENV_IS_IN_SPI_FLASH*/
++#ifdef CONFIG_ENV_IS_IN_SPI_FLASH
++#undef CONFIG_ENV_OFFSET
++#undef CONFIG_ENV_SIZE
++#define CONFIG_ENV_OFFSET		0x710000
++#define CONFIG_ENV_SIZE			(4 * 1024)
++#define CONFIG_ENV_SECT_SIZE		(4 * 1024)
++#endif /* CONFIG_ENV_IS_IN_SPI_FLASH */
++
++#ifndef CONFIG_SPL_BUILD
++#define CONFIG_MTD_DEVICE
++#define CONFIG_MTD_PARTITIONS
++#define MTDIDS_DEFAULT			"nor0=ff705000.spi.0"
++#endif /* CONFIG_SPL_BUILD */
++
++#ifndef __ASSEMBLY__
++unsigned int cm_get_qspi_controller_clk_hz(void);
++#define CONFIG_CQSPI_REF_CLK		cm_get_qspi_controller_clk_hz()
++#endif
++
++#endif /* CONFIG_CADENCE_QSPI */
++
++/*
++ * Boot arguments passed to the boot command. The value of
++ * CONFIG_BOOTARGS goes into the environment value "bootargs".
++ * Do note the value will override also the chosen node in FDT blob.
++ */
++#define CONFIG_BOOTARGS "earlycon"
++#define CONFIG_BOOTCOMMAND "run fatscript; run mmcload;run linux_qspi_enable;" \
++			   "run mmcboot"
++
++#define CONFIG_EXTRA_ENV_SETTINGS \
++	"loadaddr=" __stringify(CONFIG_SYS_LOAD_ADDR) "\0" \
++	"bootfile=Image\0" \
++	"fdt_addr=8000000\0" \
++	"fdtimage=socfpga_stratix10_socdk.dtb\0" \
++	"mmcroot=/dev/mmcblk0p2\0" \
++	"mmcboot=setenv bootargs " CONFIG_BOOTARGS \
++		" root=${mmcroot} rw rootwait;" \
++		"booti ${loadaddr} - ${fdt_addr}\0" \
++	"mmcload=mmc rescan;" \
++		"load mmc 0:1 ${loadaddr} ${bootfile};" \
++		"load mmc 0:1 ${fdt_addr} ${fdtimage}\0" \
++	"linux_qspi_enable=if sf probe; then " \
++		"echo Enabling QSPI at Linux DTB...;" \
++		"fdt addr ${fdt_addr}; fdt resize;" \
++		"fdt set /soc/spi@ff8d2000 status okay;" \
++		"fdt set /soc/clkmgr/clocks/qspi_clk clock-frequency " \
++		" ${qspi_clock}; fi; \0" \
++	"scriptaddr=0x02100000\0" \
++	"scriptfile=u-boot.scr\0" \
++	"fatscript=if fatload mmc 0:1 ${scriptaddr} ${scriptfile};" \
++		   "then source ${scriptaddr}; fi\0"
++
++/*
++ * Generic Interrupt Controller Definitions
++ */
++#define CONFIG_GICV2
++
++/*
++ * External memory configurations
++ */
++#define PHYS_SDRAM_1			0x0
++#define PHYS_SDRAM_1_SIZE		(1 * 1024 * 1024 * 1024)
++#define CONFIG_SYS_SDRAM_BASE		0
++#define CONFIG_NR_DRAM_BANKS		1
++#define CONFIG_SYS_MEMTEST_START	0
++#define CONFIG_SYS_MEMTEST_END		PHYS_SDRAM_1_SIZE - 0x200000
++
++/*
++ * SDRAM controller
++ */
++#define CONFIG_ALTERA_SDRAM
++
++/*
++ * Serial / UART configurations
++ */
++#define CONFIG_SYS_NS16550_CLK		100000000
++#define CONFIG_SYS_NS16550_MEM32
++
++/*
++ * Timer & watchdog configurations
++ */
++#define COUNTER_FREQUENCY		400000000
++
++/*
++ * SDMMC configurations
++ */
++#ifdef CONFIG_CMD_MMC
++#define CONFIG_BOUNCE_BUFFER
++#define CONFIG_SYS_MMC_MAX_BLK_COUNT	256
++#endif
++/*
++ * Flash configurations
++ */
++#define CONFIG_SYS_MAX_FLASH_BANKS	1
++
++/* Ethernet on SoC (EMAC) */
++#if defined(CONFIG_CMD_NET)
++#define CONFIG_DW_ALTDESCRIPTOR
++#define CONFIG_MII
++#endif /* CONFIG_CMD_NET */
++
++/*
++ * L4 Watchdog
++ */
++#ifdef CONFIG_SPL_BUILD
++#define CONFIG_HW_WATCHDOG
++#define CONFIG_DESIGNWARE_WATCHDOG
++#define CONFIG_DW_WDT_BASE		SOCFPGA_L4WD0_ADDRESS
++#ifndef __ASSEMBLY__
++unsigned int cm_get_l4_sys_free_clk_hz(void);
++#define CONFIG_DW_WDT_CLOCK_KHZ		(cm_get_l4_sys_free_clk_hz() / 1000)
++#endif
++#define CONFIG_WATCHDOG_TIMEOUT_MSECS	3000
++#endif
++
++/*
++ * SPL memory layout
++ *
++ * On chip RAM
++ * 0xFFE0_0000 ...... Start of OCRAM
++ * SPL code, rwdata
++ * empty space
++ * 0xFFEx_xxxx ...... Top of stack (grows down)
++ * 0xFFEy_yyyy ...... Global Data
++ * 0xFFEz_zzzz ...... Malloc prior relocation (size CONFIG_SYS_MALLOC_F_LEN)
++ * 0xFFE3_F000 ...... Hardware handdoff blob (size 4KB)
++ * 0xFFE3_FFFF ...... End of OCRAM
++ *
++ * SDRAM
++ * 0x0000_0000 ...... Start of SDRAM_1
++ * unused / empty space for image loading
++ * Size 64MB   ...... MALLOC (size CONFIG_SYS_SPL_MALLOC_SIZE)
++ * Size 1MB    ...... BSS (size CONFIG_SPL_BSS_MAX_SIZE)
++ * 0x8000_0000 ...... End of SDRAM_1 (assume 2GB)
++ *
++ */
++#define CONFIG_SPL_TEXT_BASE		CONFIG_SYS_INIT_RAM_ADDR
++#define CONFIG_SPL_MAX_SIZE		CONFIG_SYS_INIT_RAM_SIZE
++#define CONFIG_SPL_STACK		CONFIG_SYS_INIT_SP_ADDR
++#define CONFIG_SPL_BSS_MAX_SIZE		0x100000	/* 1 MB */
++#define CONFIG_SPL_BSS_START_ADDR	(PHYS_SDRAM_1 + PHYS_SDRAM_1_SIZE \
++					- CONFIG_SPL_BSS_MAX_SIZE)
++#define CONFIG_SYS_SPL_MALLOC_SIZE	(CONFIG_SYS_MALLOC_LEN)
++#define CONFIG_SYS_SPL_MALLOC_START	(CONFIG_SPL_BSS_START_ADDR \
++					- CONFIG_SYS_SPL_MALLOC_SIZE)
++#define CONFIG_SYS_SPI_U_BOOT_OFFS      0x3C00000
++
++/* SPL SDMMC boot support */
++#define CONFIG_SYS_MMCSD_FS_BOOT_PARTITION	1
++#define CONFIG_SPL_FS_LOAD_PAYLOAD_NAME		"u-boot-dtb.img"
++
++#endif	/* __CONFIG_H */
+-- 
+2.18.0
+

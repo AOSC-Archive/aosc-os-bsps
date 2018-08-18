@@ -1,0 +1,47 @@
+From 36c8c54fb612a99130350038a1ca28c687ce154d Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Thu, 8 Feb 2018 00:34:17 +0800
+Subject: [PATCH 135/144] sunxi: add UART0 setup for H6
+
+The UART0 on H6 is available at PH bank (and PF bank, but the PF one is
+muxed with SD card).
+
+Add pinmux configuration.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+Reviewed-by: Andre Przywara <andre.przywara@arm.com>
+---
+ arch/arm/include/asm/arch-sunxi/gpio.h | 1 +
+ arch/arm/mach-sunxi/board.c            | 4 ++++
+ 2 files changed, 5 insertions(+)
+
+diff --git a/arch/arm/include/asm/arch-sunxi/gpio.h b/arch/arm/include/asm/arch-sunxi/gpio.h
+index e4fe54d8b8..6a5eafc3d3 100644
+--- a/arch/arm/include/asm/arch-sunxi/gpio.h
++++ b/arch/arm/include/asm/arch-sunxi/gpio.h
+@@ -198,6 +198,7 @@ enum sunxi_gpio_number {
+ #define SUN6I_GPH_TWI2		2
+ #define SUN6I_GPH_UART0		2
+ #define SUN9I_GPH_UART0		2
++#define SUN50I_H6_GPH_UART0	2
+ 
+ #define SUNXI_GPI_SDC3		2
+ #define SUN7I_GPI_TWI3		3
+diff --git a/arch/arm/mach-sunxi/board.c b/arch/arm/mach-sunxi/board.c
+index 40a6436ca5..d22a84ea6b 100644
+--- a/arch/arm/mach-sunxi/board.c
++++ b/arch/arm/mach-sunxi/board.c
+@@ -107,6 +107,10 @@ static int gpio_init(void)
+ 	sunxi_gpio_set_cfgpin(SUNXI_GPB(8), SUN50I_GPB_UART0);
+ 	sunxi_gpio_set_cfgpin(SUNXI_GPB(9), SUN50I_GPB_UART0);
+ 	sunxi_gpio_set_pull(SUNXI_GPB(9), SUNXI_GPIO_PULL_UP);
++#elif CONFIG_CONS_INDEX == 1 && defined(CONFIG_MACH_SUN50I_H6)
++	sunxi_gpio_set_cfgpin(SUNXI_GPH(0), SUN50I_H6_GPH_UART0);
++	sunxi_gpio_set_cfgpin(SUNXI_GPH(1), SUN50I_H6_GPH_UART0);
++	sunxi_gpio_set_pull(SUNXI_GPH(1), SUNXI_GPIO_PULL_UP);
+ #elif CONFIG_CONS_INDEX == 1 && defined(CONFIG_MACH_SUN8I_A83T)
+ 	sunxi_gpio_set_cfgpin(SUNXI_GPB(9), SUN8I_A83T_GPB_UART0);
+ 	sunxi_gpio_set_cfgpin(SUNXI_GPB(10), SUN8I_A83T_GPB_UART0);
+-- 
+2.18.0
+

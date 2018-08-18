@@ -1,0 +1,65 @@
+From 078e558699844bfe5b21a5c9730bba84144ef642 Mon Sep 17 00:00:00 2001
+From: Marek Vasut <marex@denx.de>
+Date: Thu, 31 May 2018 17:59:07 +0200
+Subject: [PATCH 062/144] fit: Verify all configuration signatures
+
+Rather than verifying configuration signature of the configuration node
+containing the kernel image types, verify all configuration nodes, even
+those that do not contain kernel images. This is useful when the nodes
+contain ie. standalone OSes or U-Boot.
+
+Signed-off-by: Marek Vasut <marex@denx.de>
+Cc: Tom Rini <trini@konsulko.com>
+Cc: Pantelis Antoniou <pantelis.antoniou@konsulko.com>
+Cc: Simon Glass <sjg@chromium.org>
+Reviewed-by: Simon Glass <sjg@chromium.org>
+---
+ common/image-fit.c | 26 ++++++++++++++------------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
+
+diff --git a/common/image-fit.c b/common/image-fit.c
+index 728187ac88..8d39a243f8 100644
+--- a/common/image-fit.c
++++ b/common/image-fit.c
+@@ -1838,24 +1838,26 @@ int fit_image_load(bootm_headers_t *images, ulong addr,
+ 					BOOTSTAGE_SUB_NO_UNIT_NAME);
+ 			return -ENOENT;
+ 		}
++
+ 		fit_base_uname_config = fdt_get_name(fit, cfg_noffset, NULL);
+ 		printf("   Using '%s' configuration\n", fit_base_uname_config);
+-		if (image_type == IH_TYPE_KERNEL) {
+-			/* Remember (and possibly verify) this config */
++		/* Remember this config */
++		if (image_type == IH_TYPE_KERNEL)
+ 			images->fit_uname_cfg = fit_base_uname_config;
+-			if (IMAGE_ENABLE_VERIFY && images->verify) {
+-				puts("   Verifying Hash Integrity ... ");
+-				if (fit_config_verify(fit, cfg_noffset)) {
+-					puts("Bad Data Hash\n");
+-					bootstage_error(bootstage_id +
+-						BOOTSTAGE_SUB_HASH);
+-					return -EACCES;
+-				}
+-				puts("OK\n");
++
++		if (IMAGE_ENABLE_VERIFY && images->verify) {
++			puts("   Verifying Hash Integrity ... ");
++			if (fit_config_verify(fit, cfg_noffset)) {
++				puts("Bad Data Hash\n");
++				bootstage_error(bootstage_id +
++					BOOTSTAGE_SUB_HASH);
++				return -EACCES;
+ 			}
+-			bootstage_mark(BOOTSTAGE_ID_FIT_CONFIG);
++			puts("OK\n");
+ 		}
+ 
++		bootstage_mark(BOOTSTAGE_ID_FIT_CONFIG);
++
+ 		noffset = fit_conf_get_prop_node(fit, cfg_noffset,
+ 						 prop_name);
+ 		fit_uname = fit_get_name(fit, noffset, NULL);
+-- 
+2.18.0
+

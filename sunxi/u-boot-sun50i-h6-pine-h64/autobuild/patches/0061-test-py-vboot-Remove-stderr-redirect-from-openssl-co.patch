@@ -1,0 +1,45 @@
+From 8793631ec13ee9e6c7189a7bdca38dde7b4390a8 Mon Sep 17 00:00:00 2001
+From: Paul Burton <paul.burton@imgtec.com>
+Date: Thu, 14 Sep 2017 14:34:50 -0700
+Subject: [PATCH 061/144] test/py: vboot: Remove stderr redirect from openssl
+ command
+
+The openssl command specified in test_with_algo() ultimately ends up
+being run by RunAndLog::run(), which uses it to construct a Popen object
+with the default shell=False. The stderr redirect in the command is
+therefore simply passed to openssl as an argument. With at least openssl
+1.1.0f this causes openssl, and therefore test_vboot, to fail with:
+
+  genpkey: Use -help for summary.
+  Exit code: 1
+
+Any stderr output ought to be captured & stored in the RunAndLog
+object's output field and returned from run() via run_and_log() to
+test_with_algo() which then ignores it anyway, so we can drop the
+shell-like redirection with no ill effects. With this fix test_vboot now
+passes for me.
+
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Reviewed-by: Stephen Warren <swarren@nvidia.com>
+---
+ test/py/tests/test_vboot.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/test/py/tests/test_vboot.py b/test/py/tests/test_vboot.py
+index ee939f2034..3009529c6d 100644
+--- a/test/py/tests/test_vboot.py
++++ b/test/py/tests/test_vboot.py
+@@ -177,8 +177,8 @@ def test_vboot(u_boot_console):
+     public_exponent = 65537
+     util.run_and_log(cons, 'openssl genpkey -algorithm RSA -out %sdev.key '
+                      '-pkeyopt rsa_keygen_bits:2048 '
+-                     '-pkeyopt rsa_keygen_pubexp:%d '
+-                     '2>/dev/null'  % (tmpdir, public_exponent))
++                     '-pkeyopt rsa_keygen_pubexp:%d' %
++                     (tmpdir, public_exponent))
+ 
+     # Create a certificate containing the public key
+     util.run_and_log(cons, 'openssl req -batch -new -x509 -key %sdev.key -out '
+-- 
+2.18.0
+

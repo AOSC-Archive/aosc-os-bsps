@@ -1,0 +1,63 @@
+From 2d4d6937720ba4cb4c8593b802d06ccb716a2002 Mon Sep 17 00:00:00 2001
+From: Ley Foon Tan <ley.foon.tan@intel.com>
+Date: Thu, 14 Jun 2018 18:45:21 +0800
+Subject: [PATCH 053/144] mmc: dwmmc: socfpga: Add reset ctrl to driver
+
+Add code to reset all reset signals as in mmc DT node. A reset property
+is an optional feature, so only print out a warning and do not fail if a
+reset property is not present.
+
+If a reset property is discovered, then use it to deassert, thus
+bringing the IP out of reset.
+
+Signed-off-by: Ley Foon Tan <ley.foon.tan@intel.com>
+Reviewed-by: Simon Glass <sjg@chromium.org>
+---
+ drivers/mmc/socfpga_dw_mmc.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/drivers/mmc/socfpga_dw_mmc.c b/drivers/mmc/socfpga_dw_mmc.c
+index d0a0362d7e..ed8ba10c93 100644
+--- a/drivers/mmc/socfpga_dw_mmc.c
++++ b/drivers/mmc/socfpga_dw_mmc.c
+@@ -13,6 +13,7 @@
+ #include <linux/libfdt.h>
+ #include <linux/err.h>
+ #include <malloc.h>
++#include <reset.h>
+ 
+ DECLARE_GLOBAL_DATA_PTR;
+ 
+@@ -33,6 +34,20 @@ struct dwmci_socfpga_priv_data {
+ 	unsigned int		smplsel;
+ };
+ 
++static void socfpga_dwmci_reset(struct udevice *dev)
++{
++	struct reset_ctl_bulk reset_bulk;
++	int ret;
++
++	ret = reset_get_bulk(dev, &reset_bulk);
++	if (ret) {
++		dev_warn(dev, "Can't get reset: %d\n", ret);
++		return;
++	}
++
++	reset_deassert_bulk(&reset_bulk);
++}
++
+ static void socfpga_dwmci_clksel(struct dwmci_host *host)
+ {
+ 	struct dwmci_socfpga_priv_data *priv = host->priv;
+@@ -109,6 +124,8 @@ static int socfpga_dwmmc_probe(struct udevice *dev)
+ 	struct dwmci_socfpga_priv_data *priv = dev_get_priv(dev);
+ 	struct dwmci_host *host = &priv->host;
+ 
++	socfpga_dwmci_reset(dev);
++
+ #ifdef CONFIG_BLK
+ 	dwmci_setup_cfg(&plat->cfg, host, host->bus_hz, 400000);
+ 	host->mmc = &plat->mmc;
+-- 
+2.18.0
+

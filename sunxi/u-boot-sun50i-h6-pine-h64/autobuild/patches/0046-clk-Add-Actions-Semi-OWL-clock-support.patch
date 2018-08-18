@@ -1,0 +1,357 @@
+From ae485b540f3b5555f5e043eaf2c8e859052f3b14 Mon Sep 17 00:00:00 2001
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Date: Thu, 14 Jun 2018 23:38:35 +0530
+Subject: [PATCH 046/144] clk: Add Actions Semi OWL clock support
+
+This commit adds Actions Semi OWL family base clock and S900 SoC
+specific clock support. For S900 peripheral clock support, only UART
+clock has been added for now.
+
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Simon Glass <sjg@chromium.org>
+---
+ arch/arm/include/asm/arch-owl/clk_s900.h  |  57 +++++++++
+ arch/arm/include/asm/arch-owl/regs_s900.h |  64 ++++++++++
+ drivers/clk/Kconfig                       |   1 +
+ drivers/clk/Makefile                      |   1 +
+ drivers/clk/owl/Kconfig                   |  12 ++
+ drivers/clk/owl/Makefile                  |   3 +
+ drivers/clk/owl/clk_s900.c                | 138 ++++++++++++++++++++++
+ 7 files changed, 276 insertions(+)
+ create mode 100644 arch/arm/include/asm/arch-owl/clk_s900.h
+ create mode 100644 arch/arm/include/asm/arch-owl/regs_s900.h
+ create mode 100644 drivers/clk/owl/Kconfig
+ create mode 100644 drivers/clk/owl/Makefile
+ create mode 100644 drivers/clk/owl/clk_s900.c
+
+diff --git a/arch/arm/include/asm/arch-owl/clk_s900.h b/arch/arm/include/asm/arch-owl/clk_s900.h
+new file mode 100644
+index 0000000000..88e88f77f8
+--- /dev/null
++++ b/arch/arm/include/asm/arch-owl/clk_s900.h
+@@ -0,0 +1,57 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/*
++ * Actions Semi S900 Clock Definitions
++ *
++ * Copyright (C) 2015 Actions Semi Co., Ltd.
++ * Copyright (C) 2018 Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
++ *
++ */
++
++#ifndef _OWL_CLK_S900_H_
++#define _OWL_CLK_S900_H_
++
++#include <clk-uclass.h>
++
++struct owl_clk_priv {
++	phys_addr_t base;
++};
++
++/* BUSCLK register definitions */
++#define CMU_PDBGDIV_8		7
++#define CMU_PDBGDIV_SHIFT	26
++#define CMU_PDBGDIV_DIV		(CMU_PDBGDIV_8 << CMU_PDBGDIV_SHIFT)
++#define CMU_PERDIV_8		7
++#define CMU_PERDIV_SHIFT	20
++#define CMU_PERDIV_DIV		(CMU_PERDIV_8 << CMU_PERDIV_SHIFT)
++#define CMU_NOCDIV_2		1
++#define CMU_NOCDIV_SHIFT	19
++#define CMU_NOCDIV_DIV		(CMU_NOCDIV_2 << CMU_NOCDIV_SHIFT)
++#define CMU_DMMCLK_SRC_APLL	2
++#define CMU_DMMCLK_SRC_SHIFT	10
++#define CMU_DMMCLK_SRC		(CMU_DMMCLK_SRC_APLL << CMU_DMMCLK_SRC_SHIFT)
++#define CMU_APBCLK_DIV		BIT(8)
++#define CMU_NOCCLK_SRC		BIT(7)
++#define CMU_AHBCLK_DIV		BIT(4)
++#define CMU_CORECLK_MASK	3
++#define CMU_CORECLK_CPLL	BIT(1)
++#define CMU_CORECLK_HOSC	BIT(0)
++
++/* COREPLL register definitions */
++#define CMU_COREPLL_EN		BIT(9)
++#define CMU_COREPLL_HOSC_EN	BIT(8)
++#define CMU_COREPLL_OUT		(1104 / 24)
++
++/* DEVPLL register definitions */
++#define CMU_DEVPLL_CLK		BIT(12)
++#define CMU_DEVPLL_EN		BIT(8)
++#define CMU_DEVPLL_OUT		(660 / 6)
++
++/* UARTCLK register definitions */
++#define CMU_UARTCLK_SRC_DEVPLL	BIT(16)
++
++/* DEVCLKEN1 register definitions */
++#define CMU_DEVCLKEN1_UART5	BIT(21)
++
++#define PLL_STABILITY_WAIT_US	50
++
++#endif
+diff --git a/arch/arm/include/asm/arch-owl/regs_s900.h b/arch/arm/include/asm/arch-owl/regs_s900.h
+new file mode 100644
+index 0000000000..9e9106ddaa
+--- /dev/null
++++ b/arch/arm/include/asm/arch-owl/regs_s900.h
+@@ -0,0 +1,64 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/*
++ * Actions Semi S900 Register Definitions
++ *
++ * Copyright (C) 2015 Actions Semi Co., Ltd.
++ * Copyright (C) 2018 Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
++ *
++ */
++
++#ifndef _OWL_REGS_S900_H_
++#define _OWL_REGS_S900_H_
++
++/* CMU registers */
++#define CMU_COREPLL				(0x0000)
++#define CMU_DEVPLL				(0x0004)
++#define CMU_DDRPLL				(0x0008)
++#define CMU_NANDPLL				(0x000C)
++#define CMU_DISPLAYPLL				(0x0010)
++#define CMU_AUDIOPLL				(0x0014)
++#define CMU_TVOUTPLL				(0x0018)
++#define CMU_BUSCLK				(0x001C)
++#define CMU_SENSORCLK				(0x0020)
++#define CMU_LCDCLK				(0x0024)
++#define CMU_DSICLK				(0x0028)
++#define CMU_CSICLK				(0x002C)
++#define CMU_DECLK				(0x0030)
++#define CMU_BISPCLK				(0x0034)
++#define CMU_IMXCLK				(0x0038)
++#define CMU_HDECLK				(0x003C)
++#define CMU_VDECLK				(0x0040)
++#define CMU_VCECLK				(0x0044)
++#define CMU_NANDCCLK				(0x004C)
++#define CMU_SD0CLK				(0x0050)
++#define CMU_SD1CLK				(0x0054)
++#define CMU_SD2CLK				(0x0058)
++#define CMU_UART0CLK				(0x005C)
++#define CMU_UART1CLK				(0x0060)
++#define CMU_UART2CLK				(0x0064)
++#define CMU_PWM0CLK				(0x0070)
++#define CMU_PWM1CLK				(0x0074)
++#define CMU_PWM2CLK				(0x0078)
++#define CMU_PWM3CLK				(0x007C)
++#define CMU_USBPLL				(0x0080)
++#define CMU_ASSISTPLL				(0x0084)
++#define CMU_EDPCLK				(0x0088)
++#define CMU_GPU3DCLK				(0x0090)
++#define CMU_CORECTL				(0x009C)
++#define CMU_DEVCLKEN0				(0x00A0)
++#define CMU_DEVCLKEN1				(0x00A4)
++#define CMU_DEVRST0				(0x00A8)
++#define CMU_DEVRST1				(0x00AC)
++#define CMU_UART3CLK				(0x00B0)
++#define CMU_UART4CLK				(0x00B4)
++#define CMU_UART5CLK				(0x00B8)
++#define CMU_UART6CLK				(0x00BC)
++#define CMU_TLSCLK				(0x00C0)
++#define CMU_SD3CLK				(0x00C4)
++#define CMU_PWM4CLK				(0x00C8)
++#define CMU_PWM5CLK				(0x00CC)
++#define CMU_ANALOGDEBUG				(0x00D4)
++#define CMU_TVOUTPLLDEBUG0			(0x00EC)
++#define CMU_TVOUTPLLDEBUG1			(0x00FC)
++
++#endif
+diff --git a/drivers/clk/Kconfig b/drivers/clk/Kconfig
+index edb4ca58ea..18bf8a6d28 100644
+--- a/drivers/clk/Kconfig
++++ b/drivers/clk/Kconfig
+@@ -89,6 +89,7 @@ source "drivers/clk/exynos/Kconfig"
+ source "drivers/clk/at91/Kconfig"
+ source "drivers/clk/renesas/Kconfig"
+ source "drivers/clk/mvebu/Kconfig"
++source "drivers/clk/owl/Kconfig"
+ 
+ config ICS8N3QV01
+ 	bool "Enable ICS8N3QV01 VCXO driver"
+diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
+index 426c67db9b..146283c723 100644
+--- a/drivers/clk/Makefile
++++ b/drivers/clk/Makefile
+@@ -17,6 +17,7 @@ obj-$(CONFIG_CLK_BCM6345) += clk_bcm6345.o
+ obj-$(CONFIG_CLK_BOSTON) += clk_boston.o
+ obj-$(CONFIG_CLK_EXYNOS) += exynos/
+ obj-$(CONFIG_CLK_HSDK) += clk-hsdk-cgu.o
++obj-$(CONFIG_CLK_OWL) += owl/
+ obj-$(CONFIG_CLK_RENESAS) += renesas/
+ obj-$(CONFIG_CLK_STM32F) += clk_stm32f.o
+ obj-$(CONFIG_CLK_STM32MP1) += clk_stm32mp1.o
+diff --git a/drivers/clk/owl/Kconfig b/drivers/clk/owl/Kconfig
+new file mode 100644
+index 0000000000..661f1981b9
+--- /dev/null
++++ b/drivers/clk/owl/Kconfig
+@@ -0,0 +1,12 @@
++config CLK_OWL
++        bool "Actions Semi OWL clock drivers"
++        depends on CLK && ARCH_OWL
++        help
++          Enable support for clock managemet unit present in Actions Semi
++	  OWL SoCs.
++
++config CLK_S900
++        bool "Actions Semi S900 clock driver"
++        depends on CLK_OWL && ARM64
++        help
++          Enable support for the clocks in Actions Semi S900 SoC.
+diff --git a/drivers/clk/owl/Makefile b/drivers/clk/owl/Makefile
+new file mode 100644
+index 0000000000..9132dcc175
+--- /dev/null
++++ b/drivers/clk/owl/Makefile
+@@ -0,0 +1,3 @@
++# SPDX-License-Identifier:	GPL-2.0+
++
++obj-$(CONFIG_CLK_S900) += clk_s900.o
+diff --git a/drivers/clk/owl/clk_s900.c b/drivers/clk/owl/clk_s900.c
+new file mode 100644
+index 0000000000..2b39bb99af
+--- /dev/null
++++ b/drivers/clk/owl/clk_s900.c
+@@ -0,0 +1,138 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Actions Semi S900 clock driver
++ *
++ * Copyright (C) 2015 Actions Semi Co., Ltd.
++ * Copyright (C) 2018 Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
++ */
++
++#include <common.h>
++#include <dm.h>
++#include <asm/arch-owl/clk_s900.h>
++#include <asm/arch-owl/regs_s900.h>
++#include <asm/io.h>
++
++#include <dt-bindings/clock/s900_cmu.h>
++
++void owl_clk_init(struct owl_clk_priv *priv)
++{
++	u32 bus_clk = 0, core_pll, dev_pll;
++
++	/* Enable ASSIST_PLL */
++	setbits_le32(priv->base + CMU_ASSISTPLL, BIT(0));
++
++	udelay(PLL_STABILITY_WAIT_US);
++
++	/* Source HOSC to DEV_CLK */
++	clrbits_le32(priv->base + CMU_DEVPLL, CMU_DEVPLL_CLK);
++
++	/* Configure BUS_CLK */
++	bus_clk |= (CMU_PDBGDIV_DIV | CMU_PERDIV_DIV | CMU_NOCDIV_DIV |
++			CMU_DMMCLK_SRC | CMU_APBCLK_DIV | CMU_AHBCLK_DIV |
++			CMU_NOCCLK_SRC | CMU_CORECLK_HOSC);
++	writel(bus_clk, priv->base + CMU_BUSCLK);
++
++	udelay(PLL_STABILITY_WAIT_US);
++
++	/* Configure CORE_PLL */
++	core_pll = readl(priv->base + CMU_COREPLL);
++	core_pll |= (CMU_COREPLL_EN | CMU_COREPLL_HOSC_EN | CMU_COREPLL_OUT);
++	writel(core_pll, priv->base + CMU_COREPLL);
++
++	udelay(PLL_STABILITY_WAIT_US);
++
++	/* Configure DEV_PLL */
++	dev_pll = readl(priv->base + CMU_DEVPLL);
++	dev_pll |= (CMU_DEVPLL_EN | CMU_DEVPLL_OUT);
++	writel(dev_pll, priv->base + CMU_DEVPLL);
++
++	udelay(PLL_STABILITY_WAIT_US);
++
++	/* Source CORE_PLL for CORE_CLK */
++	clrsetbits_le32(priv->base + CMU_BUSCLK, CMU_CORECLK_MASK,
++			CMU_CORECLK_CPLL);
++
++	/* Source DEV_PLL for DEV_CLK */
++	setbits_le32(priv->base + CMU_DEVPLL, CMU_DEVPLL_CLK);
++
++	udelay(PLL_STABILITY_WAIT_US);
++}
++
++void owl_uart_clk_enable(struct owl_clk_priv *priv)
++{
++	/* Source HOSC for UART5 interface */
++	clrbits_le32(priv->base + CMU_UART5CLK, CMU_UARTCLK_SRC_DEVPLL);
++
++	/* Enable UART5 interface clock */
++	setbits_le32(priv->base + CMU_DEVCLKEN1, CMU_DEVCLKEN1_UART5);
++}
++
++void owl_uart_clk_disable(struct owl_clk_priv *priv)
++{
++	/* Disable UART5 interface clock */
++	clrbits_le32(priv->base + CMU_DEVCLKEN1, CMU_DEVCLKEN1_UART5);
++}
++
++int owl_clk_enable(struct clk *clk)
++{
++	struct owl_clk_priv *priv = dev_get_priv(clk->dev);
++
++	switch (clk->id) {
++	case CLOCK_UART5:
++		owl_uart_clk_enable(priv);
++		break;
++	default:
++		return 0;
++	}
++
++	return 0;
++}
++
++int owl_clk_disable(struct clk *clk)
++{
++	struct owl_clk_priv *priv = dev_get_priv(clk->dev);
++
++	switch (clk->id) {
++	case CLOCK_UART5:
++		owl_uart_clk_disable(priv);
++		break;
++	default:
++		return 0;
++	}
++
++	return 0;
++}
++
++static int owl_clk_probe(struct udevice *dev)
++{
++	struct owl_clk_priv *priv = dev_get_priv(dev);
++
++	priv->base = dev_read_addr(dev);
++	if (priv->base == FDT_ADDR_T_NONE)
++		return -EINVAL;
++
++	/* setup necessary clocks */
++	owl_clk_init(priv);
++
++	return 0;
++}
++
++static struct clk_ops owl_clk_ops = {
++	.enable = owl_clk_enable,
++	.disable = owl_clk_disable,
++};
++
++static const struct udevice_id owl_clk_ids[] = {
++	{ .compatible = "actions,s900-cmu" },
++	{ }
++};
++
++U_BOOT_DRIVER(clk_owl) = {
++	.name		= "clk_s900",
++	.id		= UCLASS_CLK,
++	.of_match	= owl_clk_ids,
++	.ops		= &owl_clk_ops,
++	.priv_auto_alloc_size = sizeof(struct owl_clk_priv),
++	.probe		= owl_clk_probe,
++	.flags		= DM_FLAG_PRE_RELOC,
++};
+-- 
+2.18.0
+

@@ -1,0 +1,290 @@
+From 736bb0aec80891891f3f86004e1afa7976585918 Mon Sep 17 00:00:00 2001
+From: Simon Glass <sjg@chromium.org>
+Date: Fri, 6 Jul 2018 10:27:17 -0600
+Subject: [PATCH 015/144] binman: Correct operation of ObtainContents()
+
+This method is supposed to return the contents of an entry. However at
+present there is no check that it actually does. Also some implementations
+do not return 'True' to indicate success, as required.
+
+Add a check for things working as expected, and correct the
+implementations.
+
+This requires some additional test cases to cover things which were missed
+originally. Add these at the same time.
+
+Signed-off-by: Simon Glass <sjg@chromium.org>
+---
+ tools/binman/bsection.py                      |  4 ++
+ tools/binman/etype/_testing.py                |  5 ++
+ tools/binman/etype/section.py                 |  2 +-
+ tools/binman/etype/u_boot_spl_bss_pad.py      |  1 +
+ tools/binman/etype/u_boot_ucode.py            |  9 ++-
+ tools/binman/ftest.py                         | 57 +++++++++++++++----
+ tools/binman/test/57_unknown_contents.dts     | 14 +++++
+ .../test/58_x86_ucode_spl_needs_retry.dts     | 36 ++++++++++++
+ 8 files changed, 114 insertions(+), 14 deletions(-)
+ create mode 100644 tools/binman/test/57_unknown_contents.dts
+ create mode 100644 tools/binman/test/58_x86_ucode_spl_needs_retry.dts
+
+diff --git a/tools/binman/bsection.py b/tools/binman/bsection.py
+index 3f30f6e4fe..06a6711350 100644
+--- a/tools/binman/bsection.py
++++ b/tools/binman/bsection.py
+@@ -162,6 +162,10 @@ class Section(object):
+             todo = next_todo
+             if not todo:
+                 break
++        if todo:
++            self._Raise('Internal error: Could not complete processing of '
++                        'contents: remaining %s' % todo)
++        return True
+ 
+     def _SetEntryPosSize(self, name, pos, size):
+         """Set the position and size of an entry
+diff --git a/tools/binman/etype/_testing.py b/tools/binman/etype/_testing.py
+index 0b1eaefc3c..c075c3ff0d 100644
+--- a/tools/binman/etype/_testing.py
++++ b/tools/binman/etype/_testing.py
+@@ -9,6 +9,7 @@ from entry import Entry
+ import fdt_util
+ import tools
+ 
++
+ class Entry__testing(Entry):
+     """A fake entry used for testing
+ 
+@@ -19,8 +20,12 @@ class Entry__testing(Entry):
+         Entry.__init__(self, section, etype, node)
+         self.return_invalid_entry = fdt_util.GetBool(self._node,
+                                                      'return-invalid-entry')
++        self.return_unknown_contents = fdt_util.GetBool(self._node,
++                                                     'return-unknown-contents')
+ 
+     def ObtainContents(self):
++        if self.return_unknown_contents:
++            return False
+         self.data = 'a'
+         self.contents_size = len(self.data)
+         return True
+diff --git a/tools/binman/etype/section.py b/tools/binman/etype/section.py
+index 139fcad51a..36b31a849f 100644
+--- a/tools/binman/etype/section.py
++++ b/tools/binman/etype/section.py
+@@ -18,7 +18,7 @@ class Entry_section(Entry):
+         self._section = bsection.Section(node.name, node)
+ 
+     def ObtainContents(self):
+-        self._section.GetEntryContents()
++        return self._section.GetEntryContents()
+ 
+     def GetData(self):
+         return self._section.GetData()
+diff --git a/tools/binman/etype/u_boot_spl_bss_pad.py b/tools/binman/etype/u_boot_spl_bss_pad.py
+index 3d2dea2e0d..6c397957e3 100644
+--- a/tools/binman/etype/u_boot_spl_bss_pad.py
++++ b/tools/binman/etype/u_boot_spl_bss_pad.py
+@@ -24,3 +24,4 @@ class Entry_u_boot_spl_bss_pad(Entry_blob):
+             self.Raise('Expected __bss_size symbol in spl/u-boot-spl')
+         self.data = chr(0) * bss_size
+         self.contents_size = bss_size
++        return True
+diff --git a/tools/binman/etype/u_boot_ucode.py b/tools/binman/etype/u_boot_ucode.py
+index 3a0cff7c3a..8cae7deed3 100644
+--- a/tools/binman/etype/u_boot_ucode.py
++++ b/tools/binman/etype/u_boot_ucode.py
+@@ -64,9 +64,14 @@ class Entry_u_boot_ucode(Entry_blob):
+             self.data = ''
+             return True
+ 
+-        # Get the microcode from the device tree entry
++        # Get the microcode from the device tree entry. If it is not available
++        # yet, return False so we will be called later. If the section simply
++        # doesn't exist, then we may as well return True, since we are going to
++        # get an error anyway.
+         fdt_entry = self.section.FindEntryType('u-boot-dtb-with-ucode')
+-        if not fdt_entry or not fdt_entry.ucode_data:
++        if not fdt_entry:
++            return True
++        if not fdt_entry.ucode_data:
+             return False
+ 
+         if not fdt_entry.collate:
+diff --git a/tools/binman/ftest.py b/tools/binman/ftest.py
+index 80eadeffab..ca9d158eef 100644
+--- a/tools/binman/ftest.py
++++ b/tools/binman/ftest.py
+@@ -688,12 +688,14 @@ class TestFunctional(unittest.TestCase):
+         data = self._DoReadFile('33_x86-start16.dts')
+         self.assertEqual(X86_START16_DATA, data[:len(X86_START16_DATA)])
+ 
+-    def _RunMicrocodeTest(self, dts_fname, nodtb_data):
++    def _RunMicrocodeTest(self, dts_fname, nodtb_data, ucode_second=False):
+         """Handle running a test for insertion of microcode
+ 
+         Args:
+             dts_fname: Name of test .dts file
+             nodtb_data: Data that we expect in the first section
++            ucode_second: True if the microsecond entry is second instead of
++                third
+ 
+         Returns:
+             Tuple:
+@@ -704,10 +706,16 @@ class TestFunctional(unittest.TestCase):
+         data = self._DoReadFile(dts_fname, True)
+ 
+         # Now check the device tree has no microcode
+-        dtb_with_ucode = data[len(nodtb_data):]
+-        fdt_len = self.GetFdtLen(dtb_with_ucode)
+-        ucode_content = dtb_with_ucode[fdt_len:]
+-        ucode_pos = len(nodtb_data) + fdt_len
++        if ucode_second:
++            ucode_content = data[len(nodtb_data):]
++            ucode_pos = len(nodtb_data)
++            dtb_with_ucode = ucode_content[16:]
++            fdt_len = self.GetFdtLen(dtb_with_ucode)
++        else:
++            dtb_with_ucode = data[len(nodtb_data):]
++            fdt_len = self.GetFdtLen(dtb_with_ucode)
++            ucode_content = dtb_with_ucode[fdt_len:]
++            ucode_pos = len(nodtb_data) + fdt_len
+         fname = tools.GetOutputFilename('test.dtb')
+         with open(fname, 'wb') as fd:
+             fd.write(dtb_with_ucode)
+@@ -728,8 +736,8 @@ class TestFunctional(unittest.TestCase):
+         # expected position and size
+         pos_and_size = struct.pack('<2L', 0xfffffe00 + ucode_pos,
+                                    len(ucode_data))
+-        first = data[:len(nodtb_data)]
+-        return first, pos_and_size
++        u_boot = data[:len(nodtb_data)]
++        return u_boot, pos_and_size
+ 
+     def testPackUbootMicrocode(self):
+         """Test that x86 microcode can be handled correctly
+@@ -892,23 +900,42 @@ class TestFunctional(unittest.TestCase):
+         data = self._DoReadFile('48_x86-start16-spl.dts')
+         self.assertEqual(X86_START16_SPL_DATA, data[:len(X86_START16_SPL_DATA)])
+ 
+-    def testPackUbootSplMicrocode(self):
+-        """Test that x86 microcode can be handled correctly in SPL
++    def _PackUbootSplMicrocode(self, dts, ucode_second=False):
++        """Helper function for microcode tests
+ 
+         We expect to see the following in the image, in order:
+             u-boot-spl-nodtb.bin with a microcode pointer inserted at the
+                 correct place
+             u-boot.dtb with the microcode removed
+             the microcode
++
++        Args:
++            dts: Device tree file to use for test
++            ucode_second: True if the microsecond entry is second instead of
++                third
+         """
+         # ELF file with a '_dt_ucode_base_size' symbol
+         with open(self.TestFile('u_boot_ucode_ptr')) as fd:
+             TestFunctional._MakeInputFile('spl/u-boot-spl', fd.read())
+-        first, pos_and_size = self._RunMicrocodeTest('49_x86_ucode_spl.dts',
+-                                                     U_BOOT_SPL_NODTB_DATA)
++        first, pos_and_size = self._RunMicrocodeTest(dts, U_BOOT_SPL_NODTB_DATA,
++                                                     ucode_second=ucode_second)
+         self.assertEqual('splnodtb with microc' + pos_and_size +
+                          'ter somewhere in here', first)
+ 
++    def testPackUbootSplMicrocode(self):
++        """Test that x86 microcode can be handled correctly in SPL"""
++        self._PackUbootSplMicrocode('49_x86_ucode_spl.dts')
++
++    def testPackUbootSplMicrocodeReorder(self):
++        """Test that order doesn't matter for microcode entries
++
++        This is the same as testPackUbootSplMicrocode but when we process the
++        u-boot-ucode entry we have not yet seen the u-boot-dtb-with-ucode
++        entry, so we reply on binman to try later.
++        """
++        self._PackUbootSplMicrocode('58_x86_ucode_spl_needs_retry.dts',
++                                    ucode_second=True)
++
+     def testPackMrc(self):
+         """Test that an image with an MRC binary can be created"""
+         data = self._DoReadFile('50_intel_mrc.dts')
+@@ -971,5 +998,13 @@ class TestFunctional(unittest.TestCase):
+  00000000  00000004  rw-u-boot
+ ''', map_data)
+ 
++    def testUnknownContents(self):
++        """Test that obtaining the contents works as expected"""
++        with self.assertRaises(ValueError) as e:
++            self._DoReadFile('57_unknown_contents.dts', True)
++        self.assertIn("Section '/binman': Internal error: Could not complete "
++                "processing of contents: remaining [<_testing.Entry__testing ",
++                str(e.exception))
++
+ if __name__ == "__main__":
+     unittest.main()
+diff --git a/tools/binman/test/57_unknown_contents.dts b/tools/binman/test/57_unknown_contents.dts
+new file mode 100644
+index 0000000000..6ea98d7cab
+--- /dev/null
++++ b/tools/binman/test/57_unknown_contents.dts
+@@ -0,0 +1,14 @@
++// SPDX-License-Identifier: GPL-2.0+
++
++/dts-v1/;
++
++/ {
++	#address-cells = <1>;
++	#size-cells = <1>;
++
++	binman {
++		_testing {
++			return-unknown-contents;
++		};
++	};
++};
+diff --git a/tools/binman/test/58_x86_ucode_spl_needs_retry.dts b/tools/binman/test/58_x86_ucode_spl_needs_retry.dts
+new file mode 100644
+index 0000000000..e2cb80cf6e
+--- /dev/null
++++ b/tools/binman/test/58_x86_ucode_spl_needs_retry.dts
+@@ -0,0 +1,36 @@
++// SPDX-License-Identifier: GPL-2.0+
++
++/dts-v1/;
++
++/ {
++	#address-cells = <1>;
++	#size-cells = <1>;
++
++	binman {
++		sort-by-pos;
++		end-at-4gb;
++		size = <0x200>;
++		u-boot-spl-with-ucode-ptr {
++		};
++
++		/*
++		 * Microcode goes before the DTB which contains it, so binman
++		 * will need to obtain the contents of the next section before
++		 * obtaining the contents of this one.
++		 */
++		u-boot-ucode {
++		};
++
++		u-boot-dtb-with-ucode {
++		};
++	};
++
++	microcode {
++		update@0 {
++			data = <0x12345678 0x12345679>;
++		};
++		update@1 {
++			data = <0xabcd0000 0x78235609>;
++		};
++	};
++};
+-- 
+2.18.0
+

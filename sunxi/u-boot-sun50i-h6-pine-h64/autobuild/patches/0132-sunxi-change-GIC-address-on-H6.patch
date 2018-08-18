@@ -1,0 +1,37 @@
+From 7b423a71decb73231ac01d9ebf9749b3e20924c5 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Thu, 8 Feb 2018 00:26:34 +0800
+Subject: [PATCH 132/144] sunxi: change GIC address on H6
+
+As the Allwinner H6 chip has a new memory map, its GIC MMIO address is
+thus different.
+
+Change the address on H6.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+Reviewed-by: Andre Przywara <andre.przywara@arm.com>
+---
+ include/configs/sun50i.h | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/include/configs/sun50i.h b/include/configs/sun50i.h
+index 5ce2cde388..e029218cf8 100644
+--- a/include/configs/sun50i.h
++++ b/include/configs/sun50i.h
+@@ -17,8 +17,13 @@
+ 
+ #define CONFIG_SUNXI_USB_PHYS	1
+ 
++#ifndef CONFIG_MACH_SUN50I_H6
+ #define GICD_BASE		0x1c81000
+ #define GICC_BASE		0x1c82000
++#else
++#define GICD_BASE		0x3021000
++#define GICC_BASE		0x3022000
++#endif
+ 
+ /*
+  * Include common sunxi configuration where most the settings are
+-- 
+2.18.0
+

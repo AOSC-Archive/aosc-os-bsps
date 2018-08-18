@@ -1,0 +1,43 @@
+From 887a8b6ec287c20f802d5007081e7f5d615c51db Mon Sep 17 00:00:00 2001
+From: Marek Vasut <marex@denx.de>
+Date: Tue, 29 May 2018 16:16:46 +0200
+Subject: [PATCH 103/144] ARM: socfpga: Assure correct ACTLR configuration
+
+Make sure the ARM ACTLR register has correct configuration, otherwise
+the Linux kernel refuses to boot. In particular, the "Write Full Line
+of Zeroes" bit must be cleared.
+
+Signed-off-by: Marek Vasut <marex@denx.de>
+Cc: Chin Liang See <chin.liang.see@intel.com>
+Cc: Dinh Nguyen <dinguyen@kernel.org>
+---
+ arch/arm/mach-socfpga/board.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/mach-socfpga/board.c b/arch/arm/mach-socfpga/board.c
+index 189e12a668..cb6530f7e8 100644
+--- a/arch/arm/mach-socfpga/board.c
++++ b/arch/arm/mach-socfpga/board.c
+@@ -18,7 +18,18 @@
+ 
+ DECLARE_GLOBAL_DATA_PTR;
+ 
+-void s_init(void) {}
++void s_init(void) {
++	/*
++	 * Preconfigure ACTLR, make sure Write Full Line of Zeroes is disabled.
++	 * This is optional on CycloneV / ArriaV.
++	 * This is mandatory on Arria10, otherwise Linux refuses to boot.
++	 */
++	asm volatile(
++		"mcr p15, 0, %0, c1, c0, 1\n"
++		"isb\n"
++		"dsb\n"
++	::"r"(0x0));
++}
+ 
+ /*
+  * Miscellaneous platform dependent initialisations
+-- 
+2.18.0
+

@@ -1,0 +1,38 @@
+From b616cef97aa8562a8c08558505675e255b5347cc Mon Sep 17 00:00:00 2001
+From: Simon Glass <sjg@chromium.org>
+Date: Mon, 11 Jun 2018 13:07:14 -0600
+Subject: [PATCH 006/144] log: Add a way to log a return value with a message
+
+It is sometimes useful to show a message when logging an error return
+value, perhaps to add a few details about the problem. Add a function to
+support this.
+
+Signed-off-by: Simon Glass <sjg@chromium.org>
+---
+ include/log.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/include/log.h b/include/log.h
+index 3e99d6e62b..653fb8d853 100644
+--- a/include/log.h
++++ b/include/log.h
+@@ -166,8 +166,16 @@ void __assert_fail(const char *assertion, const char *file, unsigned int line,
+ 		log(LOG_CATEGORY, LOGL_ERR, "returning err=%d\n", __ret); \
+ 	__ret; \
+ 	})
++#define log_msg_ret(_msg, _ret) ({ \
++	int __ret = (_ret); \
++	if (__ret < 0) \
++		log(LOG_CATEGORY, LOGL_ERR, "%s: returning err=%d\n", _msg, \
++		    __ret); \
++	__ret; \
++	})
+ #else
+ #define log_ret(_ret) (_ret)
++#define log_msg_ret(_ret) (_ret)
+ #endif
+ 
+ /**
+-- 
+2.18.0
+

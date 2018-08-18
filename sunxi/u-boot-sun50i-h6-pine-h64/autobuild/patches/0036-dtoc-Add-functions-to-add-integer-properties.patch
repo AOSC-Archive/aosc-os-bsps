@@ -1,0 +1,86 @@
+From 116adecb5e8e343cfc73a55f25a5d3d8463f4512 Mon Sep 17 00:00:00 2001
+From: Simon Glass <sjg@chromium.org>
+Date: Fri, 6 Jul 2018 10:27:38 -0600
+Subject: [PATCH 036/144] dtoc: Add functions to add integer properties
+
+Add a few simple functions to add a placeholder integer property, and
+set its value.
+
+Signed-off-by: Simon Glass <sjg@chromium.org>
+---
+ tools/dtoc/fdt.py      | 27 +++++++++++++++++++++++++++
+ tools/dtoc/test_fdt.py | 20 ++++++++++++++++++++
+ 2 files changed, 47 insertions(+)
+
+diff --git a/tools/dtoc/fdt.py b/tools/dtoc/fdt.py
+index e7703c1c75..9d69b426c1 100644
+--- a/tools/dtoc/fdt.py
++++ b/tools/dtoc/fdt.py
+@@ -270,6 +270,33 @@ class Node:
+         del self.props[prop_name]
+         self._fdt.Invalidate()
+ 
++    def AddZeroProp(self, prop_name):
++        """Add a new property to the device tree with an integer value of 0.
++
++        Args:
++            prop_name: Name of property
++        """
++        fdt_obj = self._fdt._fdt_obj
++        if fdt_obj.setprop_u32(self.Offset(), prop_name, 0,
++                               (libfdt.NOSPACE,)) == -libfdt.NOSPACE:
++            fdt_obj.open_into(fdt_obj.totalsize() + 1024)
++            fdt_obj.setprop_u32(self.Offset(), prop_name, 0)
++        self.props[prop_name] = Prop(self, -1, prop_name, '\0' * 4)
++        self._fdt.Invalidate()
++
++    def SetInt(self, prop_name, val):
++        """Update an integer property int the device tree.
++
++        This is not allowed to change the size of the FDT.
++
++        Args:
++            prop_name: Name of property
++            val: Value to set
++        """
++        fdt_obj = self._fdt._fdt_obj
++        fdt_obj.setprop_u32(self.Offset(), prop_name, val)
++
++
+ class Fdt:
+     """Provides simple access to a flat device tree blob using libfdts.
+ 
+diff --git a/tools/dtoc/test_fdt.py b/tools/dtoc/test_fdt.py
+index 49d188b1c1..f085b1dd1a 100755
+--- a/tools/dtoc/test_fdt.py
++++ b/tools/dtoc/test_fdt.py
+@@ -319,6 +319,26 @@ class TestProp(unittest.TestCase):
+         self.assertTrue(isinstance(prop.value, list))
+         self.assertEqual(3, len(prop.value))
+ 
++    def testAdd(self):
++        """Test adding properties"""
++        self.fdt.pack()
++        # This function should automatically expand the device tree
++        self.node.AddZeroProp('one')
++        self.node.AddZeroProp('two')
++        self.node.AddZeroProp('three')
++
++        # Updating existing properties should be OK, since the device-tree size
++        # does not change
++        self.fdt.pack()
++        self.node.SetInt('one', 1)
++        self.node.SetInt('two', 2)
++        self.node.SetInt('three', 3)
++
++        # This should fail since it would need to increase the device-tree size
++        with self.assertRaises(libfdt.FdtException) as e:
++            self.node.SetInt('four', 4)
++        self.assertIn('FDT_ERR_NOSPACE', str(e.exception))
++
+ 
+ class TestFdtUtil(unittest.TestCase):
+     """Tests for the fdt_util module
+-- 
+2.18.0
+

@@ -1,0 +1,30 @@
+From df78f016e84caede20938fb3e84acbb8ae7fc440 Mon Sep 17 00:00:00 2001
+From: Marek Vasut <marex@denx.de>
+Date: Tue, 29 May 2018 18:02:22 +0200
+Subject: [PATCH 102/144] ARM: socfpga: Make DRAM node available in SPL
+
+The SPL can also parse the DRAM configuration node to figure out the
+memory layout, make sure it is available.
+
+Signed-off-by: Marek Vasut <marex@denx.de>
+Cc: Chin Liang See <chin.liang.see@intel.com>
+Cc: Dinh Nguyen <dinguyen@kernel.org>
+---
+ arch/arm/dts/socfpga_arria10_socdk.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm/dts/socfpga_arria10_socdk.dtsi b/arch/arm/dts/socfpga_arria10_socdk.dtsi
+index d7616dd1c5..3f59f02577 100644
+--- a/arch/arm/dts/socfpga_arria10_socdk.dtsi
++++ b/arch/arm/dts/socfpga_arria10_socdk.dtsi
+@@ -34,6 +34,7 @@
+ 		name = "memory";
+ 		device_type = "memory";
+ 		reg = <0x0 0x40000000>; /* 1GB */
++		u-boot,dm-pre-reloc;
+ 	};
+ 
+ 	a10leds {
+-- 
+2.18.0
+

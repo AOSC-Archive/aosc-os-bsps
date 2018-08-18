@@ -1,0 +1,41 @@
+From ca769a1394bfda5e97f292b2b3eecef71f727b9f Mon Sep 17 00:00:00 2001
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Date: Thu, 14 Jun 2018 23:38:37 +0530
+Subject: [PATCH 048/144] arm: dts: bubblegum_96: Enable UART5 for serial
+ console
+
+This commit enables UART5 found in S900 SoC for serial console support.
+
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+---
+ arch/arm/dts/bubblegum_96.dts | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/arch/arm/dts/bubblegum_96.dts b/arch/arm/dts/bubblegum_96.dts
+index 4e34ebaa49..5b58d15594 100644
+--- a/arch/arm/dts/bubblegum_96.dts
++++ b/arch/arm/dts/bubblegum_96.dts
+@@ -12,8 +12,20 @@
+ 	model = "Bubblegum-96";
+ 	compatible = "ucrobotics,bubblegum-96", "actions,s900";
+ 
++	aliases {
++		serial5 = &uart5;
++	};
++
++	chosen {
++		stdout-path = "serial5:115200n8";
++	};
++
+ 	memory@0 {
+ 		device_type = "memory";
+ 		reg = <0x0 0x0 0x0 0x80000000>;
+ 	};
+ };
++
++&uart5 {
++	status = "okay";
++};
+-- 
+2.18.0
+

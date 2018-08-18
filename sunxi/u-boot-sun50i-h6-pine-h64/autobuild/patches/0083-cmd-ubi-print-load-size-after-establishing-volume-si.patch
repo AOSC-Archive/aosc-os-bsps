@@ -1,0 +1,50 @@
+From 68c7025d99dbac9ddf1a166a19efc3f9e98f1301 Mon Sep 17 00:00:00 2001
+From: Stefan Agner <stefan.agner@toradex.com>
+Date: Mon, 25 Jun 2018 11:19:12 +0200
+Subject: [PATCH 083/144] cmd: ubi: print load size after establishing volume
+ size
+
+When using static volumes, the file size stored in the volume is
+determined at runtime. Currently the ubi command prints the file
+size specified on the console, which leads to a rather confusing
+series of messages:
+  # ubi read ${fdt_addr_r} testvol
+  Read 0 bytes from volume testvol to 82000000
+  No size specified -> Using max size (179924992)
+
+Make sure to print the actual size read in any case:
+  # ubi read ${fdt_addr_r} testvol
+  No size specified -> Using max size (179924992)
+  Read 179924992 bytes from volume testvol to 82000000
+
+Signed-off-by: Stefan Agner <stefan.agner@toradex.com>
+---
+ cmd/ubi.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/cmd/ubi.c b/cmd/ubi.c
+index ac9a582437..9c3cabc262 100644
+--- a/cmd/ubi.c
++++ b/cmd/ubi.c
+@@ -356,6 +356,8 @@ int ubi_volume_read(char *volume, char *buf, size_t size)
+ 		size = vol->used_bytes;
+ 	}
+ 
++	printf("Read %u bytes from volume %s to %p\n", size, volume, buf);
++
+ 	if (vol->corrupted)
+ 		printf("read from corrupted volume %d", vol->vol_id);
+ 	if (offp + size > vol->used_bytes)
+@@ -674,9 +676,6 @@ static int do_ubi(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
+ 		}
+ 
+ 		if (argc == 3) {
+-			printf("Read %lld bytes from volume %s to %lx\n", size,
+-			       argv[3], addr);
+-
+ 			return ubi_volume_read(argv[3], (char *)addr, size);
+ 		}
+ 	}
+-- 
+2.18.0
+

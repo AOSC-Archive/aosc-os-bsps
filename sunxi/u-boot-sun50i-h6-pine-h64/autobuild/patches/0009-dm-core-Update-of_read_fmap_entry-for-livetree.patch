@@ -1,0 +1,82 @@
+From 5e0a7341cdda182f310624d5c336fb48be04a703 Mon Sep 17 00:00:00 2001
+From: Simon Glass <sjg@chromium.org>
+Date: Mon, 11 Jun 2018 13:07:17 -0600
+Subject: [PATCH 009/144] dm: core: Update of_read_fmap_entry() for livetree
+
+Update this function to take an ofnode so that it can work with livetree.
+
+Signed-off-by: Simon Glass <sjg@chromium.org>
+---
+ drivers/core/of_extra.c | 8 ++++----
+ drivers/misc/cros_ec.c  | 4 ++--
+ include/dm/of_extra.h   | 6 ++----
+ 3 files changed, 8 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/core/of_extra.c b/drivers/core/of_extra.c
+index c76177c529..3243caa5d1 100644
+--- a/drivers/core/of_extra.c
++++ b/drivers/core/of_extra.c
+@@ -10,15 +10,15 @@
+ #include <dm/of_extra.h>
+ #include <dm/ofnode.h>
+ 
+-int of_read_fmap_entry(ofnode node, const char *name,
+-		       struct fmap_entry *entry)
++int ofnode_read_fmap_entry(ofnode node, struct fmap_entry *entry)
+ {
+ 	const char *prop;
+ 	u32 reg[2];
+ 
+ 	if (ofnode_read_u32_array(node, "reg", reg, 2)) {
+-		debug("Node '%s' has bad/missing 'reg' property\n", name);
+-		return -FDT_ERR_NOTFOUND;
++		debug("Node '%s' has bad/missing 'reg' property\n",
++		      ofnode_get_name(node));
++		return -log_ret(ENOENT);
+ 	}
+ 	entry->offset = reg[0];
+ 	entry->length = reg[1];
+diff --git a/drivers/misc/cros_ec.c b/drivers/misc/cros_ec.c
+index 5fd2cd9973..6f299d407a 100644
+--- a/drivers/misc/cros_ec.c
++++ b/drivers/misc/cros_ec.c
+@@ -1028,7 +1028,7 @@ int cros_ec_decode_ec_flash(struct udevice *dev, struct fdt_cros_ec *config)
+ 		return -1;
+ 	}
+ 
+-	if (of_read_fmap_entry(flash_node, "flash", &config->flash)) {
++	if (ofnode_read_fmap_entry(flash_node,  &config->flash)) {
+ 		debug("Failed to decode flash node in chrome-ec\n");
+ 		return -1;
+ 	}
+@@ -1050,7 +1050,7 @@ int cros_ec_decode_ec_flash(struct udevice *dev, struct fdt_cros_ec *config)
+ 			return -1;
+ 		}
+ 
+-		if (of_read_fmap_entry(node, "reg", &config->region[region])) {
++		if (ofnode_read_fmap_entry(node, &config->region[region])) {
+ 			debug("Failed to decode flash region in chrome-ec'\n");
+ 			return -1;
+ 		}
+diff --git a/include/dm/of_extra.h b/include/dm/of_extra.h
+index 6f1529689f..e1540c1fbd 100644
+--- a/include/dm/of_extra.h
++++ b/include/dm/of_extra.h
+@@ -34,12 +34,10 @@ struct fmap_entry {
+ /**
+  * Read a flash entry from the fdt
+  *
+- * @param node	Reference to node to read
+- * @param name		Name of node being read
++ * @param node		Reference to node to read
+  * @param entry		Place to put offset and size of this node
+  * @return 0 if ok, -ve on error
+  */
+-int of_read_fmap_entry(ofnode node, const char *name,
+-		       struct fmap_entry *entry);
++int ofnode_read_fmap_entry(ofnode node, struct fmap_entry *entry);
+ 
+ #endif
+-- 
+2.18.0
+

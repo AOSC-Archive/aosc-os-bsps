@@ -1,0 +1,141 @@
+From 7e5196c409f17091f2aeca144c6d76750df81cc4 Mon Sep 17 00:00:00 2001
+From: Simon Glass <sjg@chromium.org>
+Date: Mon, 11 Jun 2018 13:07:10 -0600
+Subject: [PATCH 002/144] dm: core: Add ofnode function to read a 64-bit int
+
+We have a 32-bit version of this function. Add a 64-bit version as well so
+we can easily read 64-bit ints from the device tree.
+
+Signed-off-by: Simon Glass <sjg@chromium.org>
+---
+ drivers/core/of_access.c | 20 ++++++++++++++++++++
+ drivers/core/ofnode.c    | 32 ++++++++++++++++++++++++++++++++
+ include/dm/of_access.h   | 16 ++++++++++++++++
+ include/dm/ofnode.h      | 10 ++++++++++
+ 4 files changed, 78 insertions(+)
+
+diff --git a/drivers/core/of_access.c b/drivers/core/of_access.c
+index 9a50f559de..0729dfcdb3 100644
+--- a/drivers/core/of_access.c
++++ b/drivers/core/of_access.c
+@@ -457,6 +457,26 @@ int of_read_u32_array(const struct device_node *np, const char *propname,
+ 	return 0;
+ }
+ 
++int of_read_u64(const struct device_node *np, const char *propname, u64 *outp)
++{
++	const __be64 *val;
++
++	debug("%s: %s: ", __func__, propname);
++	if (!np)
++		return -EINVAL;
++	val = of_find_property_value_of_size(np, propname, sizeof(*outp));
++	if (IS_ERR(val)) {
++		debug("(not found)\n");
++		return PTR_ERR(val);
++	}
++
++	*outp = be64_to_cpup(val);
++	debug("%#llx (%lld)\n", (unsigned long long)*outp,
++              (unsigned long long)*outp);
++
++	return 0;
++}
++
+ int of_property_match_string(const struct device_node *np, const char *propname,
+ 			     const char *string)
+ {
+diff --git a/drivers/core/ofnode.c b/drivers/core/ofnode.c
+index 3cf3205a2f..b2b02e4abf 100644
+--- a/drivers/core/ofnode.c
++++ b/drivers/core/ofnode.c
+@@ -55,6 +55,38 @@ int ofnode_read_s32_default(ofnode node, const char *propname, s32 def)
+ 	return def;
+ }
+ 
++int ofnode_read_u64(ofnode node, const char *propname, u64 *outp)
++{
++	const fdt64_t *cell;
++	int len;
++
++	assert(ofnode_valid(node));
++	debug("%s: %s: ", __func__, propname);
++
++	if (ofnode_is_np(node))
++		return of_read_u64(ofnode_to_np(node), propname, outp);
++
++	cell = fdt_getprop(gd->fdt_blob, ofnode_to_offset(node), propname,
++			   &len);
++	if (!cell || len < sizeof(*cell)) {
++		debug("(not found)\n");
++		return -EINVAL;
++	}
++	*outp = fdt64_to_cpu(cell[0]);
++	debug("%#llx (%lld)\n", (unsigned long long)*outp,
++	      (unsigned long long)*outp);
++
++	return 0;
++}
++
++int ofnode_read_u64_default(ofnode node, const char *propname, u64 def)
++{
++	assert(ofnode_valid(node));
++	ofnode_read_u64(node, propname, &def);
++
++	return def;
++}
++
+ bool ofnode_read_bool(ofnode node, const char *propname)
+ {
+ 	const void *prop;
+diff --git a/include/dm/of_access.h b/include/dm/of_access.h
+index 74f0606e07..dd1abb8e97 100644
+--- a/include/dm/of_access.h
++++ b/include/dm/of_access.h
+@@ -218,6 +218,22 @@ struct device_node *of_find_node_by_phandle(phandle handle);
+  */
+ int of_read_u32(const struct device_node *np, const char *propname, u32 *outp);
+ 
++/**
++ * of_read_u64() - Find and read a 64-bit integer from a property
++ *
++ * Search for a property in a device node and read a 64-bit value from
++ * it.
++ *
++ * @np:		device node from which the property value is to be read.
++ * @propname:	name of the property to be searched.
++ * @outp:	pointer to return value, modified only if return value is 0.
++ *
++ * @return 0 on success, -EINVAL if the property does not exist,
++ * -ENODATA if property does not have a value, and -EOVERFLOW if the
++ * property data isn't large enough.
++ */
++int of_read_u64(const struct device_node *np, const char *propname, u64 *outp);
++
+ /**
+  * of_read_u32_array() - Find and read an array of 32 bit integers
+  *
+diff --git a/include/dm/ofnode.h b/include/dm/ofnode.h
+index 5af6b7e616..dbb4273db6 100644
+--- a/include/dm/ofnode.h
++++ b/include/dm/ofnode.h
+@@ -236,6 +236,16 @@ int ofnode_read_u32_default(ofnode ref, const char *propname, u32 def);
+  */
+ int ofnode_read_s32_default(ofnode node, const char *propname, s32 def);
+ 
++/**
++ * ofnode_read_u64_default() - Read a 64-bit integer from a property
++ *
++ * @ref:	valid node reference to read property from
++ * @propname:	name of the property to read from
++ * @def:	default value to return if the property has no value
++ * @return property value, or @def if not found
++ */
++int ofnode_read_u64_default(ofnode node, const char *propname, u64 def);
++
+ /**
+  * ofnode_read_string() - Read a string from a property
+  *
+-- 
+2.18.0
+
