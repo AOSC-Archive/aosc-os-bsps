@@ -1,0 +1,35 @@
+From dddc4b4af3a444ef78d1a3d983aae71179a0d92c Mon Sep 17 00:00:00 2001
+From: Simon Baatz <gmbnomis@gmail.com>
+Date: Tue, 24 Jul 2018 00:22:19 +0200
+Subject: [PATCH 01/32] sunxi: enable SATA on Banana Pi M2 Berry
+
+Banana Pi M2 Ultra and M2 Berry are very similar boards.  SATA can be
+enabled exactly the same as for M2 Ultra introduced in
+commit daa8b75a5527 ("sunxi: enable SATA on Banana Pi M2 Ultra").
+
+Signed-off-by: Simon Baatz <gmbnomis@gmail.com>
+Acked-by: Maxime Ripard <maxime.ripard@bootlin.com>
+Reviewed-by: Jagan Teki <jagan@openedev.com>
+---
+ configs/bananapi_m2_berry_defconfig | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/configs/bananapi_m2_berry_defconfig b/configs/bananapi_m2_berry_defconfig
+index 9d75108d04..313e09a764 100644
+--- a/configs/bananapi_m2_berry_defconfig
++++ b/configs/bananapi_m2_berry_defconfig
+@@ -7,8 +7,11 @@ CONFIG_DRAM_ZQ=3881979
+ CONFIG_DRAM_ODT_EN=y
+ CONFIG_MMC0_CD_PIN="PH13"
+ CONFIG_DEFAULT_DEVICE_TREE="sun8i-v40-bananapi-m2-berry"
++CONFIG_AHCI=y
+ # CONFIG_SYS_MALLOC_CLEAR_ON_INIT is not set
+ CONFIG_SPL_I2C_SUPPORT=y
+ # CONFIG_CMD_FLASH is not set
++CONFIG_SCSI_AHCI=y
+ CONFIG_AXP_DLDO4_VOLT=2500
+ CONFIG_AXP_ELDO3_VOLT=1200
++CONFIG_SCSI=y
+-- 
+2.18.0
+

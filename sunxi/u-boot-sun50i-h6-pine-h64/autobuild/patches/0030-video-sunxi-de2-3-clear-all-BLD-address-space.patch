@@ -1,0 +1,64 @@
+From 79405999d7ee43f830825751b200d739b53f20f5 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Sat, 4 Aug 2018 23:06:26 +0800
+Subject: [PATCH 30/32] video: sunxi: de2/3: clear all BLD address space
+
+Clear all the BLD address space, to prevent problem raised by
+uninitalized undefined registers.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm/include/asm/arch-sunxi/display2.h | 2 ++
+ drivers/video/sunxi/sunxi_de2.c            | 2 +-
+ drivers/video/sunxi/sunxi_de3.c            | 2 +-
+ 3 files changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/include/asm/arch-sunxi/display2.h b/arch/arm/include/asm/arch-sunxi/display2.h
+index 6796c3c840..5855f56be2 100644
+--- a/arch/arm/include/asm/arch-sunxi/display2.h
++++ b/arch/arm/include/asm/arch-sunxi/display2.h
+@@ -119,6 +119,7 @@ struct de_csc {
+ 
+ #define SUNXI_DE2_MUX_GLB_REGS			0x00000
+ #define SUNXI_DE2_MUX_BLD_REGS			0x00800
++#define SUNXI_DE2_MUX_BLD_SZ			0x800
+ #define SUNXI_DE2_MUX_CHAN_REGS			0x01000
+ #define SUNXI_DE2_MUX_CHAN_SZ			0x800
+ #define SUNXI_DE2_MUX_VSU_REGS			0x20000
+@@ -131,6 +132,7 @@ struct de_csc {
+ 
+ #define SUNXI_DE2_MUX_GLB_REGS			0x00000
+ #define SUNXI_DE2_MUX_BLD_REGS			0x01000
++#define SUNXI_DE2_MUX_BLD_SZ			0x1000
+ #define SUNXI_DE2_MUX_CHAN_REGS			0x02000
+ #define SUNXI_DE2_MUX_CHAN_SZ			0x1000
+ #define SUNXI_DE2_MUX_VSU_REGS			0x20000
+diff --git a/drivers/video/sunxi/sunxi_de2.c b/drivers/video/sunxi/sunxi_de2.c
+index 8333ddc44c..853b20b7a2 100644
+--- a/drivers/video/sunxi/sunxi_de2.c
++++ b/drivers/video/sunxi/sunxi_de2.c
+@@ -104,7 +104,7 @@ static void sunxi_de2_mode_set(int mux, const struct display_timing *mode,
+ 		memset(ch, 0, (channel == 0) ?
+ 			sizeof(struct de_vi) : sizeof(struct de_ui));
+ 	}
+-	memset(de_bld_regs, 0, sizeof(struct de_bld));
++	memset(de_bld_regs, 0, SUNXI_DE2_MUX_BLD_SZ);
+ 
+ 	writel(0x00000101, &de_bld_regs->fcolor_ctl);
+ 
+diff --git a/drivers/video/sunxi/sunxi_de3.c b/drivers/video/sunxi/sunxi_de3.c
+index 6b3f975e4b..59067e645d 100644
+--- a/drivers/video/sunxi/sunxi_de3.c
++++ b/drivers/video/sunxi/sunxi_de3.c
+@@ -100,7 +100,7 @@ static void sunxi_de3_mode_set(int mux, const struct display_timing *mode,
+ 				    SUNXI_DE2_MUX_CHAN_SZ * channel);
+ 		memset(ch, 0, SUNXI_DE2_MUX_CHAN_SZ);
+ 	}
+-	memset(de_bld_regs, 0, sizeof(struct de_bld));
++	memset(de_bld_regs, 0, SUNXI_DE2_MUX_BLD_SZ);
+ 
+ 	writel(0x00000101, &de_bld_regs->fcolor_ctl);
+ 
+-- 
+2.18.0
+

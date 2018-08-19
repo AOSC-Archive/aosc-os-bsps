@@ -1,0 +1,161 @@
+From 4235048e7328fa15277297cc6bd4844f13f7466a Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Sat, 21 Jul 2018 17:04:41 +0800
+Subject: [PATCH 23/32] sunxi: h6: add display-related clock code
+
+Add PLL3 and TCON/HDMI clock support to the Allwinner H6 clock code, in
+order to prepare for support for display.
+
+This is original work by Jernej Skrabec and reworked by me.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ .../include/asm/arch-sunxi/clock_sun50i_h6.h  | 59 +++++++++++++++++++
+ arch/arm/mach-sunxi/clock_sun50i_h6.c         | 38 ++++++++++++
+ 2 files changed, 97 insertions(+)
+
+diff --git a/arch/arm/include/asm/arch-sunxi/clock_sun50i_h6.h b/arch/arm/include/asm/arch-sunxi/clock_sun50i_h6.h
+index e36937059b..6c467747cf 100644
+--- a/arch/arm/include/asm/arch-sunxi/clock_sun50i_h6.h
++++ b/arch/arm/include/asm/arch-sunxi/clock_sun50i_h6.h
+@@ -230,6 +230,17 @@ struct sunxi_ccm_reg {
+ #define CCM_PLL1_CTRL_P(p)		((p) << 16)
+ #define CCM_PLL1_CTRL_N(n)		((n) << 8)
+ 
++/* pll3 bit field */
++#define CCM_PLL3_CTRL_M_SHIFT		1
++#define CCM_PLL3_CTRL_M_MASK		(0x1 << CCM_PLL3_CTRL_M_SHIFT)
++#define CCM_PLL3_CTRL_M(n)		((((n) - 1) & 0x1) << 1)
++#define CCM_PLL3_CTRL_N_SHIFT		8
++#define CCM_PLL3_CTRL_N_MASK		(0xff << CCM_PLL3_CTRL_N_SHIFT)
++#define CCM_PLL3_CTRL_N(n)		((((n) - 1) & 0xff) << 8)
++#define CCM_PLL3_CTRL_LOCK_EN		(0x1 << 29)
++#define CCM_PLL3_CTRL_LOCK		(0x1 << 28)
++#define CCM_PLL3_CTRL_EN		(0x1 << 31)
++
+ /* pll5 bit field */
+ #define CCM_PLL5_CTRL_EN		BIT(31)
+ #define CCM_PLL5_LOCK_EN		BIT(29)
+@@ -250,6 +261,18 @@ struct sunxi_ccm_reg {
+ #define CCM_PLL6_CTRL_DIV2_MASK		(0x1 << CCM_PLL6_CTRL_DIV2_SHIFT)
+ #define CCM_PLL6_DEFAULT		0xa0006300
+ 
++/* pll10 bit field */
++#define CCM_PLL10_CTRL_EN		BIT(31)
++#define CCM_PLL10_LOCK_EN		BIT(29)
++#define CCM_PLL10_LOCK			BIT(28)
++#define CCM_PLL10_CTRL_N_SHIFT		8
++#define CCM_PLL10_CTRL_N_MASK		(0xff << CCM_PLL10_CTRL_N_SHIFT)
++#define CCM_PLL10_CTRL_DIV1_SHIFT	0
++#define CCM_PLL10_CTRL_DIV1_MASK	(0x1 << CCM_PLL10_CTRL_DIV1_SHIFT)
++#define CCM_PLL10_CTRL_DIV2_SHIFT	1
++#define CCM_PLL10_CTRL_DIV2_MASK	(0x1 << CCM_PLL10_CTRL_DIV2_SHIFT)
++#define CCM_PLL10_DEFAULT		0xa0002301 /* 432MHz */
++
+ /* cpu_axi bit field*/
+ #define CCM_CPU_AXI_MUX_MASK		(0x3 << 24)
+ #define CCM_CPU_AXI_MUX_OSC24M		(0x0 << 24)
+@@ -294,6 +317,12 @@ struct sunxi_ccm_reg {
+ /* Module gate/reset shift*/
+ #define RESET_SHIFT			(16)
+ 
++/* DE clock bit field */
++#define CCM_DE_CTRL_ENABLE		BIT(31)
++#define CCM_DE_CTRL_PLL10		(0x0 << 24)
++#define CCM_DE_CTRL_PLL6X2		(0x1 << 24)
++#define CCM_DE_CTRL_M(x)		((x) - 1)
++
+ /* DRAM clock bit field */
+ #define DRAM_MOD_RESET			BIT(30)
+ #define DRAM_CLK_UPDATE			BIT(27)
+@@ -312,8 +341,38 @@ struct sunxi_ccm_reg {
+ #define CCM_MMC_CTRL_OCLK_DLY(a)	((void) (a), 0)
+ #define CCM_MMC_CTRL_SCLK_DLY(a)	((void) (a), 0)
+ 
++#define CCM_HDMI_CTRL_M(n)		((((n) - 1) & 0xf) << 0)
++#define CCM_HDMI_CTRL_PLL_MASK		(3 << 24)
++#define CCM_HDMI_CTRL_PLL3		(0 << 24)
++#define CCM_HDMI_CTRL_PLL_VIDEO1	(1 << 24)
++#define CCM_HDMI_CTRL_PLL_VIDEO1_4X	(2 << 24)
++#define CCM_HDMI_CTRL_GATE		(0x1 << 31)
++
++#define CCM_HDMI_SLOW_CTRL_GATE		(0x1 << 31)
++
++#define CCM_HDMI_BUS_CTRL_GATE		(0x1 << 0)
++#define CCM_HDMI_BUS_CTRL_RST0		(0x1 << 16)
++#define CCM_HDMI_BUS_CTRL_RST1		(0x1 << 17)
++
++#define CCM_LCD_TOP_CTRL_RST		(0x1 << 16)
++#define CCM_LCD_TOP_CTRL_GATE		(0x1 << 0)
++
++#define CCM_LCD0_CTRL_GATE		(0x1 << 31)
++#define CCM_LCD0_CTRL_PLL_MASK		(0x7 << 24)
++#define CCM_LCD0_CTRL_PLL_VIDEO0	(0x0 << 24)
++#define CCM_LCD0_CTRL_PLL_VIDEO0_4X	(0x1 << 24)
++#define CCM_LCD0_CTRL_PLL_VIDEO1	(0x2 << 24)
++#define CCM_LCD0_CTRL_PLL_VIDEO1_4X	(0x3 << 24)
++#define CCM_LCD0_CTRL_M(n)		((((n) - 1) & 0xf) << 0)
++
++#define CCM_TCON_TV_BGR_CTRL_RST	(0x1 << 16)
++#define CCM_TCON_TV_BGR_CTRL_GATE	(0x1 << 0)
++
+ #ifndef __ASSEMBLY__
+ void clock_set_pll1(unsigned int hz);
++void clock_set_pll3(unsigned int clk);
++void clock_set_pll3_factors(int m, int n);
++unsigned int clock_get_pll3(void);
+ unsigned int clock_get_pll6(void);
+ #endif
+ 
+diff --git a/arch/arm/mach-sunxi/clock_sun50i_h6.c b/arch/arm/mach-sunxi/clock_sun50i_h6.c
+index ba8a26eb0d..02c3c34f6e 100644
+--- a/arch/arm/mach-sunxi/clock_sun50i_h6.c
++++ b/arch/arm/mach-sunxi/clock_sun50i_h6.c
+@@ -78,6 +78,44 @@ void clock_set_pll1(unsigned int clk)
+ }
+ #endif
+ 
++void clock_set_pll3(unsigned int clk)
++{
++	struct sunxi_ccm_reg * const ccm =
++		(struct sunxi_ccm_reg *)SUNXI_CCM_BASE;
++	const int m = 1; /* 3 MHz steps just like sun4i, sun5i and sun7i */
++
++	if (clk == 0) {
++		clrbits_le32(&ccm->pll3_cfg, CCM_PLL3_CTRL_EN);
++		return;
++	}
++
++	/* PLL rate = 24000000 * n / m / 4 */
++	writel(CCM_PLL3_CTRL_EN | CCM_PLL3_CTRL_N(clk / (24000000 / 4 / m)) |
++	       CCM_PLL3_CTRL_M(m), &ccm->pll3_cfg);
++}
++
++void clock_set_pll3_factors(int m, int n)
++{
++	struct sunxi_ccm_reg * const ccm =
++		(struct sunxi_ccm_reg *)SUNXI_CCM_BASE;
++
++	/* PLL rate = 6000000 * n / m */
++	writel(CCM_PLL3_CTRL_EN | CCM_PLL3_CTRL_N(n) |
++	       CCM_PLL3_CTRL_M(m), &ccm->pll3_cfg);
++}
++
++unsigned int clock_get_pll3(void)
++{
++	struct sunxi_ccm_reg *const ccm =
++		(struct sunxi_ccm_reg *)SUNXI_CCM_BASE;
++	uint32_t rval = readl(&ccm->pll3_cfg);
++	int n = ((rval & CCM_PLL3_CTRL_N_MASK) >> CCM_PLL3_CTRL_N_SHIFT) + 1;
++	int m = ((rval & CCM_PLL3_CTRL_M_MASK) >> CCM_PLL3_CTRL_M_SHIFT) + 1;
++
++	/* Multiply by 1000 after dividing by m to avoid integer overflows */
++	return (6000 * n / m) * 1000;
++}
++
+ unsigned int clock_get_pll6(void)
+ {
+ 	struct sunxi_ccm_reg *const ccm =
+-- 
+2.18.0
+

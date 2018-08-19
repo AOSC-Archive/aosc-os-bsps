@@ -1,0 +1,51 @@
+From 0a21fdd62be117ea781d37805ec569037f2fa6c3 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Sat, 21 Jul 2018 16:20:23 +0800
+Subject: [PATCH 05/32] sunxi: change ATF position for H6
+
+H6 has different SRAM A2 address, so the ATF load address is also
+different.
+
+Add judgment code to sunxi 64-bit FIT generation script. It will judge
+the SoC by the device tree's name.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+Reviewed-by: Andre Przywara <andre.przywara@arm.com>
+Acked-by: Maxime Ripard <maxime.ripard@bootlin.com>
+Reviewed-by: Jagan Teki <jagan@openedev.com>
+Tested-by: Jagan Teki <jagan@amarulasolutions.com>
+---
+ board/sunxi/mksunxi_fit_atf.sh | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/board/sunxi/mksunxi_fit_atf.sh b/board/sunxi/mksunxi_fit_atf.sh
+index 36abe9efed..88ad719747 100755
+--- a/board/sunxi/mksunxi_fit_atf.sh
++++ b/board/sunxi/mksunxi_fit_atf.sh
+@@ -13,6 +13,12 @@ if [ ! -f $BL31 ]; then
+ 	BL31=/dev/null
+ fi
+ 
++if grep -q "^CONFIG_MACH_SUN50I_H6=y" .config; then
++	BL31_ADDR=0x104000
++else
++	BL31_ADDR=0x44000
++fi
++
+ cat << __HEADER_EOF
+ /dts-v1/;
+ 
+@@ -35,8 +41,8 @@ cat << __HEADER_EOF
+ 			type = "firmware";
+ 			arch = "arm64";
+ 			compression = "none";
+-			load = <0x44000>;
+-			entry = <0x44000>;
++			load = <$BL31_ADDR>;
++			entry = <$BL31_ADDR>;
+ 		};
+ __HEADER_EOF
+ 
+-- 
+2.18.0
+

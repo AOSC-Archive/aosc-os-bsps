@@ -1,0 +1,40 @@
+From 69aa1b234e14503a95f43e33f0b3d4174f350bd2 Mon Sep 17 00:00:00 2001
+From: Jagan Teki <jagan@amarulasolutions.com>
+Date: Fri, 20 Jul 2018 12:34:22 +0530
+Subject: [PATCH 18/32] phy: sun4i-usb: Update PHY#3 rst_mask only for H3_H5
+
+Only H3 and H5 have 4 PHYS so restrict rst_mask only for them
+by checking PHY id as 3 and update the proper bits.
+
+Signed-off-by: Jagan Teki <jagan@amarulasolutions.com>
+Tested-by: Jagan Teki <jagan@amarulasolutions.com>
+---
+ drivers/phy/allwinner/phy-sun4i-usb.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/phy/allwinner/phy-sun4i-usb.c b/drivers/phy/allwinner/phy-sun4i-usb.c
+index 3096f12c1c..a7d7e3f044 100644
+--- a/drivers/phy/allwinner/phy-sun4i-usb.c
++++ b/drivers/phy/allwinner/phy-sun4i-usb.c
+@@ -117,9 +117,6 @@ struct sun4i_usb_phy_info {
+ 		.gpio_vbus = CONFIG_USB3_VBUS_PIN,
+ 		.gpio_vbus_det = NULL,
+ 		.gpio_id_det = NULL,
+-#ifdef CONFIG_MACH_SUN6I
+-		.rst_mask = (CCM_USB_CTRL_PHY3_RST | CCM_USB_CTRL_PHY3_CLK),
+-#endif
+ 	},
+ };
+ 
+@@ -460,6 +457,8 @@ static int sun4i_usb_phy_probe(struct udevice *dev)
+ 
+ 		phy->id = i;
+ 		phy->rst_mask = info->rst_mask;
++		if ((data->cfg->type == sun8i_h3_phy) && (phy->id == 3))
++			phy->rst_mask = (BIT(3) | BIT(11));
+ 	};
+ 
+ 	debug("Allwinner Sun4I USB PHY driver loaded\n");
+-- 
+2.18.0
+

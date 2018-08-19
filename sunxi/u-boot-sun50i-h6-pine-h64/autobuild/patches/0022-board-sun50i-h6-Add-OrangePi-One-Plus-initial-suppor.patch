@@ -1,0 +1,235 @@
+From 89a897fc4d78e31332e5899e977d8bf3c82abafa Mon Sep 17 00:00:00 2001
+From: Jagan Teki <jagan@amarulasolutions.com>
+Date: Sun, 29 Jul 2018 00:03:31 +0530
+Subject: [PATCH 22/32] board: sun50i: h6: Add OrangePi One Plus initial
+ support
+
+OrangePi One Plus is Allwinner H6 based open-source SBC,
+which support:
+- Allwinner H6 Quad-core 64-bit ARM Cortex-A53
+- GPU Mali-T720
+- 1GB LPDDR3 RAM
+- AXP805 PMIC
+- 1Gbps GMAC via RTL8211
+- USB 2.0 Host, OTG
+- HDMI port
+- 5V/2A DC power supply
+
+Signed-off-by: Jagan Teki <jagan@amarulasolutions.com>
+Acked-by: Maxime Ripard <maxime.ripard@bootlin.com>
+---
+ arch/arm/dts/Makefile                        |   1 +
+ arch/arm/dts/sun50i-h6-orangepi-one-plus.dts | 150 +++++++++++++++++++
+ board/sunxi/MAINTAINERS                      |   5 +
+ configs/orangepi_one_plus_defconfig          |  14 ++
+ 4 files changed, 170 insertions(+)
+ create mode 100644 arch/arm/dts/sun50i-h6-orangepi-one-plus.dts
+ create mode 100644 configs/orangepi_one_plus_defconfig
+
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index 791ae01132..89032bb545 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -391,6 +391,7 @@ dtb-$(CONFIG_MACH_SUN50I_H5) += \
+ 	sun50i-h5-orangepi-prime.dtb \
+ 	sun50i-h5-orangepi-zero-plus2.dtb
+ dtb-$(CONFIG_MACH_SUN50I_H6) += \
++	sun50i-h6-orangepi-one-plus.dtb \
+ 	sun50i-h6-pine-h64.dtb
+ dtb-$(CONFIG_MACH_SUN50I) += \
+ 	sun50i-a64-amarula-relic.dtb \
+diff --git a/arch/arm/dts/sun50i-h6-orangepi-one-plus.dts b/arch/arm/dts/sun50i-h6-orangepi-one-plus.dts
+new file mode 100644
+index 0000000000..0612c19cd9
+--- /dev/null
++++ b/arch/arm/dts/sun50i-h6-orangepi-one-plus.dts
+@@ -0,0 +1,150 @@
++// SPDX-License-Identifier: (GPL-2.0+ or MIT)
++/*
++ * Copyright (C) 2018 Amarula Solutions
++ * Author: Jagan Teki <jagan@amarulasolutions.com>
++ */
++
++/dts-v1/;
++
++#include "sun50i-h6.dtsi"
++
++#include <dt-bindings/gpio/gpio.h>
++
++/ {
++	model = "OrangePi One Plus";
++	compatible = "xunlong,orangepi-one-plus", "allwinner,sun50i-h6";
++
++	aliases {
++		serial0 = &uart0;
++	};
++
++	chosen {
++		stdout-path = "serial0:115200n8";
++	};
++};
++
++&mmc0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&mmc0_pins>;
++	vmmc-supply = <&reg_cldo1>;
++	cd-gpios = <&pio 5 6 GPIO_ACTIVE_LOW>;
++	bus-width = <4>;
++	status = "okay";
++};
++
++&r_i2c {
++	status = "okay";
++
++	axp805: pmic@36 {
++		compatible = "x-powers,axp805", "x-powers,axp806";
++		reg = <0x36>;
++		interrupt-parent = <&r_intc>;
++		interrupts = <0 IRQ_TYPE_LEVEL_LOW>;
++		interrupt-controller;
++		#interrupt-cells = <1>;
++		x-powers,self-working-mode;
++
++		regulators {
++			reg_aldo1: aldo1 {
++				regulator-always-on;
++				regulator-min-microvolt = <3300000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-name = "vcc-pl";
++			};
++
++			reg_aldo2: aldo2 {
++				regulator-min-microvolt = <3300000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-name = "vcc-ac200";
++			};
++
++			reg_aldo3: aldo3 {
++				regulator-always-on;
++				regulator-min-microvolt = <3300000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-name = "vcc25-dram";
++			};
++
++			reg_bldo1: bldo1 {
++				regulator-always-on;
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <1800000>;
++				regulator-name = "vcc-bias-pll";
++			};
++
++			reg_bldo2: bldo2 {
++				regulator-always-on;
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <1800000>;
++				regulator-name = "vcc-efuse-pcie-hdmi-io";
++			};
++
++			reg_bldo3: bldo3 {
++				regulator-always-on;
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <1800000>;
++				regulator-name = "vcc-dcxoio";
++			};
++
++			bldo4 {
++				/* unused */
++			};
++
++			reg_cldo1: cldo1 {
++				regulator-always-on;
++				regulator-min-microvolt = <3300000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-name = "vcc-3v3";
++			};
++
++			reg_cldo2: cldo2 {
++				regulator-min-microvolt = <3300000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-name = "vcc-wifi-1";
++			};
++
++			reg_cldo3: cldo3 {
++				regulator-min-microvolt = <3300000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-name = "vcc-wifi-2";
++			};
++
++			reg_dcdca: dcdca {
++				regulator-always-on;
++				regulator-min-microvolt = <810000>;
++				regulator-max-microvolt = <1080000>;
++				regulator-name = "vdd-cpu";
++			};
++
++			reg_dcdcc: dcdcc {
++				regulator-min-microvolt = <810000>;
++				regulator-max-microvolt = <1080000>;
++				regulator-name = "vdd-gpu";
++			};
++
++			reg_dcdcd: dcdcd {
++				regulator-always-on;
++				regulator-min-microvolt = <960000>;
++				regulator-max-microvolt = <960000>;
++				regulator-name = "vdd-sys";
++			};
++
++			reg_dcdce: dcdce {
++				regulator-always-on;
++				regulator-min-microvolt = <1200000>;
++				regulator-max-microvolt = <1200000>;
++				regulator-name = "vcc-dram";
++			};
++
++			sw {
++				/* unused */
++			};
++		};
++	};
++};
++
++&uart0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&uart0_ph_pins>;
++	status = "okay";
++};
+diff --git a/board/sunxi/MAINTAINERS b/board/sunxi/MAINTAINERS
+index 8468227c2a..2f95976445 100644
+--- a/board/sunxi/MAINTAINERS
++++ b/board/sunxi/MAINTAINERS
+@@ -330,6 +330,11 @@ S:	Maintained
+ F:	configs/A20-Olimex-SOM204-EVB_defconfig
+ F:	configs/A20-Olimex-SOM204-EVB-eMMC_defconfig
+ 
++ORANGEPI ONE PLUS BOARD
++M:	Jagan Teki <jagan@amarulasolutions.com>
++S:	Maintained
++F:	configs/orangepi_one_plus_defconfig
++
+ ORANGEPI WIN/WIN PLUS BOARD
+ M:	Jagan Teki <jagan@amarulasolutions.com>
+ S:	Maintained
+diff --git a/configs/orangepi_one_plus_defconfig b/configs/orangepi_one_plus_defconfig
+new file mode 100644
+index 0000000000..48bc6e54ee
+--- /dev/null
++++ b/configs/orangepi_one_plus_defconfig
+@@ -0,0 +1,14 @@
++CONFIG_ARM=y
++CONFIG_ARCH_SUNXI=y
++CONFIG_MACH_SUN50I_H6=y
++CONFIG_DRAM_ODT_EN=y
++CONFIG_MMC0_CD_PIN="PF6"
++# CONFIG_PSCI_RESET is not set
++CONFIG_DEFAULT_DEVICE_TREE="sun50i-h6-orangepi-one-plus"
++# CONFIG_SYS_MALLOC_CLEAR_ON_INIT is not set
++CONFIG_SPL=y
++# CONFIG_CMD_FLASH is not set
++# CONFIG_CMD_FPGA is not set
++# CONFIG_SPL_DOS_PARTITION is not set
++# CONFIG_SPL_ISO_PARTITION is not set
++# CONFIG_SPL_EFI_PARTITION is not set
+-- 
+2.18.0
+

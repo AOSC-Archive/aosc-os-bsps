@@ -1,0 +1,36 @@
+From 850bdafa503e2045a8e931ce601fd71dc33157cf Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Myl=C3=A8ne=20Josserand?= <mylene.josserand@bootlin.com>
+Date: Fri, 13 Jul 2018 18:10:24 +0200
+Subject: [PATCH 21/32] mtd: nand: sunxi: Return on set_feature only when not
+ ENOTSUPP
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Return the error code of the set_features function only if
+the error code is not ENOTSUPP. Otherwise, if this function
+is not supported, it will return and fail to initialize the
+NAND.
+
+Signed-off-by: Mylène Josserand <mylene.josserand@bootlin.com>
+Acked-by: Jagan Teki <jagan@openedev.com>
+---
+ drivers/mtd/nand/sunxi_nand.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/mtd/nand/sunxi_nand.c b/drivers/mtd/nand/sunxi_nand.c
+index bb87aca698..3ccb168d13 100644
+--- a/drivers/mtd/nand/sunxi_nand.c
++++ b/drivers/mtd/nand/sunxi_nand.c
+@@ -1369,7 +1369,7 @@ static int sunxi_nand_chip_init_timings(struct sunxi_nand_chip *chip)
+ 						ONFI_FEATURE_ADDR_TIMING_MODE,
+ 						feature);
+ 			chip->nand.select_chip(mtd, -1);
+-			if (ret)
++			if (ret && ret != -ENOTSUPP)
+ 				return ret;
+ 		}
+ 	}
+-- 
+2.18.0
+
