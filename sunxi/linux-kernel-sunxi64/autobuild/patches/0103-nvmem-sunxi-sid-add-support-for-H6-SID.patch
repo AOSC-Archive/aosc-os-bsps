@@ -1,0 +1,54 @@
+From 80182a326b82598ae3c6e4c3b3a82be528b3fd91 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Fri, 27 Jul 2018 16:22:01 +0800
+Subject: [PATCH 103/139] nvmem: sunxi-sid: add support for H6 SID
+
+The SID controller in Allwinner H6 SoC is similar to the one in
+Allwinner A64, except the size of the eFUSE is enlarged to 512 bytes
+(4Kbit).
+
+Add support for it.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ .../devicetree/bindings/nvmem/allwinner,sunxi-sid.txt       | 1 +
+ drivers/nvmem/sunxi_sid.c                                   | 6 ++++++
+ 2 files changed, 7 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/nvmem/allwinner,sunxi-sid.txt b/Documentation/devicetree/bindings/nvmem/allwinner,sunxi-sid.txt
+index e319fe5e205a..332de580e321 100644
+--- a/Documentation/devicetree/bindings/nvmem/allwinner,sunxi-sid.txt
++++ b/Documentation/devicetree/bindings/nvmem/allwinner,sunxi-sid.txt
+@@ -7,6 +7,7 @@ Required properties:
+   "allwinner,sun8i-a83t-sid"
+   "allwinner,sun8i-h3-sid"
+   "allwinner,sun50i-a64-sid"
++  "allwinner,sun50i-h6-sid"
+ 
+ - reg: Should contain registers location and length
+ 
+diff --git a/drivers/nvmem/sunxi_sid.c b/drivers/nvmem/sunxi_sid.c
+index d020f89248fd..fa58c3574afa 100644
+--- a/drivers/nvmem/sunxi_sid.c
++++ b/drivers/nvmem/sunxi_sid.c
+@@ -232,11 +232,17 @@ static const struct sunxi_sid_cfg sun50i_a64_cfg = {
+ 	.size = 0x100,
+ };
+ 
++static const struct sunxi_sid_cfg sun50i_h6_cfg = {
++	.value_offset = 0x200,
++	.size = 0x200,
++};
++
+ static const struct of_device_id sunxi_sid_of_match[] = {
+ 	{ .compatible = "allwinner,sun4i-a10-sid", .data = &sun4i_a10_cfg },
+ 	{ .compatible = "allwinner,sun7i-a20-sid", .data = &sun7i_a20_cfg },
+ 	{ .compatible = "allwinner,sun8i-h3-sid", .data = &sun8i_h3_cfg },
+ 	{ .compatible = "allwinner,sun50i-a64-sid", .data = &sun50i_a64_cfg },
++	{ .compatible = "allwinner,sun50i-h6-sid", .data = &sun50i_h6_cfg },
+ 	{/* sentinel */},
+ };
+ MODULE_DEVICE_TABLE(of, sunxi_sid_of_match);
+-- 
+2.18.0
+
