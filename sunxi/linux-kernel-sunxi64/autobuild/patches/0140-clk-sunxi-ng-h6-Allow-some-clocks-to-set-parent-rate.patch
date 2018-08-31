@@ -1,0 +1,40 @@
+From 8e8a9416e5f861187fd9e017d5abf7ab81fa2559 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Fri, 31 Aug 2018 18:09:24 +0800
+Subject: [PATCH] clk: sunxi-ng: h6: Allow some clocks to set parent rate
+
+Some units have to be able to set it's own clock precisely to work
+correctly. Allow them to do so by adding CLK_SET_RATE_PARENT flag.
+
+Add this flag to TCON and HDMI clocks.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ drivers/clk/sunxi-ng/ccu-sun50i-h6.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/clk/sunxi-ng/ccu-sun50i-h6.c b/drivers/clk/sunxi-ng/ccu-sun50i-h6.c
+index 37d0dd320de2..0a121aec8e42 100644
+--- a/drivers/clk/sunxi-ng/ccu-sun50i-h6.c
++++ b/drivers/clk/sunxi-ng/ccu-sun50i-h6.c
+@@ -648,7 +648,7 @@ static SUNXI_CCU_M_WITH_MUX_GATE(hdmi_clk, "hdmi", hdmi_parents, 0xb00,
+ 				 0, 4,		/* M */
+ 				 24, 2,		/* mux */
+ 				 BIT(31),	/* gate */
+-				 0);
++				 CLK_SET_RATE_PARENT);
+ 
+ static SUNXI_CCU_GATE(hdmi_slow_clk, "hdmi-slow", "osc24M", 0xb04, BIT(31), 0);
+ 
+@@ -704,7 +704,7 @@ static SUNXI_CCU_MP_WITH_MUX_GATE(tcon_tv0_clk, "tcon-tv0",
+ 				  8, 2,		/* P */
+ 				  24, 3,	/* mux */
+ 				  BIT(31),	/* gate */
+-				  0);
++				  CLK_SET_RATE_PARENT);
+ 
+ static SUNXI_CCU_GATE(bus_tcon_tv0_clk, "bus-tcon-tv0", "ahb3",
+ 		      0xb9c, BIT(0), 0);
+-- 
+2.18.0
+
