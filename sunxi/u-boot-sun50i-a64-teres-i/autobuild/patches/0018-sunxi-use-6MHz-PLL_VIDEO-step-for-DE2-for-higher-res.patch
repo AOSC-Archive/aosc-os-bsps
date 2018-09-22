@@ -1,0 +1,110 @@
+From 9533bb9d6b2052c3c4e88ce43b633f6ec67f324e Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Sat, 22 Sep 2018 20:27:36 +0800
+Subject: [PATCH 18/18] sunxi: use 6MHz PLL_VIDEO step for DE2 for higher
+ resolution LCD
+
+DE2 SoCs can support LCDs up to 1080p (e.g. A64), and 3MHz step won't
+let PLL_VIDEO be high enough for them.
+
+Use 6MHz step for PLL_VIDEO when using DE2, to satisfy 1080p LCD.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm/mach-sunxi/clock_sun6i.c |  4 ++++
+ drivers/video/sunxi/lcdc.c        | 28 +++++++++++++++++-----------
+ 2 files changed, 21 insertions(+), 11 deletions(-)
+
+diff --git a/arch/arm/mach-sunxi/clock_sun6i.c b/arch/arm/mach-sunxi/clock_sun6i.c
+index 82f6f7f8e3..1628f3a7b6 100644
+--- a/arch/arm/mach-sunxi/clock_sun6i.c
++++ b/arch/arm/mach-sunxi/clock_sun6i.c
+@@ -149,7 +149,11 @@ void clock_set_pll3(unsigned int clk)
+ {
+ 	struct sunxi_ccm_reg * const ccm =
+ 		(struct sunxi_ccm_reg *)SUNXI_CCM_BASE;
++#ifdef CONFIG_SUNXI_DE2
++	const int m = 4; /* 6 MHz steps to allow higher frequency for DE2 */
++#else
+ 	const int m = 8; /* 3 MHz steps just like sun4i, sun5i and sun7i */
++#endif
+ 
+ 	if (clk == 0) {
+ 		clrbits_le32(&ccm->pll3_cfg, CCM_PLL3_CTRL_EN);
+diff --git a/drivers/video/sunxi/lcdc.c b/drivers/video/sunxi/lcdc.c
+index 9f4a738c63..786e51e63b 100644
+--- a/drivers/video/sunxi/lcdc.c
++++ b/drivers/video/sunxi/lcdc.c
+@@ -211,11 +211,17 @@ void lcdc_tcon1_mode_set(struct sunxi_lcdc_reg * const lcdc,
+ void lcdc_pll_set(struct sunxi_ccm_reg *ccm, int tcon, int dotclock,
+ 		  int *clk_div, int *clk_double, bool is_composite)
+ {
+-	int value, n, m, min_m, max_m, diff;
++	int value, n, m, min_m, max_m, diff, step;
+ 	int best_n = 0, best_m = 0, best_diff = 0x0FFFFFFF;
+ 	int best_double = 0;
+ 	bool use_mipi_pll = false;
+ 
++#ifdef CONFIG_SUNXI_DE2
++	step = 6000;
++#else
++	step = 3000;
++#endif
++
+ 	if (tcon == 0) {
+ #ifdef CONFIG_VIDEO_LCD_IF_PARALLEL
+ 		min_m = 6;
+@@ -241,10 +247,10 @@ void lcdc_pll_set(struct sunxi_ccm_reg *ccm, int tcon, int dotclock,
+ 	 */
+ 	for (m = min_m; m <= max_m; m++) {
+ #ifndef CONFIG_SUNXI_DE2
+-		n = (m * dotclock) / 3000;
++		n = (m * dotclock) / step;
+ 
+ 		if ((n >= 9) && (n <= 127)) {
+-			value = (3000 * n) / m;
++			value = (step * n) / m;
+ 			diff = dotclock - value;
+ 			if (diff < best_diff) {
+ 				best_diff = diff;
+@@ -260,9 +266,9 @@ void lcdc_pll_set(struct sunxi_ccm_reg *ccm, int tcon, int dotclock,
+ #endif
+ 
+ 		/* No double clock on DE2 */
+-		n = (m * dotclock) / 6000;
++		n = (m * dotclock) / (step * 2);
+ 		if ((n >= 9) && (n <= 127)) {
+-			value = (6000 * n) / m;
++			value = (step * 2 * n) / m;
+ 			diff = dotclock - value;
+ 			if (diff < best_diff) {
+ 				best_diff = diff;
+@@ -292,19 +298,19 @@ void lcdc_pll_set(struct sunxi_ccm_reg *ccm, int tcon, int dotclock,
+ #endif
+ 	{
+ #ifdef CONFIG_SUNXI_DE2
+-		if ((best_n * 3000) < 192000) {
+-			clock_set_pll3_factors(4, best_n);
++		if ((best_n * step) < 192000) {
++			clock_set_pll3_factors(2, best_n);
+ 			best_m *= 2;
+ 		} else {
+-			clock_set_pll3(best_n * 3000000);
++			clock_set_pll3(best_n * step * 1000);
+ 		}
+ #else
+-		clock_set_pll3(best_n * 3000000);
++		clock_set_pll3(best_n * step * 1000);
+ #endif
+-		debug("dotclock: %dkHz = %dkHz: (%d * 3MHz * %d) / %d\n",
++		debug("dotclock: %dkHz = %dkHz: (%d * %dkHz * %d) / %d\n",
+ 		      dotclock,
+ 		      (best_double + 1) * clock_get_pll3() / best_m / 1000,
+-		      best_double + 1, best_n, best_m);
++		      best_double + 1, step, best_n, best_m);
+ 	}
+ 
+ 	if (tcon == 0) {
+-- 
+2.18.0
+
