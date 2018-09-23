@@ -1,0 +1,45 @@
+From 140b4e67c2e1269a945c5caacdcb0c0346ad4cef Mon Sep 17 00:00:00 2001
+From: Deepak Rawat <drawat@vmware.com>
+Date: Thu, 13 Sep 2018 12:44:13 +0200
+Subject: [PATCH 157/329] drm/vmwgfx: limit mode size for all display unit to
+ texture_max
+
+For all display units, limit mode size exposed to texture_max_width/
+height as this is the maximum framebuffer size that virtual device can
+create.
+
+Signed-off-by: Deepak Rawat <drawat@vmware.com>
+Reviewed-by: Sinclair Yeh <syeh@vmware.com>
+Reviewed-by: Thomas Hellstrom <thellstrom@vmware.com>
+Signed-off-by: Thomas Hellstrom <thellstrom@vmware.com>
+---
+ drivers/gpu/drm/vmwgfx/vmwgfx_kms.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+index 12a41b039167..6a712a8d59e9 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+@@ -2214,12 +2214,16 @@ int vmw_du_connector_fill_modes(struct drm_connector *connector,
+ 	if (dev_priv->assume_16bpp)
+ 		assumed_bpp = 2;
+ 
++	max_width  = min(max_width,  dev_priv->texture_max_width);
++	max_height = min(max_height, dev_priv->texture_max_height);
++
++	/*
++	 * For STDU extra limit for a mode on SVGA_REG_SCREENTARGET_MAX_WIDTH/
++	 * HEIGHT registers.
++	 */
+ 	if (dev_priv->active_display_unit == vmw_du_screen_target) {
+ 		max_width  = min(max_width,  dev_priv->stdu_max_width);
+-		max_width  = min(max_width,  dev_priv->texture_max_width);
+-
+ 		max_height = min(max_height, dev_priv->stdu_max_height);
+-		max_height = min(max_height, dev_priv->texture_max_height);
+ 	}
+ 
+ 	/* Add preferred mode */
+-- 
+2.18.0
+

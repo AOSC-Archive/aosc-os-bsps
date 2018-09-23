@@ -1,0 +1,32 @@
+From d84f1cff9028c00ee870f0293b0c7a3866071dfa Mon Sep 17 00:00:00 2001
+From: Drew Schmitt <dasch@google.com>
+Date: Mon, 20 Aug 2018 10:32:14 -0700
+Subject: [PATCH 151/329] KVM: x86: Turbo bits in MSR_PLATFORM_INFO
+
+Allow userspace to set turbo bits in MSR_PLATFORM_INFO. Previously, only
+the CPUID faulting bit was settable. But now any bit in
+MSR_PLATFORM_INFO would be settable. This can be used, for example, to
+convey frequency information about the platform on which the guest is
+running.
+
+Signed-off-by: Drew Schmitt <dasch@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ arch/x86/kvm/x86.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 5fea53cdc583..e127703e277e 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -2537,7 +2537,6 @@ int kvm_set_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 		break;
+ 	case MSR_PLATFORM_INFO:
+ 		if (!msr_info->host_initiated ||
+-		    data & ~MSR_PLATFORM_INFO_CPUID_FAULT ||
+ 		    (!(data & MSR_PLATFORM_INFO_CPUID_FAULT) &&
+ 		     cpuid_fault_enabled(vcpu)))
+ 			return 1;
+-- 
+2.18.0
+

@@ -1,0 +1,79 @@
+From a1ac5f0943019bfd76345fe05a42cbc400da685c Mon Sep 17 00:00:00 2001
+From: Weinan Li <weinan.z.li@intel.com>
+Date: Mon, 17 Sep 2018 09:46:14 +0800
+Subject: [PATCH 129/329] drm/i915/gvt: request srcu_read_lock before checking
+ if one gfn is valid
+
+Fix the suspicious RCU usage issue in intel_vgpu_emulate_mmio_write.
+Here need to request the srcu read lock of kvm->srcu before doing
+gfn_to_memslot(). The detailed log is as below:
+[  218.710688] =============================
+[  218.710690] WARNING: suspicious RCU usage
+[  218.710693] 4.14.15-dd+ #314 Tainted: G     U
+[  218.710695] -----------------------------
+[  218.710697] ./include/linux/kvm_host.h:575 suspicious rcu_dereference_check() usage!
+[  218.710699]
+               other info that might help us debug this:
+
+[  218.710702]
+               rcu_scheduler_active = 2, debug_locks = 1
+[  218.710704] 1 lock held by qemu-system-x86/2144:
+[  218.710706]  #0:  (&gvt->lock){+.+.}, at: [<ffffffff816a1eea>] intel_vgpu_emulate_mmio_write+0x5a/0x2d0
+[  218.710721]
+               stack backtrace:
+[  218.710724] CPU: 0 PID: 2144 Comm: qemu-system-x86 Tainted: G     U 4.14.15-dd+ #314
+[  218.710727] Hardware name: Dell Inc. OptiPlex 7040/0Y7WYT, BIOS 1.1.1 10/07/2015
+[  218.710729] Call Trace:
+[  218.710734]  dump_stack+0x7c/0xb3
+[  218.710739]  gfn_to_memslot+0x15f/0x170
+[  218.710743]  kvm_is_visible_gfn+0xa/0x30
+[  218.710746]  intel_vgpu_emulate_gtt_mmio_write+0x267/0x3c0
+[  218.710751]  ? __mutex_unlock_slowpath+0x3b/0x260
+[  218.710754]  intel_vgpu_emulate_mmio_write+0x182/0x2d0
+[  218.710759]  intel_vgpu_rw+0xba/0x170 [kvmgt]
+[  218.710763]  intel_vgpu_write+0x14d/0x1a0 [kvmgt]
+[  218.710767]  __vfs_write+0x23/0x130
+[  218.710770]  vfs_write+0xb0/0x1b0
+[  218.710774]  SyS_pwrite64+0x73/0x90
+[  218.710777]  entry_SYSCALL_64_fastpath+0x25/0x9c
+[  218.710780] RIP: 0033:0x7f33e8a91da3
+[  218.710783] RSP: 002b:00007f33dddc8700 EFLAGS: 00000293
+
+v2: add 'Fixes' tag, refine log format.(Zhenyu)
+Fixes: cc753fbe1ac4 ("drm/i915/gvt: validate gfn before set shadow page")
+Reviewed-by: Zhenyu Wang <zhenyuw@linux.intel.com>
+Signed-off-by: Weinan Li <weinan.z.li@intel.com>
+Signed-off-by: Zhenyu Wang <zhenyuw@linux.intel.com>
+---
+ drivers/gpu/drm/i915/gvt/kvmgt.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/i915/gvt/kvmgt.c b/drivers/gpu/drm/i915/gvt/kvmgt.c
+index c7afee37b2b8..9ad89e38f6c0 100644
+--- a/drivers/gpu/drm/i915/gvt/kvmgt.c
++++ b/drivers/gpu/drm/i915/gvt/kvmgt.c
+@@ -1833,6 +1833,8 @@ static bool kvmgt_is_valid_gfn(unsigned long handle, unsigned long gfn)
+ {
+ 	struct kvmgt_guest_info *info;
+ 	struct kvm *kvm;
++	int idx;
++	bool ret;
+ 
+ 	if (!handle_valid(handle))
+ 		return false;
+@@ -1840,8 +1842,11 @@ static bool kvmgt_is_valid_gfn(unsigned long handle, unsigned long gfn)
+ 	info = (struct kvmgt_guest_info *)handle;
+ 	kvm = info->kvm;
+ 
+-	return kvm_is_visible_gfn(kvm, gfn);
++	idx = srcu_read_lock(&kvm->srcu);
++	ret = kvm_is_visible_gfn(kvm, gfn);
++	srcu_read_unlock(&kvm->srcu, idx);
+ 
++	return ret;
+ }
+ 
+ struct intel_gvt_mpt kvmgt_mpt = {
+-- 
+2.18.0
+

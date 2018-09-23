@@ -1,0 +1,34 @@
+From be1277f5eb17a2e5788139eabb0b53dd04c695f3 Mon Sep 17 00:00:00 2001
+From: Hannes Reinecke <hare@suse.de>
+Date: Mon, 16 Jul 2018 12:58:33 +0200
+Subject: [PATCH 102/329] nvme: count all ANA groups for ANA Log page
+
+When issuing a short read on the ANA log page the number of groups
+should not change, even though the final returned data might contain
+less groups than that number.
+
+Signed-off-by: Hannes Reinecke <hare@suse.com>
+[switched to a for loop]
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+---
+ drivers/nvme/target/admin-cmd.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/nvme/target/admin-cmd.c b/drivers/nvme/target/admin-cmd.c
+index a21caea1e080..2008fa62a373 100644
+--- a/drivers/nvme/target/admin-cmd.c
++++ b/drivers/nvme/target/admin-cmd.c
+@@ -245,6 +245,10 @@ static void nvmet_execute_get_log_page_ana(struct nvmet_req *req)
+ 		offset += len;
+ 		ngrps++;
+ 	}
++	for ( ; grpid <= NVMET_MAX_ANAGRPS; grpid++) {
++		if (nvmet_ana_group_enabled[grpid])
++			ngrps++;
++	}
+ 
+ 	hdr.chgcnt = cpu_to_le64(nvmet_ana_chgcnt);
+ 	hdr.ngrps = cpu_to_le16(ngrps);
+-- 
+2.18.0
+

@@ -1,0 +1,37 @@
+From e71cf591876536f7dd5a54ef68d631278ca6faa1 Mon Sep 17 00:00:00 2001
+From: Thomas Hellstrom <thellstrom@vmware.com>
+Date: Fri, 14 Sep 2018 09:24:19 +0200
+Subject: [PATCH 159/329] drm/vmwgfx: Fix buffer object eviction
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Commit 19be55701071 ("drm/ttm: add operation ctx to ttm_bo_validate v2")
+introduced a regression where the vmwgfx driver refused to evict a
+buffer that was still busy instead of waiting for it to become idle.
+
+Fix this.
+
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Thomas Hellstrom <thellstrom@vmware.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+---
+ drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+index 1f134570b759..f0ab6b2313bb 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+@@ -3729,7 +3729,7 @@ int vmw_validate_single_buffer(struct vmw_private *dev_priv,
+ {
+ 	struct vmw_buffer_object *vbo =
+ 		container_of(bo, struct vmw_buffer_object, base);
+-	struct ttm_operation_ctx ctx = { interruptible, true };
++	struct ttm_operation_ctx ctx = { interruptible, false };
+ 	int ret;
+ 
+ 	if (vbo->pin_count > 0)
+-- 
+2.18.0
+

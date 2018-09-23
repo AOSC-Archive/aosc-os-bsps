@@ -1,0 +1,31 @@
+From 3bf181bc5d8bc86f04ffd538d7fda9e69af1f2c2 Mon Sep 17 00:00:00 2001
+From: YueHaibing <yuehaibing@huawei.com>
+Date: Thu, 20 Sep 2018 12:22:43 -0700
+Subject: [PATCH 176/329] kernel/sys.c: remove duplicated include
+
+Link: http://lkml.kernel.org/r/20180821133424.18716-1-yuehaibing@huawei.com
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ kernel/sys.c | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/kernel/sys.c b/kernel/sys.c
+index cf5c67533ff1..123bd73046ec 100644
+--- a/kernel/sys.c
++++ b/kernel/sys.c
+@@ -71,9 +71,6 @@
+ #include <asm/io.h>
+ #include <asm/unistd.h>
+ 
+-/* Hardening for Spectre-v1 */
+-#include <linux/nospec.h>
+-
+ #include "uid16.h"
+ 
+ #ifndef SET_UNALIGN_CTL
+-- 
+2.18.0
+

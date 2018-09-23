@@ -1,0 +1,35 @@
+From 498fe23aad8e3b5a9554f55719c537603b4476ea Mon Sep 17 00:00:00 2001
+From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Date: Thu, 13 Sep 2018 21:31:18 +0900
+Subject: [PATCH 070/329] ALSA: oxfw: fix memory leak of private data
+
+Although private data of sound card instance is usually allocated in the
+tail of the instance, drivers in ALSA firewire stack allocate the private
+data before allocating the instance. In this case, the private data
+should be released explicitly at .private_free callback of the instance.
+
+This commit fixes memory leak following to the above design.
+
+Fixes: 6c29230e2a5f ('ALSA: oxfw: delayed registration of sound card')
+Cc: <stable@vger.kernel.org> # v4.7+
+Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+---
+ sound/firewire/oxfw/oxfw.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/sound/firewire/oxfw/oxfw.c b/sound/firewire/oxfw/oxfw.c
+index 1e5b2c802635..fd34ef2ac679 100644
+--- a/sound/firewire/oxfw/oxfw.c
++++ b/sound/firewire/oxfw/oxfw.c
+@@ -130,6 +130,7 @@ static void oxfw_free(struct snd_oxfw *oxfw)
+ 
+ 	kfree(oxfw->spec);
+ 	mutex_destroy(&oxfw->mutex);
++	kfree(oxfw);
+ }
+ 
+ /*
+-- 
+2.18.0
+

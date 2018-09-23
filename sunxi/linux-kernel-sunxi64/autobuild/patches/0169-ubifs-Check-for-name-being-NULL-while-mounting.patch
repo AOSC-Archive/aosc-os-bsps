@@ -1,0 +1,33 @@
+From 37f31b6ca4311b94d985fb398a72e5399ad57925 Mon Sep 17 00:00:00 2001
+From: Richard Weinberger <richard@nod.at>
+Date: Mon, 3 Sep 2018 23:06:23 +0200
+Subject: [PATCH 169/329] ubifs: Check for name being NULL while mounting
+
+The requested device name can be NULL or an empty string.
+Check for that and refuse to continue. UBIFS has to do this manually
+since we cannot use mount_bdev(), which checks for this condition.
+
+Fixes: 1e51764a3c2ac ("UBIFS: add new flash file system")
+Reported-by: syzbot+38bd0f7865e5c6379280@syzkaller.appspotmail.com
+Signed-off-by: Richard Weinberger <richard@nod.at>
+---
+ fs/ubifs/super.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/fs/ubifs/super.c b/fs/ubifs/super.c
+index 23e7042666a7..87d08f738632 100644
+--- a/fs/ubifs/super.c
++++ b/fs/ubifs/super.c
+@@ -1954,6 +1954,9 @@ static struct ubi_volume_desc *open_ubi(const char *name, int mode)
+ 	int dev, vol;
+ 	char *endptr;
+ 
++	if (!name || !*name)
++		return ERR_PTR(-EINVAL);
++
+ 	/* First, try to open using the device node path method */
+ 	ubi = ubi_open_volume_path(name, mode);
+ 	if (!IS_ERR(ubi))
+-- 
+2.18.0
+

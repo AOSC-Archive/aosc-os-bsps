@@ -1,0 +1,200 @@
+From 86029d10af18381814881d6cce2dd6872163b59f Mon Sep 17 00:00:00 2001
+From: Sabrina Dubroca <sd@queasysnail.net>
+Date: Wed, 12 Sep 2018 17:44:42 +0200
+Subject: [PATCH 080/329] tls: zero the crypto information from tls_context
+ before freeing
+
+This contains key material in crypto_send_aes_gcm_128 and
+crypto_recv_aes_gcm_128.
+
+Introduce union tls_crypto_context, and replace the two identical
+unions directly embedded in struct tls_context with it. We can then
+use this union to clean up the memory in the new tls_ctx_free()
+function.
+
+Fixes: 3c4d7559159b ("tls: kernel TLS support")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+---
+ include/net/tls.h             | 19 +++++++++----------
+ net/tls/tls_device.c          |  6 +++---
+ net/tls/tls_device_fallback.c |  2 +-
+ net/tls/tls_main.c            | 20 +++++++++++++++-----
+ net/tls/tls_sw.c              |  8 ++++----
+ 5 files changed, 32 insertions(+), 23 deletions(-)
+
+diff --git a/include/net/tls.h b/include/net/tls.h
+index d5c683e8bb22..0a769cf2f5f3 100644
+--- a/include/net/tls.h
++++ b/include/net/tls.h
+@@ -171,15 +171,14 @@ struct cipher_context {
+ 	char *rec_seq;
+ };
+ 
++union tls_crypto_context {
++	struct tls_crypto_info info;
++	struct tls12_crypto_info_aes_gcm_128 aes_gcm_128;
++};
++
+ struct tls_context {
+-	union {
+-		struct tls_crypto_info crypto_send;
+-		struct tls12_crypto_info_aes_gcm_128 crypto_send_aes_gcm_128;
+-	};
+-	union {
+-		struct tls_crypto_info crypto_recv;
+-		struct tls12_crypto_info_aes_gcm_128 crypto_recv_aes_gcm_128;
+-	};
++	union tls_crypto_context crypto_send;
++	union tls_crypto_context crypto_recv;
+ 
+ 	struct list_head list;
+ 	struct net_device *netdev;
+@@ -367,8 +366,8 @@ static inline void tls_fill_prepend(struct tls_context *ctx,
+ 	 * size KTLS_DTLS_HEADER_SIZE + KTLS_DTLS_NONCE_EXPLICIT_SIZE
+ 	 */
+ 	buf[0] = record_type;
+-	buf[1] = TLS_VERSION_MINOR(ctx->crypto_send.version);
+-	buf[2] = TLS_VERSION_MAJOR(ctx->crypto_send.version);
++	buf[1] = TLS_VERSION_MINOR(ctx->crypto_send.info.version);
++	buf[2] = TLS_VERSION_MAJOR(ctx->crypto_send.info.version);
+ 	/* we can use IV for nonce explicit according to spec */
+ 	buf[3] = pkt_len >> 8;
+ 	buf[4] = pkt_len & 0xFF;
+diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
+index 292742e50bfa..961b07d4d41c 100644
+--- a/net/tls/tls_device.c
++++ b/net/tls/tls_device.c
+@@ -686,7 +686,7 @@ int tls_set_device_offload(struct sock *sk, struct tls_context *ctx)
+ 		goto free_marker_record;
+ 	}
+ 
+-	crypto_info = &ctx->crypto_send;
++	crypto_info = &ctx->crypto_send.info;
+ 	switch (crypto_info->cipher_type) {
+ 	case TLS_CIPHER_AES_GCM_128:
+ 		nonce_size = TLS_CIPHER_AES_GCM_128_IV_SIZE;
+@@ -780,7 +780,7 @@ int tls_set_device_offload(struct sock *sk, struct tls_context *ctx)
+ 
+ 	ctx->priv_ctx_tx = offload_ctx;
+ 	rc = netdev->tlsdev_ops->tls_dev_add(netdev, sk, TLS_OFFLOAD_CTX_DIR_TX,
+-					     &ctx->crypto_send,
++					     &ctx->crypto_send.info,
+ 					     tcp_sk(sk)->write_seq);
+ 	if (rc)
+ 		goto release_netdev;
+@@ -862,7 +862,7 @@ int tls_set_device_offload_rx(struct sock *sk, struct tls_context *ctx)
+ 		goto release_ctx;
+ 
+ 	rc = netdev->tlsdev_ops->tls_dev_add(netdev, sk, TLS_OFFLOAD_CTX_DIR_RX,
+-					     &ctx->crypto_recv,
++					     &ctx->crypto_recv.info,
+ 					     tcp_sk(sk)->copied_seq);
+ 	if (rc) {
+ 		pr_err_ratelimited("%s: The netdev has refused to offload this socket\n",
+diff --git a/net/tls/tls_device_fallback.c b/net/tls/tls_device_fallback.c
+index 6102169239d1..450a6dbc5a88 100644
+--- a/net/tls/tls_device_fallback.c
++++ b/net/tls/tls_device_fallback.c
+@@ -320,7 +320,7 @@ static struct sk_buff *tls_enc_skb(struct tls_context *tls_ctx,
+ 		goto free_req;
+ 
+ 	iv = buf;
+-	memcpy(iv, tls_ctx->crypto_send_aes_gcm_128.salt,
++	memcpy(iv, tls_ctx->crypto_send.aes_gcm_128.salt,
+ 	       TLS_CIPHER_AES_GCM_128_SALT_SIZE);
+ 	aad = buf + TLS_CIPHER_AES_GCM_128_SALT_SIZE +
+ 	      TLS_CIPHER_AES_GCM_128_IV_SIZE;
+diff --git a/net/tls/tls_main.c b/net/tls/tls_main.c
+index 180b6640e531..737b3865be1b 100644
+--- a/net/tls/tls_main.c
++++ b/net/tls/tls_main.c
+@@ -241,6 +241,16 @@ static void tls_write_space(struct sock *sk)
+ 	ctx->sk_write_space(sk);
+ }
+ 
++static void tls_ctx_free(struct tls_context *ctx)
++{
++	if (!ctx)
++		return;
++
++	memzero_explicit(&ctx->crypto_send, sizeof(ctx->crypto_send));
++	memzero_explicit(&ctx->crypto_recv, sizeof(ctx->crypto_recv));
++	kfree(ctx);
++}
++
+ static void tls_sk_proto_close(struct sock *sk, long timeout)
+ {
+ 	struct tls_context *ctx = tls_get_ctx(sk);
+@@ -294,7 +304,7 @@ static void tls_sk_proto_close(struct sock *sk, long timeout)
+ #else
+ 	{
+ #endif
+-		kfree(ctx);
++		tls_ctx_free(ctx);
+ 		ctx = NULL;
+ 	}
+ 
+@@ -305,7 +315,7 @@ static void tls_sk_proto_close(struct sock *sk, long timeout)
+ 	 * for sk->sk_prot->unhash [tls_hw_unhash]
+ 	 */
+ 	if (free_ctx)
+-		kfree(ctx);
++		tls_ctx_free(ctx);
+ }
+ 
+ static int do_tls_getsockopt_tx(struct sock *sk, char __user *optval,
+@@ -330,7 +340,7 @@ static int do_tls_getsockopt_tx(struct sock *sk, char __user *optval,
+ 	}
+ 
+ 	/* get user crypto info */
+-	crypto_info = &ctx->crypto_send;
++	crypto_info = &ctx->crypto_send.info;
+ 
+ 	if (!TLS_CRYPTO_INFO_READY(crypto_info)) {
+ 		rc = -EBUSY;
+@@ -417,9 +427,9 @@ static int do_tls_setsockopt_conf(struct sock *sk, char __user *optval,
+ 	}
+ 
+ 	if (tx)
+-		crypto_info = &ctx->crypto_send;
++		crypto_info = &ctx->crypto_send.info;
+ 	else
+-		crypto_info = &ctx->crypto_recv;
++		crypto_info = &ctx->crypto_recv.info;
+ 
+ 	/* Currently we don't support set crypto info more than one time */
+ 	if (TLS_CRYPTO_INFO_READY(crypto_info)) {
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index f29b7c49cbf2..9e918489f4fb 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -1055,8 +1055,8 @@ static int tls_read_size(struct strparser *strp, struct sk_buff *skb)
+ 		goto read_failure;
+ 	}
+ 
+-	if (header[1] != TLS_VERSION_MINOR(tls_ctx->crypto_recv.version) ||
+-	    header[2] != TLS_VERSION_MAJOR(tls_ctx->crypto_recv.version)) {
++	if (header[1] != TLS_VERSION_MINOR(tls_ctx->crypto_recv.info.version) ||
++	    header[2] != TLS_VERSION_MAJOR(tls_ctx->crypto_recv.info.version)) {
+ 		ret = -EINVAL;
+ 		goto read_failure;
+ 	}
+@@ -1180,12 +1180,12 @@ int tls_set_sw_offload(struct sock *sk, struct tls_context *ctx, int tx)
+ 
+ 	if (tx) {
+ 		crypto_init_wait(&sw_ctx_tx->async_wait);
+-		crypto_info = &ctx->crypto_send;
++		crypto_info = &ctx->crypto_send.info;
+ 		cctx = &ctx->tx;
+ 		aead = &sw_ctx_tx->aead_send;
+ 	} else {
+ 		crypto_init_wait(&sw_ctx_rx->async_wait);
+-		crypto_info = &ctx->crypto_recv;
++		crypto_info = &ctx->crypto_recv.info;
+ 		cctx = &ctx->rx;
+ 		aead = &sw_ctx_rx->aead_recv;
+ 	}
+-- 
+2.18.0
+

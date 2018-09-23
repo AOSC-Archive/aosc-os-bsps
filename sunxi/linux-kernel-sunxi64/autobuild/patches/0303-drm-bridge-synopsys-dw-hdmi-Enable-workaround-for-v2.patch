@@ -1,0 +1,32 @@
+From decbef06c32bb52fe4d6b95d69a08c615ba89f38 Mon Sep 17 00:00:00 2001
+From: Jernej Skrabec <jernej.skrabec@siol.net>
+Date: Sat, 24 Mar 2018 08:15:27 +0100
+Subject: [PATCH 303/329] drm/bridge/synopsys: dw-hdmi: Enable workaround for
+ v2.12a
+
+It turns out that even new DW HDMI controllers exhibits same mangenta
+line issues as older versions.
+
+Enable workaround for v2.12a.
+
+Signed-off-by: Jernej Skrabec <jernej.skrabec@siol.net>
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ drivers/gpu/drm/bridge/synopsys/dw-hdmi.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+index e2f832182afe..146128df1de4 100644
+--- a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
++++ b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+@@ -1664,6 +1664,7 @@ static void dw_hdmi_clear_overflow(struct dw_hdmi *hdmi)
+ 	case 0x131a:
+ 	case 0x132a:
+ 	case 0x201a:
++	case 0x212a:
+ 		count = 1;
+ 		break;
+ 	default:
+-- 
+2.18.0
+

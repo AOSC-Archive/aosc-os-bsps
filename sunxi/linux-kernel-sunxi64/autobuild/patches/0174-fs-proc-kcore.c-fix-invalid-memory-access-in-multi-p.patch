@@ -1,0 +1,45 @@
+From a1b3d2f217cf51505858c5c160abef96c3e91721 Mon Sep 17 00:00:00 2001
+From: Dominique Martinet <asmadeus@codewreck.org>
+Date: Thu, 20 Sep 2018 12:22:35 -0700
+Subject: [PATCH 174/329] fs/proc/kcore.c: fix invalid memory access in
+ multi-page read optimization
+
+The 'm' kcore_list item could point to kclist_head, and it is incorrect to
+look at m->addr / m->size in this case.
+
+There is no choice but to run through the list of entries for every
+address if we did not find any entry in the previous iteration
+
+Reset 'm' to NULL in that case at Omar Sandoval's suggestion.
+
+[akpm@linux-foundation.org: add comment]
+Link: http://lkml.kernel.org/r/1536100702-28706-1-git-send-email-asmadeus@codewreck.org
+Fixes: bf991c2231117 ("proc/kcore: optimize multiple page reads")
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: Omar Sandoval <osandov@osandov.com>
+Cc: Alexey Dobriyan <adobriyan@gmail.com>
+Cc: Eric Biederman <ebiederm@xmission.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Bhupesh Sharma <bhsharma@redhat.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ fs/proc/kcore.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/fs/proc/kcore.c b/fs/proc/kcore.c
+index ad72261ee3fe..d297fe4472a9 100644
+--- a/fs/proc/kcore.c
++++ b/fs/proc/kcore.c
+@@ -464,6 +464,7 @@ read_kcore(struct file *file, char __user *buffer, size_t buflen, loff_t *fpos)
+ 				ret = -EFAULT;
+ 				goto out;
+ 			}
++			m = NULL;	/* skip the list anchor */
+ 		} else if (m->type == KCORE_VMALLOC) {
+ 			vread(buf, (char *)start, tsz);
+ 			/* we have to zero-fill user buffer even if no read */
+-- 
+2.18.0
+

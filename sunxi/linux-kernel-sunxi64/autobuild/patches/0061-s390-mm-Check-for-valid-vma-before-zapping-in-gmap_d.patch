@@ -1,0 +1,44 @@
+From 1843abd03250115af6cec0892683e70cf2297c25 Mon Sep 17 00:00:00 2001
+From: Janosch Frank <frankja@linux.ibm.com>
+Date: Thu, 16 Aug 2018 09:02:31 +0100
+Subject: [PATCH 061/329] s390/mm: Check for valid vma before zapping in
+ gmap_discard
+
+Userspace could have munmapped the area before doing unmapping from
+the gmap. This would leave us with a valid vmaddr, but an invalid vma
+from which we would try to zap memory.
+
+Let's check before using the vma.
+
+Fixes: 1e133ab296f3 ("s390/mm: split arch/s390/mm/pgtable.c")
+Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+Message-Id: <20180816082432.78828-1-frankja@linux.ibm.com>
+Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+---
+ arch/s390/mm/gmap.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/arch/s390/mm/gmap.c b/arch/s390/mm/gmap.c
+index bb44990c8212..911c7ded35f1 100644
+--- a/arch/s390/mm/gmap.c
++++ b/arch/s390/mm/gmap.c
+@@ -708,11 +708,13 @@ void gmap_discard(struct gmap *gmap, unsigned long from, unsigned long to)
+ 		vmaddr |= gaddr & ~PMD_MASK;
+ 		/* Find vma in the parent mm */
+ 		vma = find_vma(gmap->mm, vmaddr);
++		if (!vma)
++			continue;
+ 		/*
+ 		 * We do not discard pages that are backed by
+ 		 * hugetlbfs, so we don't have to refault them.
+ 		 */
+-		if (vma && is_vm_hugetlb_page(vma))
++		if (is_vm_hugetlb_page(vma))
+ 			continue;
+ 		size = min(to - gaddr, PMD_SIZE - (gaddr & ~PMD_MASK));
+ 		zap_page_range(vma, vmaddr, size);
+-- 
+2.18.0
+

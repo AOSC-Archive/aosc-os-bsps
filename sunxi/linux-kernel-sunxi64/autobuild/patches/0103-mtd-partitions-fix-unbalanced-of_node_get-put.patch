@@ -1,0 +1,53 @@
+From 85516a9881a31e2c7a8d10f4697f3adcccc7cef1 Mon Sep 17 00:00:00 2001
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+Date: Fri, 7 Sep 2018 16:35:54 +0200
+Subject: [PATCH 103/329] mtd: partitions: fix unbalanced of_node_get/put()
+
+While at first mtd_part_of_parse() would just call
+of_get_chil_by_name(), it has been patched to deal with sub-partitions
+and will now directly manipulate the node returned by mtd_get_of_node()
+if the MTD device is a partition.
+
+A of_node_put() was a bit below in the code, to balance the
+of_get_child_by_name(). However, despite its name, mtd_get_of_node()
+does not take a reference on the OF node. It is a simple helper hiding
+some pointer logic to retrieve the OF node related to an MTD
+device.
+
+The direct effect of such unbalanced reference counting is visible by
+rmmod'ing any module that would have added MTD partitions:
+
+    OF: ERROR: Bad of_node_put() on <of_path_to_partition>
+
+As it seems normal to get a reference on the OF node during the
+of_property_for_each_string() that follows, add a call to
+of_node_get() when relevant.
+
+Fixes: 76a832254ab0 ("mtd: partitions: use DT info for parsing partitions with "compatible" prop")
+Cc: stable@vger.kernel.org
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
+---
+ drivers/mtd/mtdpart.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/mtd/mtdpart.c b/drivers/mtd/mtdpart.c
+index 52e2cb35fc79..99c460facd5e 100644
+--- a/drivers/mtd/mtdpart.c
++++ b/drivers/mtd/mtdpart.c
+@@ -873,8 +873,11 @@ static int mtd_part_of_parse(struct mtd_info *master,
+ 	int ret, err = 0;
+ 
+ 	np = mtd_get_of_node(master);
+-	if (!mtd_is_partition(master))
++	if (mtd_is_partition(master))
++		of_node_get(np);
++	else
+ 		np = of_get_child_by_name(np, "partitions");
++
+ 	of_property_for_each_string(np, "compatible", prop, compat) {
+ 		parser = mtd_part_get_compatible_parser(compat);
+ 		if (!parser)
+-- 
+2.18.0
+

@@ -1,0 +1,52 @@
+From d3bdc016c598e09a4ddf17805d17d43759b0a582 Mon Sep 17 00:00:00 2001
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed, 12 Sep 2018 14:51:38 +0200
+Subject: [PATCH 170/329] ubifs: drop false positive assertion
+
+The following sequence triggers
+
+	ubifs_assert(c, c->lst.taken_empty_lebs > 0);
+
+at the end of ubifs_remount_fs():
+
+mount -t ubifs /dev/ubi0_0 /mnt
+echo 1 > /sys/kernel/debug/ubifs/ubi0_0/ro_error
+umount /mnt
+mount -t ubifs -o ro /dev/ubix_y /mnt
+mount -o remount,ro /mnt
+
+The resulting
+
+UBIFS assert failed in ubifs_remount_fs at 1878 (pid 161)
+
+is a false positive. In the case above c->lst.taken_empty_lebs has
+never been changed from its initial zero value. This will only happen
+when the deferred recovery is done.
+
+Fix this by doing the assertion only when recovery has been done
+already.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+---
+ fs/ubifs/super.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/fs/ubifs/super.c b/fs/ubifs/super.c
+index 87d08f738632..bf000c8aeffb 100644
+--- a/fs/ubifs/super.c
++++ b/fs/ubifs/super.c
+@@ -1912,7 +1912,9 @@ static int ubifs_remount_fs(struct super_block *sb, int *flags, char *data)
+ 		mutex_unlock(&c->bu_mutex);
+ 	}
+ 
+-	ubifs_assert(c, c->lst.taken_empty_lebs > 0);
++	if (!c->need_recovery)
++		ubifs_assert(c, c->lst.taken_empty_lebs > 0);
++
+ 	return 0;
+ }
+ 
+-- 
+2.18.0
+

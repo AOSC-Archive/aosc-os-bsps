@@ -1,0 +1,65 @@
+From 260c48b7ec26dfaf70d9230c3639f420e304e781 Mon Sep 17 00:00:00 2001
+From: Hans de Goede <hdegoede@redhat.com>
+Date: Sun, 12 Aug 2018 13:42:06 +0200
+Subject: [PATCH 001/329] ASoC: Intel: bytcr_rt5640: Add quirks for 2 more
+ devices
+
+Add quirks to select the right input-map, jack-detect pin, etc. for:
+
+Linx Linx7 tablet
+Onda V975w tablet
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ sound/soc/intel/boards/bytcr_rt5640.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
+
+diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
+index d32844f94d74..b6dc524830b2 100644
+--- a/sound/soc/intel/boards/bytcr_rt5640.c
++++ b/sound/soc/intel/boards/bytcr_rt5640.c
+@@ -575,6 +575,17 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
+ 					BYT_RT5640_MONO_SPEAKER |
+ 					BYT_RT5640_MCLK_EN),
+ 	},
++	{	/* Linx Linx7 tablet */
++		.matches = {
++			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "LINX"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "LINX7"),
++		},
++		.driver_data = (void *)(BYTCR_INPUT_DEFAULTS |
++					BYT_RT5640_MONO_SPEAKER |
++					BYT_RT5640_JD_NOT_INV |
++					BYT_RT5640_SSP0_AIF1 |
++					BYT_RT5640_MCLK_EN),
++	},
+ 	{	/* MSI S100 tablet */
+ 		.matches = {
+ 			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Micro-Star International Co., Ltd."),
+@@ -602,6 +613,21 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
+ 					BYT_RT5640_SSP0_AIF1 |
+ 					BYT_RT5640_MCLK_EN),
+ 	},
++	{	/* Onda v975w */
++		.matches = {
++			DMI_EXACT_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
++			DMI_EXACT_MATCH(DMI_BOARD_NAME, "Aptio CRB"),
++			/* The above are too generic, also match BIOS info */
++			DMI_EXACT_MATCH(DMI_BIOS_VERSION, "5.6.5"),
++			DMI_EXACT_MATCH(DMI_BIOS_DATE, "07/25/2014"),
++		},
++		.driver_data = (void *)(BYT_RT5640_IN1_MAP |
++					BYT_RT5640_JD_SRC_JD2_IN4N |
++					BYT_RT5640_OVCD_TH_2000UA |
++					BYT_RT5640_OVCD_SF_0P75 |
++					BYT_RT5640_DIFF_MIC |
++					BYT_RT5640_MCLK_EN),
++	},
+ 	{	/* Pipo W4 */
+ 		.matches = {
+ 			DMI_EXACT_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
+-- 
+2.18.0
+

@@ -1,0 +1,34 @@
+From caaa4c8a6be2a275bd14f2369ee364978ff74704 Mon Sep 17 00:00:00 2001
+From: Amber Lin <Amber.Lin@amd.com>
+Date: Wed, 12 Sep 2018 21:42:18 -0400
+Subject: [PATCH 165/329] drm/amdgpu: Fix SDMA HQD destroy error on gfx_v7
+
+A wrong register bit was examinated for checking SDMA status so it reports
+false failures. This typo only appears on gfx_v7. gfx_v8 checks the correct
+bit.
+
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Amber Lin <Amber.Lin@amd.com>
+Reviewed-by: Felix Kuehling <Felix.Kuehling@amd.com>
+Signed-off-by: Felix Kuehling <Felix.Kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+---
+ drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gfx_v7.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gfx_v7.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gfx_v7.c
+index ea3f698aef5e..9803b91f3e77 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gfx_v7.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gfx_v7.c
+@@ -685,7 +685,7 @@ static int kgd_hqd_sdma_destroy(struct kgd_dev *kgd, void *mqd,
+ 
+ 	while (true) {
+ 		temp = RREG32(sdma_base_addr + mmSDMA0_RLC0_CONTEXT_STATUS);
+-		if (temp & SDMA0_STATUS_REG__RB_CMD_IDLE__SHIFT)
++		if (temp & SDMA0_RLC0_CONTEXT_STATUS__IDLE_MASK)
+ 			break;
+ 		if (time_after(jiffies, end_jiffies))
+ 			return -ETIME;
+-- 
+2.18.0
+

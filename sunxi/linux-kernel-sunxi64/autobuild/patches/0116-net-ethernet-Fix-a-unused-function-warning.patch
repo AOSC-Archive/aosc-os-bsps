@@ -1,0 +1,55 @@
+From c73480910e9686a5c25155cb4d418d594b678196 Mon Sep 17 00:00:00 2001
+From: zhong jiang <zhongjiang@huawei.com>
+Date: Mon, 17 Sep 2018 18:44:19 +0800
+Subject: [PATCH 116/329] net: ethernet: Fix a unused function warning.
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Fix the following compile warning:
+
+drivers/net/ethernet/microchip/lan743x_main.c:2964:12: warning: lan743x_pm_suspend defined but not used [-Wunused-function]
+ static int lan743x_pm_suspend(struct device *dev)
+drivers/net/ethernet/microchip/lan743x_main.c:2987:12: warning: lan743x_pm_resume defined but not used [-Wunused-function]
+ static int lan743x_pm_resume(struct device *dev)
+
+Signed-off-by: zhong jiang <zhongjiang@huawei.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+---
+ drivers/net/ethernet/microchip/lan743x_main.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
+index e7dce79ff2c9..001b5f714c1b 100644
+--- a/drivers/net/ethernet/microchip/lan743x_main.c
++++ b/drivers/net/ethernet/microchip/lan743x_main.c
+@@ -2850,7 +2850,7 @@ static void lan743x_pcidev_shutdown(struct pci_dev *pdev)
+ 	lan743x_hardware_cleanup(adapter);
+ }
+ 
+-#ifdef CONFIG_PM
++#ifdef CONFIG_PM_SLEEP
+ static u16 lan743x_pm_wakeframe_crc16(const u8 *buf, int len)
+ {
+ 	return bitrev16(crc16(0xFFFF, buf, len));
+@@ -3016,7 +3016,7 @@ static int lan743x_pm_resume(struct device *dev)
+ static const struct dev_pm_ops lan743x_pm_ops = {
+ 	SET_SYSTEM_SLEEP_PM_OPS(lan743x_pm_suspend, lan743x_pm_resume)
+ };
+-#endif /*CONFIG_PM */
++#endif /* CONFIG_PM_SLEEP */
+ 
+ static const struct pci_device_id lan743x_pcidev_tbl[] = {
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_SMSC, PCI_DEVICE_ID_SMSC_LAN7430) },
+@@ -3028,7 +3028,7 @@ static struct pci_driver lan743x_pcidev_driver = {
+ 	.id_table = lan743x_pcidev_tbl,
+ 	.probe    = lan743x_pcidev_probe,
+ 	.remove   = lan743x_pcidev_remove,
+-#ifdef CONFIG_PM
++#ifdef CONFIG_PM_SLEEP
+ 	.driver.pm = &lan743x_pm_ops,
+ #endif
+ 	.shutdown = lan743x_pcidev_shutdown,
+-- 
+2.18.0
+

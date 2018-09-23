@@ -1,3 +1,3 @@
-VER=4.19.0rc1
+VER=4.19.0rc4
 REL=1
-SRCTBL="https://git.kernel.org/torvalds/t/linux-4.19-rc1.tar.gz"
+SRCTBL="https://git.kernel.org/torvalds/t/linux-4.19-rc4.tar.gz"

@@ -1,0 +1,31 @@
+From 9a9845867c28dc876e7a3289c1745644a34bb393 Mon Sep 17 00:00:00 2001
+From: Tianyu Lan <Tianyu.Lan@microsoft.com>
+Date: Fri, 7 Sep 2018 05:45:02 +0000
+Subject: [PATCH 140/329] KVM/MMU: Fix comment in
+ walk_shadow_page_lockless_end()
+
+kvm_commit_zap_page() has been renamed to kvm_mmu_commit_zap_page()
+This patch is to fix the commit.
+
+Signed-off-by: Lan Tianyu <Tianyu.Lan@microsoft.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ arch/x86/kvm/mmu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/x86/kvm/mmu.c b/arch/x86/kvm/mmu.c
+index 5402c53a079b..d7e9bce6ff61 100644
+--- a/arch/x86/kvm/mmu.c
++++ b/arch/x86/kvm/mmu.c
+@@ -899,7 +899,7 @@ static void walk_shadow_page_lockless_end(struct kvm_vcpu *vcpu)
+ {
+ 	/*
+ 	 * Make sure the write to vcpu->mode is not reordered in front of
+-	 * reads to sptes.  If it does, kvm_commit_zap_page() can see us
++	 * reads to sptes.  If it does, kvm_mmu_commit_zap_page() can see us
+ 	 * OUTSIDE_GUEST_MODE and proceed to free the shadow page table.
+ 	 */
+ 	smp_store_release(&vcpu->mode, OUTSIDE_GUEST_MODE);
+-- 
+2.18.0
+

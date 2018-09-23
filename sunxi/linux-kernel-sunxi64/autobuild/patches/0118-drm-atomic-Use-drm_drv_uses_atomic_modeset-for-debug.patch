@@ -1,0 +1,52 @@
+From 3c499ea0c662e2f38aafbd4f516b08aab8cfa0e5 Mon Sep 17 00:00:00 2001
+From: Lyude Paul <lyude@redhat.com>
+Date: Mon, 17 Sep 2018 13:37:33 -0400
+Subject: [PATCH 118/329] drm/atomic: Use drm_drv_uses_atomic_modeset() for
+ debugfs creation
+
+As pointed out by Daniel Vetter, we should be usinng
+drm_drv_uses_atomic_modeset() for determining whether or not we want to
+make the debugfs nodes for atomic instead of checking DRIVER_ATOMIC, as
+the former isn't an accurate representation of whether or not the driver
+is actually using atomic modesetting internally (even though it might
+not be exposing atomic capabilities).
+
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: stable@vger.kernel.org
+Reviewed-by: Sean Paul <seanpaul@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20180917173733.21293-1-lyude@redhat.com
+---
+ drivers/gpu/drm/drm_atomic.c  | 2 +-
+ drivers/gpu/drm/drm_debugfs.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/gpu/drm/drm_atomic.c b/drivers/gpu/drm/drm_atomic.c
+index 3eb061e11e2e..018fcdb353d2 100644
+--- a/drivers/gpu/drm/drm_atomic.c
++++ b/drivers/gpu/drm/drm_atomic.c
+@@ -2067,7 +2067,7 @@ static void __drm_state_dump(struct drm_device *dev, struct drm_printer *p,
+ 	struct drm_connector *connector;
+ 	struct drm_connector_list_iter conn_iter;
+ 
+-	if (!drm_core_check_feature(dev, DRIVER_ATOMIC))
++	if (!drm_drv_uses_atomic_modeset(dev))
+ 		return;
+ 
+ 	list_for_each_entry(plane, &config->plane_list, head) {
+diff --git a/drivers/gpu/drm/drm_debugfs.c b/drivers/gpu/drm/drm_debugfs.c
+index 6f28fe58f169..373bd4c2b698 100644
+--- a/drivers/gpu/drm/drm_debugfs.c
++++ b/drivers/gpu/drm/drm_debugfs.c
+@@ -151,7 +151,7 @@ int drm_debugfs_init(struct drm_minor *minor, int minor_id,
+ 		return ret;
+ 	}
+ 
+-	if (drm_core_check_feature(dev, DRIVER_ATOMIC)) {
++	if (drm_drv_uses_atomic_modeset(dev)) {
+ 		ret = drm_atomic_debugfs_init(minor);
+ 		if (ret) {
+ 			DRM_ERROR("Failed to create atomic debugfs files\n");
+-- 
+2.18.0
+

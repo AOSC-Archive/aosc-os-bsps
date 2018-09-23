@@ -1,0 +1,43 @@
+From 6ee67e351cdae68b4c9c7df74124b9f9fb81e966 Mon Sep 17 00:00:00 2001
+From: YueHaibing <yuehaibing@huawei.com>
+Date: Wed, 12 Sep 2018 03:15:30 +0000
+Subject: [PATCH 063/329] drm/fb-helper: Remove set but not used variable
+ 'connector_funcs'
+
+Fixes gcc '-Wunused-but-set-variable' warning:
+
+drivers/gpu/drm/drm_fb_helper.c: In function 'drm_pick_crtcs':
+drivers/gpu/drm/drm_fb_helper.c:2373:43: warning:
+ variable 'connector_funcs' set but not used [-Wunused-but-set-variable]
+
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Signed-off-by: Sean Paul <seanpaul@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/1536722130-108819-1-git-send-email-yuehaibing@huawei.com
+---
+ drivers/gpu/drm/drm_fb_helper.c | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/drivers/gpu/drm/drm_fb_helper.c b/drivers/gpu/drm/drm_fb_helper.c
+index 4b0dd20bccb8..16ec93b75dbf 100644
+--- a/drivers/gpu/drm/drm_fb_helper.c
++++ b/drivers/gpu/drm/drm_fb_helper.c
+@@ -2370,7 +2370,6 @@ static int drm_pick_crtcs(struct drm_fb_helper *fb_helper,
+ {
+ 	int c, o;
+ 	struct drm_connector *connector;
+-	const struct drm_connector_helper_funcs *connector_funcs;
+ 	int my_score, best_score, score;
+ 	struct drm_fb_helper_crtc **crtcs, *crtc;
+ 	struct drm_fb_helper_connector *fb_helper_conn;
+@@ -2399,8 +2398,6 @@ static int drm_pick_crtcs(struct drm_fb_helper *fb_helper,
+ 	if (drm_has_preferred_mode(fb_helper_conn, width, height))
+ 		my_score++;
+ 
+-	connector_funcs = connector->helper_private;
+-
+ 	/*
+ 	 * select a crtc for this connector and then attempt to configure
+ 	 * remaining connectors
+-- 
+2.18.0
+

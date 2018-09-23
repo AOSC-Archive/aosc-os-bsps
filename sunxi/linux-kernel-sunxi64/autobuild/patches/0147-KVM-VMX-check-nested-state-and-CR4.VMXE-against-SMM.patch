@@ -1,0 +1,51 @@
+From 5bea5123cbf08f990a1aee8f08c643a272e06a0f Mon Sep 17 00:00:00 2001
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Tue, 18 Sep 2018 15:19:17 +0200
+Subject: [PATCH 147/329] KVM: VMX: check nested state and CR4.VMXE against SMM
+
+VMX cannot be enabled under SMM, check it when CR4 is set and when nested
+virtualization state is restored.
+
+This should fix some WARNs reported by syzkaller, mostly around
+alloc_shadow_vmcs.
+
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ arch/x86/kvm/vmx.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/kvm/vmx.c b/arch/x86/kvm/vmx.c
+index a4a1585f47f1..16e63a92992f 100644
+--- a/arch/x86/kvm/vmx.c
++++ b/arch/x86/kvm/vmx.c
+@@ -5398,9 +5398,10 @@ static int vmx_set_cr4(struct kvm_vcpu *vcpu, unsigned long cr4)
+ 		 * To use VMXON (and later other VMX instructions), a guest
+ 		 * must first be able to turn on cr4.VMXE (see handle_vmon()).
+ 		 * So basically the check on whether to allow nested VMX
+-		 * is here.
++		 * is here.  We operate under the default treatment of SMM,
++		 * so VMX cannot be enabled under SMM.
+ 		 */
+-		if (!nested_vmx_allowed(vcpu))
++		if (!nested_vmx_allowed(vcpu) || is_smm(vcpu))
+ 			return 1;
+ 	}
+ 
+@@ -13977,6 +13978,14 @@ static int vmx_set_nested_state(struct kvm_vcpu *vcpu,
+ 	    ~(KVM_STATE_NESTED_SMM_GUEST_MODE | KVM_STATE_NESTED_SMM_VMXON))
+ 		return -EINVAL;
+ 
++	/*
++	 * SMM temporarily disables VMX, so we cannot be in guest mode,
++	 * nor can VMLAUNCH/VMRESUME be pending.  Outside SMM, SMM flags
++	 * must be zero.
++	 */
++	if (is_smm(vcpu) ? kvm_state->flags : kvm_state->vmx.smm.flags)
++		return -EINVAL;
++
+ 	if ((kvm_state->vmx.smm.flags & KVM_STATE_NESTED_SMM_GUEST_MODE) &&
+ 	    !(kvm_state->vmx.smm.flags & KVM_STATE_NESTED_SMM_VMXON))
+ 		return -EINVAL;
+-- 
+2.18.0
+
