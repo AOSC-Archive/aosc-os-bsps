@@ -1,0 +1,86 @@
+From 84a3efbd3a0dfaa53d16c372e232f08612e6b246 Mon Sep 17 00:00:00 2001
+From: Vasily Khoruzhick <anarsoul@gmail.com>
+Date: Sun, 3 Dec 2017 11:39:19 -0800
+Subject: [PATCH 150/151] arm64: dts: allwinner: a64: enable sound on Pine64
+ and SoPine
+
+This commit enables I2S, digital and analog parts of audiocodec on
+Pine64 and SoPine boards.
+
+Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
+---
+ .../boot/dts/allwinner/sun50i-a64-pine64.dts     | 16 ++++++++++++++++
+ .../allwinner/sun50i-a64-sopine-baseboard.dts    | 16 ++++++++++++++++
+ 2 files changed, 32 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pine64.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-pine64.dts
+index 6b943012614b..809c2dcf1ef7 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pine64.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pine64.dts
+@@ -88,6 +88,18 @@
+ 	status = "okay";
+ };
+ 
++&codec {
++	status = "okay";
++};
++
++&codec_analog {
++	status = "okay";
++};
++
++&dai {
++	status = "okay";
++};
++
+ &ehci0 {
+ 	status = "okay";
+ };
+@@ -300,6 +312,10 @@
+ 	status = "okay";
+ };
+ 
++&sound {
++	status = "okay";
++};
++
+ /* On Exp and Euler connectors */
+ &uart0 {
+ 	pinctrl-names = "default";
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-sopine-baseboard.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-sopine-baseboard.dts
+index d0648b805c62..5a41607466a9 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a64-sopine-baseboard.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-sopine-baseboard.dts
+@@ -91,6 +91,18 @@
+ 	status = "okay";
+ };
+ 
++&codec {
++	status = "okay";
++};
++
++&codec_analog {
++	status = "okay";
++};
++
++&dai {
++	status = "okay";
++};
++
+ &ehci0 {
+ 	status = "okay";
+ };
+@@ -190,6 +202,10 @@
+ 	status = "okay";
+ };
+ 
++&sound {
++	status = "okay";
++};
++
+ &uart0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&uart0_pins_a>;
+-- 
+2.18.0
+

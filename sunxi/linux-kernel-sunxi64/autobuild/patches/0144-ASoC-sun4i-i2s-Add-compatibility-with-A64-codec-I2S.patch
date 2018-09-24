@@ -1,0 +1,77 @@
+From 0427a62523ba82492bcc8c9f1180fedbdd12a885 Mon Sep 17 00:00:00 2001
+From: Marcus Cooper <codekipper@gmail.com>
+Date: Sun, 3 Dec 2017 10:09:08 -0800
+Subject: [PATCH 144/151] ASoC: sun4i-i2s: Add compatibility with A64 codec I2S
+
+The I2S block used for the audio codec in the A64 is very similar
+to what is used by the A10(sun4i) devices. However, its TX FIFO is
+located at a different address.
+
+Signed-off-by: Marcus Cooper <codekipper@gmail.com>
+---
+ .../devicetree/bindings/sound/sun4i-i2s.txt   |  2 ++
+ sound/soc/sunxi/sun4i-i2s.c                   | 21 +++++++++++++++++++
+ 2 files changed, 23 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/sound/sun4i-i2s.txt b/Documentation/devicetree/bindings/sound/sun4i-i2s.txt
+index b9d50d6cdef3..4515865f573e 100644
+--- a/Documentation/devicetree/bindings/sound/sun4i-i2s.txt
++++ b/Documentation/devicetree/bindings/sound/sun4i-i2s.txt
+@@ -10,6 +10,7 @@ Required properties:
+    - "allwinner,sun6i-a31-i2s"
+    - "allwinner,sun8i-a83t-i2s"
+    - "allwinner,sun8i-h3-i2s"
++   - "allwinner,sun50i-a64-acodec-i2s"
+ - reg: physical base address of the controller and length of memory mapped
+   region.
+ - interrupts: should contain the I2S interrupt.
+@@ -26,6 +27,7 @@ Required properties for the following compatibles:
+ 	- "allwinner,sun6i-a31-i2s"
+ 	- "allwinner,sun8i-a83t-i2s"
+ 	- "allwinner,sun8i-h3-i2s"
++	- "allwinner,sun50i-a64-acodec-i2s"
+ - resets: phandle to the reset line for this codec
+ 
+ Example:
+diff --git a/sound/soc/sunxi/sun4i-i2s.c b/sound/soc/sunxi/sun4i-i2s.c
+index b3d7167ea589..d2bb9a7e86cf 100644
+--- a/sound/soc/sunxi/sun4i-i2s.c
++++ b/sound/soc/sunxi/sun4i-i2s.c
+@@ -963,6 +963,23 @@ static const struct sun4i_i2s_quirks sun8i_h3_i2s_quirks = {
+ 	.field_rxchansel	= REG_FIELD(SUN8I_I2S_RX_CHAN_SEL_REG, 0, 2),
+ };
+ 
++static const struct sun4i_i2s_quirks sun50i_a64_i2s_quirks = {
++	.has_reset		= true,
++	.reg_offset_txdata	= SUN8I_I2S_FIFO_TX_REG,
++	.sun4i_i2s_regmap	= &sun4i_i2s_regmap_config,
++	.has_slave_select_bit	= true,
++	.field_clkdiv_mclk_en	= REG_FIELD(SUN4I_I2S_CLK_DIV_REG, 7, 7),
++	.field_fmt_wss		= REG_FIELD(SUN4I_I2S_FMT0_REG, 2, 3),
++	.field_fmt_sr		= REG_FIELD(SUN4I_I2S_FMT0_REG, 4, 5),
++	.field_fmt_bclk		= REG_FIELD(SUN4I_I2S_FMT0_REG, 6, 6),
++	.field_fmt_lrclk	= REG_FIELD(SUN4I_I2S_FMT0_REG, 7, 7),
++	.field_fmt_mode		= REG_FIELD(SUN4I_I2S_FMT0_REG, 0, 1),
++	.field_txchanmap	= REG_FIELD(SUN4I_I2S_TX_CHAN_MAP_REG, 0, 31),
++	.field_rxchanmap	= REG_FIELD(SUN4I_I2S_RX_CHAN_MAP_REG, 0, 31),
++	.field_txchansel	= REG_FIELD(SUN4I_I2S_TX_CHAN_SEL_REG, 0, 2),
++	.field_rxchansel	= REG_FIELD(SUN4I_I2S_RX_CHAN_SEL_REG, 0, 2),
++};
++
+ static int sun4i_i2s_init_regmap_fields(struct device *dev,
+ 					struct sun4i_i2s *i2s)
+ {
+@@ -1171,6 +1188,10 @@ static const struct of_device_id sun4i_i2s_match[] = {
+ 		.compatible = "allwinner,sun8i-h3-i2s",
+ 		.data = &sun8i_h3_i2s_quirks,
+ 	},
++	{
++		.compatible = "allwinner,sun50i-a64-i2s",
++		.data = &sun50i_a64_i2s_quirks,
++	},
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(of, sun4i_i2s_match);
+-- 
+2.18.0
+

@@ -1,4 +1,4 @@
-KERNVER=4.19.0-rc4
+KERNVER=4.19.0-rc5
 
 mkdir -p "$PKGDIR"/usr/lib/aosc-os-arm64-sunxi-boot/
 mkdir -p "$PKGDIR"/usr/lib/aosc-os-arm64-sunxi-boot/linux-kernel-${KERNVER}-aosc-sunxi64/modules

@@ -1,0 +1,43 @@
+From 68bd728d738f5a369a23a84b55e1470f2bed94b9 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Sun, 22 Jul 2018 11:34:51 +0800
+Subject: [PATCH 135/151] drm: sun4i: add support for H6 TCON TOP
+
+The TCON TOP on Allwinner H6 SoC is a cut down version of the R40 TCON
+TOP, which dropped TCON_TV1 and DSI (which do not exist on H6).
+
+Add support for it.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ drivers/gpu/drm/sun4i/sun8i_tcon_top.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/drivers/gpu/drm/sun4i/sun8i_tcon_top.c b/drivers/gpu/drm/sun4i/sun8i_tcon_top.c
+index 47d3120c3121..d3021ec1a2c4 100644
+--- a/drivers/gpu/drm/sun4i/sun8i_tcon_top.c
++++ b/drivers/gpu/drm/sun4i/sun8i_tcon_top.c
+@@ -273,12 +273,20 @@ const struct sun8i_tcon_top_quirks sun8i_r40_tcon_top_quirks = {
+ 	.has_dsi	= true,
+ };
+ 
++const struct sun8i_tcon_top_quirks sun50i_h6_tcon_top_quirks = {
++	/* Nothing special */
++};
++
+ /* sun4i_drv uses this list to check if a device node is a TCON TOP */
+ const struct of_device_id sun8i_tcon_top_of_table[] = {
+ 	{
+ 		.compatible = "allwinner,sun8i-r40-tcon-top",
+ 		.data = &sun8i_r40_tcon_top_quirks
+ 	},
++	{
++		.compatible = "allwinner,sun50i-h6-tcon-top",
++		.data = &sun50i_h6_tcon_top_quirks
++	},
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, sun8i_tcon_top_of_table);
+-- 
+2.18.0
+
