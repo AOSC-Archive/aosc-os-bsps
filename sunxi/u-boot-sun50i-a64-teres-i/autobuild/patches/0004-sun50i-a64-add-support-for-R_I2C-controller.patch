@@ -1,7 +1,7 @@
-From 065b46a1d3472f3c56986369ef5160c03cc4da80 Mon Sep 17 00:00:00 2001
+From 8820276890384548671989a741c16d6f22220a98 Mon Sep 17 00:00:00 2001
 From: Vasily Khoruzhick <anarsoul@gmail.com>
 Date: Sun, 20 May 2018 20:34:26 -0700
-Subject: [PATCH 01/16] sun50i: a64: add support for R_I2C controller
+Subject: [PATCH 04/10] sun50i: a64: add support for R_I2C controller
 
 Allwinner A64 has a I2C controller, which is in the R_ MMIO zone and has
 two groups of pinmuxes on PL bank, so it's called R_I2C.
@@ -11,22 +11,23 @@ with RSB
 
 Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
 ---
- arch/arm/dts/sun50i-a64.dtsi           | 16 ++++++++++++++++
+ arch/arm/dts/sun50i-a64.dtsi           | 17 +++++++++++++++++
  arch/arm/include/asm/arch-sunxi/gpio.h |  1 +
  arch/arm/mach-sunxi/Kconfig            |  1 +
  board/sunxi/board.c                    |  6 ++++++
- 4 files changed, 24 insertions(+)
+ 4 files changed, 25 insertions(+)
 
 diff --git a/arch/arm/dts/sun50i-a64.dtsi b/arch/arm/dts/sun50i-a64.dtsi
-index a82a3d89af..76b9311468 100644
+index 7a083637c4..80ddcf0af3 100644
 --- a/arch/arm/dts/sun50i-a64.dtsi
 +++ b/arch/arm/dts/sun50i-a64.dtsi
-@@ -416,6 +416,17 @@
- 			#size-cells = <0>;
+@@ -627,6 +627,18 @@
+ 			};
  		};
  
 +		r_i2c: i2c@1f02400 {
-+			compatible = "allwinner,sun6i-a31-i2c";
++			compatible = "allwinner,sun50i-a64-i2c",
++				     "allwinner,sun6i-a31-i2c";
 +			reg = <0x01f02400 0x400>;
 +			interrupts = <GIC_SPI 44 IRQ_TYPE_LEVEL_HIGH>;
 +			clocks = <&r_ccu 9>;
@@ -39,23 +40,23 @@ index a82a3d89af..76b9311468 100644
  		gic: interrupt-controller@1c81000 {
  			compatible = "arm,gic-400";
  			reg = <0x01c81000 0x1000>,
-@@ -453,6 +464,11 @@
- 			#gpio-cells = <3>;
- 			interrupt-controller;
- 			#interrupt-cells = <3>;
+@@ -679,6 +691,11 @@
+ 				pins = "PL0", "PL1";
+ 				function = "s_rsb";
+ 			};
 +
 +			r_i2c_pins_a: i2c-a {
 +				pins = "PL8", "PL9";
 +				function = "s_i2c";
 +			};
  		};
- 	};
- };
+ 
+ 		r_rsb: rsb@1f03400 {
 diff --git a/arch/arm/include/asm/arch-sunxi/gpio.h b/arch/arm/include/asm/arch-sunxi/gpio.h
-index e4fe54d8b8..6ab326075a 100644
+index 6a5eafc3d3..2daf23f6f5 100644
 --- a/arch/arm/include/asm/arch-sunxi/gpio.h
 +++ b/arch/arm/include/asm/arch-sunxi/gpio.h
-@@ -210,6 +210,7 @@ enum sunxi_gpio_number {
+@@ -211,6 +211,7 @@ enum sunxi_gpio_number {
  #define SUN8I_H3_GPL_R_TWI	2
  #define SUN8I_A23_GPL_R_TWI	3
  #define SUN8I_GPL_R_UART	2
@@ -64,19 +65,19 @@ index e4fe54d8b8..6ab326075a 100644
  #define SUN9I_GPN_R_RSB		3
  
 diff --git a/arch/arm/mach-sunxi/Kconfig b/arch/arm/mach-sunxi/Kconfig
-index a3f7723028..b9f778dd24 100644
+index ae77ee9e8e..fccef9d706 100644
 --- a/arch/arm/mach-sunxi/Kconfig
 +++ b/arch/arm/mach-sunxi/Kconfig
-@@ -264,6 +264,7 @@ config MACH_SUN50I
+@@ -273,6 +273,7 @@ config MACH_SUN50I
+ 	select DM_I2C
+ 	select MMC_SUNXI_SUPPORTS_CALIBRATION
  	select PHY_SUN4I_USB
++	select SUN6I_PRCM
  	select SUNXI_DE2
  	select SUNXI_GEN_SUN6I
-+	select SUN6I_PRCM
- 	select SUNXI_HIGH_SRAM
  	select SUPPORT_SPL
- 	select SUNXI_DRAM_DW
 diff --git a/board/sunxi/board.c b/board/sunxi/board.c
-index 5ed1b8bae1..95b112e43e 100644
+index d1d7f9f400..90f8bc0a6e 100644
 --- a/board/sunxi/board.c
 +++ b/board/sunxi/board.c
 @@ -168,10 +168,16 @@ void i2c_init_board(void)
@@ -97,5 +98,5 @@ index 5ed1b8bae1..95b112e43e 100644
  
  #if defined(CONFIG_ENV_IS_IN_MMC) && defined(CONFIG_ENV_IS_IN_FAT)
 -- 
-2.17.1
+2.18.1
 

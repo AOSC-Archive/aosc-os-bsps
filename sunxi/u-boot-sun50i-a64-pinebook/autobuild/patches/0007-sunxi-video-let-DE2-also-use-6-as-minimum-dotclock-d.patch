@@ -1,7 +1,7 @@
-From b70c71ce3c1e91b2f1f135af63c68dd69304e651 Mon Sep 17 00:00:00 2001
+From 101074ae4bb98533758289012819e72efbded021 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 22 Sep 2018 20:25:26 +0800
-Subject: [PATCH 17/18] sunxi: video: let DE2 also use 6 as minimum dotclock
+Subject: [PATCH 07/10] sunxi: video: let DE2 also use 6 as minimum dotclock
  divider
 
 The user manual of A64 also uses 6 as the minimum dotclock divider, and
@@ -28,5 +28,5 @@ index 2942e6244e..9f4a738c63 100644
  #endif
  	} else {
 -- 
-2.18.0
+2.18.1
 

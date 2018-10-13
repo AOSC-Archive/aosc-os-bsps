@@ -1,7 +1,7 @@
-From 9533bb9d6b2052c3c4e88ce43b633f6ec67f324e Mon Sep 17 00:00:00 2001
+From eac552f338623176ade4a3ed88bc8ed8d926dbf1 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 22 Sep 2018 20:27:36 +0800
-Subject: [PATCH 18/18] sunxi: use 6MHz PLL_VIDEO step for DE2 for higher
+Subject: [PATCH 08/10] sunxi: use 6MHz PLL_VIDEO step for DE2 for higher
  resolution LCD
 
 DE2 SoCs can support LCDs up to 1080p (e.g. A64), and 3MHz step won't
@@ -106,5 +106,5 @@ index 9f4a738c63..786e51e63b 100644
  
  	if (tcon == 0) {
 -- 
-2.18.0
+2.18.1
 

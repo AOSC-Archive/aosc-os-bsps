@@ -1,0 +1,121 @@
+From 6e5dc5e1f5baefe0b89a47313883ad16675929bb Mon Sep 17 00:00:00 2001
+From: Vasily Khoruzhick <anarsoul@gmail.com>
+Date: Mon, 22 Jan 2018 22:45:41 -0800
+Subject: [PATCH 01/10] mmc: sunxi: add support for automatic delay calibration
+
+A64 supports automatic delay calibration and Linux driver uses it
+instead of hardcoded delays. Add support for it to u-boot driver.
+
+Fixes eMMC instability on Pinebook
+
+Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
+---
+ arch/arm/include/asm/arch-sunxi/mmc.h |  6 +++++-
+ arch/arm/mach-sunxi/Kconfig           |  1 +
+ drivers/mmc/Kconfig                   |  4 ++++
+ drivers/mmc/sunxi_mmc.c               | 20 +++++++++++++++++++-
+ 4 files changed, 29 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/include/asm/arch-sunxi/mmc.h b/arch/arm/include/asm/arch-sunxi/mmc.h
+index d98c53faaa..f2deafddd2 100644
+--- a/arch/arm/include/asm/arch-sunxi/mmc.h
++++ b/arch/arm/include/asm/arch-sunxi/mmc.h
+@@ -46,7 +46,9 @@ struct sunxi_mmc {
+ 	u32 cbda;		/* 0x94 */
+ 	u32 res2[26];
+ #if defined(CONFIG_SUNXI_GEN_SUN6I) || defined(CONFIG_MACH_SUN50I_H6)
+-	u32 res3[64];
++	u32 res3[17];
++	u32 samp_dl;
++	u32 res4[46];
+ #endif
+ 	u32 fifo;		/* 0x100 / 0x200 FIFO access address */
+ };
+@@ -130,5 +132,7 @@ struct sunxi_mmc {
+ #define SUNXI_MMC_COMMON_CLK_GATE		(1 << 16)
+ #define SUNXI_MMC_COMMON_RESET			(1 << 18)
+ 
++#define SUNXI_MMC_CAL_DL_SW_EN		(0x1 << 7)
++
+ struct mmc *sunxi_mmc_init(int sdc_no);
+ #endif /* _SUNXI_MMC_H */
+diff --git a/arch/arm/mach-sunxi/Kconfig b/arch/arm/mach-sunxi/Kconfig
+index 686f38fec4..ae77ee9e8e 100644
+--- a/arch/arm/mach-sunxi/Kconfig
++++ b/arch/arm/mach-sunxi/Kconfig
+@@ -271,6 +271,7 @@ config MACH_SUN50I
+ 	bool "sun50i (Allwinner A64)"
+ 	select ARM64
+ 	select DM_I2C
++	select MMC_SUNXI_SUPPORTS_CALIBRATION
+ 	select PHY_SUN4I_USB
+ 	select SUNXI_DE2
+ 	select SUNXI_GEN_SUN6I
+diff --git a/drivers/mmc/Kconfig b/drivers/mmc/Kconfig
+index 377b1c4b3b..bc3fd5c2b0 100644
+--- a/drivers/mmc/Kconfig
++++ b/drivers/mmc/Kconfig
+@@ -547,6 +547,10 @@ config MMC_SUNXI_HAS_NEW_MODE
+ 	bool
+ 	depends on MMC_SUNXI
+ 
++config MMC_SUNXI_SUPPORTS_CALIBRATION
++	bool
++	depends on MMC_SUNXI
++
+ config GENERIC_ATMEL_MCI
+ 	bool "Atmel Multimedia Card Interface support"
+ 	depends on DM_MMC && BLK && ARCH_AT91
+diff --git a/drivers/mmc/sunxi_mmc.c b/drivers/mmc/sunxi_mmc.c
+index 39f15eb423..7b064b482c 100644
+--- a/drivers/mmc/sunxi_mmc.c
++++ b/drivers/mmc/sunxi_mmc.c
+@@ -99,11 +99,15 @@ static int mmc_set_mod_clk(struct sunxi_mmc_priv *priv, unsigned int hz)
+ {
+ 	unsigned int pll, pll_hz, div, n, oclk_dly, sclk_dly;
+ 	bool new_mode = false;
++	bool calibrate = false;
+ 	u32 val = 0;
+ 
+ 	if (IS_ENABLED(CONFIG_MMC_SUNXI_HAS_NEW_MODE) && (priv->mmc_no == 2))
+ 		new_mode = true;
+ 
++	if (IS_ENABLED(CONFIG_MMC_SUNXI_SUPPORTS_CALIBRATION))
++		calibrate = true;
++
+ 	/*
+ 	 * The MMC clock has an extra /2 post-divider when operating in the new
+ 	 * mode.
+@@ -174,7 +178,11 @@ static int mmc_set_mod_clk(struct sunxi_mmc_priv *priv, unsigned int hz)
+ 		val = CCM_MMC_CTRL_MODE_SEL_NEW;
+ 		setbits_le32(&priv->reg->ntsr, SUNXI_MMC_NTSR_MODE_SEL_NEW);
+ #endif
+-	} else {
++	} else if (!calibrate) {
++		/*
++		 * Use hardcoded delay values if controller doesn't support
++		 * calibration
++		 */
+ 		val = CCM_MMC_CTRL_OCLK_DLY(oclk_dly) |
+ 			CCM_MMC_CTRL_SCLK_DLY(sclk_dly);
+ 	}
+@@ -228,6 +236,16 @@ static int mmc_config_clock(struct sunxi_mmc_priv *priv, struct mmc *mmc)
+ 	rval &= ~SUNXI_MMC_CLK_DIVIDER_MASK;
+ 	writel(rval, &priv->reg->clkcr);
+ 
++#ifdef CONFIG_MMC_SUNXI_SUPPORTS_CALIBRATION
++	/* A64 supports calibration of delays on MMC controller and we
++	 * have to set delay of zero before starting calibration.
++	 * Allwinner BSP driver sets a delay only in the case of
++	 * using HS400 which is not supported by mainline U-Boot or
++	 * Linux at the moment
++	 */
++	writel(SUNXI_MMC_CAL_DL_SW_EN, &priv->reg->samp_dl);
++#endif
++
+ 	/* Re-enable Clock */
+ 	rval |= SUNXI_MMC_CLK_ENABLE;
+ 	writel(rval, &priv->reg->clkcr);
+-- 
+2.18.1
+

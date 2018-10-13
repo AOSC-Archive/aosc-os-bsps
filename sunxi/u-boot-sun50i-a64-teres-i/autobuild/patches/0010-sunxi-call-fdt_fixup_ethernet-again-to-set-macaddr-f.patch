@@ -1,7 +1,7 @@
-From b8e7e0f57d9915b20b950c1a60d8d0d833d7a09e Mon Sep 17 00:00:00 2001
+From 9991f0789321eaeae1bc642dfd574bd025d01b2c Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 27 Oct 2017 17:25:00 +0800
-Subject: [PATCH 15/16] sunxi: call fdt_fixup_ethernet again to set macaddr for
+Subject: [PATCH 10/10] sunxi: call fdt_fixup_ethernet again to set macaddr for
  more aliases
 
 Sometimes some ethernet aliases do not exist in U-Boot FDT but they
@@ -19,10 +19,10 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/board/sunxi/board.c b/board/sunxi/board.c
-index 95b112e43e..18dea86f14 100644
+index 90f8bc0a6e..198bcdf7e7 100644
 --- a/board/sunxi/board.c
 +++ b/board/sunxi/board.c
-@@ -791,10 +791,12 @@ int ft_board_setup(void *blob, bd_t *bd)
+@@ -796,10 +796,12 @@ int ft_board_setup(void *blob, bd_t *bd)
  	int __maybe_unused r;
  
  	/*
@@ -38,5 +38,5 @@ index 95b112e43e..18dea86f14 100644
  #ifdef CONFIG_VIDEO_DT_SIMPLEFB
  	r = sunxi_simplefb_setup(blob);
 -- 
-2.17.1
+2.18.1
 

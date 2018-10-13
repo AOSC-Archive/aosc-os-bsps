@@ -1,14 +1,13 @@
-From 300bbcb2f62d43a513cd5e3b09d8d5c04ebcebdb Mon Sep 17 00:00:00 2001
+From 58c63941fda594ff86ecde59a3911fdd7abdbcfb Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 22 Jan 2018 00:49:10 +0800
-Subject: [PATCH 16/16] TERES I support
+Subject: [PATCH 09/10] TERES I support
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---
  arch/arm/dts/sun50i-a64-teres-i.dts | 114 ++++++++++++++++++++++++++++
  configs/teres_i_defconfig           |  35 +++++++++
- include/configs/sun50i.h            |   2 +-
- 3 files changed, 150 insertions(+), 1 deletion(-)
+ 2 files changed, 149 insertions(+)
  create mode 100644 arch/arm/dts/sun50i-a64-teres-i.dts
  create mode 100644 configs/teres_i_defconfig
 
@@ -173,19 +172,6 @@ index 0000000000..da33b4131d
 +CONFIG_SYS_USB_EVENT_POLL_VIA_INT_QUEUE=y
 +CONFIG_VIDEO_BRIDGE=y
 +CONFIG_VIDEO_BRIDGE_ANALOGIX_ANX6345=y
-diff --git a/include/configs/sun50i.h b/include/configs/sun50i.h
-index 5ce2cde388..0d0f625018 100644
---- a/include/configs/sun50i.h
-+++ b/include/configs/sun50i.h
-@@ -15,7 +15,7 @@
- #define CONFIG_USB_MAX_CONTROLLER_COUNT 1
- #endif
- 
--#define CONFIG_SUNXI_USB_PHYS	1
-+#define CONFIG_SUNXI_USB_PHYS	2
- 
- #define GICD_BASE		0x1c81000
- #define GICC_BASE		0x1c82000
 -- 
-2.17.1
+2.18.1
 
