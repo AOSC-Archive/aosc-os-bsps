@@ -1,0 +1,35 @@
+From 6df52d5c12e3045fe1a26a75e3dca5754b4d5f55 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Fri, 27 Jul 2018 19:19:28 +0800
+Subject: [PATCH 111/152] arm64: allwinner: dts: h6: add CPU supply for Pine
+ H64
+
+The Pine H64, follows the reference design on the AXP805 DCDC
+assignment, connects DCDCA (polyphased with DCDCB) to the ARM
+cores' power supply.
+
+Add this to the device tree, to enable voltage scaling.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm64/boot/dts/allwinner/sun50i-h6-pine-h64.dts | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6-pine-h64.dts b/arch/arm64/boot/dts/allwinner/sun50i-h6-pine-h64.dts
+index 3c74cbed319b..fb45e68bc441 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-h6-pine-h64.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-h6-pine-h64.dts
+@@ -92,6 +92,10 @@
+ 	};
+ };
+ 
++&cpu0 {
++	cpu-supply = <&reg_dcdca>;
++};
++
+ &mmc0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&mmc0_pins>;
+-- 
+2.18.1
+

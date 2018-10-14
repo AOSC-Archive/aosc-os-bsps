@@ -1,0 +1,48 @@
+From de05791f84dd302a29b878cc2c9f3d335aeb0436 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Tue, 24 Jul 2018 10:50:14 +0800
+Subject: [PATCH 127/152] dt-bindings: display: sunxi: add DT binding for
+ Allwinner H6 DW HDMI
+
+The Allwinner H6 SoC uses a v2.12a DesignWare HDMI controller, with
+dedicated CEC clock added; the PHY connected is a standard
+DesignWare HDMI PHY.
+
+Add binding for it.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ Documentation/devicetree/bindings/display/sunxi/sun4i-drm.txt | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/display/sunxi/sun4i-drm.txt b/Documentation/devicetree/bindings/display/sunxi/sun4i-drm.txt
+index 22d6dda587c5..c1f69a7f4215 100644
+--- a/Documentation/devicetree/bindings/display/sunxi/sun4i-drm.txt
++++ b/Documentation/devicetree/bindings/display/sunxi/sun4i-drm.txt
+@@ -79,6 +79,7 @@ Required properties:
+   - compatible: value must be one of:
+     * "allwinner,sun8i-a83t-dw-hdmi"
+     * "allwinner,sun50i-a64-dw-hdmi", "allwinner,sun8i-a83t-dw-hdmi"
++    * "allwinner,sun50i-h6-dw-hdmi"
+   - reg: base address and size of memory-mapped region
+   - reg-io-width: See dw_hdmi.txt. Shall be 1.
+   - interrupts: HDMI interrupt number
+@@ -86,6 +87,7 @@ Required properties:
+     * iahb: the HDMI bus clock
+     * isfr: the HDMI register clock
+     * tmds: TMDS clock
++    * cec: HDMI CEC clock (H6 only)
+   - clock-names: the clock names mentioned above
+   - resets: phandle to the reset controller
+   - reset-names: must be "ctrl"
+@@ -109,6 +111,7 @@ Required properties:
+     * allwinner,sun8i-h3-hdmi-phy
+     * allwinner,sun8i-r40-hdmi-phy
+     * allwinner,sun50i-a64-hdmi-phy
++    * allwinner,sun50i-h6-hdmi-phy
+   - reg: base address and size of memory-mapped region
+   - clocks: phandles to the clocks feeding the HDMI PHY
+     * bus: the HDMI PHY interface clock
+-- 
+2.18.1
+
