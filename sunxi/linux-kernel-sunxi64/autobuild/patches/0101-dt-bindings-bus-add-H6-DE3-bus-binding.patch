@@ -1,7 +1,7 @@
-From 02de72455917481b4b4c5170d3af2f4e5aff08b0 Mon Sep 17 00:00:00 2001
+From c4bc2bd00e52e142d047d20cee4970d66edfcf5b Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 22 Jul 2018 03:57:07 +0800
-Subject: [PATCH 101/152] dt-bindings: bus: add H6 DE3 bus binding
+Subject: [PATCH 101/153] dt-bindings: bus: add H6 DE3 bus binding
 
 The Allwinner H6 DE3 bus is similar to the A64 DE2 one.
 

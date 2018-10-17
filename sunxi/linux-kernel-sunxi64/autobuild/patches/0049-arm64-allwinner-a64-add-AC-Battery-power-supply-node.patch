@@ -1,7 +1,7 @@
-From ac2f731f8e09460471855089d53fa80d31c97115 Mon Sep 17 00:00:00 2001
+From f90bdc8f1d7ecadf9a69565a2782073f4bad00b2 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 20 Sep 2017 22:18:16 +0800
-Subject: [PATCH 049/152] arm64: allwinner: a64: add AC/Battery power supply
+Subject: [PATCH 049/153] arm64: allwinner: a64: add AC/Battery power supply
  nodes in AXP803 DTSI
 
 AXP803 PMIC features AC/USB/Battery power supplies.

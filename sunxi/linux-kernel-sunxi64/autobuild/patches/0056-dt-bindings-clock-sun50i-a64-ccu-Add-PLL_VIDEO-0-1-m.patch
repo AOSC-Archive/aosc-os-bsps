@@ -1,7 +1,7 @@
-From f7ff7aea31dc988d08a29ce6d060b6f682bc0037 Mon Sep 17 00:00:00 2001
+From 422c75cb31e08cbcf0579082e16e5aa1500e9009 Mon Sep 17 00:00:00 2001
 From: Jagan Teki <jagan@amarulasolutions.com>
 Date: Wed, 18 Jul 2018 16:24:46 +0530
-Subject: [PATCH 056/152] dt-bindings: clock: sun50i-a64-ccu: Add
+Subject: [PATCH 056/153] dt-bindings: clock: sun50i-a64-ccu: Add
  PLL_VIDEO[0-1] macros
 
 Allwinner A64 has two clock parents PLL_VIDEO0 and PLL_VIDEO1.

@@ -1,7 +1,7 @@
-From d0b366550a374a7514d4336c47fcbd71e6939c8e Mon Sep 17 00:00:00 2001
+From 6ddba7ae7b3618b43a50287d8df95a2ea325ccbf Mon Sep 17 00:00:00 2001
 From: Jernej Skrabec <jernej.skrabec@siol.net>
 Date: Sun, 25 Mar 2018 20:02:54 +0200
-Subject: [PATCH 121/152] drm/sun4i: Rework DE2 register defines
+Subject: [PATCH 121/153] drm/sun4i: Rework DE2 register defines
 
 Most, if not all, registers found in DE2 still exists in DE3. However,
 units are on different base addresses.

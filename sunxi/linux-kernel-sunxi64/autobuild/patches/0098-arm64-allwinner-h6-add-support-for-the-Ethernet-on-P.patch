@@ -1,7 +1,7 @@
-From db05bb0a20b05b5405043601fa63929bf3232137 Mon Sep 17 00:00:00 2001
+From 8d007a868b2085ae34b9ad019146331e3d762030 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 10 Jan 2018 00:16:29 +0800
-Subject: [PATCH 098/152] arm64: allwinner: h6: add support for the Ethernet on
+Subject: [PATCH 098/153] arm64: allwinner: h6: add support for the Ethernet on
  Pine H64
 
 The Pine H64 board has an Ethernet port, which is connected to a

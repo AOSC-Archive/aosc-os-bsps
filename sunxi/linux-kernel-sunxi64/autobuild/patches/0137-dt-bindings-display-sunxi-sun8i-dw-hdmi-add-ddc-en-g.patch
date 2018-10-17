@@ -1,7 +1,7 @@
-From ebedbd86397c9c37e087866e34c19ad0e422405c Mon Sep 17 00:00:00 2001
+From 64c2b7d18b046422652670133d2181a7e754285b Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 24 Jul 2018 14:04:34 +0800
-Subject: [PATCH 137/152] dt-bindings: display: sunxi: sun8i-dw-hdmi: add
+Subject: [PATCH 137/153] dt-bindings: display: sunxi: sun8i-dw-hdmi: add
  ddc-en gpio
 
 Some boards have a GPIO that controls the level shifting transistor of

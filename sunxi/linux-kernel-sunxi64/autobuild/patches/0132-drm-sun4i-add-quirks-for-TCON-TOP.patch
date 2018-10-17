@@ -1,7 +1,7 @@
-From 00247200bfba9e10286ab7207ba14ffd6895dc49 Mon Sep 17 00:00:00 2001
+From d39f49bcb151aaeca9fa087ae2a29e2f1d11c8f9 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 22 Jul 2018 11:32:30 +0800
-Subject: [PATCH 132/152] drm: sun4i: add quirks for TCON TOP
+Subject: [PATCH 132/153] drm: sun4i: add quirks for TCON TOP
 
 Some SoCs, such as H6, doesn't have a full-featured TCON TOP.
 

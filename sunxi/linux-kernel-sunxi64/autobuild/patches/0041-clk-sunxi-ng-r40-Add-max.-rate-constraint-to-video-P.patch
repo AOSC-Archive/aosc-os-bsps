@@ -1,7 +1,7 @@
-From d0ea4c032c7bca61bbcde7f5381b0b4817419e93 Mon Sep 17 00:00:00 2001
+From 488699b31aa8a19fb5143181f96eae0b40eaa915 Mon Sep 17 00:00:00 2001
 From: Jernej Skrabec <jernej.skrabec@siol.net>
 Date: Sun, 5 Aug 2018 13:52:47 +0200
-Subject: [PATCH 041/152] clk: sunxi-ng: r40: Add max. rate constraint to video
+Subject: [PATCH 041/153] clk: sunxi-ng: r40: Add max. rate constraint to video
  PLLs
 
 Video PLLs on R40 can be set to higher rate that it is actually

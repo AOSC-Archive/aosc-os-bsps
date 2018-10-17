@@ -1,7 +1,7 @@
-From 9180c35bd0181ff92095ed34b8ca909538ef40da Mon Sep 17 00:00:00 2001
+From 911aee8404bb57049ba33f436be392a4b2ec50a5 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 15 Aug 2018 13:03:43 +0800
-Subject: [PATCH 074/152] arm64: allwinner: a64: enable THS on A64
+Subject: [PATCH 074/153] arm64: allwinner: a64: enable THS on A64
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---

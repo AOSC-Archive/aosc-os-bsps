@@ -1,7 +1,7 @@
-From 4bb6843b96001dbd894da3118362e5c9306bc59d Mon Sep 17 00:00:00 2001
+From f7bee7a2f3e6faef83985c19b0629b4fd45af02a Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 20 Sep 2017 22:22:01 +0800
-Subject: [PATCH 034/152] arm64: allwinner: a64: enable AC and Battery for
+Subject: [PATCH 034/153] arm64: allwinner: a64: enable AC and Battery for
  Pine64
 
 The Pine64 boards (including the Plus variant) have a Micro-USB jack

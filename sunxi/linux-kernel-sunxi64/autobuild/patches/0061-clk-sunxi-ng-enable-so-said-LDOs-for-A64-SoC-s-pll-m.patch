@@ -1,7 +1,7 @@
-From 931e48252fe563c4e4f6212c4c0cd38d693e859b Mon Sep 17 00:00:00 2001
+From 99200b970db051b66741f26b3b6443acb5f6b825 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 16 Aug 2018 10:13:28 +0800
-Subject: [PATCH 061/152] clk: sunxi-ng: enable so-said LDOs for A64 SoC's
+Subject: [PATCH 061/153] clk: sunxi-ng: enable so-said LDOs for A64 SoC's
  pll-mipi clock
 
 In the user manual of A64 SoC, the bit 22 and 23 of pll-mipi control

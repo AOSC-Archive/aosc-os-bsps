@@ -1,7 +1,7 @@
-From 3d2c4959b9f25dba0bbdad43483aaaf3a8601b0e Mon Sep 17 00:00:00 2001
+From f92a3f0d98a9c6ea51681ce9b0ea51b547eb8bf2 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 5 Jan 2018 18:35:04 +0800
-Subject: [PATCH 090/152] arm64: allwinner: dts: h6: enable USB2 on Pine H64
+Subject: [PATCH 090/153] arm64: allwinner: dts: h6: enable USB2 on Pine H64
 
 Pine H64 board has both the USB2 OTG pins and the USB2 host pins on H6
 SoC wired out to USB Type-A ports.

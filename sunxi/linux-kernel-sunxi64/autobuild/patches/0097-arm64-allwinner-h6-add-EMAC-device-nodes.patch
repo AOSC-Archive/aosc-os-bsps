@@ -1,7 +1,7 @@
-From 0e2995f84e04f865f9d0bbb051823f707e6a3d9f Mon Sep 17 00:00:00 2001
+From 82fd4c197328903c703a78048a32e4c0525e74e8 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 10 Jan 2018 00:09:54 +0800
-Subject: [PATCH 097/152] arm64: allwinner: h6: add EMAC device nodes
+Subject: [PATCH 097/153] arm64: allwinner: h6: add EMAC device nodes
 
 Allwinner H6 SoC has an EMAC like the one in A64.
 

@@ -1,7 +1,7 @@
-From 295dddd12bb9d63fde9028093a650e325a766df0 Mon Sep 17 00:00:00 2001
+From 8430425369ba8a68dddc185c09eaad46e118cc66 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 23 Jul 2017 19:16:25 +0800
-Subject: [PATCH 024/152] ARM: sun8i: h3: add CPU thermal zone
+Subject: [PATCH 024/153] ARM: sun8i: h3: add CPU thermal zone
 
 Add a thermal zone which claims the H3 THS as the thermal sensor, and
 controls the frequency of the ARM cores.

@@ -1,7 +1,7 @@
-From 5f3b296b5d2ee53c6e97eca59345bda74addbeac Mon Sep 17 00:00:00 2001
+From da2d96d26c6a8f017a8a765a736b96403c8b7b16 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 19 Jul 2018 12:41:27 +0800
-Subject: [PATCH 116/152] dt-bindings: sunxi-sram: add binding for Allwinner H6
+Subject: [PATCH 116/153] dt-bindings: sunxi-sram: add binding for Allwinner H6
  SRAM C
 
 The Allwinner H6 SoC's DE3 needs the SRAM C section being claimed in the

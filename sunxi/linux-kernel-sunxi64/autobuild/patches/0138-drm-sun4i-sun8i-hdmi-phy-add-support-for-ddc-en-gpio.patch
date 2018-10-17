@@ -1,7 +1,7 @@
-From 77c2910d15c717a63e35ae4ea07d35d8a246255a Mon Sep 17 00:00:00 2001
+From aa5695f73d5c5fbc7f112317975956b46c5024cb Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 24 Jul 2018 14:05:48 +0800
-Subject: [PATCH 138/152] drm: sun4i: sun8i-hdmi-phy: add support for ddc-en
+Subject: [PATCH 138/153] drm: sun4i: sun8i-hdmi-phy: add support for ddc-en
  gpio
 
 Some boards have a gate GPIO attached to the level shifter transistor of

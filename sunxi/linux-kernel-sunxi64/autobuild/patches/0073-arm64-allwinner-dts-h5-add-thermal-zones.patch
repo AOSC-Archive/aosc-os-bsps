@@ -1,7 +1,7 @@
-From c0e71b9ba3426e586cc7b7cd35492b4dac7c1664 Mon Sep 17 00:00:00 2001
+From 20e8c292852ec363fca2f5ea34de0ce80f279ff9 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 15 Aug 2018 12:59:46 +0800
-Subject: [PATCH 073/152] arm64: allwinner: dts: h5: add thermal zones
+Subject: [PATCH 073/153] arm64: allwinner: dts: h5: add thermal zones
 
 The thermal sensor on H5 has two sensors, one tied with CPU and one with
 GPU.

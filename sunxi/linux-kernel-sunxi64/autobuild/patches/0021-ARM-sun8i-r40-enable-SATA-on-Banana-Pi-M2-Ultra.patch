@@ -1,7 +1,7 @@
-From af9beed3608f2ec673e66875fdc70455119ff21c Mon Sep 17 00:00:00 2001
+From ca8024ad35340f7f346a499f6155f9586d6332ac Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 1 May 2017 13:58:37 +0800
-Subject: [PATCH 021/152] ARM: sun8i: r40: enable SATA on Banana Pi M2 Ultra
+Subject: [PATCH 021/153] ARM: sun8i: r40: enable SATA on Banana Pi M2 Ultra
 
 The Banana Pi M2 Ultra board has a SATA port connected to the SATA
 controller on R40 SoC. The controller's 1.2v VDD is connected to ELDO3

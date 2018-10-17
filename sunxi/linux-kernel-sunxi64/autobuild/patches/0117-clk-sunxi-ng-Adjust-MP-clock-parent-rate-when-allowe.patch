@@ -1,7 +1,7 @@
-From 571994e74dcc19654fc5f5175766ffd22c763b27 Mon Sep 17 00:00:00 2001
+From bb5a89ad440daccf2c71043bfc2167f2d566bc9e Mon Sep 17 00:00:00 2001
 From: Jernej Skrabec <jernej.skrabec@siol.net>
 Date: Fri, 23 Mar 2018 19:48:48 +0100
-Subject: [PATCH 117/152] clk: sunxi-ng: Adjust MP clock parent rate when
+Subject: [PATCH 117/153] clk: sunxi-ng: Adjust MP clock parent rate when
  allowed
 
 Currently MP clocks don't consider adjusting parent rate even if they

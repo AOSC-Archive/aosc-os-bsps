@@ -1,7 +1,7 @@
-From 4a1b7e7261e8178019ce7a8bfe624a7126c5166a Mon Sep 17 00:00:00 2001
+From 74c56b1754c4aeb220261da81a3d9b138d8cedc0 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 27 Jul 2018 16:22:01 +0800
-Subject: [PATCH 105/152] nvmem: sunxi-sid: add support for H6 SID
+Subject: [PATCH 105/153] nvmem: sunxi-sid: add support for H6 SID
 
 The SID controller in Allwinner H6 SoC is similar to the one in
 Allwinner A64, except the size of the eFUSE is enlarged to 512 bytes

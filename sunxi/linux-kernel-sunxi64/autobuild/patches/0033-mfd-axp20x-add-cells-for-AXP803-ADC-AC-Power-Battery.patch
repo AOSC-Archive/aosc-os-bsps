@@ -1,7 +1,7 @@
-From 9e200a6acfda90a1a276f3df7fccf62f2bfe76b9 Mon Sep 17 00:00:00 2001
+From 9cc5dca63e4ff71ff1d255afe0c7e8b564a2b142 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 20 Sep 2017 22:17:17 +0800
-Subject: [PATCH 033/152] mfd: axp20x: add cells for AXP803 ADC/AC
+Subject: [PATCH 033/153] mfd: axp20x: add cells for AXP803 ADC/AC
  Power/Battery
 
 The ADC/Battery part of AXP803 PMIC is the same with AXP813, and the AC

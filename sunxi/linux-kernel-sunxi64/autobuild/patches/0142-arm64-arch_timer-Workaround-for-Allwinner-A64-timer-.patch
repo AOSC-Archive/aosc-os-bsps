@@ -1,7 +1,7 @@
-From 4f1a40f1b30c85aecf7f1d510eaf03d0d75c0f09 Mon Sep 17 00:00:00 2001
+From 0bd360ee8f9f2927e79f15d503d43b29a228753a Mon Sep 17 00:00:00 2001
 From: Samuel Holland <samuel@sholland.org>
 Date: Thu, 10 May 2018 21:27:50 -0500
-Subject: [PATCH 151/152] arm64: arch_timer: Workaround for Allwinner A64 timer
+Subject: [PATCH 142/153] arm64: arch_timer: Workaround for Allwinner A64 timer
  instability
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8

@@ -1,7 +1,7 @@
-From 2e627f386a8abe029cf20278e9b2661cf022d19e Mon Sep 17 00:00:00 2001
+From b9fa6fcf12a95a11924274cbeddb6bd7ad840cd5 Mon Sep 17 00:00:00 2001
 From: Jernej Skrabec <jernej.skrabec@siol.net>
 Date: Sat, 24 Mar 2018 12:25:20 +0100
-Subject: [PATCH 126/152] drm/sun4i: dw-hdmi: Make mode_valid function
+Subject: [PATCH 126/153] drm/sun4i: dw-hdmi: Make mode_valid function
  configurable
 
 Since it is not possible to access sun8i-dw-hdmi driver private data

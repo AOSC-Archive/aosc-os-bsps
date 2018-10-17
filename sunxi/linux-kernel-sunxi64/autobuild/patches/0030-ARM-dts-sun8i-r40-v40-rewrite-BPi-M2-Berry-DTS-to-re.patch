@@ -1,7 +1,7 @@
-From aef064bced62b95e0700cbf0ac80652ab399a98a Mon Sep 17 00:00:00 2001
+From ba41ff025e59d043f7b2ed555aab07313cf9a978 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 24 Jul 2018 23:56:09 +0800
-Subject: [PATCH 030/152] ARM: dts: sun8i: r40/v40: rewrite BPi M2 Berry DTS to
+Subject: [PATCH 030/153] ARM: dts: sun8i: r40/v40: rewrite BPi M2 Berry DTS to
  rebase on M2 Ultra
 
 Banana Pi designs the BPi M2 Berry board to be software compatible with

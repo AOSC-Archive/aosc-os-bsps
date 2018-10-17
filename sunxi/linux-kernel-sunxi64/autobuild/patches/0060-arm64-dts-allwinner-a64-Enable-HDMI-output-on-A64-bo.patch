@@ -1,7 +1,7 @@
-From e3efcbfb021c424befd0208ec2339b68f098d0cd Mon Sep 17 00:00:00 2001
+From 140158233b83da6db24d678cf6d7629f20a701a6 Mon Sep 17 00:00:00 2001
 From: Jagan Teki <jagan@amarulasolutions.com>
 Date: Wed, 18 Jul 2018 16:24:53 +0530
-Subject: [PATCH 060/152] arm64: dts: allwinner: a64: Enable HDMI output on A64
+Subject: [PATCH 060/153] arm64: dts: allwinner: a64: Enable HDMI output on A64
  boards w/ HDMI
 
 Enable all necessary device tree nodes and add connector node to device

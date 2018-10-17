@@ -1,7 +1,7 @@
-From 9709fc6883b78524ed1286a6ba4e67f88fa67901 Mon Sep 17 00:00:00 2001
+From 5bb13fffc61f5e70892dba1da66649ffea92ac42 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 14 Aug 2018 16:43:18 +0800
-Subject: [PATCH 038/152] arm64: allwinner: dts: a64: add PWM backlight control
+Subject: [PATCH 038/153] arm64: allwinner: dts: a64: add PWM backlight control
  for TERES-I
 
 The Olimex TERES-I Laptop features backlight control via the on-chip PWM

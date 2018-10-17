@@ -1,7 +1,7 @@
-From 43b464aadb176b11c118c47820c38761d6749c65 Mon Sep 17 00:00:00 2001
+From a7b3b67deba3c8fb7cd66e4e12fb009a6b2416a5 Mon Sep 17 00:00:00 2001
 From: Philipp Rossak <embed3d@gmail.com>
 Date: Fri, 26 Jan 2018 01:01:34 +0100
-Subject: [PATCH 022/152] arm: dts: sunxi-h3-h5: add support for the thermal
+Subject: [PATCH 022/153] arm: dts: sunxi-h3-h5: add support for the thermal
  sensor in H3 and H5
 
 As we have gained the support for the thermal sensor in H3 and H5,

@@ -1,7 +1,7 @@
-From ff96d86e2d397160ece13c8d952263dafcc05414 Mon Sep 17 00:00:00 2001
+From c5d81c6e317b5f7a97400803ea0e4cda86d810b2 Mon Sep 17 00:00:00 2001
 From: Jernej Skrabec <jernej.skrabec@siol.net>
 Date: Sat, 24 Mar 2018 15:08:09 +0100
-Subject: [PATCH 131/152] drm/sun4i: Add support for H6 HDMI PHY
+Subject: [PATCH 131/153] drm/sun4i: Add support for H6 HDMI PHY
 
 H6 has Synopsys DWC HDMI 2.0 TX PHY.
 

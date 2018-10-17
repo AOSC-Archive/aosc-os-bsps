@@ -1,7 +1,7 @@
-From c95b35853e1a4aec9bca9948a32e3e92edb9f0e9 Mon Sep 17 00:00:00 2001
+From 29c170cf639d75ffe43ec980ba5369e5b357eddb Mon Sep 17 00:00:00 2001
 From: Jernej Skrabec <jernej.skrabec@siol.net>
 Date: Sat, 24 Mar 2018 12:33:51 +0100
-Subject: [PATCH 129/152] drm/sun4i: dw-hdmi: Add quirk for setting TMDS clock
+Subject: [PATCH 129/153] drm/sun4i: dw-hdmi: Add quirk for setting TMDS clock
 
 It turns out that H6 HDMI BSP kernel driver doesn't change TMDS rate at
 all. At this point it is not clear whether it is just not necessary or

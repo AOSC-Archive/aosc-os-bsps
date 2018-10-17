@@ -1,7 +1,7 @@
-From 88f8f25938561d09920781bba29667308316b634 Mon Sep 17 00:00:00 2001
+From abc7d1f8fefdce583fb10137dc8a57b3321f2e56 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 1 Aug 2018 11:40:46 +0800
-Subject: [PATCH 099/152] dt-bindings: simplefb-sunxi: add description of DEs
+Subject: [PATCH 099/153] dt-bindings: simplefb-sunxi: add description of DEs
  for pipeline string
 
 Currently, for different Allwinner Display Engine situation, we use

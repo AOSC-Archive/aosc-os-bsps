@@ -1,7 +1,7 @@
-From 9ded92727c27f9e4e359f59cde445e9f6379c3d3 Mon Sep 17 00:00:00 2001
+From 4beba3629d06daae18ee1f3e475708cfd26c04ba Mon Sep 17 00:00:00 2001
 From: Jernej Skrabec <jernej.skrabec@siol.net>
 Date: Sat, 24 Mar 2018 18:41:43 +0100
-Subject: [PATCH 135/152] arm64: dts: sun50i: h6: Add HDMI pipeline
+Subject: [PATCH 135/153] arm64: dts: sun50i: h6: Add HDMI pipeline
 
 This commit adds all entries needed for HDMI to function properly.
 

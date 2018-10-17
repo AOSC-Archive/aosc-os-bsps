@@ -1,7 +1,7 @@
-From 19e7b0a2158349480ae16e35fc887375db00db40 Mon Sep 17 00:00:00 2001
+From 170dc164e7431ac822b911e3f0c237777377bd88 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 6 May 2017 15:41:56 +0800
-Subject: [PATCH 063/152] drm/bridge: split some definitions of ANX78xx to
+Subject: [PATCH 063/153] drm/bridge: split some definitions of ANX78xx to
  dedicated headers
 
 Some definitions currently in analogix-anx78xx.h are not restricted to

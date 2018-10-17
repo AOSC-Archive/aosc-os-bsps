@@ -1,7 +1,7 @@
-From 1b99878856d30a64c0fd743451cd7c4ebde4ee1a Mon Sep 17 00:00:00 2001
+From a6855a30a3197c4ce1ddf16368fbc14137088a19 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 27 Jul 2018 17:34:35 +0800
-Subject: [PATCH 107/152] nvmem: sunxi-sid: fix endian
+Subject: [PATCH 107/153] nvmem: sunxi-sid: fix endian
 
 The data in the SID is stored as little endian. However, when accessing
 the SID via sunxi-sid driver, it converts little endian to big endian at

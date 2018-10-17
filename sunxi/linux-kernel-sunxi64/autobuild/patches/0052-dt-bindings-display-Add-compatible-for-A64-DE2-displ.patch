@@ -1,7 +1,7 @@
-From 1fa6cfc9724aac711e7f6b9f6166e8897e06417d Mon Sep 17 00:00:00 2001
+From 8ebc18528e9e2e489c4cfa35cbe17cbe320a2c75 Mon Sep 17 00:00:00 2001
 From: Jagan Teki <jagan@amarulasolutions.com>
 Date: Wed, 18 Jul 2018 16:24:43 +0530
-Subject: [PATCH 052/152] dt-bindings: display: Add compatible for A64 DE2
+Subject: [PATCH 052/153] dt-bindings: display: Add compatible for A64 DE2
  display pipeline
 
 Allwinner A64 has a DE2 display pipeline. The TCONs are similar to the

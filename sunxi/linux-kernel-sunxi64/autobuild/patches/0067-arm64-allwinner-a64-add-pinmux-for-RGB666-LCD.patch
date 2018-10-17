@@ -1,7 +1,7 @@
-From fd4a16bc524ec15f8f700cdf37645525a3747d77 Mon Sep 17 00:00:00 2001
+From 3de0f5effbddc5a80afcd914fd69920ba52073c1 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 7 May 2017 14:40:48 +0800
-Subject: [PATCH 067/152] arm64: allwinner: a64: add pinmux for RGB666 LCD
+Subject: [PATCH 067/153] arm64: allwinner: a64: add pinmux for RGB666 LCD
 
 Allwinner A64's TCON0 can output RGB666 LCD signal.
 

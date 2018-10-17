@@ -1,7 +1,7 @@
-From 91e6ffad2fd0c583c7d3c0081d7ae31627975dae Mon Sep 17 00:00:00 2001
+From 95c84fcf3741379661490c7f32cc2637a8a0d257 Mon Sep 17 00:00:00 2001
 From: Jagan Teki <jagan@amarulasolutions.com>
 Date: Wed, 18 Jul 2018 16:24:44 +0530
-Subject: [PATCH 054/152] drm/sun4i: Add support for A64 display engine
+Subject: [PATCH 054/153] drm/sun4i: Add support for A64 display engine
 
 Display Engine(DE2) in Allwinner A64 has two mixers and tcons.
 

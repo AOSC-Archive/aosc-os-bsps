@@ -1,7 +1,7 @@
-From 6ef611078d3427e9f05ca4b281624a6eb6faa5de Mon Sep 17 00:00:00 2001
+From b1d94269d75f20cc4a0c99cb3c4134c22d041979 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 16 Aug 2018 22:03:27 +0800
-Subject: [PATCH 048/152] drm: sun4i: Get the HDMI PHY clock exclusive in
+Subject: [PATCH 048/153] drm: sun4i: Get the HDMI PHY clock exclusive in
  sun8i-dw-hdmi
 
 The HDMI PHY clock is also sensitive to unattended changes.

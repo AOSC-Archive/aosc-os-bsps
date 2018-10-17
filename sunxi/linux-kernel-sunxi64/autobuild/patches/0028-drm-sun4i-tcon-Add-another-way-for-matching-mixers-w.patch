@@ -1,7 +1,7 @@
-From a89986460240cc358a471d9002da91d67ee03c0c Mon Sep 17 00:00:00 2001
+From 3c5d00f5410a5bdab43e90dde87849530c47c232 Mon Sep 17 00:00:00 2001
 From: Jernej Skrabec <jernej.skrabec@siol.net>
 Date: Tue, 10 Jul 2018 22:35:05 +0200
-Subject: [PATCH 028/152] drm/sun4i: tcon: Add another way for matching mixers
+Subject: [PATCH 028/153] drm/sun4i: tcon: Add another way for matching mixers
  with tcon
 
 Till now, new way of matching engines with TCONs was reading their

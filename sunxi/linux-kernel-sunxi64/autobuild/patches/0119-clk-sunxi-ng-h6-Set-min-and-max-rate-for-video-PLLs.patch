@@ -1,7 +1,7 @@
-From f62cb226f94f816d5754d5951e5382cf8b47aaf2 Mon Sep 17 00:00:00 2001
+From 0b9b7a5194009c68ee2910797b46c2a9b9dbb4fd Mon Sep 17 00:00:00 2001
 From: Jernej Skrabec <jernej.skrabec@siol.net>
 Date: Fri, 23 Mar 2018 20:37:10 +0100
-Subject: [PATCH 119/152] clk: sunxi-ng: h6: Set min and max rate for video
+Subject: [PATCH 119/153] clk: sunxi-ng: h6: Set min and max rate for video
  PLLs
 
 According to H6 user manual, minimal allowed N factor is 12. Since there

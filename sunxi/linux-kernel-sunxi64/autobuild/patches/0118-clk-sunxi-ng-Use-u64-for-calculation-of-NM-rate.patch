@@ -1,7 +1,7 @@
-From 0cd5e8a957ef6fbe1b16b0348b86ce25e0f79b85 Mon Sep 17 00:00:00 2001
+From 762a469340d38563d5b66aa88023325d5b6e045e Mon Sep 17 00:00:00 2001
 From: Jernej Skrabec <jernej.skrabec@siol.net>
 Date: Fri, 23 Mar 2018 20:05:25 +0100
-Subject: [PATCH 118/152] clk: sunxi-ng: Use u64 for calculation of NM rate
+Subject: [PATCH 118/153] clk: sunxi-ng: Use u64 for calculation of NM rate
 
 Allwinner H6 SoC has multiplier N range between 1 and 254. Since parent
 rate is 24MHz, intermediate result when calculating final rate easily

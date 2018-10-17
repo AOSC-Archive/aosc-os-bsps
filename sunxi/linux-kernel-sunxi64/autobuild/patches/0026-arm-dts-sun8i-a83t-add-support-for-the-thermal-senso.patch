@@ -1,7 +1,7 @@
-From c69ff11b94b4f24a39a04b9f134d13fcf004a391 Mon Sep 17 00:00:00 2001
+From 42abf2a515986eec010a2bc26af6cd938c62421a Mon Sep 17 00:00:00 2001
 From: Philipp Rossak <embed3d@gmail.com>
 Date: Fri, 26 Jan 2018 01:15:17 +0100
-Subject: [PATCH 026/152] arm: dts: sun8i: a83t: add support for the thermal
+Subject: [PATCH 026/153] arm: dts: sun8i: a83t: add support for the thermal
  sensor in A83T
 
 As we have gained the support for the thermal sensor in A83T,

@@ -1,7 +1,7 @@
-From e9f2a0c93bf6a173511d6c2ffaa03a4e527d4d52 Mon Sep 17 00:00:00 2001
+From 8a9c883aeac8ad5b73fce78ed3476eebe8646011 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 6 May 2017 15:24:39 +0800
-Subject: [PATCH 062/152] drm/bridge: move ANA78xx driver to analogix
+Subject: [PATCH 062/153] drm/bridge: move ANA78xx driver to analogix
  subdirectory
 
 As ANA78xx chips are designed and produced by Analogix Semiconductor,

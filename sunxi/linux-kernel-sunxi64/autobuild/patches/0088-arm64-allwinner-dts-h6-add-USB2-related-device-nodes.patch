@@ -1,7 +1,7 @@
-From 65ae10d85dd8b0b47cfc4d1dddea7f530185df1f Mon Sep 17 00:00:00 2001
+From 99dfa25f9b8eddb1e1fd4e30ff1c1409b6809ec9 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 5 Jan 2018 18:34:15 +0800
-Subject: [PATCH 088/152] arm64: allwinner: dts: h6: add USB2-related device
+Subject: [PATCH 088/153] arm64: allwinner: dts: h6: add USB2-related device
  nodes
 
 Allwinner H6 has two USB2 ports, one OTG and one host-only.

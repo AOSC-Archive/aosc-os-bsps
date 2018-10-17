@@ -1,7 +1,7 @@
-From 4098a81703db881bfc625bc191f21b1670e83510 Mon Sep 17 00:00:00 2001
+From d42a02b8e2d398b559a2a19e990e63392487dd87 Mon Sep 17 00:00:00 2001
 From: Jagan Teki <jagan@amarulasolutions.com>
 Date: Wed, 18 Jul 2018 16:24:42 +0530
-Subject: [PATCH 053/152] drm/sun4i: Add support for A64 mixers
+Subject: [PATCH 053/153] drm/sun4i: Add support for A64 mixers
 
 Mixers in Allwinner have similar capabilities as others SoCs with DE2.
 

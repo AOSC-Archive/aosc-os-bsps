@@ -1,7 +1,7 @@
-From 107333ae28c11214ea1889eb76ce46efc19504f0 Mon Sep 17 00:00:00 2001
+From 0e8786529c6e16b61011c1884b7803ebc07e6ff0 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 19 Jul 2018 12:33:56 +0800
-Subject: [PATCH 095/152] dt-binding: dwmac-sun8i: add H6 compatible string (w/
+Subject: [PATCH 095/153] dt-binding: dwmac-sun8i: add H6 compatible string (w/
  A64 fallback)
 
 The Allwinner H6 SoC features a Ethernet MAC that is similar to the one

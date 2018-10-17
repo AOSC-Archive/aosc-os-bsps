@@ -1,7 +1,7 @@
-From 5de5eb25f3cb11f1b0ee7c88e4d67dd944458bde Mon Sep 17 00:00:00 2001
+From 6b9ce3be22dc88634c9e08b669588422b0c84553 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 14 Aug 2018 16:39:54 +0800
-Subject: [PATCH 037/152] arm64: allwinner: dts: a64: add trigger for TERES-I
+Subject: [PATCH 037/153] arm64: allwinner: dts: a64: add trigger for TERES-I
  keyboard lock LEDs
 
 The two GPIO-attached LEDs are labelled as capslock/numlock LEDs on the

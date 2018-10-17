@@ -1,7 +1,7 @@
-From 40ec34923274c149da21d796e5fbe1bb92958fc8 Mon Sep 17 00:00:00 2001
+From 74c1a09ed677df9fb94fe928159a2c47fce1571d Mon Sep 17 00:00:00 2001
 From: Jernej Skrabec <jernej.skrabec@siol.net>
 Date: Wed, 28 Mar 2018 20:15:03 +0200
-Subject: [PATCH 120/152] drm/sun4i: Add compatible for H6 display engine
+Subject: [PATCH 120/153] drm/sun4i: Add compatible for H6 display engine
 
 H6 is first Allwinner SoC which supports 10 bit colors, HDR and AFBC.
 

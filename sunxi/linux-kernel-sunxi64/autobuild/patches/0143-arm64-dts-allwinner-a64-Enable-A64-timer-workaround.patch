@@ -1,7 +1,7 @@
-From 8e5a7d535e710e42ff189ef58eefe6f701e59ab4 Mon Sep 17 00:00:00 2001
+From bbad9c16d1f448ee3ab02b85eabe62a2773f681b Mon Sep 17 00:00:00 2001
 From: Samuel Holland <samuel@sholland.org>
 Date: Thu, 10 May 2018 21:27:51 -0500
-Subject: [PATCH 152/152] arm64: dts: allwinner: a64: Enable A64 timer
+Subject: [PATCH 143/153] arm64: dts: allwinner: a64: Enable A64 timer
  workaround
 
 As instability in the architectural timer has been observed on multiple
@@ -14,10 +14,10 @@ Signed-off-by: Samuel Holland <samuel@sholland.org>
  1 file changed, 1 insertion(+)
 
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
-index 3305ff97b202..50eaaa2952ab 100644
+index 59bf7c713a2c..49e1f6563566 100644
 --- a/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
-@@ -231,6 +231,7 @@
+@@ -209,6 +209,7 @@
  
  	timer {
  		compatible = "arm,armv8-timer";

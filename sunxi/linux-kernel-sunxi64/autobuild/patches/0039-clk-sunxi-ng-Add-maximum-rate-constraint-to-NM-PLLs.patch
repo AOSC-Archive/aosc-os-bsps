@@ -1,7 +1,7 @@
-From 53bfdbd16a66c014a83df98305f228b32d1ebe45 Mon Sep 17 00:00:00 2001
+From d1548981affaa82a0dbd1c87bb69a6bb8b2ef1b2 Mon Sep 17 00:00:00 2001
 From: Jernej Skrabec <jernej.skrabec@siol.net>
 Date: Fri, 23 Mar 2018 20:29:42 +0100
-Subject: [PATCH 039/152] clk: sunxi-ng: Add maximum rate constraint to NM PLLs
+Subject: [PATCH 039/153] clk: sunxi-ng: Add maximum rate constraint to NM PLLs
 
 On some NM PLLs, frequency can be set above PLL working range.
 

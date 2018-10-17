@@ -1,7 +1,7 @@
-From 32f720726ee7bad42aa0912b70ceeb0aef16143a Mon Sep 17 00:00:00 2001
+From 292a9eeb29c239de823e83e9413b1c5a13930bf7 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 22 Jul 2018 11:38:38 +0800
-Subject: [PATCH 133/152] dt-bindings: display: sun4i-drm: document H6 TCON TOP
+Subject: [PATCH 133/153] dt-bindings: display: sun4i-drm: document H6 TCON TOP
 
 Allwinner H6 SoC has a cut down version of TCON TOP.
 

@@ -1,7 +1,7 @@
-From 3f6765688847c284943b5e0bf280c7439aa3d785 Mon Sep 17 00:00:00 2001
+From 06b4cf467f84fdeb83474a2b1a9f1fc9f29c4559 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 22 Sep 2018 20:41:08 +0800
-Subject: [PATCH 001/152] Revert "drm/sun4i: Remove R40 display pipeline
+Subject: [PATCH 001/153] Revert "drm/sun4i: Remove R40 display pipeline
  compatibles"
 
 This reverts commit 3510e7a7f91088159bfc67e8abdc9f9e77d28870.

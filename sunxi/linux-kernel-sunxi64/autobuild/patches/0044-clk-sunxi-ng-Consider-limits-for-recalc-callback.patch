@@ -1,7 +1,7 @@
-From 7cb82b5b8f066f841756f902f7df4739e01edd1e Mon Sep 17 00:00:00 2001
+From faa3f7ce8d50bc4c611f2a253fc876e4c700df76 Mon Sep 17 00:00:00 2001
 From: Jernej Skrabec <jernej.skrabec@siol.net>
 Date: Thu, 16 Aug 2018 20:33:57 +0200
-Subject: [PATCH 044/152] clk: sunxi-ng: Consider limits for recalc callback
+Subject: [PATCH 044/153] clk: sunxi-ng: Consider limits for recalc callback
 
 Currently, if NM PLL is set to unstable rate before Linux kernel is
 loaded, it still can be cosidered as valid rate. This can happen if PLL

@@ -1,7 +1,7 @@
-From a1722da8db85e043b27873cf59d3bfd2d9fd5d58 Mon Sep 17 00:00:00 2001
+From 147f16bfc14f0757e945c1c1d47de69b257497d3 Mon Sep 17 00:00:00 2001
 From: Jernej Skrabec <jernej.skrabec@siol.net>
 Date: Sat, 24 Mar 2018 18:33:50 +0100
-Subject: [PATCH 103/152] clk: sunxi-ng: Add support for H6 DE3 clocks
+Subject: [PATCH 103/153] clk: sunxi-ng: Add support for H6 DE3 clocks
 
 Support for mixer0, mixer1, writeback and rotation units is added.
 

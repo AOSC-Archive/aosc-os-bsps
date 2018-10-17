@@ -1,7 +1,7 @@
-From de05791f84dd302a29b878cc2c9f3d335aeb0436 Mon Sep 17 00:00:00 2001
+From bbab9e7b68f35a4a68bfa644a9dd256f53ff37dc Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 24 Jul 2018 10:50:14 +0800
-Subject: [PATCH 127/152] dt-bindings: display: sunxi: add DT binding for
+Subject: [PATCH 127/153] dt-bindings: display: sunxi: add DT binding for
  Allwinner H6 DW HDMI
 
 The Allwinner H6 SoC uses a v2.12a DesignWare HDMI controller, with

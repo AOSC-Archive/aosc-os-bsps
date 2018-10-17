@@ -1,7 +1,7 @@
-From e99827f1a4497de02cc32d9a5b2e7c4bde1ae26a Mon Sep 17 00:00:00 2001
+From 7b087b51a46058ffd12a9ad004e14dcd02de3c4c Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 13 Jan 2018 13:22:25 +0800
-Subject: [PATCH 005/152] drm: sun4i: bypass RGB interface dotclock check when
+Subject: [PATCH 005/153] drm: sun4i: bypass RGB interface dotclock check when
  panel is used
 
 The RGB interface code of sun4i-drm has a dotclock check, which is used

@@ -1,7 +1,7 @@
-From 9468b7e8d4861e549d86d4fd3f23425ef300c57e Mon Sep 17 00:00:00 2001
+From 19ffc27dc7c0bcca252f99c2a8c0995e54cf0ca5 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 26 Jul 2018 23:08:03 +0800
-Subject: [PATCH 058/152] dt-bindings: sun4i-drm: add HDMI VCC supply property
+Subject: [PATCH 058/153] dt-bindings: sun4i-drm: add HDMI VCC supply property
  for sun8i-dw-hdmi
 
 Allwiner SoCs with DesignWare HDMI controller all come with a "HVCC"

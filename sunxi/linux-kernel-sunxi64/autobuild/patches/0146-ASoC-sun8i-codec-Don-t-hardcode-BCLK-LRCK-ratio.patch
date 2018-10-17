@@ -1,7 +1,7 @@
-From 22c87bcdc5b9c7c18f9536c9c12628b085a23299 Mon Sep 17 00:00:00 2001
+From 5957447db69b932fdaa2da0ce54609c54ffc33de Mon Sep 17 00:00:00 2001
 From: Vasily Khoruzhick <anarsoul@gmail.com>
-Date: Sat, 9 Dec 2017 11:15:27 -0800
-Subject: [PATCH 144/152] ASoC: sun8i-codec: Don't hardcode BCLK / LRCK ratio
+Date: Mon, 15 Oct 2018 20:02:32 -0700
+Subject: [PATCH 146/153] ASoC: sun8i-codec: Don't hardcode BCLK / LRCK ratio
 
 BCLK / LRCK ratio should be sample size * channels, but it was
 hardcoded to 32 (0x1 is 32 as per A33 and A64 datasheets).
@@ -10,14 +10,22 @@ Calculate it basing on sample size and number of channels.
 
 Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
 ---
- sound/soc/sunxi/sun8i-codec.c | 35 ++++++++++++++++++++++++++++++-----
- 1 file changed, 30 insertions(+), 5 deletions(-)
+ sound/soc/sunxi/sun8i-codec.c | 26 +++++++++++++++++++++-----
+ 1 file changed, 21 insertions(+), 5 deletions(-)
 
 diff --git a/sound/soc/sunxi/sun8i-codec.c b/sound/soc/sunxi/sun8i-codec.c
-index fb37dd927e33..e681e194ad4c 100644
+index fb37dd927e33..2467fab94a19 100644
 --- a/sound/soc/sunxi/sun8i-codec.c
 +++ b/sound/soc/sunxi/sun8i-codec.c
-@@ -52,7 +52,6 @@
+@@ -24,6 +24,7 @@
+ #include <linux/io.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/regmap.h>
++#include <linux/log2.h>
+ 
+ #include <sound/pcm_params.h>
+ #include <sound/soc.h>
+@@ -52,7 +53,6 @@
  #define SUN8I_AIF1CLK_CTRL_AIF1_LRCK_INV		13
  #define SUN8I_AIF1CLK_CTRL_AIF1_BCLK_DIV		9
  #define SUN8I_AIF1CLK_CTRL_AIF1_LRCK_DIV		6
@@ -25,7 +33,7 @@ index fb37dd927e33..e681e194ad4c 100644
  #define SUN8I_AIF1CLK_CTRL_AIF1_WORD_SIZ		4
  #define SUN8I_AIF1CLK_CTRL_AIF1_WORD_SIZ_16		(1 << 4)
  #define SUN8I_AIF1CLK_CTRL_AIF1_DATA_FMT		2
-@@ -257,8 +256,8 @@ static int sun8i_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
+@@ -257,8 +257,8 @@ static int sun8i_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
  }
  
  struct sun8i_codec_clk_div {
@@ -36,29 +44,19 @@ index fb37dd927e33..e681e194ad4c 100644
  };
  
  static const struct sun8i_codec_clk_div sun8i_codec_bclk_div[] = {
-@@ -300,12 +299,33 @@ static u8 sun8i_codec_get_bclk_div(struct sun8i_codec *scodec,
+@@ -300,12 +300,23 @@ static u8 sun8i_codec_get_bclk_div(struct sun8i_codec *scodec,
  	return best_val;
  }
  
-+static const struct sun8i_codec_clk_div sun8i_codec_lrck_div[] = {
-+	{ .div = 16,	.val = 0 },
-+	{ .div = 32,	.val = 1 },
-+	{ .div = 64,	.val = 2 },
-+	{ .div = 128,	.val = 3 },
-+	{ .div = 256,	.val = 4 },
-+};
-+
 +static int sun8i_codec_get_lrck_div(unsigned int channels,
 +				    unsigned int word_size)
 +{
 +	unsigned int div = word_size * channels;
-+	int i;
 +
-+	for (i = 0; i < ARRAY_SIZE(sun8i_codec_lrck_div); i++)
-+		if (sun8i_codec_lrck_div[i].div == div)
-+			return sun8i_codec_lrck_div[i].val;
++	if (div < 16 || div > 256)
++		return -EINVAL;
 +
-+	return -EINVAL;
++	return ilog2(div) - 4;
 +}
 +
  static int sun8i_codec_hw_params(struct snd_pcm_substream *substream,
@@ -71,7 +69,7 @@ index fb37dd927e33..e681e194ad4c 100644
  	u8 bclk_div;
  
  	/*
-@@ -321,9 +341,14 @@ static int sun8i_codec_hw_params(struct snd_pcm_substream *substream,
+@@ -321,9 +332,14 @@ static int sun8i_codec_hw_params(struct snd_pcm_substream *substream,
  			   SUN8I_AIF1CLK_CTRL_AIF1_BCLK_DIV_MASK,
  			   bclk_div << SUN8I_AIF1CLK_CTRL_AIF1_BCLK_DIV);
  

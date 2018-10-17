@@ -1,7 +1,7 @@
-From 5b96410a3542d647754af8e2e2883a1fad84a4cd Mon Sep 17 00:00:00 2001
+From af05779579fe6ac4c1179da68cd15a191245c893 Mon Sep 17 00:00:00 2001
 From: Philipp Rossak <embed3d@gmail.com>
 Date: Tue, 23 Jan 2018 10:57:37 +0100
-Subject: [PATCH 025/152] arm: dts: sun8i: h3: enable H3 sid controller
+Subject: [PATCH 025/153] arm: dts: sun8i: h3: enable H3 sid controller
 
 This patch enables the the sid controller in the H3. It can be used
 for thermal calibration data.

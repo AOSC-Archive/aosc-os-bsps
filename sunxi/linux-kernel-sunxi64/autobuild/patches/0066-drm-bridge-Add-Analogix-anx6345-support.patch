@@ -1,7 +1,7 @@
-From d2c4ee954a5e1266ee58f910e977379e364e8bc7 Mon Sep 17 00:00:00 2001
+From 123e10c03e1c4bb9466d6149ec19a7bb7aa02b0f Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 7 May 2017 14:34:32 +0800
-Subject: [PATCH 066/152] drm/bridge: Add Analogix anx6345 support
+Subject: [PATCH 066/153] drm/bridge: Add Analogix anx6345 support
 
 The ANX6345 is an ultra-low power DisplayPower/eDP transmitter designed
 for portable devices. This driver adds initial support for RGB to eDP

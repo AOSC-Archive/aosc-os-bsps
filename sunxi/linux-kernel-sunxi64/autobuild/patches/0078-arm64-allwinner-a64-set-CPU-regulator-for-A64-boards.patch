@@ -1,7 +1,7 @@
-From 75ac849688c8b34d7ed325387fa7e9f3f371b91a Mon Sep 17 00:00:00 2001
+From 73f0eb4cf5f03ddd5e3d78199a1c160994ef4a64 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 22 Sep 2017 23:48:41 +0800
-Subject: [PATCH 078/152] arm64: allwinner: a64: set CPU regulator for A64
+Subject: [PATCH 078/153] arm64: allwinner: a64: set CPU regulator for A64
  boards
 
 The DCDC2 regulator of the AXP803 PMIC is used for the voltage scaling

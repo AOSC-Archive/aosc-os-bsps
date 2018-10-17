@@ -1,7 +1,7 @@
-From 1bc95a55c979913c55f56444c5e5b2e793def391 Mon Sep 17 00:00:00 2001
+From 1d90e3f67262db59d4075c3361e0287385959cb3 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 6 Jul 2018 23:24:22 +0800
-Subject: [PATCH 091/152] dt-bindings: phy: add binding for Allwinner USB3 PHY
+Subject: [PATCH 091/153] dt-bindings: phy: add binding for Allwinner USB3 PHY
 
 The new Allwinner H6 SoC contains a USB3 PHY that is wired to the
 external USB3 pins of the SoC.

@@ -1,7 +1,7 @@
-From 61500d7b8d8cbfa18d5960122b224d0e9058035a Mon Sep 17 00:00:00 2001
+From e3bea5e44847f2b42234f3c9a686cdd8094a68ae Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 27 Jul 2018 19:30:10 +0800
-Subject: [PATCH 113/152] add extra opps
+Subject: [PATCH 113/153] add extra opps
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---

@@ -1,7 +1,7 @@
-From 647b8bdc465111073447573d3ccd718dd36d3cdc Mon Sep 17 00:00:00 2001
+From f49c19ee4ce1df4ce38f9ae625dd890025d94fdf Mon Sep 17 00:00:00 2001
 From: Jernej Skrabec <jernej.skrabec@siol.net>
 Date: Tue, 27 Mar 2018 17:32:38 +0200
-Subject: [PATCH 059/152] drm/sun4i: Add support for HDMI voltage regulator
+Subject: [PATCH 059/153] drm/sun4i: Add support for HDMI voltage regulator
 
 Some boards have HDMI VCC pin connected to voltage regulator which may
 not be turned on by default.

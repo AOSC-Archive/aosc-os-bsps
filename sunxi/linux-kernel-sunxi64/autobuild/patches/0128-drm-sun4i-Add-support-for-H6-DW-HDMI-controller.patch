@@ -1,7 +1,7 @@
-From 33dc789b6755c78f1c52cbc521c947208c9585b6 Mon Sep 17 00:00:00 2001
+From d4148611f9b81b6129580f9b72fcabcb9d18075d Mon Sep 17 00:00:00 2001
 From: Jernej Skrabec <jernej.skrabec@siol.net>
 Date: Sat, 24 Mar 2018 15:14:01 +0100
-Subject: [PATCH 128/152] drm/sun4i: Add support for H6 DW HDMI controller
+Subject: [PATCH 128/153] drm/sun4i: Add support for H6 DW HDMI controller
 
 H6 has DW HDMI 2.0 controller v2.12a.
 

@@ -1,7 +1,7 @@
-From 9fba201951581a94d35f69045397d81df48076bc Mon Sep 17 00:00:00 2001
+From 0f4913cf134b311d50df3b8d9db7176c5f5a1194 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 16 Sep 2018 12:34:07 +0800
-Subject: [PATCH 002/152] dt-bindings: sun4i-drm: add compatible for R40 HDMI
+Subject: [PATCH 002/153] dt-bindings: sun4i-drm: add compatible for R40 HDMI
  PHY
 
 The Allwinner R40 HDMI PHY is currently the only one that seems to be

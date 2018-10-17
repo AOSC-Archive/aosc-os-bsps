@@ -1,7 +1,7 @@
-From 9e5b34940983bab880138a2764aecab59b4892f3 Mon Sep 17 00:00:00 2001
+From fffe375936b0ad3481919f4a2dee7a826ae315bc Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 20 Sep 2017 22:35:32 +0800
-Subject: [PATCH 035/152] arm64: allwinner: a64: enable Battery/AC for Pinebook
+Subject: [PATCH 035/153] arm64: allwinner: a64: enable Battery/AC for Pinebook
 
 The Pinebook features a power jack that is connected to the ACIN of the
 PMIC and an internal battery that is connected to the battery pins of

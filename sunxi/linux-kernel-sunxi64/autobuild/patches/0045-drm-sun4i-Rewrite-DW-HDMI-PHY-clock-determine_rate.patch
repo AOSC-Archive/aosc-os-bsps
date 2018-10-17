@@ -1,7 +1,7 @@
-From f8e6fb0d3a37ac936069c4d4e6c806d0412e6b4a Mon Sep 17 00:00:00 2001
+From d1040f4df36f01af23266dd64c7746eb0c47a060 Mon Sep 17 00:00:00 2001
 From: Jernej Skrabec <jernej.skrabec@siol.net>
 Date: Thu, 16 Aug 2018 21:24:22 +0200
-Subject: [PATCH 045/152] drm/sun4i: Rewrite DW HDMI PHY clock determine_rate
+Subject: [PATCH 045/153] drm/sun4i: Rewrite DW HDMI PHY clock determine_rate
 
 Currently callback for .determine_rate callback is written by hand and
 it has at least one downside. It doesn't check if parrent can be used

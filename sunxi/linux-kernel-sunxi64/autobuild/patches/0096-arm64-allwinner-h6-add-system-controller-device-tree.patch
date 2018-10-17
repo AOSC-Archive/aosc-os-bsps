@@ -1,7 +1,7 @@
-From 72135a7080fe83c5099dd344286badfbdbdcd214 Mon Sep 17 00:00:00 2001
+From fbaaede7301c07579ee0f6c5792ba7a0b6e6ced5 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 19 Jul 2018 12:50:33 +0800
-Subject: [PATCH 096/152] arm64: allwinner: h6: add system controller device
+Subject: [PATCH 096/153] arm64: allwinner: h6: add system controller device
  tree node
 
 As we have already binding for the H6 system controller, add its node

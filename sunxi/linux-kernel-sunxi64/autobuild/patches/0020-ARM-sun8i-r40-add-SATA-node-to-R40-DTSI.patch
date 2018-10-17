@@ -1,7 +1,7 @@
-From 6ad818b154a54f7d250f194c6537bd1c9ab88bb9 Mon Sep 17 00:00:00 2001
+From f13ddb4d508f1cc6c34b2bf117b6fa02221fc643 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 1 May 2017 13:57:28 +0800
-Subject: [PATCH 020/152] ARM: sun8i: r40: add SATA node to R40 DTSI
+Subject: [PATCH 020/153] ARM: sun8i: r40: add SATA node to R40 DTSI
 
 As we now have the support for the R40 AHCI SATA controller, add its
 device node into sun8i-r40.dtsi.

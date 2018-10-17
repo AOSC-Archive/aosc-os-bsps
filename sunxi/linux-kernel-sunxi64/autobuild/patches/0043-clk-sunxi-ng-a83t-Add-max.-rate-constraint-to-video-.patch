@@ -1,7 +1,7 @@
-From 9a31b5651d3d63b6075f6d95080a376dd95c8c10 Mon Sep 17 00:00:00 2001
+From d06f2113222e7a1f9962ad62831715a28eb1d391 Mon Sep 17 00:00:00 2001
 From: Jernej Skrabec <jernej.skrabec@siol.net>
 Date: Sun, 5 Aug 2018 16:43:22 +0200
-Subject: [PATCH 043/152] clk: sunxi-ng: a83t: Add max. rate constraint to
+Subject: [PATCH 043/153] clk: sunxi-ng: a83t: Add max. rate constraint to
  video PLLs
 
 It may happen that clock framework finds optimal video PLL rate above

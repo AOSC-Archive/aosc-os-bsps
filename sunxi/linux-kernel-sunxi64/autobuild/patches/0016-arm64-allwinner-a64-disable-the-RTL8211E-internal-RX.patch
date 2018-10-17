@@ -1,7 +1,7 @@
-From 7903e8314d59bee10bbf8e508788e271727c441a Mon Sep 17 00:00:00 2001
+From e5cf14f2b7c3bfe8ec17013eace1363cae14f367 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 21 Aug 2017 23:08:08 +0800
-Subject: [PATCH 016/152] arm64: allwinner: a64: disable the RTL8211E internal
+Subject: [PATCH 016/153] arm64: allwinner: a64: disable the RTL8211E internal
  RX delay on Pine64+
 
 Some Pine64+ boards have a broken RTL8211E PHY, which cannot work

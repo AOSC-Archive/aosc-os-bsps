@@ -1,7 +1,7 @@
-From cbbae8f0719370f1a1631bd1272787ce05e078d4 Mon Sep 17 00:00:00 2001
+From a716050b2413c445c8181f398adbb29f27ffc5cd Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 14 Aug 2018 16:49:29 +0800
-Subject: [PATCH 069/152] arm64: allwinner: a64: enable ANX6345 bridge on
+Subject: [PATCH 069/153] arm64: allwinner: a64: enable ANX6345 bridge on
  TERES-I
 
 TERES-I has an ANX6345 bridge connected to the RGB666 LCD output, and

@@ -1,7 +1,7 @@
-From 275f79b1f8b56239518a87feb98948f857690a3b Mon Sep 17 00:00:00 2001
+From 14166f904dfb9f556f080c85f83eba07c5bd621f Mon Sep 17 00:00:00 2001
 From: Jernej Skrabec <jernej.skrabec@siol.net>
 Date: Sat, 24 Mar 2018 13:31:39 +0100
-Subject: [PATCH 130/152] drm/sun4i: Add support for Synopsys HDMI PHY
+Subject: [PATCH 130/153] drm/sun4i: Add support for Synopsys HDMI PHY
 
 Currently sun8i-hdmi-phy driver supports only custom PHYs connected to
 DW HDMI controller. Since newest Allwinner SoCs have unmodified Synopsys

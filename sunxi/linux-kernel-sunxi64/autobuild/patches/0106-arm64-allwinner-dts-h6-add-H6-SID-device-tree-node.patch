@@ -1,7 +1,7 @@
-From 7551f3adf91982485d9f9b7318cff79f4c08d955 Mon Sep 17 00:00:00 2001
+From 7684bd4429705bce81f6a6c4a5cdcd8950a0c42c Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 27 Jul 2018 16:24:18 +0800
-Subject: [PATCH 106/152] arm64: allwinner: dts: h6: add H6 SID device tree
+Subject: [PATCH 106/153] arm64: allwinner: dts: h6: add H6 SID device tree
  node
 
 The Allwinner H6 SoC has a SID like previous Allwinner SoCs.

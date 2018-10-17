@@ -1,7 +1,7 @@
-From 23fee9b454c6d16d2122fee52461c4fa3eaddab0 Mon Sep 17 00:00:00 2001
+From 839f53c8fa240a00edb8e4811109b14c5f56c7cb Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 14 Aug 2018 16:45:46 +0800
-Subject: [PATCH 036/152] arm64: allwinner: dts: a64: add AC/Battery power
+Subject: [PATCH 036/153] arm64: allwinner: dts: a64: add AC/Battery power
  supply on TERES-I
 
 The Olimex TERES-I laptop features an internal battery and a

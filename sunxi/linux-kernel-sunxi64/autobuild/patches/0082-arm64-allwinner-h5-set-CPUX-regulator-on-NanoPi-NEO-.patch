@@ -1,7 +1,7 @@
-From 77c35f6683014d7ed1465c47e824b0bddbb58fb9 Mon Sep 17 00:00:00 2001
+From c78bf51dc975082d047e9acca74e495665482334 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 15 Aug 2018 20:23:12 +0800
-Subject: [PATCH 082/152] arm64: allwinner: h5: set CPUX regulator on NanoPi
+Subject: [PATCH 082/153] arm64: allwinner: h5: set CPUX regulator on NanoPi
  NEO Plus2
 
 The CPUX regulator is already added to the device tree of NanoPi NEO

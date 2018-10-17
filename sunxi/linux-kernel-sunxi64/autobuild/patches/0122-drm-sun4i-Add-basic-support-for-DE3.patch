@@ -1,7 +1,7 @@
-From abb43729d2d7492eab0ea28192344e5d84f7639e Mon Sep 17 00:00:00 2001
+From c06de6da718fbc2f70d7d8daeb346e297fa91a3d Mon Sep 17 00:00:00 2001
 From: Jernej Skrabec <jernej.skrabec@siol.net>
 Date: Sun, 25 Mar 2018 21:58:11 +0200
-Subject: [PATCH 122/152] drm/sun4i: Add basic support for DE3
+Subject: [PATCH 122/153] drm/sun4i: Add basic support for DE3
 
 Display Engine 3 is an upgrade of DE2 with new features like support for
 10 bit color formats and support for AFBC.

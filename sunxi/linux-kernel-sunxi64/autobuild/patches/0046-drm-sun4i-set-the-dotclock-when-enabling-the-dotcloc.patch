@@ -1,7 +1,7 @@
-From d3b909758b4f37d4eb81ff18445d0ed15f71268a Mon Sep 17 00:00:00 2001
+From 3b5bcc3d4dbdae13ad8f0f5620d480d27809a621 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 16 Aug 2018 21:25:13 +0800
-Subject: [PATCH 046/152] drm: sun4i: set the dotclock when enabling the
+Subject: [PATCH 046/153] drm: sun4i: set the dotclock when enabling the
  dotclock
 
 Currently the dotclock is set when setting the mode of TCON. After this

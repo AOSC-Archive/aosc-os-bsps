@@ -1,7 +1,7 @@
-From 4a277a9c0d19aaa49bd34c130a491d160b398732 Mon Sep 17 00:00:00 2001
+From 7b2c0f84b42ded43fe9b9d257f4fb61c8dddd436 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 27 Jul 2018 16:18:42 +0800
-Subject: [PATCH 109/152] basic ths dt
+Subject: [PATCH 109/153] basic ths dt
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---

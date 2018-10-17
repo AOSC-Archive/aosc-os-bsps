@@ -1,7 +1,7 @@
-From f9f10e53ee46e20142bc39db306ff81871c66f40 Mon Sep 17 00:00:00 2001
+From f19c0aaa2fb10141f8e5aef1e4cbc4ed003fcbc0 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.xyz>
 Date: Mon, 20 Mar 2017 01:41:03 +0800
-Subject: [PATCH 015/152] net: phy: realtek: add disable RX internal delay mode
+Subject: [PATCH 015/153] net: phy: realtek: add disable RX internal delay mode
 
 Some RTL8211E chips have broken GbE function, which needs a hack to
 fix. It's said that this fix will affect the performance on not-buggy

@@ -1,7 +1,7 @@
-From 17d485858467b70549098be63816d37f435253f6 Mon Sep 17 00:00:00 2001
+From eb0955f73b598ef14eae921e2c67e5aaa7710375 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 5 Jan 2018 18:31:27 +0800
-Subject: [PATCH 086/152] phy: sun4i-usb: add support for missing USB PHY index
+Subject: [PATCH 086/153] phy: sun4i-usb: add support for missing USB PHY index
 
 The new Allwinner H6 SoC's USB2 PHY has two holes -- USB1 (which is a
 3.0 port with dedicated PHY) and USB2 (which doesn't exist at all).

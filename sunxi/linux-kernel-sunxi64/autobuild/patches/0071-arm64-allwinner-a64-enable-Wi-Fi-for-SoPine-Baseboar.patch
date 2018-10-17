@@ -1,7 +1,7 @@
-From 12f21ec70da6184d4638f3d4bfc123ad06012035 Mon Sep 17 00:00:00 2001
+From 8e7b16c6fe1dc47cf885868ee53a2da471994f34 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 2 Nov 2017 16:48:27 +0800
-Subject: [PATCH 071/152] arm64: allwinner: a64: enable Wi-Fi for SoPine
+Subject: [PATCH 071/153] arm64: allwinner: a64: enable Wi-Fi for SoPine
  Baseboard
 
 The Wi-Fi modules of SoPine Baseboard is powered via DLDO4 and ELDO1

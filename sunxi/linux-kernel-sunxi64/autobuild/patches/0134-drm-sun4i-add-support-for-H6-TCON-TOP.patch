@@ -1,7 +1,7 @@
-From 87166422ebc13cd40082bfb6f4a5639fd6ee9d23 Mon Sep 17 00:00:00 2001
+From ffbb6bc9e1f7868cf66b9e8c1b749356f155e974 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 22 Jul 2018 11:34:51 +0800
-Subject: [PATCH 134/152] drm: sun4i: add support for H6 TCON TOP
+Subject: [PATCH 134/153] drm: sun4i: add support for H6 TCON TOP
 
 The TCON TOP on Allwinner H6 SoC is a cut down version of the R40 TCON
 TOP, which dropped TCON_TV1 and DSI (which do not exist on H6).

@@ -1,7 +1,7 @@
-From 178a290ab20faec8f18d152210dfa640079a5ceb Mon Sep 17 00:00:00 2001
+From 05c233c3f14924a24fc3ef5da3ecfc3ee5eb3dad Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 15 Aug 2018 19:27:53 +0800
-Subject: [PATCH 017/152] sun4i-gpadc-iio-ths
+Subject: [PATCH 017/153] sun4i-gpadc-iio-ths
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---

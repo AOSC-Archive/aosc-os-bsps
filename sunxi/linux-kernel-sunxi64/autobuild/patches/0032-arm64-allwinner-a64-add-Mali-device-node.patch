@@ -1,7 +1,7 @@
-From d32ecb6bfc9782b3eaf6ad3a9eb2e2319e94b326 Mon Sep 17 00:00:00 2001
+From a3387bb47e3d5f37c99580eacd47393f9907842b Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 6 May 2017 19:29:44 +0800
-Subject: [PATCH 032/152] arm64: allwinner: a64: add Mali device node
+Subject: [PATCH 032/153] arm64: allwinner: a64: add Mali device node
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---

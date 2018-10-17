@@ -1,7 +1,7 @@
-From d87b7cf9d209d46c57c02f974ff2667a56140cff Mon Sep 17 00:00:00 2001
+From 61c810a5e406e15a61e03a28a0a4e0d410385818 Mon Sep 17 00:00:00 2001
 From: Jernej Skrabec <jernej.skrabec@siol.net>
 Date: Sun, 5 Aug 2018 13:24:14 +0200
-Subject: [PATCH 040/152] clk: sunxi-ng: h3/h5: Add max. rate constraint to
+Subject: [PATCH 040/153] clk: sunxi-ng: h3/h5: Add max. rate constraint to
  pll-video
 
 As it turns out, pll-video can be set to higher rate that it is really

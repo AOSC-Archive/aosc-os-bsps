@@ -1,7 +1,7 @@
-From 58143daaad55181528a6c45b0fa01001c8b0c036 Mon Sep 17 00:00:00 2001
+From a05360cc6e1c0d61fc803658d609e280b5baefa0 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 25 Dec 2017 12:10:59 +0800
-Subject: [PATCH 094/152] arm64: allwinner: dts: h6: enable USB3 port on Pine
+Subject: [PATCH 094/153] arm64: allwinner: dts: h6: enable USB3 port on Pine
  H64
 
 Pine H64 board have a USB3 port, which is connected to the USB3 pins of

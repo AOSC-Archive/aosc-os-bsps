@@ -1,7 +1,7 @@
-From ad9cf60fb2540d209a886f085a903a0ee38b25e4 Mon Sep 17 00:00:00 2001
+From 8d9ac4fbe3525e8edd229848b515ce982bba4af1 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 21 Aug 2017 23:02:32 +0800
-Subject: [PATCH 014/152] net: stmmac: dwmac-sun8i: support RGMII modes with
+Subject: [PATCH 014/153] net: stmmac: dwmac-sun8i: support RGMII modes with
  PHY internal delay
 
 Some boards uses a PHY with internal delay with an Allwinner SoC.

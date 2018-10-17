@@ -1,7 +1,7 @@
-From 3ac955a32e55301a57b254ca43c7ea28a2b02879 Mon Sep 17 00:00:00 2001
+From e4aff292fcc622735530daacb56c85bb3da0dc59 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 1 Aug 2018 11:46:54 +0800
-Subject: [PATCH 102/152] dt-bindings: clock: sun8i-de2: add H6 DE3 CCU
+Subject: [PATCH 102/153] dt-bindings: clock: sun8i-de2: add H6 DE3 CCU
  compatible string
 
 The Allwinner H6 SoC comes with "Allwinner DE3", which is a modified

@@ -1,7 +1,7 @@
-From c105fbf3a22ce05b7b55cbe79382bf7fae7ea138 Mon Sep 17 00:00:00 2001
+From d0aed1539f30c64955267e4fec9249c26784af98 Mon Sep 17 00:00:00 2001
 From: Jernej Skrabec <jernej.skrabec@siol.net>
 Date: Sat, 24 Mar 2018 08:42:10 +0100
-Subject: [PATCH 125/152] drm/sun4i: Not all DW HDMI controllers has scrambled
+Subject: [PATCH 125/153] drm/sun4i: Not all DW HDMI controllers has scrambled
  addresses
 
 Currently supported Allwinner SoCs with DW HDMI controller have

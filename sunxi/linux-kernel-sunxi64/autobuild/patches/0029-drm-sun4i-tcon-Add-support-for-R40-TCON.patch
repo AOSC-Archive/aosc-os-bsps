@@ -1,7 +1,7 @@
-From 2da376b94b0456ad087e502920062cc4f8c71dba Mon Sep 17 00:00:00 2001
+From 393d1a3456f394585e16fbca52d5ccd28c02fa08 Mon Sep 17 00:00:00 2001
 From: Jernej Skrabec <jernej.skrabec@siol.net>
 Date: Tue, 10 Jul 2018 22:35:06 +0200
-Subject: [PATCH 029/152] drm/sun4i: tcon: Add support for R40 TCON
+Subject: [PATCH 029/153] drm/sun4i: tcon: Add support for R40 TCON
 
 R40 TV TCON is basically the same as on A83T. However, it needs special
 handling, because it has to set up TCON TOP muxes at runtime.

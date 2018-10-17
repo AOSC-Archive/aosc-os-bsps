@@ -1,7 +1,7 @@
-From 4091ca15e13ef3c8bbc37942d26d29c9345b09ba Mon Sep 17 00:00:00 2001
+From 5a79ef2db6fa26774180bc887698e034ddc4b132 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 5 Jan 2018 19:37:14 +0800
-Subject: [PATCH 110/152] arm64: allwinner: h6: add basical DVFS support
+Subject: [PATCH 110/153] arm64: allwinner: h6: add basical DVFS support
 
 Add basical DVFS support for Allwinner H6 SoC.
 

@@ -1,7 +1,7 @@
-From 45b4b15b45bcf719cd8e3e0bc220a2f572b16eca Mon Sep 17 00:00:00 2001
+From 874c7d805021ad3b0d3c45724929a34af3ed58da Mon Sep 17 00:00:00 2001
 From: Jagan Teki <jagan@amarulasolutions.com>
 Date: Wed, 18 Jul 2018 16:24:45 +0530
-Subject: [PATCH 055/152] dt-bindings: display: Add compatible for A64 HDMI
+Subject: [PATCH 055/153] dt-bindings: display: Add compatible for A64 HDMI
 
 The HDMI controller on Allwinner A64 is similar on the one on
 H3/H5/A83T (although the PHY is different with A83T).

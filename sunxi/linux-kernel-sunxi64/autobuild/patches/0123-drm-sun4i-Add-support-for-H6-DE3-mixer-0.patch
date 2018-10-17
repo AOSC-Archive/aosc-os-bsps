@@ -1,7 +1,7 @@
-From ba5bee81fa01fbd475c9ccca27a818792b698b06 Mon Sep 17 00:00:00 2001
+From eff61b5d44b6dc250682393f76cc7f57963dfa47 Mon Sep 17 00:00:00 2001
 From: Jernej Skrabec <jernej.skrabec@siol.net>
 Date: Wed, 28 Mar 2018 20:00:53 +0200
-Subject: [PATCH 123/152] drm/sun4i: Add support for H6 DE3 mixer 0
+Subject: [PATCH 123/153] drm/sun4i: Add support for H6 DE3 mixer 0
 
 Mixer 0 has 1 VI and 3 UI planes, scaler on all planes and can output
 4K image @60Hz. It also support 10 bit colors.

@@ -1,7 +1,7 @@
-From 9bfbd91a5d1e4ef659938804a03683b0167ff0ed Mon Sep 17 00:00:00 2001
+From 4f6e06407a76ae22bba89ff282b52231e08fac70 Mon Sep 17 00:00:00 2001
 From: Jagan Teki <jagan@amarulasolutions.com>
 Date: Wed, 18 Jul 2018 16:24:47 +0530
-Subject: [PATCH 057/152] arm64: dts: allwinner: a64: Add display pipeline
+Subject: [PATCH 057/153] arm64: dts: allwinner: a64: Add display pipeline
 
 Allwinner A64 have a display pipeline with 2 mixers/TCONs, the first
 TCON is connected to LCD and the second is to HDMI.

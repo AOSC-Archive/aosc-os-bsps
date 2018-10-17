@@ -1,7 +1,7 @@
-From 4682ac6155522a7cc9229c6067c2b8d356dc96d2 Mon Sep 17 00:00:00 2001
+From 313572957d8da7a4846ba89e30bef8b501c3ecad Mon Sep 17 00:00:00 2001
 From: Jernej Skrabec <jernej.skrabec@siol.net>
 Date: Sat, 24 Mar 2018 18:43:13 +0100
-Subject: [PATCH 136/152] arm64: dts: sun50i: h6: Enable HDMI output on Pine
+Subject: [PATCH 136/153] arm64: dts: sun50i: h6: Enable HDMI output on Pine
  H64 board
 
 Pine H64 board has HDMI type A connector.

@@ -1,7 +1,7 @@
-From 7c375f7d713b961aa40cc63a8a5f32c57de445a6 Mon Sep 17 00:00:00 2001
+From de3e9d244fbddfabc332f723c79ac8e7709c276f Mon Sep 17 00:00:00 2001
 From: Jernej Skrabec <jernej.skrabec@siol.net>
 Date: Sun, 5 Aug 2018 16:38:19 +0200
-Subject: [PATCH 042/152] clk: sunxi-ng: nkmp: Add constraint for maximum rate
+Subject: [PATCH 042/153] clk: sunxi-ng: nkmp: Add constraint for maximum rate
 
 Some, if not most, NKMP PLLs can be set to higher rate that is really
 supported by HW.

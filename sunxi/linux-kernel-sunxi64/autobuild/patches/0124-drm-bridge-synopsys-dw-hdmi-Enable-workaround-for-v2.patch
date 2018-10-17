@@ -1,7 +1,7 @@
-From 816b56d2f6e0e0fbda3aee2be9d18e1cfbeac6f8 Mon Sep 17 00:00:00 2001
+From 953ec896d579c045754bc55062a60e8b88ad7b84 Mon Sep 17 00:00:00 2001
 From: Jernej Skrabec <jernej.skrabec@siol.net>
 Date: Sat, 24 Mar 2018 08:15:27 +0100
-Subject: [PATCH 124/152] drm/bridge/synopsys: dw-hdmi: Enable workaround for
+Subject: [PATCH 124/153] drm/bridge/synopsys: dw-hdmi: Enable workaround for
  v2.12a
 
 It turns out that even new DW HDMI controllers exhibits same mangenta

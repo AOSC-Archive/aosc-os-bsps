@@ -1,7 +1,7 @@
-From 84e78535ae47310c60e464ccfe209843fd5441d7 Mon Sep 17 00:00:00 2001
+From 052da69276edd10fadce0425d677df9a3dc87ba4 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 6 Jul 2018 20:11:29 +0800
-Subject: [PATCH 089/152] arm64: allwinner: dts: h6: add USB Vbus regulator
+Subject: [PATCH 089/153] arm64: allwinner: dts: h6: add USB Vbus regulator
 
 The 5V output of the USB ports on Pine H64 is controlled via a GPIO.
 

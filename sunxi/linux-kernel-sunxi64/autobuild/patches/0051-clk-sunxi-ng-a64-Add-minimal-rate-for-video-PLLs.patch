@@ -1,7 +1,7 @@
-From 7da949ea9332ccfbf158704c1076b226de1cd84a Mon Sep 17 00:00:00 2001
+From faaae6a38b8c96924b235176fb8e8a7a0d6af5bc Mon Sep 17 00:00:00 2001
 From: Jagan Teki <jagan@amarulasolutions.com>
 Date: Wed, 18 Jul 2018 16:24:41 +0530
-Subject: [PATCH 051/152] clk: sunxi-ng: a64: Add minimal rate for video PLLs
+Subject: [PATCH 051/153] clk: sunxi-ng: a64: Add minimal rate for video PLLs
 
 According to documentation and experience with other similar SoCs, video
 PLLs don't work stable if their output frequency is set below 192 MHz.

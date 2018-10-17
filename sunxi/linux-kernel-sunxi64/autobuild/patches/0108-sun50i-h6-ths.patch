@@ -1,7 +1,7 @@
-From 0bdca51450e24c02e0ba192adc00c06513e7bd5a Mon Sep 17 00:00:00 2001
+From a7a2e73798a65c6e597395aaa5b26fc967cea9b0 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 27 Jul 2018 16:18:35 +0800
-Subject: [PATCH 108/152] sun50i-h6-ths
+Subject: [PATCH 108/153] sun50i-h6-ths
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---

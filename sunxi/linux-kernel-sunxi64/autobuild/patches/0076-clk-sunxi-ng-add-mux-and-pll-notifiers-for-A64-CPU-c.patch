@@ -1,7 +1,7 @@
-From 02a5ef760e98b329602b1063432f9e0f78d21a26 Mon Sep 17 00:00:00 2001
+From 8067ee3324e34341d69376055cbfba486e9caac6 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 23 Sep 2017 00:10:51 +0800
-Subject: [PATCH 076/152] clk: sunxi-ng: add mux and pll notifiers for A64 CPU
+Subject: [PATCH 076/153] clk: sunxi-ng: add mux and pll notifiers for A64 CPU
  clock
 
 The A64 PLL_CPU clock has the same instability if some factor changed

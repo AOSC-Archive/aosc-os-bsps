@@ -1,7 +1,7 @@
-From aeec4d233123441cadaa4a46afeef368111f02d2 Mon Sep 17 00:00:00 2001
+From 25ce364c64109c8504ac799d73e6a1e615d4b409 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 24 Jul 2018 14:07:11 +0800
-Subject: [PATCH 139/152] arm64: allwinner: dts: h6: add DDC_EN gpio to Pine
+Subject: [PATCH 139/153] arm64: allwinner: dts: h6: add DDC_EN gpio to Pine
  H64
 
 The Pine H64 board has a DDC_EN gpio pin that gates the level shifter of

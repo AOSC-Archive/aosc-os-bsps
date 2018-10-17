@@ -1,7 +1,7 @@
-From e500122ff1a57f44709333e36c1a3a25e8c42e6b Mon Sep 17 00:00:00 2001
+From 227f94d7f06961affea7fcba6506a7e6ced654cb Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 5 Jan 2018 18:32:55 +0800
-Subject: [PATCH 087/152] phy: sun4i-usb: add support for H6 USB2 PHY
+Subject: [PATCH 087/153] phy: sun4i-usb: add support for H6 USB2 PHY
 
 The USB 2.0 PHY on Allwinner H6 SoC is similar to older Allwinner SoCs,
 with some USB0 quirk like A83T and PHY index 1/2 missing.

@@ -1,7 +1,7 @@
-From 08f5d8da1daeec991637df5be6c9384f58be4007 Mon Sep 17 00:00:00 2001
+From 57e46f13e5b9a8ec58d3fe7d327707c904995025 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 15 Aug 2018 20:43:57 +0800
-Subject: [PATCH 114/152] arm64: allwinner: dts: h6: add mmc1 pinmux
+Subject: [PATCH 114/153] arm64: allwinner: dts: h6: add mmc1 pinmux
 
 The MMC1 controller on H6 is used to connect Wi-Fi on the reference
 design and on some boards (e.g. Orange Pi Lite2).

@@ -1,7 +1,7 @@
-From 21513d981c56970dca79ad11dcd4c85dae35514b Mon Sep 17 00:00:00 2001
+From 6bc64389a014623ab09274c641b0dd09c284621f Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 20 Aug 2018 21:35:57 +0800
-Subject: [PATCH 004/152] clk: sunxi-ng: sun50i: h6: Add 2x fixed post-divider
+Subject: [PATCH 004/153] clk: sunxi-ng: sun50i: h6: Add 2x fixed post-divider
  to MMC module clocks
 
 On the H6, the MMC module clocks are fixed in the new timing mode,

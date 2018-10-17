@@ -1,7 +1,7 @@
-From a9ab58ca8c7c81cf5516c4d1c235b570cfbe5860 Mon Sep 17 00:00:00 2001
+From 515e0b7ff873a41eb67d5bd7235af6f20a89af06 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 25 Jul 2018 11:47:53 +0800
-Subject: [PATCH 050/152] drm/bridge/synopsys: dw-hdmi: re-run dw_hdmi_setup
+Subject: [PATCH 050/153] drm/bridge/synopsys: dw-hdmi: re-run dw_hdmi_setup
  when setting mode
 
 Currently dw_hdmi_setup is only run when the dw-hdmi bridge is enabled,

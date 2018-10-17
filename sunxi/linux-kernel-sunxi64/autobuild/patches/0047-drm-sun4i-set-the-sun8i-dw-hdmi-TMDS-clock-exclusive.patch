@@ -1,7 +1,7 @@
-From 732ae94137b2a13d0dc708b5a96f4a11eebce181 Mon Sep 17 00:00:00 2001
+From 7108d692ef64dc36b3a025f751fe7e77679c1889 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 16 Aug 2018 21:53:02 +0800
-Subject: [PATCH 047/152] drm: sun4i: set the sun8i-dw-hdmi TMDS clock
+Subject: [PATCH 047/153] drm: sun4i: set the sun8i-dw-hdmi TMDS clock
  exclusively when enabling
 
 On H3/H5/A64/R40 the HDMI PHY clock is set after the the mode_set() of
