@@ -1,0 +1,110 @@
+From 14166f904dfb9f556f080c85f83eba07c5bd621f Mon Sep 17 00:00:00 2001
+From: Jernej Skrabec <jernej.skrabec@siol.net>
+Date: Sat, 24 Mar 2018 13:31:39 +0100
+Subject: [PATCH 130/153] drm/sun4i: Add support for Synopsys HDMI PHY
+
+Currently sun8i-hdmi-phy driver supports only custom PHYs connected to
+DW HDMI controller. Since newest Allwinner SoCs have unmodified Synopsys
+PHY, driver has to be reorganized to support them.
+
+Variant structure is expanded to allow differentiation between custom
+and Sysnopsys PHYs and to hold Synopsys PHY settings.
+
+Since DW HDMI bridge platform data has different fields for custom and
+Sysnopsys PHY, function sun8i_hdmi_phy_get_ops() is replaced with
+sun8i_hdmi_phy_set_ops().
+
+Signed-off-by: Jernej Skrabec <jernej.skrabec@siol.net>
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ drivers/gpu/drm/sun4i/sun8i_dw_hdmi.c  |  4 +---
+ drivers/gpu/drm/sun4i/sun8i_dw_hdmi.h  |  7 ++++++-
+ drivers/gpu/drm/sun4i/sun8i_hdmi_phy.c | 17 +++++++++++++++--
+ 3 files changed, 22 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/gpu/drm/sun4i/sun8i_dw_hdmi.c b/drivers/gpu/drm/sun4i/sun8i_dw_hdmi.c
+index 7ea8d2fd5de4..3e7dec08defa 100644
+--- a/drivers/gpu/drm/sun4i/sun8i_dw_hdmi.c
++++ b/drivers/gpu/drm/sun4i/sun8i_dw_hdmi.c
+@@ -200,9 +200,7 @@ static int sun8i_dw_hdmi_bind(struct device *dev, struct device *master,
+ 	sun8i_hdmi_phy_init(hdmi->phy);
+ 
+ 	plat_data->mode_valid = hdmi->quirks->mode_valid;
+-	plat_data->phy_ops = sun8i_hdmi_phy_get_ops();
+-	plat_data->phy_name = "sun8i_dw_hdmi_phy";
+-	plat_data->phy_data = hdmi->phy;
++	sun8i_hdmi_phy_set_ops(hdmi->phy, plat_data);
+ 
+ 	platform_set_drvdata(pdev, hdmi);
+ 
+diff --git a/drivers/gpu/drm/sun4i/sun8i_dw_hdmi.h b/drivers/gpu/drm/sun4i/sun8i_dw_hdmi.h
+index 9dd270f0360e..051666aa49b3 100644
+--- a/drivers/gpu/drm/sun4i/sun8i_dw_hdmi.h
++++ b/drivers/gpu/drm/sun4i/sun8i_dw_hdmi.h
+@@ -150,6 +150,10 @@ struct sun8i_hdmi_phy;
+ struct sun8i_hdmi_phy_variant {
+ 	bool has_phy_clk;
+ 	bool has_second_pll;
++	bool is_custom_phy;
++	const struct dw_hdmi_curr_ctrl *cur_ctr;
++	const struct dw_hdmi_mpll_config *mpll_cfg;
++	const struct dw_hdmi_phy_config *phy_cfg;
+ 	void (*phy_init)(struct sun8i_hdmi_phy *phy);
+ 	void (*phy_disable)(struct dw_hdmi *hdmi,
+ 			    struct sun8i_hdmi_phy *phy);
+@@ -200,7 +204,8 @@ int sun8i_hdmi_phy_probe(struct sun8i_dw_hdmi *hdmi, struct device_node *node);
+ void sun8i_hdmi_phy_remove(struct sun8i_dw_hdmi *hdmi);
+ 
+ void sun8i_hdmi_phy_init(struct sun8i_hdmi_phy *phy);
+-const struct dw_hdmi_phy_ops *sun8i_hdmi_phy_get_ops(void);
++void sun8i_hdmi_phy_set_ops(struct sun8i_hdmi_phy *phy,
++			    struct dw_hdmi_plat_data *plat_data);
+ 
+ int sun8i_phy_clk_create(struct sun8i_hdmi_phy *phy, struct device *dev,
+ 			 bool second_parent);
+diff --git a/drivers/gpu/drm/sun4i/sun8i_hdmi_phy.c b/drivers/gpu/drm/sun4i/sun8i_hdmi_phy.c
+index 6d52a2d5b0b3..4fbc9f30a99c 100644
+--- a/drivers/gpu/drm/sun4i/sun8i_hdmi_phy.c
++++ b/drivers/gpu/drm/sun4i/sun8i_hdmi_phy.c
+@@ -403,9 +403,20 @@ void sun8i_hdmi_phy_init(struct sun8i_hdmi_phy *phy)
+ 	phy->variant->phy_init(phy);
+ }
+ 
+-const struct dw_hdmi_phy_ops *sun8i_hdmi_phy_get_ops(void)
++void sun8i_hdmi_phy_set_ops(struct sun8i_hdmi_phy *phy,
++			    struct dw_hdmi_plat_data *plat_data)
+ {
+-	return &sun8i_hdmi_phy_ops;
++	struct sun8i_hdmi_phy_variant *variant = phy->variant;
++
++	if (variant->is_custom_phy) {
++		plat_data->phy_ops = &sun8i_hdmi_phy_ops;
++		plat_data->phy_name = "sun8i_dw_hdmi_phy";
++		plat_data->phy_data = phy;
++	} else {
++		plat_data->mpll_cfg = variant->mpll_cfg;
++		plat_data->cur_ctr = variant->cur_ctr;
++		plat_data->phy_config = variant->phy_cfg;
++	}
+ }
+ 
+ static struct regmap_config sun8i_hdmi_phy_regmap_config = {
+@@ -424,6 +435,7 @@ static const struct sun8i_hdmi_phy_variant sun50i_a64_hdmi_phy = {
+ };
+ 
+ static const struct sun8i_hdmi_phy_variant sun8i_a83t_hdmi_phy = {
++	.is_custom_phy = true,
+ 	.phy_init = &sun8i_hdmi_phy_init_a83t,
+ 	.phy_disable = &sun8i_hdmi_phy_disable_a83t,
+ 	.phy_config = &sun8i_hdmi_phy_config_a83t,
+@@ -431,6 +443,7 @@ static const struct sun8i_hdmi_phy_variant sun8i_a83t_hdmi_phy = {
+ 
+ static const struct sun8i_hdmi_phy_variant sun8i_h3_hdmi_phy = {
+ 	.has_phy_clk = true,
++	.is_custom_phy = true,
+ 	.phy_init = &sun8i_hdmi_phy_init_h3,
+ 	.phy_disable = &sun8i_hdmi_phy_disable_h3,
+ 	.phy_config = &sun8i_hdmi_phy_config_h3,
+-- 
+2.18.1
+

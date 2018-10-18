@@ -1,0 +1,42 @@
+From c4bc2bd00e52e142d047d20cee4970d66edfcf5b Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Sun, 22 Jul 2018 03:57:07 +0800
+Subject: [PATCH 101/153] dt-bindings: bus: add H6 DE3 bus binding
+
+The Allwinner H6 DE3 bus is similar to the A64 DE2 one.
+
+Add its compatible string with the A64 string as fallback to the
+binding.
+
+Some description of the binding is modified to make it more generic.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ Documentation/devicetree/bindings/bus/sun50i-de2-bus.txt | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/bus/sun50i-de2-bus.txt b/Documentation/devicetree/bindings/bus/sun50i-de2-bus.txt
+index 87dfb33fb3be..ac1445b95f41 100644
+--- a/Documentation/devicetree/bindings/bus/sun50i-de2-bus.txt
++++ b/Documentation/devicetree/bindings/bus/sun50i-de2-bus.txt
+@@ -1,11 +1,14 @@
+-Device tree bindings for Allwinner A64 DE2 bus
++Device tree bindings for Allwinner DE2/3 bus
+ 
+ The Allwinner A64 DE2 is on a special bus, which needs a SRAM region (SRAM C)
+-to be claimed for enabling the access.
++to be claimed for enabling the access. The DE3 on Allwinner H6 is at the same
++situation, and the binding also applies.
+ 
+ Required properties:
+ 
+- - compatible:		Should contain "allwinner,sun50i-a64-de2"
++ - compatible:		Should be one of:
++				- "allwinner,sun50i-a64-de2"
++				- "allwinner,sun50i-a6-de3", "allwinner,sun50i-a64-de2"
+  - reg:			A resource specifier for the register space
+  - #address-cells:	Must be set to 1
+  - #size-cells:		Must be set to 1
+-- 
+2.18.1
+

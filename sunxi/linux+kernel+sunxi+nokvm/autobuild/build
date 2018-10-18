@@ -1,4 +1,4 @@
-KERNVER=4.14.62
+KERNVER=4.19.0-rc8
 
 mkdir -p "$PKGDIR"/usr/lib/aosc-os-armel-sunxi-boot/
 mkdir -p "$PKGDIR"/usr/lib/aosc-os-armel-sunxi-boot/linux-kernel-${KERNVER}-aosc-sunxi-nokvm/modules
