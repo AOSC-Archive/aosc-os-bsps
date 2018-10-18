@@ -1,7 +1,7 @@
-From d0ccf020e2f13607238cf8bf7b2e783d07293648 Mon Sep 17 00:00:00 2001
+From 9cb454db6b5b85263be9aceedb42953e6eb021b9 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 22 Jul 2018 11:11:11 +0800
-Subject: [PATCH 24/32] sunxi: add support for DE3
+Subject: [PATCH 2/9] sunxi: add support for DE3
 
 The Allwinner H6 SoC come with a new generation of Display Engine,
 called DE3, which still has similarity with DE2.
@@ -77,7 +77,7 @@ index 6a5eafc3d3..c9d4e38680 100644
  #define SUNXI_GPI_SDC3		2
  #define SUN7I_GPI_TWI3		3
 diff --git a/arch/arm/mach-sunxi/Kconfig b/arch/arm/mach-sunxi/Kconfig
-index 558363b52d..43f75459ea 100644
+index 686f38fec4..138be0a91c 100644
 --- a/arch/arm/mach-sunxi/Kconfig
 +++ b/arch/arm/mach-sunxi/Kconfig
 @@ -291,10 +291,12 @@ config MACH_SUN50I_H5
@@ -93,7 +93,7 @@ index 558363b52d..43f75459ea 100644
  
  endchoice
  
-@@ -880,17 +882,20 @@ config SUNXI_DE2
+@@ -879,17 +881,20 @@ config SUNXI_DE2
  	bool
  	default n
  
@@ -864,5 +864,5 @@ index 0000000000..6b3f975e4b
 +}
 +#endif /* CONFIG_OF_BOARD_SETUP && CONFIG_VIDEO_DT_SIMPLEFB */
 -- 
-2.18.0
+2.18.1
 

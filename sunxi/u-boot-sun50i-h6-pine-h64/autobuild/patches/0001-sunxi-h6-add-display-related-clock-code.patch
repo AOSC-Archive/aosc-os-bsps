@@ -1,7 +1,7 @@
-From 4235048e7328fa15277297cc6bd4844f13f7466a Mon Sep 17 00:00:00 2001
+From e96cfe17aa69563589dc45906685b0bb4a7d012e Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 21 Jul 2018 17:04:41 +0800
-Subject: [PATCH 23/32] sunxi: h6: add display-related clock code
+Subject: [PATCH 1/9] sunxi: h6: add display-related clock code
 
 Add PLL3 and TCON/HDMI clock support to the Allwinner H6 clock code, in
 order to prepare for support for display.
@@ -157,5 +157,5 @@ index ba8a26eb0d..02c3c34f6e 100644
  {
  	struct sunxi_ccm_reg *const ccm =
 -- 
-2.18.0
+2.18.1
 

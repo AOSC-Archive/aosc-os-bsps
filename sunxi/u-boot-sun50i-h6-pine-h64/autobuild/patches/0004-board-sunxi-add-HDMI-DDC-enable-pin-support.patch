@@ -1,7 +1,7 @@
-From 03caea7e4b631ca0ed4816beb407132a9ae9002a Mon Sep 17 00:00:00 2001
+From f10ea3379a2a899b98a9f0e4bfb0a96405e3bd89 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 24 Jul 2018 10:20:03 +0800
-Subject: [PATCH 26/32] board: sunxi: add HDMI DDC enable pin support
+Subject: [PATCH 4/9] board: sunxi: add HDMI DDC enable pin support
 
 Some new boards (e.g. Pine H64) introduces a pin that controls the
 availability of HDMI DDC.
@@ -15,10 +15,10 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  2 files changed, 13 insertions(+), 1 deletion(-)
 
 diff --git a/arch/arm/mach-sunxi/Kconfig b/arch/arm/mach-sunxi/Kconfig
-index 43f75459ea..7f2065e4c1 100644
+index 138be0a91c..d2f15ac561 100644
 --- a/arch/arm/mach-sunxi/Kconfig
 +++ b/arch/arm/mach-sunxi/Kconfig
-@@ -663,6 +663,13 @@ config USB3_VBUS_PIN
+@@ -662,6 +662,13 @@ config USB3_VBUS_PIN
  	---help---
  	See USB1_VBUS_PIN help text.
  
@@ -33,7 +33,7 @@ index 43f75459ea..7f2065e4c1 100644
  	bool "Enable I2C/TWI controller 0"
  	default y if MACH_SUN4I || MACH_SUN5I || MACH_SUN7I || MACH_SUN8I_R40
 diff --git a/board/sunxi/board.c b/board/sunxi/board.c
-index 857d5ff010..3e9b488fd2 100644
+index d1d7f9f400..37ac010a98 100644
 --- a/board/sunxi/board.c
 +++ b/board/sunxi/board.c
 @@ -193,7 +193,7 @@ enum env_location env_get_location(enum env_operation op, int prio)
@@ -58,5 +58,5 @@ index 857d5ff010..3e9b488fd2 100644
  #ifdef CONFIG_DM_I2C
  	/*
 -- 
-2.18.0
+2.18.1
 

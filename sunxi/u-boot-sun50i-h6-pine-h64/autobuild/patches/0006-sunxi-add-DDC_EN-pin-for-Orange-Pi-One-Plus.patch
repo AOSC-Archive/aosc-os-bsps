@@ -1,7 +1,7 @@
-From a9505e223a070ebd4705b2be48fcbdde16486008 Mon Sep 17 00:00:00 2001
+From d266730d71f667267b340d6b3022e2f2a2456dd9 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 1 Aug 2018 12:26:11 +0800
-Subject: [PATCH 28/32] sunxi: add DDC_EN pin for Orange Pi One Plus
+Subject: [PATCH 6/9] sunxi: add DDC_EN pin for Orange Pi One Plus
 
 The Orange Pi One Plus board comes with a DDC_EN pin gating the access
 of HDMI DDC,
@@ -14,17 +14,17 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 1 insertion(+)
 
 diff --git a/configs/orangepi_one_plus_defconfig b/configs/orangepi_one_plus_defconfig
-index 48bc6e54ee..a0e2e5d761 100644
+index f46b4f6b99..02fd065c08 100644
 --- a/configs/orangepi_one_plus_defconfig
 +++ b/configs/orangepi_one_plus_defconfig
 @@ -3,6 +3,7 @@ CONFIG_ARCH_SUNXI=y
+ CONFIG_SPL=y
  CONFIG_MACH_SUN50I_H6=y
- CONFIG_DRAM_ODT_EN=y
  CONFIG_MMC0_CD_PIN="PF6"
 +CONFIG_HDMI_DDC_EN="PH2"
  # CONFIG_PSCI_RESET is not set
- CONFIG_DEFAULT_DEVICE_TREE="sun50i-h6-orangepi-one-plus"
+ CONFIG_NR_DRAM_BANKS=1
  # CONFIG_SYS_MALLOC_CLEAR_ON_INIT is not set
 -- 
-2.18.0
+2.18.1
 

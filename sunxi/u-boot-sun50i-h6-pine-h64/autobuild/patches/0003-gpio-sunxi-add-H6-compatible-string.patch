@@ -1,7 +1,7 @@
-From ff576c31610354376bb25379eb5ca285ae8891dd Mon Sep 17 00:00:00 2001
+From 751e365547ed62c8adbe83a0a9faa367fa1deec1 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 24 Jul 2018 10:19:25 +0800
-Subject: [PATCH 25/32] gpio: sunxi: add H6 compatible string
+Subject: [PATCH 3/9] gpio: sunxi: add H6 compatible string
 
 As GPIO support for H6 is already introduced in Linux with corresponding
 binding, add the compatible string to U-Boot GPIO driver.
@@ -31,5 +31,5 @@ index cbed8d42b7..719efc2cef 100644
  };
  
 -- 
-2.18.0
+2.18.1
 

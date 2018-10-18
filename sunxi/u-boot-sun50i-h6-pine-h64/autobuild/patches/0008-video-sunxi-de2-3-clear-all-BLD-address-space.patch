@@ -1,7 +1,7 @@
-From 79405999d7ee43f830825751b200d739b53f20f5 Mon Sep 17 00:00:00 2001
+From 2a26c4ee20711c72d0d33e614e93a428135b17e3 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 4 Aug 2018 23:06:26 +0800
-Subject: [PATCH 30/32] video: sunxi: de2/3: clear all BLD address space
+Subject: [PATCH 8/9] video: sunxi: de2/3: clear all BLD address space
 
 Clear all the BLD address space, to prevent problem raised by
 uninitalized undefined registers.
@@ -60,5 +60,5 @@ index 6b3f975e4b..59067e645d 100644
  	writel(0x00000101, &de_bld_regs->fcolor_ctl);
  
 -- 
-2.18.0
+2.18.1
 
