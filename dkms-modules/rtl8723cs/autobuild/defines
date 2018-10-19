@@ -2,3 +2,5 @@ PKGNAME=rtl8723cs
 PKGSEC=net
 PKGDES="DKMS driver for the Realtek RTL8723CS Wi-Fi chip"
 PKGDEP="dkms"
+
+ABHOST=noarch
