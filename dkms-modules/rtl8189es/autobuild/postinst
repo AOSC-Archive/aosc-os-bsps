@@ -1,6 +1,6 @@
 unset ARCH
 
-DATE=20181019
+DATE=20181020
 
 dkms add rtl8189es/$DATE || true
 
