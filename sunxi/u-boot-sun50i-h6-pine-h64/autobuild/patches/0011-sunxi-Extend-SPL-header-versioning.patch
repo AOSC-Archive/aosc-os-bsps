@@ -1,0 +1,97 @@
+From db25def7f30124092bc5c267dd68cb5300c8b6e6 Mon Sep 17 00:00:00 2001
+From: Andre Przywara <andre.przywara@arm.com>
+Date: Thu, 17 May 2018 09:16:59 +0100
+Subject: [PATCH 11/15] sunxi: Extend SPL header versioning
+
+On Allwinner SoCs we use some free bytes at the beginning of the SPL image
+to store various information. We have a version byte to allow updates,
+but changing this always requires all tools to be updated as well.
+
+Introduce the concept of semantic versioning [1] to the SPL header:
+The major part of the version number only changes on incompatible
+updates, a minor number bump indicates backward compatibility.
+This patch just documents the major/minor split, adds some comments
+to the header file and uses the versioning information for the existing
+users.
+
+[1] https://semver.org
+
+Signed-off-by: Andre Przywara <andre.przywara@arm.com>
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm/include/asm/arch-sunxi/spl.h | 19 ++++++++++++++-----
+ board/sunxi/board.c                   |  4 ++--
+ 2 files changed, 16 insertions(+), 7 deletions(-)
+
+diff --git a/arch/arm/include/asm/arch-sunxi/spl.h b/arch/arm/include/asm/arch-sunxi/spl.h
+index 55f2deb18d..014184b638 100644
+--- a/arch/arm/include/asm/arch-sunxi/spl.h
++++ b/arch/arm/include/asm/arch-sunxi/spl.h
+@@ -9,7 +9,16 @@
+ 
+ #define BOOT0_MAGIC		"eGON.BT0"
+ #define SPL_SIGNATURE		"SPL" /* marks "sunxi" SPL header */
+-#define SPL_HEADER_VERSION	2
++#define SPL_MAJOR_BITS		3
++#define SPL_MINOR_BITS		5
++#define SPL_VERSION(maj, min)						\
++	((((maj) & ((1U << SPL_MAJOR_BITS) - 1)) << SPL_MINOR_BITS) | \
++	((min) & ((1U << SPL_MINOR_BITS) - 1)))
++
++#define SPL_HEADER_VERSION	SPL_VERSION(0, 2)
++
++#define SPL_ENV_HEADER_VERSION	SPL_VERSION(0, 1)
++#define SPL_DT_HEADER_VERSION	SPL_VERSION(0, 2)
+ 
+ #define SPL_ADDR		CONFIG_SUNXI_SRAM_ADDRESS
+ 
+@@ -45,14 +54,14 @@ struct boot_file_head {
+ 		uint32_t pub_head_size;
+ 		uint8_t spl_signature[4];
+ 	};
+-	uint32_t fel_script_address;
++	uint32_t fel_script_address;	/* since v0.1, set by sunxi-fel */
+ 	/*
+ 	 * If the fel_uEnv_length member below is set to a non-zero value,
+ 	 * it specifies the size (byte count) of data at fel_script_address.
+ 	 * At the same time this indicates that the data is in uEnv.txt
+ 	 * compatible format, ready to be imported via "env import -t".
+ 	 */
+-	uint32_t fel_uEnv_length;
++	uint32_t fel_uEnv_length;	/* since v0.1, set by sunxi-fel */
+ 	/*
+ 	 * Offset of an ASCIIZ string (relative to the SPL header), which
+ 	 * contains the default device tree name (CONFIG_DEFAULT_DEVICE_TREE).
+@@ -60,11 +69,11 @@ struct boot_file_head {
+ 	 * by flash programming tools for providing nice informative messages
+ 	 * to the users.
+ 	 */
+-	uint32_t dt_name_offset;
++	uint32_t dt_name_offset;	/* since v0.2, set by mksunxiboot */
+ 	uint32_t reserved1;
+ 	uint32_t boot_media;		/* written here by the boot ROM */
+ 	/* A padding area (may be used for storing text strings) */
+-	uint32_t string_pool[13];
++	uint32_t string_pool[13];	/* since v0.2, filled by mksunxiboot */
+ 	/* The header must be a multiple of 32 bytes (for VBAR alignment) */
+ };
+ 
+diff --git a/board/sunxi/board.c b/board/sunxi/board.c
+index 4a72aa8412..de8b2d54ac 100644
+--- a/board/sunxi/board.c
++++ b/board/sunxi/board.c
+@@ -672,9 +672,9 @@ static void parse_spl_header(const uint32_t spl_addr)
+ 		return; /* signature mismatch, no usable header */
+ 
+ 	uint8_t spl_header_version = spl->spl_signature[3];
+-	if (spl_header_version != SPL_HEADER_VERSION) {
++	if (spl_header_version < SPL_ENV_HEADER_VERSION) {
+ 		printf("sunxi SPL version mismatch: expected %u, got %u\n",
+-		       SPL_HEADER_VERSION, spl_header_version);
++		       SPL_ENV_HEADER_VERSION, spl_header_version);
+ 		return;
+ 	}
+ 	if (!spl->fel_script_address)
+-- 
+2.18.1
+
