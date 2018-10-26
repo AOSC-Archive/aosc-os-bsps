@@ -1,0 +1,58 @@
+From 82a06e901df8926dafbb789110c54ad0fea4653c Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Sun, 17 Dec 2017 21:18:05 +0800
+Subject: [PATCH 8/8] sunxi: downclock DRAM on several H5 boards
+
+Several H5 boards are found unstable with the current DRAM frequency.
+
+Downclock them.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ configs/nanopi_neo2_defconfig    | 2 +-
+ configs/orangepi_pc2_defconfig   | 2 +-
+ configs/orangepi_prime_defconfig | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/configs/nanopi_neo2_defconfig b/configs/nanopi_neo2_defconfig
+index ee693be1a8..87ff73aaa4 100644
+--- a/configs/nanopi_neo2_defconfig
++++ b/configs/nanopi_neo2_defconfig
+@@ -2,7 +2,7 @@ CONFIG_ARM=y
+ CONFIG_ARCH_SUNXI=y
+ CONFIG_SPL=y
+ CONFIG_MACH_SUN50I_H5=y
+-CONFIG_DRAM_CLK=672
++CONFIG_DRAM_CLK=408
+ CONFIG_DRAM_ZQ=3881977
+ CONFIG_NR_DRAM_BANKS=1
+ # CONFIG_SYS_MALLOC_CLEAR_ON_INIT is not set
+diff --git a/configs/orangepi_pc2_defconfig b/configs/orangepi_pc2_defconfig
+index 7f7e6d3264..e7a51f2b22 100644
+--- a/configs/orangepi_pc2_defconfig
++++ b/configs/orangepi_pc2_defconfig
+@@ -2,7 +2,7 @@ CONFIG_ARM=y
+ CONFIG_ARCH_SUNXI=y
+ CONFIG_SPL=y
+ CONFIG_MACH_SUN50I_H5=y
+-CONFIG_DRAM_CLK=672
++CONFIG_DRAM_CLK=624
+ CONFIG_DRAM_ZQ=3881977
+ CONFIG_MACPWR="PD6"
+ CONFIG_SPL_SPI_SUNXI=y
+diff --git a/configs/orangepi_prime_defconfig b/configs/orangepi_prime_defconfig
+index 7e10ebe796..f4b93778d3 100644
+--- a/configs/orangepi_prime_defconfig
++++ b/configs/orangepi_prime_defconfig
+@@ -2,7 +2,7 @@ CONFIG_ARM=y
+ CONFIG_ARCH_SUNXI=y
+ CONFIG_SPL=y
+ CONFIG_MACH_SUN50I_H5=y
+-CONFIG_DRAM_CLK=672
++CONFIG_DRAM_CLK=624
+ CONFIG_DRAM_ZQ=3881977
+ CONFIG_NR_DRAM_BANKS=1
+ # CONFIG_SYS_MALLOC_CLEAR_ON_INIT is not set
+-- 
+2.18.1
+

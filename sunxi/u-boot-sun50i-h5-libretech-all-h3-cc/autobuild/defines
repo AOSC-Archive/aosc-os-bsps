@@ -1,0 +1,9 @@
+PKGNAME=u-boot-sun50i-h5-libretech-all-h3-cc
+PKGDES="U-Boot for LibreComputer ALL-H3-CC H5 ver."
+PKGEPOCH=2
+PKGSEC=embedded
+BUILDDEP="dtc swig"
+
+ABSTRIP=no
+ABELFDEP=no
+ABRPMAUTOPROVONLY=yes

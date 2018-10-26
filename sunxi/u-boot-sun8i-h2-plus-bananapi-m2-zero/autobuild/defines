@@ -1,0 +1,8 @@
+PKGNAME=u-boot-sun8i-h2-plus-bananapi-m2-zero
+PKGDES="U-Boot for Banana Pi M2 Zero"
+PKGSEC=embedded
+BUILDDEP="dtc swig"
+
+ABSTRIP=no
+ABELFDEP=no
+ABRPMAUTOPROVONLY=yes

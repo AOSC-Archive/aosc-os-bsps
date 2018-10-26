@@ -1,0 +1,98 @@
+From d87c40bc8c7804ca38b15dd8e8519a7964c84c5d Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Thu, 28 Sep 2017 22:08:09 +0800
+Subject: [PATCH 5/8] video: sunxi: enable HDMI for R40 SoC
+
+Allwinner R40 SoC has a "Display Engine 2.0" and 4 TCONs controlled by a
+mux called "TCON_TOP", and the mux also controls the input of the HDMI
+controller.
+
+Enable the HDMI for R40 SoC, use DE2 mixer0 and TCON TV0.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm/mach-sunxi/Kconfig         |  1 +
+ drivers/video/sunxi/sunxi_de2.c     |  3 ++-
+ drivers/video/sunxi/sunxi_dw_hdmi.c | 32 +++++++++++++++++++++++++++++
+ 3 files changed, 35 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/mach-sunxi/Kconfig b/arch/arm/mach-sunxi/Kconfig
+index 686f38fec4..2d9683dd87 100644
+--- a/arch/arm/mach-sunxi/Kconfig
++++ b/arch/arm/mach-sunxi/Kconfig
+@@ -242,6 +242,7 @@ config MACH_SUN8I_R40
+ 	select CPU_V7_HAS_VIRT
+ 	select ARCH_SUPPORT_PSCI
+ 	select SUNXI_GEN_SUN6I
++	select SUNXI_DE2
+ 	select SUPPORT_SPL
+ 	select SUNXI_DRAM_DW
+ 	select SUNXI_DRAM_DW_32BIT
+diff --git a/drivers/video/sunxi/sunxi_de2.c b/drivers/video/sunxi/sunxi_de2.c
+index 8333ddc44c..c343cd9a2c 100644
+--- a/drivers/video/sunxi/sunxi_de2.c
++++ b/drivers/video/sunxi/sunxi_de2.c
+@@ -263,7 +263,8 @@ static int sunxi_de2_probe(struct udevice *dev)
+ 					 "sunxi_dw_hdmi", &disp);
+ 	if (!ret) {
+ 		int mux;
+-		if (IS_ENABLED(CONFIG_MACH_SUNXI_H3_H5))
++		if (IS_ENABLED(CONFIG_MACH_SUNXI_H3_H5) ||
++		    IS_ENABLED(CONFIG_MACH_SUN8I_R40))
+ 			mux = 0;
+ 		else
+ 			mux = 1;
+diff --git a/drivers/video/sunxi/sunxi_dw_hdmi.c b/drivers/video/sunxi/sunxi_dw_hdmi.c
+index 9dbea649a0..b3ca2c0ba7 100644
+--- a/drivers/video/sunxi/sunxi_dw_hdmi.c
++++ b/drivers/video/sunxi/sunxi_dw_hdmi.c
+@@ -246,7 +246,11 @@ static void sunxi_dw_hdmi_lcdc_init(int mux, const struct display_timing *edid,
+ 		(struct sunxi_ccm_reg *)SUNXI_CCM_BASE;
+ 	int div = sunxi_dw_hdmi_get_divider(edid->pixelclock.typ);
+ 	struct sunxi_lcdc_reg *lcdc;
++#ifdef CONFIG_MACH_SUN8I_R40
++	struct tcon_top *tcon_top;
++#endif
+ 
++#ifndef CONFIG_MACH_SUN8I_R40
+ 	if (mux == 0) {
+ 		lcdc = (struct sunxi_lcdc_reg *)SUNXI_LCD0_BASE;
+ 
+@@ -268,6 +272,34 @@ static void sunxi_dw_hdmi_lcdc_init(int mux, const struct display_timing *edid,
+ 		writel(CCM_LCD1_CTRL_GATE | CCM_LCD1_CTRL_M(div),
+ 		       &ccm->lcd1_clk_cfg);
+ 	}
++#else
++	lcdc = (struct sunxi_lcdc_reg *)SUNXI_TCON_TV0_BASE;
++	tcon_top = (struct tcon_top *)SUNXI_TCON_TOP_BASE;
++
++	/* Reset TCON_TOP */
++	clrbits_le32(&ccm->ahb_reset1_cfg, 1 << AHB_RESET_OFFSET_TCON_TOP);
++	setbits_le32(&ccm->ahb_reset1_cfg, 1 << AHB_RESET_OFFSET_TCON_TOP);
++
++	/* Enable TCON_TOP */
++	setbits_le32(&ccm->ahb_gate1, 1 << AHB_GATE_OFFSET_TCON_TOP);
++
++	/* Set HDMI and DE port0 to TCON_TV0 */
++	clrsetbits_le32(&tcon_top->de_port_sel, SUNXI_TCON_TOP_DE_PORT0_MASK,
++			SUNXI_TCON_TOP_DE_PORT0_TCON_TV0);
++	clrsetbits_le32(&tcon_top->clk_gate_hdmi_src,
++			SUNXI_TCON_TOP_HDMI_SRC_MASK,
++			SUNXI_TCON_TOP_HDMI_SRC_TCON_TV0);
++	setbits_le32(&tcon_top->clk_gate_hdmi_src,
++		     SUNXI_TCON_TOP_CLK_GATE_TCON_TV0);
++
++	/* Deassert reset of TCON_TV0 */
++	setbits_le32(&ccm->ahb_reset1_cfg, 1 << AHB_RESET_OFFSET_TCON_TV0);
++
++	/* Clock on TCON_TV0 */
++	setbits_le32(&ccm->ahb_gate1, 1 << AHB_GATE_OFFSET_TCON_TV0);
++	writel(CCM_LCD0_CTRL_GATE | CCM_LCD0_CTRL_M(div),
++	       &ccm->tcon_tv0_clk_cfg);
++#endif
+ 
+ 	lcdc_init(lcdc);
+ 	lcdc_tcon1_mode_set(lcdc, edid, false, false);
+-- 
+2.18.1
+
