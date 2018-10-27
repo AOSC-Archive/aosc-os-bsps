@@ -1,4 +1,4 @@
-UBOOT_BOARD=Sinovoip_BPI_M2_Plus # Temporary hack
+UBOOT_BOARD=bananapi_m2_zero
 LINUX_BOARD=sun8i-h2-plus-bananapi-m2-zero
 
 make ${UBOOT_BOARD}_defconfig
