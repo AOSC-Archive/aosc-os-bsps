@@ -1,0 +1,34 @@
+From fcf29327ac67419a8000eb04ad004ecdfaabcfc3 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Tue, 24 Jul 2018 14:07:11 +0800
+Subject: [PATCH 138/152] arm64: allwinner: dts: h6: add DDC_EN gpio to Pine
+ H64
+
+The Pine H64 board has a DDC_EN gpio pin that gates the level shifter of
+the HSCL/HSDA HDMI DDC pins.
+
+Add reference to this GPIO to the HDMI PHY node.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm64/boot/dts/allwinner/sun50i-h6-pine-h64.dts | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6-pine-h64.dts b/arch/arm64/boot/dts/allwinner/sun50i-h6-pine-h64.dts
+index 139dc4b84ca3..2068b1a1673d 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-h6-pine-h64.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-h6-pine-h64.dts
+@@ -116,6 +116,10 @@
+ 	};
+ };
+ 
++&hdmi_phy {
++	ddc-en-gpios = <&pio 7 2 GPIO_ACTIVE_HIGH>; /* PH2 */
++};
++
+ &mixer0 {
+ 	status = "okay";
+ };
+-- 
+2.18.1
+

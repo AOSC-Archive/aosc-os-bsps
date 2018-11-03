@@ -1,0 +1,38 @@
+From adb224e3be6638eb5e7f499c22bc261e68c584af Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Wed, 1 Aug 2018 11:40:46 +0800
+Subject: [PATCH 098/152] dt-bindings: simplefb-sunxi: add description of DEs
+ for pipeline string
+
+Currently, for different Allwinner Display Engine situation, we use
+different pipeline string.
+
+Add description of the corresponding DE component version for the
+pipeline strings.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ .../devicetree/bindings/display/simple-framebuffer-sunxi.txt   | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/Documentation/devicetree/bindings/display/simple-framebuffer-sunxi.txt b/Documentation/devicetree/bindings/display/simple-framebuffer-sunxi.txt
+index d693b8dc9a62..67e0af3c1cda 100644
+--- a/Documentation/devicetree/bindings/display/simple-framebuffer-sunxi.txt
++++ b/Documentation/devicetree/bindings/display/simple-framebuffer-sunxi.txt
+@@ -10,11 +10,12 @@ firmware / bootloader use, and the OS should ignore them.
+ 
+ Required properties:
+ - compatible: "allwinner,simple-framebuffer"
+-- allwinner,pipeline, one of:
++- allwinner,pipeline, For the first generation DE, one of:
+   "de_be0-lcd0"
+   "de_be1-lcd1"
+   "de_be0-lcd0-hdmi"
+   "de_be1-lcd1-hdmi"
++  For DE2 without TCON_TOP, one of:
+   "mixer0-lcd0"
+   "mixer0-lcd0-hdmi"
+   "mixer1-lcd1-hdmi"
+-- 
+2.18.1
+

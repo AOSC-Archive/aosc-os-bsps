@@ -1,0 +1,42 @@
+From 217b2ae2579a37ee297286b2b1487f575d7495b9 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Fri, 27 Jul 2018 19:30:10 +0800
+Subject: [PATCH 112/152] add extra opps
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm64/boot/dts/allwinner/sun50i-h6.dtsi | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-h6.dtsi
+index d8436111ee66..38fc6d6c1115 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-h6.dtsi
++++ b/arch/arm64/boot/dts/allwinner/sun50i-h6.dtsi
+@@ -41,6 +41,24 @@
+ 			opp-microvolt = <880000>;
+ 			clock-latency-ns = <244144>; /* 8 32k periods */
+ 		};
++
++		opp-1008000000 {
++			opp-hz = /bits/ 64 <1008000000>;
++			opp-microvolt = <940000>;
++			clock-latency-ns = <244144>; /* 8 32k periods */
++		};
++
++		opp-1320000000 {
++			opp-hz = /bits/ 64 <1320000000>;
++			opp-microvolt = <1000000>;
++			clock-latency-ns = <244144>; /* 8 32k periods */
++		};
++
++		opp-1488000000 {
++			opp-hz = /bits/ 64 <1488000000>;
++			opp-microvolt = <1060000>;
++			clock-latency-ns = <244144>; /* 8 32k periods */
++		};
+ 	};
+ 
+ 	cpus {
+-- 
+2.18.1
+

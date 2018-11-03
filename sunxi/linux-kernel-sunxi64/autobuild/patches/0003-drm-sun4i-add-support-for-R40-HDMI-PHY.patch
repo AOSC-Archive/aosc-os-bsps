@@ -1,7 +1,7 @@
-From cf709d9aa0c6bfbfec7cd19d448e8832de57979c Mon Sep 17 00:00:00 2001
+From 9d90af364e1b06ab71fbbf0147062e99b4406300 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 16 Sep 2018 12:34:08 +0800
-Subject: [PATCH 003/153] drm/sun4i: add support for R40 HDMI PHY
+Subject: [PATCH 003/152] drm/sun4i: add support for R40 HDMI PHY
 
 The R40 SoC has a HDMI PHY that is possible to mux two video PLLs.
 
