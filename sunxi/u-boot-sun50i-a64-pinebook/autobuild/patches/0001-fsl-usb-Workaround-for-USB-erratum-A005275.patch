@@ -1,0 +1,261 @@
+From 4eaf7f525a0874a1eff0f5666004896cc5c89fa3 Mon Sep 17 00:00:00 2001
+From: Chris Packham <judge.packham@gmail.com>
+Date: Thu, 4 Oct 2018 20:03:53 +1300
+Subject: [PATCH 01/44] fsl/usb: Workaround for USB erratum-A005275
+
+Workaround makes FS as default mode on all affected socs.
+
+Add support to check erratum-A005275 validity for an soc. This info is
+required to determine whether a given soc is affected by this erratum.
+Add quirk for this erratum "has_fsl_erratum_a005275" . This quirk is used
+to enable workaround for the errata
+
+Force FS mode as default by:
+        - making EPS as FS
+        - setting PFSC bit to disable HS chirping
+
+This workaround can be disabled by mentioning "no_erratum_a005275" in
+hwconfig string
+
+Signed-off-by: Chris Packham <judge.packham@gmail.com>
+Reviewed-by: York Sun <york.sun@nxp.com>
+---
+ arch/powerpc/cpu/mpc85xx/Kconfig      |  8 ++++++++
+ arch/powerpc/cpu/mpc85xx/cmd_errata.c |  4 ++++
+ drivers/usb/common/fsl-errata.c       | 28 +++++++++++++++++++++++++++
+ drivers/usb/host/ehci-fsl.c           |  7 +++++++
+ drivers/usb/host/ehci-hcd.c           | 12 +++++++++++-
+ drivers/usb/host/ehci.h               |  4 ++++
+ include/fsl_usb.h                     |  1 +
+ 7 files changed, 63 insertions(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/cpu/mpc85xx/Kconfig b/arch/powerpc/cpu/mpc85xx/Kconfig
+index 7d139fffa2..309ca29460 100644
+--- a/arch/powerpc/cpu/mpc85xx/Kconfig
++++ b/arch/powerpc/cpu/mpc85xx/Kconfig
+@@ -659,6 +659,7 @@ config ARCH_P1010
+ 	select SYS_FSL_ERRATUM_A004477
+ 	select SYS_FSL_ERRATUM_A004508
+ 	select SYS_FSL_ERRATUM_A005125
++	select SYS_FSL_ERRATUM_A005275
+ 	select SYS_FSL_ERRATUM_A006261
+ 	select SYS_FSL_ERRATUM_A007075
+ 	select SYS_FSL_ERRATUM_ESDHC111
+@@ -821,6 +822,7 @@ config ARCH_P2041
+ 	select FSL_LAW
+ 	select SYS_FSL_ERRATUM_A004510
+ 	select SYS_FSL_ERRATUM_A004849
++	select SYS_FSL_ERRATUM_A005275
+ 	select SYS_FSL_ERRATUM_A006261
+ 	select SYS_FSL_ERRATUM_CPU_A003999
+ 	select SYS_FSL_ERRATUM_DDR_A003
+@@ -845,6 +847,7 @@ config ARCH_P3041
+ 	select SYS_FSL_DDR_VER_44
+ 	select SYS_FSL_ERRATUM_A004510
+ 	select SYS_FSL_ERRATUM_A004849
++	select SYS_FSL_ERRATUM_A005275
+ 	select SYS_FSL_ERRATUM_A005812
+ 	select SYS_FSL_ERRATUM_A006261
+ 	select SYS_FSL_ERRATUM_CPU_A003999
+@@ -910,6 +913,7 @@ config ARCH_P5020
+ 	select FSL_LAW
+ 	select SYS_FSL_DDR_VER_44
+ 	select SYS_FSL_ERRATUM_A004510
++	select SYS_FSL_ERRATUM_A005275
+ 	select SYS_FSL_ERRATUM_A006261
+ 	select SYS_FSL_ERRATUM_DDR_A003
+ 	select SYS_FSL_ERRATUM_DDR_A003474
+@@ -935,6 +939,7 @@ config ARCH_P5040
+ 	select SYS_FSL_DDR_VER_44
+ 	select SYS_FSL_ERRATUM_A004510
+ 	select SYS_FSL_ERRATUM_A004699
++	select SYS_FSL_ERRATUM_A005275
+ 	select SYS_FSL_ERRATUM_A005812
+ 	select SYS_FSL_ERRATUM_A006261
+ 	select SYS_FSL_ERRATUM_DDR_A003
+@@ -1303,6 +1308,9 @@ config SYS_FSL_ERRATUM_A005812
+ config SYS_FSL_ERRATUM_A005871
+ 	bool
+ 
++config SYS_FSL_ERRATUM_A005275
++	bool
++
+ config SYS_FSL_ERRATUM_A006261
+ 	bool
+ 
+diff --git a/arch/powerpc/cpu/mpc85xx/cmd_errata.c b/arch/powerpc/cpu/mpc85xx/cmd_errata.c
+index eda2e7e63d..e455d8baf5 100644
+--- a/arch/powerpc/cpu/mpc85xx/cmd_errata.c
++++ b/arch/powerpc/cpu/mpc85xx/cmd_errata.c
+@@ -307,6 +307,10 @@ static int do_errata(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
+ 	    (SVR_REV(svr) <= CONFIG_SYS_FSL_A004447_SVR_REV))
+ 		puts("Work-around for Erratum I2C-A004447 enabled\n");
+ #endif
++#ifdef CONFIG_SYS_FSL_ERRATUM_A005275
++	if (has_erratum_a005275())
++		puts("Work-around for Erratum A005275 enabled\n");
++#endif
+ #ifdef CONFIG_SYS_FSL_ERRATUM_A006261
+ 	if (has_erratum_a006261())
+ 		puts("Work-around for Erratum A006261 enabled\n");
+diff --git a/drivers/usb/common/fsl-errata.c b/drivers/usb/common/fsl-errata.c
+index 386130d7a1..9eb1d23067 100644
+--- a/drivers/usb/common/fsl-errata.c
++++ b/drivers/usb/common/fsl-errata.c
+@@ -6,6 +6,7 @@
+  */
+ 
+ #include <common.h>
++#include <hwconfig.h>
+ #include <fsl_errata.h>
+ #include<fsl_usb.h>
+ #if defined(CONFIG_FSL_LSCH2) || defined(CONFIG_FSL_LSCH3) || \
+@@ -44,6 +45,33 @@ bool has_dual_phy(void)
+ 	return false;
+ }
+ 
++bool has_erratum_a005275(void)
++{
++	u32 svr = get_svr();
++	u32 soc = SVR_SOC_VER(svr);
++
++	if (hwconfig("no_erratum_a005275"))
++		return false;
++
++	switch (soc) {
++#ifdef CONFIG_PPC
++	case SVR_P3041:
++	case SVR_P2041:
++	case SVR_P2040:
++		return IS_SVR_REV(svr, 1, 0) || IS_SVR_REV(svr, 1, 1);
++	case SVR_P5010:
++	case SVR_P5020:
++	case SVR_P5021:
++		return IS_SVR_REV(svr, 1, 0) || IS_SVR_REV(svr, 2, 0);
++	case SVR_P5040:
++	case SVR_P1010:
++		return IS_SVR_REV(svr, 1, 0);
++#endif
++	}
++
++	return false;
++}
++
+ bool has_erratum_a006261(void)
+ {
+ 	u32 svr = get_svr();
+diff --git a/drivers/usb/host/ehci-fsl.c b/drivers/usb/host/ehci-fsl.c
+index a04f6a31c8..a8fb2b8ac3 100644
+--- a/drivers/usb/host/ehci-fsl.c
++++ b/drivers/usb/host/ehci-fsl.c
+@@ -93,6 +93,7 @@ static int ehci_fsl_probe(struct udevice *dev)
+ 	struct usb_ehci *ehci = NULL;
+ 	struct ehci_hccr *hccr;
+ 	struct ehci_hcor *hcor;
++	struct ehci_ctrl *ehci_ctrl = &priv->ehci;
+ 
+ 	/*
+ 	 * Get the base address for EHCI controller from the device node
+@@ -107,6 +108,8 @@ static int ehci_fsl_probe(struct udevice *dev)
+ 	hcor = (struct ehci_hcor *)
+ 		((void *)hccr + HC_LENGTH(ehci_readl(&hccr->cr_capbase)));
+ 
++	ehci_ctrl->has_fsl_erratum_a005275 = has_erratum_a005275();
++
+ 	if (ehci_fsl_init(priv, ehci, hccr, hcor) < 0)
+ 		return -ENXIO;
+ 
+@@ -145,6 +148,8 @@ U_BOOT_DRIVER(ehci_fsl) = {
+ int ehci_hcd_init(int index, enum usb_init_type init,
+ 		struct ehci_hccr **hccr, struct ehci_hcor **hcor)
+ {
++	struct ehci_ctrl *ehci_ctrl = container_of(hccr,
++					struct ehci_ctrl, hccr);
+ 	struct usb_ehci *ehci = NULL;
+ 
+ 	switch (index) {
+@@ -163,6 +168,8 @@ int ehci_hcd_init(int index, enum usb_init_type init,
+ 	*hcor = (struct ehci_hcor *)((uint32_t) *hccr +
+ 			HC_LENGTH(ehci_readl(&(*hccr)->cr_capbase)));
+ 
++	ehci_ctrl->has_fsl_erratum_a005275 = has_erratum_a005275();
++
+ 	return ehci_fsl_init(index, ehci, *hccr, *hcor);
+ }
+ 
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index 199b3a8b26..d1d8f08d98 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -409,9 +409,15 @@ ehci_submit_async(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 	endpt = QH_ENDPT1_RL(8) | QH_ENDPT1_C(c) |
+ 		QH_ENDPT1_MAXPKTLEN(maxpacket) | QH_ENDPT1_H(0) |
+ 		QH_ENDPT1_DTC(QH_ENDPT1_DTC_DT_FROM_QTD) |
+-		QH_ENDPT1_EPS(ehci_encode_speed(dev->speed)) |
+ 		QH_ENDPT1_ENDPT(usb_pipeendpoint(pipe)) | QH_ENDPT1_I(0) |
+ 		QH_ENDPT1_DEVADDR(usb_pipedevice(pipe));
++
++	/* Force FS for fsl HS quirk */
++	if (!ctrl->has_fsl_erratum_a005275)
++		endpt |= QH_ENDPT1_EPS(ehci_encode_speed(dev->speed));
++	else
++		endpt |= QH_ENDPT1_EPS(ehci_encode_speed(QH_FULL_SPEED));
++
+ 	qh->qh_endpt1 = cpu_to_hc32(endpt);
+ 	endpt = QH_ENDPT2_MULT(1) | QH_ENDPT2_UFCMASK(0) | QH_ENDPT2_UFSMASK(0);
+ 	qh->qh_endpt2 = cpu_to_hc32(endpt);
+@@ -832,6 +838,10 @@ static int ehci_submit_root(struct usb_device *dev, unsigned long pipe,
+ 			} else {
+ 				int ret;
+ 
++				/* Disable chirp for HS erratum */
++				if (ctrl->has_fsl_erratum_a005275)
++					reg |= PORTSC_FSL_PFSC;
++
+ 				reg |= EHCI_PS_PR;
+ 				reg &= ~EHCI_PS_PE;
+ 				ehci_writel(status_reg, reg);
+diff --git a/drivers/usb/host/ehci.h b/drivers/usb/host/ehci.h
+index 7945016624..6c359af90c 100644
+--- a/drivers/usb/host/ehci.h
++++ b/drivers/usb/host/ehci.h
+@@ -8,6 +8,7 @@
+ #ifndef USB_EHCI_H
+ #define USB_EHCI_H
+ 
++#include <stdbool.h>
+ #include <usb.h>
+ #include <generic-phy.h>
+ 
+@@ -66,6 +67,8 @@ struct ehci_hcor {
+ #define PORTSC_PSPD_FS			0x0
+ #define PORTSC_PSPD_LS			0x1
+ #define PORTSC_PSPD_HS			0x2
++#define PORTSC_FSL_PFSC		BIT(24) /* PFSC bit to disable HS chirping */
++
+ 	uint32_t or_systune;
+ } __attribute__ ((packed, aligned(4)));
+ 
+@@ -251,6 +254,7 @@ struct ehci_ctrl {
+ 	uint32_t *periodic_list;
+ 	int periodic_schedules;
+ 	int ntds;
++	bool has_fsl_erratum_a005275;	/* Freescale HS silicon quirk */
+ 	struct ehci_ops ops;
+ 	void *priv;	/* client's private data */
+ };
+diff --git a/include/fsl_usb.h b/include/fsl_usb.h
+index e9e1dd6905..c0f076b06d 100644
+--- a/include/fsl_usb.h
++++ b/include/fsl_usb.h
+@@ -87,6 +87,7 @@ struct ccsr_usb_phy {
+ /* USB Erratum Checking code */
+ #if defined(CONFIG_PPC) || defined(CONFIG_ARM)
+ bool has_dual_phy(void);
++bool has_erratum_a005275(void);
+ bool has_erratum_a006261(void);
+ bool has_erratum_a007075(void);
+ bool has_erratum_a007798(void);
+-- 
+2.18.1
+

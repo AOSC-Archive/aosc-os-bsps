@@ -1,0 +1,33 @@
+From be6eb2393131b3c0668df3f04868c56c3bb39702 Mon Sep 17 00:00:00 2001
+From: Patrick Delaunay <patrick.delaunay@st.com>
+Date: Thu, 25 Oct 2018 16:54:42 +0200
+Subject: [PATCH 13/44] cmd: remove CONFIG_SOURCE support in Makefile
+
+This line is no more needed and can be removed.
+
+Only CONFIG_CMD_SOURCE is defined in Kconfig and
+used in defconfig files.
+
+CONFIG_SOURCE if not defined in source code and
+"config SOURCE" is not present in any Kconfig.
+
+Signed-off-by: Patrick Delaunay <patrick.delaunay@st.com>
+---
+ cmd/Makefile | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/cmd/Makefile b/cmd/Makefile
+index d9cdaf6064..ac4830a692 100644
+--- a/cmd/Makefile
++++ b/cmd/Makefile
+@@ -15,7 +15,6 @@ obj-$(CONFIG_CMD_AES) += aes.o
+ obj-$(CONFIG_CMD_ADC) += adc.o
+ obj-$(CONFIG_CMD_ARMFLASH) += armflash.o
+ obj-y += blk_common.o
+-obj-$(CONFIG_SOURCE) += source.o
+ obj-$(CONFIG_CMD_SOURCE) += source.o
+ obj-$(CONFIG_CMD_BDI) += bdinfo.o
+ obj-$(CONFIG_CMD_BEDBUG) += bedbug.o
+-- 
+2.18.1
+

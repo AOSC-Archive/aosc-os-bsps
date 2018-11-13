@@ -1,0 +1,55 @@
+From f457c52eb8bc0287288edd56670c075a4ecb6b38 Mon Sep 17 00:00:00 2001
+From: Stefan Roese <sr@denx.de>
+Date: Tue, 30 Oct 2018 10:00:22 +0100
+Subject: [PATCH 05/44] arm: socfpga: Fix bootcounter located at the end of
+ internal SRAM
+
+Commit 768f23dc8ae3 ("ARM: socfpga: Put stack at the end of SRAM") broke
+those socfpga boards that keep the bootcounter at the end of the
+internal SRAM as the bootcounter needs 8 bytes by default and thus the
+very first SPL call to board_init_f_alloc_reserve overwrites the
+bootcounter.
+
+This patch allows to move the initial stack pointer down a bit by
+checking if CONFIG_SYS_BOOTCOUNT_ADDR is located in the internal SRAM
+area and then using this address as location for the start of the
+stack pointer.
+
+No new macros / defines are added by this approach.
+
+Signed-off-by: Stefan Roese <sr@denx.de>
+Cc: Marek Vasut <marex@denx.de>
+Cc: Simon Goldschmidt <simon.k.r.goldschmidt@gmail.com>
+---
+ include/configs/socfpga_common.h | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+diff --git a/include/configs/socfpga_common.h b/include/configs/socfpga_common.h
+index 2330143cf1..bd8f5c8c41 100644
+--- a/include/configs/socfpga_common.h
++++ b/include/configs/socfpga_common.h
+@@ -31,8 +31,21 @@
+ #define CONFIG_SYS_INIT_RAM_ADDR	0xFFE00000
+ #define CONFIG_SYS_INIT_RAM_SIZE	0x40000 /* 256KB */
+ #endif
++
++/*
++ * Some boards (e.g. socfpga_sr1500) use 8 bytes at the end of the internal
++ * SRAM as bootcounter storage. Make sure to not put the stack directly
++ * at this address to not overwrite the bootcounter by checking, if the
++ * bootcounter address is located in the internal SRAM.
++ */
++#if ((CONFIG_SYS_BOOTCOUNT_ADDR > CONFIG_SYS_INIT_RAM_ADDR) &&	\
++     (CONFIG_SYS_BOOTCOUNT_ADDR < (CONFIG_SYS_INIT_RAM_ADDR +	\
++				   CONFIG_SYS_INIT_RAM_SIZE)))
++#define CONFIG_SYS_INIT_SP_ADDR		CONFIG_SYS_BOOTCOUNT_ADDR
++#else
+ #define CONFIG_SYS_INIT_SP_ADDR			\
+ 	(CONFIG_SYS_INIT_RAM_ADDR + CONFIG_SYS_INIT_RAM_SIZE)
++#endif
+ 
+ #define CONFIG_SYS_SDRAM_BASE		PHYS_SDRAM_1
+ 
+-- 
+2.18.1
+

@@ -1,0 +1,30 @@
+From de8566a1609aae0659f2067821dd2c6661bde61c Mon Sep 17 00:00:00 2001
+From: Sam Protsenko <semen.protsenko@linaro.org>
+Date: Tue, 30 Oct 2018 19:57:48 +0200
+Subject: [PATCH 15/44] arm: ti: boot: Don't read environment partition
+
+This part should've been remove in commit 88d60db01168 ("arm: ti: boot:
+Remove environment partition"), but I missed it somehow. Remove reading
+dtb file from environment partition on eMMC, as we don't have it
+anymore.
+
+Signed-off-by: Sam Protsenko <semen.protsenko@linaro.org>
+---
+ include/environment/ti/boot.h | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/include/environment/ti/boot.h b/include/environment/ti/boot.h
+index 560753ae4c..3c9c87f21b 100644
+--- a/include/environment/ti/boot.h
++++ b/include/environment/ti/boot.h
+@@ -93,7 +93,6 @@
+ 		AVB_VERIFY_CHECK \
+ 		"part start mmc ${mmcdev} boot boot_start; " \
+ 		"part size mmc ${mmcdev} boot boot_size; " \
+-		"mmc read ${fdtaddr} ${fdt_start} ${fdt_size}; " \
+ 		"mmc read ${loadaddr} ${boot_start} ${boot_size}; " \
+ 		"bootm ${loadaddr}#${fdtfile};\0 "
+ 
+-- 
+2.18.1
+

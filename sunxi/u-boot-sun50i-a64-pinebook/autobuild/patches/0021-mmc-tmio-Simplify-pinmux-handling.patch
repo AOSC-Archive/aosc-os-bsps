@@ -1,0 +1,61 @@
+From 645a575aeb384c7bf4ffb1204a93d140c0984fee Mon Sep 17 00:00:00 2001
+From: Marek Vasut <marek.vasut+renesas@gmail.com>
+Date: Sun, 28 Oct 2018 13:54:10 +0100
+Subject: [PATCH 21/44] mmc: tmio: Simplify pinmux handling
+
+The SD UHS SDR12, SDR25, SDR50, SDR104, DDR50 and MMC HS200, HS400
+modes all use 1.8V signaling, while all the legacy modes use 3.3V
+signaling. While there are extra modes which use 1.2V signaling,
+the existing hardware does not support those.
+
+Simplify the pinmux such that 3.3V signaling implies legacy mode
+pinmux and the rest implies UHS mode pinmux. This prevents the
+massive case statement from growing further. Moreover, it fixes
+an edge case where during SD 1.8V switch, the bus mode is still
+set to default while the signaling is already set to 1.8V, which
+results in an attempt to communicate with a 1.8V card using pins
+in 3.3V mode and thus communication failure.
+
+Signed-off-by: Marek Vasut <marek.vasut+renesas@gmail.com>
+Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+---
+ drivers/mmc/tmio-common.c | 22 +++-------------------
+ 1 file changed, 3 insertions(+), 19 deletions(-)
+
+diff --git a/drivers/mmc/tmio-common.c b/drivers/mmc/tmio-common.c
+index 138de59470..5f927c6150 100644
+--- a/drivers/mmc/tmio-common.c
++++ b/drivers/mmc/tmio-common.c
+@@ -622,26 +622,10 @@ static void tmio_sd_set_pins(struct udevice *dev)
+ #endif
+ 
+ #ifdef CONFIG_PINCTRL
+-	switch (mmc->selected_mode) {
+-	case MMC_LEGACY:
+-	case SD_LEGACY:
+-	case MMC_HS:
+-	case SD_HS:
+-	case MMC_HS_52:
+-	case MMC_DDR_52:
+-		pinctrl_select_state(dev, "default");
+-		break;
+-	case UHS_SDR12:
+-	case UHS_SDR25:
+-	case UHS_SDR50:
+-	case UHS_DDR50:
+-	case UHS_SDR104:
+-	case MMC_HS_200:
++	if (mmc->signal_voltage == MMC_SIGNAL_VOLTAGE_180)
+ 		pinctrl_select_state(dev, "state_uhs");
+-		break;
+-	default:
+-		break;
+-	}
++	else
++		pinctrl_select_state(dev, "default");
+ #endif
+ }
+ 
+-- 
+2.18.1
+

@@ -1,0 +1,54 @@
+From 54dd89fefcf4b6b70351d73bad291dc102b8317c Mon Sep 17 00:00:00 2001
+From: Vasily Khoruzhick <anarsoul@gmail.com>
+Date: Tue, 6 Nov 2018 19:37:06 -0800
+Subject: [PATCH 42/44] sunxi-mmc: use new mode on both controllers on A64
+
+Using new mode improves stability of eMMC and SD cards. Without
+it SPL fails to load u-boot from SD on Pinebook.
+
+Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
+Reviewed-by: Chen-Yu Tsai <wens@csie.org>
+---
+ arch/arm/mach-sunxi/Kconfig |  1 +
+ drivers/mmc/sunxi_mmc.c     | 10 +++++++---
+ 2 files changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/arch/arm/mach-sunxi/Kconfig b/arch/arm/mach-sunxi/Kconfig
+index 66fff6c6d3..3c54f5106d 100644
+--- a/arch/arm/mach-sunxi/Kconfig
++++ b/arch/arm/mach-sunxi/Kconfig
+@@ -282,6 +282,7 @@ config MACH_SUN50I
+ 	select SUN6I_PRCM
+ 	select SUNXI_DE2
+ 	select SUNXI_GEN_SUN6I
++	select MMC_SUNXI_HAS_NEW_MODE
+ 	select SUPPORT_SPL
+ 	select SUNXI_DRAM_DW
+ 	select SUNXI_DRAM_DW_32BIT
+diff --git a/drivers/mmc/sunxi_mmc.c b/drivers/mmc/sunxi_mmc.c
+index e50b2c3343..2b6f3c2234 100644
+--- a/drivers/mmc/sunxi_mmc.c
++++ b/drivers/mmc/sunxi_mmc.c
+@@ -98,12 +98,16 @@ static int mmc_resource_init(int sdc_no)
+ static int mmc_set_mod_clk(struct sunxi_mmc_priv *priv, unsigned int hz)
+ {
+ 	unsigned int pll, pll_hz, div, n, oclk_dly, sclk_dly;
+-	bool new_mode = false;
++	bool new_mode = true;
+ 	bool calibrate = false;
+ 	u32 val = 0;
+ 
+-	if (IS_ENABLED(CONFIG_MMC_SUNXI_HAS_NEW_MODE) && (priv->mmc_no == 2))
+-		new_mode = true;
++	if (!IS_ENABLED(CONFIG_MMC_SUNXI_HAS_NEW_MODE))
++		new_mode = false;
++
++	/* A83 support new mode only on eMMC */
++	if (IS_ENABLED(CONFIG_MACH_SUN8I_A83T) && priv->mmc_no != 2)
++		new_mode = false;
+ 
+ #if defined(CONFIG_MACH_SUN50I) || defined(CONFIG_MACH_SUN50I_H6)
+ 	calibrate = true;
+-- 
+2.18.1
+

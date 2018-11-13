@@ -1,0 +1,39 @@
+From 1a25d9071bc08d31779cb66abd6090123b02041f Mon Sep 17 00:00:00 2001
+From: Keerthy <j-keerthy@ti.com>
+Date: Wed, 24 Oct 2018 11:47:14 +0530
+Subject: [PATCH 11/44] cmd: remoteproc: Fix the base of strtoul for ID
+ conversion from 3 to 10
+
+Currently the base is 3 fix it 10 so that IDs follow decimal system.
+
+Signed-off-by: Keerthy <j-keerthy@ti.com>
+Reviewed-by: Lokesh Vutla <lokeshvulta@ti.com>
+---
+ cmd/remoteproc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/cmd/remoteproc.c b/cmd/remoteproc.c
+index 9aebfc2f6e..81463f36b6 100644
+--- a/cmd/remoteproc.c
++++ b/cmd/remoteproc.c
+@@ -120,7 +120,7 @@ static int do_remoteproc_load(cmd_tbl_t *cmdtp, int flag, int argc,
+ 	if (argc != 4)
+ 		return CMD_RET_USAGE;
+ 
+-	id = (int)simple_strtoul(argv[1], NULL, 3);
++	id = (int)simple_strtoul(argv[1], NULL, 10);
+ 	addr = simple_strtoul(argv[2], NULL, 16);
+ 
+ 	size = simple_strtoul(argv[3], NULL, 16);
+@@ -163,7 +163,7 @@ static int do_remoteproc_wrapper(cmd_tbl_t *cmdtp, int flag, int argc,
+ 	if (argc != 2)
+ 		return CMD_RET_USAGE;
+ 
+-	id = (int)simple_strtoul(argv[1], NULL, 3);
++	id = (int)simple_strtoul(argv[1], NULL, 10);
+ 
+ 	if (!rproc_is_initialized()) {
+ 		printf("\tRemote Processors are not initialized\n");
+-- 
+2.18.1
+

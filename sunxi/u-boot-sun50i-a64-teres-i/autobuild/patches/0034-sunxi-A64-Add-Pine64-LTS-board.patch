@@ -1,0 +1,67 @@
+From 6d493836e83cae8015bbd0aaae5005ef873df3d4 Mon Sep 17 00:00:00 2001
+From: Andre Przywara <andre.przywara@arm.com>
+Date: Mon, 29 Oct 2018 00:56:50 +0000
+Subject: [PATCH 34/44] sunxi: A64: Add Pine64-LTS board
+
+The Pine64 LTS is an updated version of the Pine64, copying the
+technical updates from the SoPine platform: LPDDR3 DRAM, eMMC socket and
+soldered SPI flash chip, even the broken SD card detect pin has been copied.
+Consequently this leads to the .dts (copied from the kernel) just including
+the SoPine baseboard .dts, and the defconfig being almost identical.
+Nevertheless the boards deserves a separate config.
+
+Signed-off-by: Andre Przywara <andre.przywara@arm.com>
+---
+ arch/arm/dts/sun50i-a64-pine64-lts.dts | 13 +++++++++++++
+ configs/pine64-lts_defconfig           | 19 +++++++++++++++++++
+ 2 files changed, 32 insertions(+)
+ create mode 100644 arch/arm/dts/sun50i-a64-pine64-lts.dts
+ create mode 100644 configs/pine64-lts_defconfig
+
+diff --git a/arch/arm/dts/sun50i-a64-pine64-lts.dts b/arch/arm/dts/sun50i-a64-pine64-lts.dts
+new file mode 100644
+index 0000000000..72d6961dc3
+--- /dev/null
++++ b/arch/arm/dts/sun50i-a64-pine64-lts.dts
+@@ -0,0 +1,13 @@
++/*
++ * SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++ *
++ * Copyright (c) 2018 ARM Ltd.
++ */
++
++#include "sun50i-a64-sopine-baseboard.dts"
++
++/ {
++	model = "Pine64 LTS";
++	compatible = "pine64,pine64-lts", "allwinner,sun50i-r18",
++		     "allwinner,sun50i-a64";
++};
+diff --git a/configs/pine64-lts_defconfig b/configs/pine64-lts_defconfig
+new file mode 100644
+index 0000000000..fd3cdeec85
+--- /dev/null
++++ b/configs/pine64-lts_defconfig
+@@ -0,0 +1,19 @@
++CONFIG_ARM=y
++CONFIG_ARCH_SUNXI=y
++CONFIG_SPL=y
++CONFIG_MACH_SUN50I=y
++CONFIG_SUNXI_DRAM_LPDDR3_STOCK=y
++CONFIG_DRAM_CLK=552
++CONFIG_DRAM_ZQ=3881949
++CONFIG_MMC0_CD_PIN=""
++CONFIG_MMC_SUNXI_SLOT_EXTRA=2
++CONFIG_SPL_SPI_SUNXI=y
++CONFIG_NR_DRAM_BANKS=1
++# CONFIG_SYS_MALLOC_CLEAR_ON_INIT is not set
++# CONFIG_CMD_FLASH is not set
++# CONFIG_SPL_DOS_PARTITION is not set
++# CONFIG_SPL_EFI_PARTITION is not set
++CONFIG_DEFAULT_DEVICE_TREE="sun50i-a64-pine64-lts"
++CONFIG_SUN8I_EMAC=y
++CONFIG_USB_EHCI_HCD=y
++CONFIG_SYS_USB_EVENT_POLL_VIA_INT_QUEUE=y
+-- 
+2.18.1
+

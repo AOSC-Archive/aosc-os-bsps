@@ -1,0 +1,53 @@
+From 65b60897a700e63af02ba46249de60ed3f79ca41 Mon Sep 17 00:00:00 2001
+From: Martin Fuzzey <martin.fuzzey@flowbird.group>
+Date: Mon, 22 Oct 2018 18:31:08 +0200
+Subject: [PATCH 08/44] w1: fix data abort if no one wire bus master present
+
+When the "w1 bus" command is used with no bus master present
+a data abort may occur.
+
+This is because uclass_first_device() returns zero, but sets the output
+struct udevice pointer to NULL in the no device found case.
+
+Fix w1_get_bus() to account for this and return an error code
+as is expected by the callers.
+
+Signed-off-by: Martin Fuzzey <martin.fuzzey@flowbird.group>
+Reviewed-by: Eugen Hristev <eugen.hristev@microchip.com>
+---
+ drivers/w1/w1-uclass.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/w1/w1-uclass.c b/drivers/w1/w1-uclass.c
+index aecf7fec77..cb41b68eff 100644
+--- a/drivers/w1/w1-uclass.c
++++ b/drivers/w1/w1-uclass.c
+@@ -115,17 +115,19 @@ int w1_get_bus(int busnum, struct udevice **busp)
+ 	struct udevice *dev;
+ 
+ 	for (ret = uclass_first_device(UCLASS_W1, &dev);
+-	     !ret;
+-	     uclass_next_device(&dev), i++) {
+-		if (ret) {
+-			debug("Cannot find w1 bus %d\n", busnum);
+-			return ret;
+-		}
++	     dev && !ret;
++	     ret = uclass_next_device(&dev), i++) {
+ 		if (i == busnum) {
+ 			*busp = dev;
+ 			return 0;
+ 		}
+ 	}
++
++	if (!ret) {
++		debug("Cannot find w1 bus %d\n", busnum);
++		ret = -ENODEV;
++	}
++
+ 	return ret;
+ }
+ 
+-- 
+2.18.1
+

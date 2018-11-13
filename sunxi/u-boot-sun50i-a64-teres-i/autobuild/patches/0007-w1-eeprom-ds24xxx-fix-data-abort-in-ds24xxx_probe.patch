@@ -1,0 +1,35 @@
+From 586d4b010e8ff8894c29c65b68f2afb518a783c8 Mon Sep 17 00:00:00 2001
+From: Martin Fuzzey <martin.fuzzey@flowbird.group>
+Date: Mon, 22 Oct 2018 18:31:07 +0200
+Subject: [PATCH 07/44] w1-eeprom: ds24xxx: fix data abort in ds24xxx_probe()
+
+Data abort was occurring when using "w1 bus" with a DS24B33 present.
+
+The abort occurred in the ds24xxx_probe() because the struct w1_device
+pointer was NULL. This is because that structure  is allocated by
+the parent device uclass (by .per_child_platdata_auto_alloc_size)
+and thus the correct accessor is dev_get_parent_platdata() not
+dev_get_platdata()
+
+Signed-off-by: Martin Fuzzey <martin.fuzzey@flowbird.group>
+Reviewed-by: Eugen Hristev <eugen.hristev@microchip.com>
+---
+ drivers/w1-eeprom/ds24xxx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/w1-eeprom/ds24xxx.c b/drivers/w1-eeprom/ds24xxx.c
+index 56186e587c..0967accdf0 100644
+--- a/drivers/w1-eeprom/ds24xxx.c
++++ b/drivers/w1-eeprom/ds24xxx.c
+@@ -31,7 +31,7 @@ static int ds24xxx_probe(struct udevice *dev)
+ {
+ 	struct w1_device *w1;
+ 
+-	w1 = dev_get_platdata(dev);
++	w1 = dev_get_parent_platdata(dev);
+ 	w1->id = 0;
+ 	return 0;
+ }
+-- 
+2.18.1
+

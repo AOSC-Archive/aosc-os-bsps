@@ -1,0 +1,42 @@
+From 6aaaa88f170d4cd8061e355bb2bdbc2010b318e6 Mon Sep 17 00:00:00 2001
+From: Vasily Khoruzhick <anarsoul@gmail.com>
+Date: Tue, 6 Nov 2018 19:33:57 -0800
+Subject: [PATCH 41/44] sunxi-mmc: don't double clock for new mode
+ unconditionally
+
+Comment in Linux driver says that clock needs to be doubled only
+if we use DDR modes, moreover divider has to be set accordingly.
+
+U-boot driver doesn't declare support for any DDR modes and doesn't
+set internal clock divider in CLKCR, so it doubles clock
+unconditionally when new mode is used.
+
+Some cards can't handle that and as result SPL fails to load u-boot.
+
+Fixes: de9b1771c3b ("mmc: sunxi: Support new mode")
+Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
+---
+ drivers/mmc/sunxi_mmc.c | 7 -------
+ 1 file changed, 7 deletions(-)
+
+diff --git a/drivers/mmc/sunxi_mmc.c b/drivers/mmc/sunxi_mmc.c
+index b3526f5e3f..e50b2c3343 100644
+--- a/drivers/mmc/sunxi_mmc.c
++++ b/drivers/mmc/sunxi_mmc.c
+@@ -109,13 +109,6 @@ static int mmc_set_mod_clk(struct sunxi_mmc_priv *priv, unsigned int hz)
+ 	calibrate = true;
+ #endif
+ 
+-	/*
+-	 * The MMC clock has an extra /2 post-divider when operating in the new
+-	 * mode.
+-	 */
+-	if (new_mode)
+-		hz = hz * 2;
+-
+ 	if (hz <= 24000000) {
+ 		pll = CCM_MMC_CTRL_OSCM24;
+ 		pll_hz = 24000000;
+-- 
+2.18.1
+

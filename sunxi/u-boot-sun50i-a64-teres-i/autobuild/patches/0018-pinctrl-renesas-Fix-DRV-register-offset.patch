@@ -1,0 +1,31 @@
+From 0ff9e4800f21e4250ac8a6ca908de00851f896d8 Mon Sep 17 00:00:00 2001
+From: Marek Vasut <marek.vasut+renesas@gmail.com>
+Date: Wed, 13 Jun 2018 08:02:55 +0200
+Subject: [PATCH 18/44] pinctrl: renesas: Fix DRV register offset
+
+Use fixed 4bit size for generating the DRV register element mask,
+not the size of the value, which can be smaller.
+
+Signed-off-by: Marek Vasut <marek.vasut+renesas@gmail.com>
+Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+Cc: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
+---
+ drivers/pinctrl/renesas/pfc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/pinctrl/renesas/pfc.c b/drivers/pinctrl/renesas/pfc.c
+index 90011537a8..b3a4ff9049 100644
+--- a/drivers/pinctrl/renesas/pfc.c
++++ b/drivers/pinctrl/renesas/pfc.c
+@@ -591,7 +591,7 @@ static int sh_pfc_pinconf_set_drive_strength(struct sh_pfc *pfc,
+ 	strength = strength / step - 1;
+ 
+ 	val = sh_pfc_read_raw_reg(reg, 32);
+-	val &= ~GENMASK(offset + size - 1, offset);
++	val &= ~GENMASK(offset + 4 - 1, offset);
+ 	val |= strength << offset;
+ 
+ 	if (unlock_reg)
+-- 
+2.18.1
+

@@ -1,0 +1,38 @@
+From f48db4ede07b52290477e188de714e327e4954de Mon Sep 17 00:00:00 2001
+From: Simon Goldschmidt <simon.k.r.goldschmidt@gmail.com>
+Date: Tue, 30 Oct 2018 20:21:49 +0100
+Subject: [PATCH 06/44] arm: socfpga: imply
+ SYS_MMCSD_RAW_MODE_U_BOOT_USE_PARTITION
+
+Using imply for SYS_MMCSD_RAW_MODE_U_BOOT_USE_PARTITION instead of
+select ensures we can build without partition support (used to build
+a network boot only version of SPL and U-Boot).
+
+Signed-off-by: Simon Goldschmidt <simon.k.r.goldschmidt@gmail.com>
+---
+ arch/arm/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 326d5c0daa..1f3fa1575a 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -807,7 +807,6 @@ config ARCH_SOCFPGA
+ 	select SPL_SPI_SUPPORT if DM_SPI
+ 	select SPL_WATCHDOG_SUPPORT
+ 	select SUPPORT_SPL
+-	select SYS_MMCSD_RAW_MODE_U_BOOT_USE_PARTITION_TYPE
+ 	select SYS_NS16550
+ 	select SYS_THUMB_BUILD if TARGET_SOCFPGA_GEN5 || TARGET_SOCFPGA_ARRIA10
+ 	imply CMD_DM
+@@ -817,6 +816,7 @@ config ARCH_SOCFPGA
+ 	imply DM_SPI_FLASH
+ 	imply FAT_WRITE
+ 	imply SYS_MMCSD_RAW_MODE_U_BOOT_USE_PARTITION
++	imply SYS_MMCSD_RAW_MODE_U_BOOT_USE_PARTITION_TYPE
+ 
+ config ARCH_SUNXI
+ 	bool "Support sunxi (Allwinner) SoCs"
+-- 
+2.18.1
+

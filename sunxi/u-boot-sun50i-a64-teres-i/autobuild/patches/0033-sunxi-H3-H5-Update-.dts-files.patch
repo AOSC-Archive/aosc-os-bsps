@@ -1,0 +1,145 @@
+From 4173ba7fd4cf650a5564e30646cc6924fc761ad8 Mon Sep 17 00:00:00 2001
+From: Andre Przywara <andre.przywara@arm.com>
+Date: Mon, 29 Oct 2018 00:56:49 +0000
+Subject: [PATCH 33/44] sunxi: H3/H5: Update .dts files
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Update the .dts/.dtsi files from the Linux sunxi/dt64-for-4.20 tree:
+commit 679294497be31596e1c9c61507746d72b6b05f26
+Author: Rodrigo Exterckötter Tjäder <rodrigo@tjader.xyz>
+Date:   Wed Sep 26 19:48:24 2018 +0000
+arm64: dts: allwinner: a64: a64-olinuxino: set the PHY TX delay
+
+Signed-off-by: Andre Przywara <andre.przywara@arm.com>
+---
+ arch/arm/dts/sun50i-h5-orangepi-pc2.dts       | 12 +++++++
+ arch/arm/dts/sun50i-h5-orangepi-zero-plus.dts |  2 --
+ arch/arm/dts/sun8i-h3.dtsi                    | 31 +++++++++++++++++++
+ arch/arm/dts/sunxi-h3-h5.dtsi                 |  2 --
+ 4 files changed, 43 insertions(+), 4 deletions(-)
+
+diff --git a/arch/arm/dts/sun50i-h5-orangepi-pc2.dts b/arch/arm/dts/sun50i-h5-orangepi-pc2.dts
+index 98862c7c72..3e0d5a9c09 100644
+--- a/arch/arm/dts/sun50i-h5-orangepi-pc2.dts
++++ b/arch/arm/dts/sun50i-h5-orangepi-pc2.dts
+@@ -207,6 +207,18 @@
+ 	status = "okay";
+ };
+ 
++&spi0  {
++	status = "okay";
++
++	flash@0 {
++		#address-cells = <1>;
++		#size-cells = <1>;
++		compatible = "jedec,spi-nor";
++		reg = <0>;
++		spi-max-frequency = <40000000>;
++	};
++};
++
+ &uart0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&uart0_pins_a>;
+diff --git a/arch/arm/dts/sun50i-h5-orangepi-zero-plus.dts b/arch/arm/dts/sun50i-h5-orangepi-zero-plus.dts
+index e79cf3baf4..1238de25a9 100644
+--- a/arch/arm/dts/sun50i-h5-orangepi-zero-plus.dts
++++ b/arch/arm/dts/sun50i-h5-orangepi-zero-plus.dts
+@@ -105,7 +105,6 @@
+ 	};
+ };
+ 
+-/*
+ &spi0  {
+ 	status = "okay";
+ 
+@@ -117,7 +116,6 @@
+ 		spi-max-frequency = <40000000>;
+ 	};
+ };
+-*/
+ 
+ &ohci0 {
+ 	status = "okay";
+diff --git a/arch/arm/dts/sun8i-h3.dtsi b/arch/arm/dts/sun8i-h3.dtsi
+index 41d57c76f2..f0096074a4 100644
+--- a/arch/arm/dts/sun8i-h3.dtsi
++++ b/arch/arm/dts/sun8i-h3.dtsi
+@@ -84,21 +84,30 @@
+ 			compatible = "arm,cortex-a7";
+ 			device_type = "cpu";
+ 			reg = <1>;
++			clocks = <&ccu CLK_CPUX>;
++			clock-names = "cpu";
+ 			operating-points-v2 = <&cpu0_opp_table>;
++			#cooling-cells = <2>;
+ 		};
+ 
+ 		cpu@2 {
+ 			compatible = "arm,cortex-a7";
+ 			device_type = "cpu";
+ 			reg = <2>;
++			clocks = <&ccu CLK_CPUX>;
++			clock-names = "cpu";
+ 			operating-points-v2 = <&cpu0_opp_table>;
++			#cooling-cells = <2>;
+ 		};
+ 
+ 		cpu@3 {
+ 			compatible = "arm,cortex-a7";
+ 			device_type = "cpu";
+ 			reg = <3>;
++			clocks = <&ccu CLK_CPUX>;
++			clock-names = "cpu";
+ 			operating-points-v2 = <&cpu0_opp_table>;
++			#cooling-cells = <2>;
+ 		};
+ 	};
+ 
+@@ -111,6 +120,28 @@
+ 	};
+ 
+ 	soc {
++		system-control@1c00000 {
++			compatible = "allwinner,sun8i-h3-system-control";
++			reg = <0x01c00000 0x30>;
++			#address-cells = <1>;
++			#size-cells = <1>;
++			ranges;
++
++			sram_c: sram@1d00000 {
++				compatible = "mmio-sram";
++				reg = <0x01d00000 0x80000>;
++				#address-cells = <1>;
++				#size-cells = <1>;
++				ranges = <0 0x01d00000 0x80000>;
++
++				ve_sram: sram-section@0 {
++					compatible = "allwinner,sun8i-h3-sram-c1",
++						     "allwinner,sun4i-a10-sram-c1";
++					reg = <0x000000 0x80000>;
++				};
++			};
++		};
++
+ 		mali: gpu@1c40000 {
+ 			compatible = "allwinner,sun8i-h3-mali", "arm,mali-400";
+ 			reg = <0x01c40000 0x10000>;
+diff --git a/arch/arm/dts/sunxi-h3-h5.dtsi b/arch/arm/dts/sunxi-h3-h5.dtsi
+index c3bff1105e..fc6131315c 100644
+--- a/arch/arm/dts/sunxi-h3-h5.dtsi
++++ b/arch/arm/dts/sunxi-h3-h5.dtsi
+@@ -506,8 +506,6 @@
+ 			reset-names = "stmmaceth";
+ 			clocks = <&ccu CLK_BUS_EMAC>;
+ 			clock-names = "stmmaceth";
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+ 			status = "disabled";
+ 
+ 			mdio: mdio {
+-- 
+2.18.1
+

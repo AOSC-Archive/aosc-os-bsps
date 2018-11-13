@@ -1,0 +1,36 @@
+From 8171f99e7db072383e20125e54c59f4a40272892 Mon Sep 17 00:00:00 2001
+From: Marek Vasut <marek.vasut+renesas@gmail.com>
+Date: Wed, 13 Jun 2018 08:02:55 +0200
+Subject: [PATCH 24/44] mmc: tmio: Configure clock before any other IOS
+
+Configure the clock settings before reconfiguring any other IO settings.
+This is required when the clock must be stopped before changing eg. the
+pin configuration or any of the other properties of the bus. Running the
+clock configuration first allows the MMC core to do just that.
+
+Signed-off-by: Marek Vasut <marek.vasut+renesas@gmail.com>
+Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+---
+ drivers/mmc/tmio-common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/mmc/tmio-common.c b/drivers/mmc/tmio-common.c
+index 785b654671..2a73829d99 100644
+--- a/drivers/mmc/tmio-common.c
++++ b/drivers/mmc/tmio-common.c
+@@ -642,11 +642,11 @@ int tmio_sd_set_ios(struct udevice *dev)
+ 	dev_dbg(dev, "clock %uHz, DDRmode %d, width %u\n",
+ 		mmc->clock, mmc->ddr_mode, mmc->bus_width);
+ 
++	tmio_sd_set_clk_rate(priv, mmc);
+ 	ret = tmio_sd_set_bus_width(priv, mmc);
+ 	if (ret)
+ 		return ret;
+ 	tmio_sd_set_ddr_mode(priv, mmc);
+-	tmio_sd_set_clk_rate(priv, mmc);
+ 	tmio_sd_set_pins(dev);
+ 
+ 	return 0;
+-- 
+2.18.1
+

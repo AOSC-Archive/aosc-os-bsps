@@ -1,0 +1,52 @@
+From db148f2a6938b47cf26c5fd11481e7462a6a793a Mon Sep 17 00:00:00 2001
+From: Bin Meng <bmeng.cn@gmail.com>
+Date: Mon, 8 Oct 2018 06:55:57 -0700
+Subject: [PATCH 03/44] powerpc: t1040: Correct RCW EC2 settings
+
+Per T1040RM (Rev. 1, 08/2015), there are 2 issues with the RCW EC2
+settings.
+
+- The value of FSL_CORENET_RCWSR13_EC2_FM1_GPIO is wrong and should
+  be 0x04000000 (value of 1 in RCW bit [420:421])
+- Value of 2/3 are reserved in RCW bit [420:421], hence there is no
+  macro FSL_CORENET_RCWSR13_EC2_FM1_DTSEC5_MII.
+
+Signed-off-by: Bin Meng <bmeng.cn@gmail.com>
+Acked-by: Poonam Aggrwal <poonam.aggrwal@nxp.com>
+Reviewed-by: York Sun <york.sun@nxp.com>
+---
+ arch/powerpc/include/asm/immap_85xx.h | 3 +--
+ drivers/net/fm/t1040.c                | 3 ---
+ 2 files changed, 1 insertion(+), 5 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/immap_85xx.h b/arch/powerpc/include/asm/immap_85xx.h
+index 8ec2a38aad..bfa601e91b 100644
+--- a/arch/powerpc/include/asm/immap_85xx.h
++++ b/arch/powerpc/include/asm/immap_85xx.h
+@@ -1785,8 +1785,7 @@ typedef struct ccsr_gur {
+ #define FSL_CORENET_RCWSR13_EC1_FM1_DTSEC4_MII	0x20000000
+ #define FSL_CORENET_RCWSR13_EC2	0x0c000000 /* bits 420..421 */
+ #define FSL_CORENET_RCWSR13_EC2_FM1_DTSEC5_RGMII	0x00000000
+-#define FSL_CORENET_RCWSR13_EC2_FM1_GPIO	0x10000000
+-#define FSL_CORENET_RCWSR13_EC2_FM1_DTSEC5_MII	0x20000000
++#define FSL_CORENET_RCWSR13_EC2_FM1_GPIO	0x04000000
+ #define FSL_CORENET_RCWSR13_MAC2_GMII_SEL	0x00000080
+ #define FSL_CORENET_RCWSR13_MAC2_GMII_SEL_L2_SWITCH	0x00000000
+ #define FSL_CORENET_RCWSR13_MAC2_GMII_SEL_ENET_PORT	0x00000080
+diff --git a/drivers/net/fm/t1040.c b/drivers/net/fm/t1040.c
+index 7ec7f99bd0..af4f5c5610 100644
+--- a/drivers/net/fm/t1040.c
++++ b/drivers/net/fm/t1040.c
+@@ -41,9 +41,6 @@ phy_interface_t fman_port_enet_if(enum fm_port port)
+ 		if ((rcwsr13 & FSL_CORENET_RCWSR13_EC2) ==
+ 				FSL_CORENET_RCWSR13_EC2_FM1_DTSEC5_RGMII)
+ 			return PHY_INTERFACE_MODE_RGMII;
+-		else if ((rcwsr13 & FSL_CORENET_RCWSR13_EC2) ==
+-				FSL_CORENET_RCWSR13_EC2_FM1_DTSEC5_MII)
+-			return PHY_INTERFACE_MODE_MII;
+ 	}
+ 
+ 	switch (port) {
+-- 
+2.18.1
+

@@ -1,0 +1,31 @@
+From c83da2ebc01cffbf5659d1a30960f9fec943c806 Mon Sep 17 00:00:00 2001
+From: Marek Vasut <marek.vasut+renesas@gmail.com>
+Date: Wed, 13 Jun 2018 08:02:55 +0200
+Subject: [PATCH 25/44] mmc: tmio: Preinitialize regulator to 3.3V
+
+Preinitialize the SD card signals regulator to 3.3V, which is the
+default post-reset setting, to be sure the regulator is set to a
+valid value.
+
+Signed-off-by: Marek Vasut <marek.vasut+renesas@gmail.com>
+Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+---
+ drivers/mmc/tmio-common.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/mmc/tmio-common.c b/drivers/mmc/tmio-common.c
+index 2a73829d99..0eca83a0f4 100644
+--- a/drivers/mmc/tmio-common.c
++++ b/drivers/mmc/tmio-common.c
+@@ -720,6 +720,8 @@ int tmio_sd_probe(struct udevice *dev, u32 quirks)
+ 
+ #ifdef CONFIG_DM_REGULATOR
+ 	device_get_supply_regulator(dev, "vqmmc-supply", &priv->vqmmc_dev);
++	if (priv->vqmmc_dev)
++		regulator_set_value(priv->vqmmc_dev, 3300000);
+ #endif
+ 
+ 	ret = mmc_of_parse(dev, &plat->cfg);
+-- 
+2.18.1
+

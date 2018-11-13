@@ -1,0 +1,33 @@
+From 25ae8651711ecf1934f4a2468d31d47543a41ea6 Mon Sep 17 00:00:00 2001
+From: "Andrei.Stefanescu@microchip.com" <Andrei.Stefanescu@microchip.com>
+Date: Tue, 23 Oct 2018 08:13:35 +0000
+Subject: [PATCH 10/44] configs: sama5d2_ptc_ek: read environment from FAT
+
+On our demo setup for SD card boot, the u-boot environment
+is in a FAT partition.
+
+This patch changes the default configuration, specifing that
+the u-boot environment is in a FAT partition instead of raw MMC.
+
+Signed-off-by: Andrei Stefanescu <andrei.stefanescu@microchip.com>
+Acked-by: Eugen Hristev <eugen.hristev@microchip.com>
+---
+ configs/sama5d2_ptc_ek_mmc_defconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configs/sama5d2_ptc_ek_mmc_defconfig b/configs/sama5d2_ptc_ek_mmc_defconfig
+index e40ee00312..4a78b2da3d 100644
+--- a/configs/sama5d2_ptc_ek_mmc_defconfig
++++ b/configs/sama5d2_ptc_ek_mmc_defconfig
+@@ -32,7 +32,7 @@ CONFIG_CMD_EXT4=y
+ CONFIG_CMD_FAT=y
+ CONFIG_OF_CONTROL=y
+ CONFIG_DEFAULT_DEVICE_TREE="at91-sama5d2_ptc_ek"
+-CONFIG_ENV_IS_IN_MMC=y
++CONFIG_ENV_IS_IN_FAT=y
+ CONFIG_DM=y
+ CONFIG_SPL_DM_SEQ_ALIAS=y
+ CONFIG_CLK=y
+-- 
+2.18.1
+

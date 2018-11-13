@@ -1,0 +1,296 @@
+From adc9b09a23f3cfef56130abc4c4c1a9085a0ec13 Mon Sep 17 00:00:00 2001
+From: Alexey Brodkin <alexey.brodkin@synopsys.com>
+Date: Thu, 18 Oct 2018 09:54:58 +0300
+Subject: [PATCH 16/44] emdk->emsdp: Rename board
+
+Real marketing name of the board was recently updated so
+to accommodate that change renaming the board and all
+related to it.
+
+Signed-off-by: Alexey Brodkin <abrodkin@synopsys.com>
+---
+ arch/arc/Kconfig                              |  6 +++---
+ arch/arc/dts/Makefile                         |  2 +-
+ arch/arc/dts/{emdk.dts => emsdp.dts}          |  2 +-
+ board/synopsys/{emdk => emsdp}/Kconfig        |  6 +++---
+ board/synopsys/{emdk => emsdp}/MAINTAINERS    |  5 +++--
+ board/synopsys/{emdk => emsdp}/Makefile       |  2 +-
+ board/synopsys/{emdk => emsdp}/README         | 11 ++++++-----
+ board/synopsys/{emdk/emdk.c => emsdp/emsdp.c} | 18 +++++++++---------
+ configs/{emdk_defconfig => emsdp_defconfig}   |  6 +++---
+ include/configs/{emdk.h => emsdp.h}           | 10 +++++-----
+ 10 files changed, 35 insertions(+), 33 deletions(-)
+ rename arch/arc/dts/{emdk.dts => emsdp.dts} (96%)
+ rename board/synopsys/{emdk => emsdp}/Kconfig (63%)
+ rename board/synopsys/{emdk => emsdp}/MAINTAINERS (50%)
+ rename board/synopsys/{emdk => emsdp}/Makefile (85%)
+ rename board/synopsys/{emdk => emsdp}/README (90%)
+ rename board/synopsys/{emdk/emdk.c => emsdp/emsdp.c} (77%)
+ rename configs/{emdk_defconfig => emsdp_defconfig} (88%)
+ rename include/configs/{emdk.h => emsdp.h} (85%)
+
+diff --git a/arch/arc/Kconfig b/arch/arc/Kconfig
+index b24593e137..fa6b3447c9 100644
+--- a/arch/arc/Kconfig
++++ b/arch/arc/Kconfig
+@@ -150,8 +150,8 @@ config TARGET_AXS101
+ config TARGET_AXS103
+ 	bool "Support Synopsys Designware SDP board AXS103"
+ 
+-config TARGET_EMDK
+-	bool "Synopsys EM Development kit"
++config TARGET_EMSDP
++	bool "Synopsys EM Software Development Platform"
+ 	select CPU_ARCEM6
+ 
+ config TARGET_HSDK
+@@ -166,7 +166,7 @@ endchoice
+ source "board/abilis/tb100/Kconfig"
+ source "board/synopsys/Kconfig"
+ source "board/synopsys/axs10x/Kconfig"
+-source "board/synopsys/emdk/Kconfig"
++source "board/synopsys/emsdp/Kconfig"
+ source "board/synopsys/hsdk/Kconfig"
+ source "board/synopsys/iot_devkit/Kconfig"
+ 
+diff --git a/arch/arc/dts/Makefile b/arch/arc/dts/Makefile
+index 17e1405c0c..4f1e4637ce 100644
+--- a/arch/arc/dts/Makefile
++++ b/arch/arc/dts/Makefile
+@@ -4,7 +4,7 @@ dtb-$(CONFIG_TARGET_AXS101) +=  axs101.dtb
+ dtb-$(CONFIG_TARGET_AXS103) +=  axs103.dtb
+ dtb-$(CONFIG_TARGET_NSIM) +=  nsim.dtb
+ dtb-$(CONFIG_TARGET_TB100) +=  abilis_tb100.dtb
+-dtb-$(CONFIG_TARGET_EMDK) +=  emdk.dtb
++dtb-$(CONFIG_TARGET_EMSDP) +=  emsdp.dtb
+ dtb-$(CONFIG_TARGET_HSDK) +=  hsdk.dtb
+ dtb-$(CONFIG_TARGET_IOT_DEVKIT) +=  iot_devkit.dtb
+ 
+diff --git a/arch/arc/dts/emdk.dts b/arch/arc/dts/emsdp.dts
+similarity index 96%
+rename from arch/arc/dts/emdk.dts
+rename to arch/arc/dts/emsdp.dts
+index ebe538d06f..d307b95d8e 100644
+--- a/arch/arc/dts/emdk.dts
++++ b/arch/arc/dts/emsdp.dts
+@@ -7,7 +7,7 @@
+ #include "skeleton.dtsi"
+ 
+ / {
+-	model = "snps,emdk";
++	model = "snps,emsdp";
+ 
+ 	#address-cells = <1>;
+ 	#size-cells = <1>;
+diff --git a/board/synopsys/emdk/Kconfig b/board/synopsys/emsdp/Kconfig
+similarity index 63%
+rename from board/synopsys/emdk/Kconfig
+rename to board/synopsys/emsdp/Kconfig
+index a9b834dbfd..8228bb5c74 100644
+--- a/board/synopsys/emdk/Kconfig
++++ b/board/synopsys/emsdp/Kconfig
+@@ -1,12 +1,12 @@
+-if TARGET_EMDK
++if TARGET_EMSDP
+ 
+ config SYS_BOARD
+-	default "emdk"
++	default "emsdp"
+ 
+ config SYS_VENDOR
+ 	default "synopsys"
+ 
+ config SYS_CONFIG_NAME
+-	default "emdk"
++	default "emsdp"
+ 
+ endif
+diff --git a/board/synopsys/emdk/MAINTAINERS b/board/synopsys/emsdp/MAINTAINERS
+similarity index 50%
+rename from board/synopsys/emdk/MAINTAINERS
+rename to board/synopsys/emsdp/MAINTAINERS
+index 605e338445..6404013957 100644
+--- a/board/synopsys/emdk/MAINTAINERS
++++ b/board/synopsys/emsdp/MAINTAINERS
+@@ -1,5 +1,6 @@
+ EM DEVELOPMENT KIT BOARD
+ M:	Alexey Brodkin <abrodkin@synopsys.com>
+ S:	Maintained
+-F:	board/synopsys/emdk/
+-F:	configs/emdk_defconfig
++F:	arch/arc/dts/emsdp.dts
++F:	board/synopsys/emsdp/
++F:	configs/emsdp_defconfig
+diff --git a/board/synopsys/emdk/Makefile b/board/synopsys/emsdp/Makefile
+similarity index 85%
+rename from board/synopsys/emdk/Makefile
+rename to board/synopsys/emsdp/Makefile
+index 4926c4e307..733a48c46a 100644
+--- a/board/synopsys/emdk/Makefile
++++ b/board/synopsys/emsdp/Makefile
+@@ -4,4 +4,4 @@
+ # SPDX-License-Identifier:	GPL-2.0+
+ #
+ 
+-obj-y	+= emdk.o
++obj-y	+= emsdp.o
+diff --git a/board/synopsys/emdk/README b/board/synopsys/emsdp/README
+similarity index 90%
+rename from board/synopsys/emdk/README
+rename to board/synopsys/emsdp/README
+index 706b547a9e..034062e397 100644
+--- a/board/synopsys/emdk/README
++++ b/board/synopsys/emsdp/README
+@@ -1,11 +1,12 @@
+ ================================================================================
+-Useful notes on bulding and using of U-Boot on ARC EM Development Kit (AKA EMDK)
++Useful notes on bulding and using of U-Boot on
++ARC EM Software Development Platform (AKA EMSDP)
+ ================================================================================
+ 
+    BOARD OVERVIEW
+ 
+-   The DesignWare ARC EM Development Kit is FPGA-bases platform for rapid
+-   software development on the ARC EM family of processors.
++   The DesignWare ARC EM Software Development Platform is FPGA-bases platform
++   for rapid software development on the ARC EM family of processors.
+ 
+    Since this board is based on FPGA it's possible to load and use different
+    versions of ARC EM CPUs. U-Boot is built to be run on the simplest
+@@ -50,7 +51,7 @@ Useful notes on bulding and using of U-Boot on ARC EM Development Kit (AKA EMDK)
+ 
+    1. Configure U-Boot:
+       ------------------------->8----------------------
+-      make emdk_defconfig
++      make emsdp_defconfig
+       ------------------------->8----------------------
+ 
+    2. To build Elf file (for example to be used with host debugger via JTAG
+@@ -69,7 +70,7 @@ Useful notes on bulding and using of U-Boot on ARC EM Development Kit (AKA EMDK)
+ 
+    EXECUTING U-BOOT
+ 
+-   1. The EMDK board is supposed to auto-start U-Boot image stored in ROM on
++   1. The EMSDP board is supposed to auto-start U-Boot image stored in ROM on
+       power-on. For that make sure VCCIO DIP-switches are all in "off" state.
+ 
+    2. Though it is possible to load U-Boot as a simple Elf file via JTAG right
+diff --git a/board/synopsys/emdk/emdk.c b/board/synopsys/emsdp/emsdp.c
+similarity index 77%
+rename from board/synopsys/emdk/emdk.c
+rename to board/synopsys/emsdp/emsdp.c
+index 79cafefb8b..b5ec7f17ec 100644
+--- a/board/synopsys/emdk/emdk.c
++++ b/board/synopsys/emsdp/emsdp.c
+@@ -55,7 +55,7 @@ void reset_cpu(ulong addr)
+ 		; /* loop forever till reset */
+ }
+ 
+-static int do_emdk_rom(cmd_tbl_t *cmdtp, int flag, int argc, char *const argv[])
++static int do_emsdp_rom(cmd_tbl_t *cmdtp, int flag, int argc, char *const argv[])
+ {
+ 	u32 creg_boot = readl((u32 *)(CREG_BASE + CREG_BOOT_OFFSET));
+ 
+@@ -71,17 +71,17 @@ static int do_emdk_rom(cmd_tbl_t *cmdtp, int flag, int argc, char *const argv[])
+ 	return CMD_RET_SUCCESS;
+ }
+ 
+-cmd_tbl_t cmd_emdk[] = {
+-	U_BOOT_CMD_MKENT(rom, 2, 0, do_emdk_rom, "", ""),
++cmd_tbl_t cmd_emsdp[] = {
++	U_BOOT_CMD_MKENT(rom, 2, 0, do_emsdp_rom, "", ""),
+ };
+ 
+-static int do_emdk(cmd_tbl_t *cmdtp, int flag, int argc, char *const argv[])
++static int do_emsdp(cmd_tbl_t *cmdtp, int flag, int argc, char *const argv[])
+ {
+ 	cmd_tbl_t *c;
+ 
+-	c = find_cmd_tbl(argv[1], cmd_emdk, ARRAY_SIZE(cmd_emdk));
++	c = find_cmd_tbl(argv[1], cmd_emsdp, ARRAY_SIZE(cmd_emsdp));
+ 
+-	/* Strip off leading 'emdk' command */
++	/* Strip off leading 'emsdp' command */
+ 	argc--;
+ 	argv++;
+ 
+@@ -92,8 +92,8 @@ static int do_emdk(cmd_tbl_t *cmdtp, int flag, int argc, char *const argv[])
+ }
+ 
+ U_BOOT_CMD(
+-	emdk, CONFIG_SYS_MAXARGS, 0, do_emdk,
+-	"Synopsys EMDK specific commands",
++	emsdp, CONFIG_SYS_MAXARGS, 0, do_emsdp,
++	"Synopsys EMSDP specific commands",
+ 	"rom unlock - Unlock non-volatile memory for writing\n"
+-	"emdk rom lock - Lock non-volatile memory to prevent writing\n"
++	"emsdp rom lock - Lock non-volatile memory to prevent writing\n"
+ );
+diff --git a/configs/emdk_defconfig b/configs/emsdp_defconfig
+similarity index 88%
+rename from configs/emdk_defconfig
+rename to configs/emsdp_defconfig
+index c839d6f3f6..273334b05d 100644
+--- a/configs/emdk_defconfig
++++ b/configs/emsdp_defconfig
+@@ -1,13 +1,13 @@
+ CONFIG_ARC=y
+ CONFIG_ISA_ARCV2=y
+ CONFIG_CPU_ARCEM6=y
+-CONFIG_TARGET_EMDK=y
++CONFIG_TARGET_EMSDP=y
+ CONFIG_SYS_TEXT_BASE=0x00000000
+ CONFIG_SYS_CLK_FREQ=40000000
+ # CONFIG_ARCH_FIXUP_FDT_MEMORY is not set
+ CONFIG_VERSION_VARIABLE=y
+ CONFIG_HUSH_PARSER=y
+-CONFIG_SYS_PROMPT="emdk# "
++CONFIG_SYS_PROMPT="emsdp# "
+ # CONFIG_CMD_BOOTD is not set
+ # CONFIG_CMD_XIMG is not set
+ CONFIG_CMD_MMC=y
+@@ -15,7 +15,7 @@ CONFIG_CMD_CACHE=y
+ CONFIG_CMD_FAT=y
+ CONFIG_OF_CONTROL=y
+ CONFIG_OF_EMBED=y
+-CONFIG_DEFAULT_DEVICE_TREE="emdk"
++CONFIG_DEFAULT_DEVICE_TREE="emsdp"
+ CONFIG_ENV_IS_IN_FAT=y
+ CONFIG_ENV_FAT_INTERFACE="mmc"
+ CONFIG_ENV_FAT_DEVICE_AND_PART="0:1"
+diff --git a/include/configs/emdk.h b/include/configs/emsdp.h
+similarity index 85%
+rename from include/configs/emdk.h
+rename to include/configs/emsdp.h
+index dca13e2fff..385d59e338 100644
+--- a/include/configs/emdk.h
++++ b/include/configs/emsdp.h
+@@ -3,8 +3,8 @@
+  * Copyright (C) 2018 Synopsys, Inc. All rights reserved.
+  */
+ 
+-#ifndef _CONFIG_EMDK_H_
+-#define _CONFIG_EMDK_H_
++#ifndef _CONFIG_EMSDP_H_
++#define _CONFIG_EMSDP_H_
+ 
+ #include <linux/sizes.h>
+ 
+@@ -30,11 +30,11 @@
+ 
+ #define CONFIG_EXTRA_ENV_SETTINGS \
+ 	"upgrade_image=u-boot.bin\0" \
+-	"upgrade=emdk rom unlock && " \
++	"upgrade=emsdp rom unlock && " \
+ 		"fatload mmc 0 ${loadaddr} ${upgrade_image} && " \
+ 		"cp.b ${loadaddr} 0 ${filesize} && " \
+ 		"dcache flush && " \
+-		"emdk rom lock\0"
++		"emsdp rom lock\0"
+ 
+-#endif /* _CONFIG_EMDK_H_ */
++#endif /* _CONFIG_EMSDP_H_ */
+ 
+-- 
+2.18.1
+

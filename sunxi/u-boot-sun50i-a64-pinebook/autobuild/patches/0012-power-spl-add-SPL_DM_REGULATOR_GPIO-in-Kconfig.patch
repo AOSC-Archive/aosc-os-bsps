@@ -1,0 +1,41 @@
+From 26da01f7001c5dc71a8ee8148632f21b3e56729a Mon Sep 17 00:00:00 2001
+From: Lokesh Vutla <lokeshvutla@ti.com>
+Date: Wed, 24 Oct 2018 21:06:50 +0530
+Subject: [PATCH 12/44] power: spl: add SPL_DM_REGULATOR_GPIO in Kconfig
+
+The Makefile already tests for SPL_DM_REGULATOR_GPIO, but Kconfig
+does not provide it. This adds SPL_DM_REGULATOR_GPIO to Kconfig.
+
+Signed-off-by: Lokesh Vutla <lokeshvutla@ti.com>
+---
+ drivers/power/regulator/Kconfig | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/power/regulator/Kconfig b/drivers/power/regulator/Kconfig
+index 414f4a53f7..2561a8a856 100644
+--- a/drivers/power/regulator/Kconfig
++++ b/drivers/power/regulator/Kconfig
+@@ -86,12 +86,19 @@ config SPL_DM_REGULATOR_FIXED
+ 
+ config DM_REGULATOR_GPIO
+ 	bool "Enable Driver Model for GPIO REGULATOR"
+-	depends on DM_REGULATOR
++	depends on DM_REGULATOR && DM_GPIO
+ 	---help---
+ 	This config enables implementation of driver-model regulator uclass
+ 	features for gpio regulators. The driver implements get/set for
+ 	voltage value.
+ 
++config SPL_DM_REGULATOR_GPIO
++	bool "Enable Driver Model for GPIO REGULATOR in SPL"
++	depends on DM_REGULATOR_GPIO && SPL_GPIO_SUPPORT
++	---help---
++	This config enables implementation of driver-model regulator uclass
++	features for gpio regulators in SPL.
++
+ config REGULATOR_RK8XX
+ 	bool "Enable driver for RK8XX regulators"
+ 	depends on DM_REGULATOR && PMIC_RK8XX
+-- 
+2.18.1
+

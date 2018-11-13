@@ -1,0 +1,150 @@
+From e5cb6bd9a2db28338d3595bb3ea30f63624936d6 Mon Sep 17 00:00:00 2001
+From: Marek Vasut <marek.vasut+renesas@gmail.com>
+Date: Wed, 31 Oct 2018 15:06:50 +0100
+Subject: [PATCH 20/44] ARM: rmobile: Generate fitting mem_map on Gen3
+
+Patch "ARM: rmobile: Mark 4-64GiB as DRAM on Gen3" marked the entire
+64bit DRAM space as cachable. On CortexA57, this might result in odd
+side effects, where the CPU tries to prefetch from those areas and if
+there is no DRAM backing them, CPU bus hang can happen.
+
+This patch fixes it by generating the mem_map structure based on the
+actual memory layout obtained from the DT, thus not marking areas
+without any DRAM behind them as cachable.
+
+Signed-off-by: Marek Vasut <marek.vasut+renesas@gmail.com>
+Fixes: c1ec34763811d ("ARM: rmobile: Mark 4-64GiB as DRAM on Gen3")
+Cc: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
+---
+ arch/arm/mach-rmobile/cpu_info.c    |  3 +
+ arch/arm/mach-rmobile/memmap-gen3.c | 89 ++++++++++++++++++++++++++++-
+ 2 files changed, 91 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/mach-rmobile/cpu_info.c b/arch/arm/mach-rmobile/cpu_info.c
+index e110737471..c9ebc9f40e 100644
+--- a/arch/arm/mach-rmobile/cpu_info.c
++++ b/arch/arm/mach-rmobile/cpu_info.c
+@@ -6,6 +6,8 @@
+ #include <common.h>
+ #include <asm/io.h>
+ 
++/* R-Car Gen3 caches are enabled in memmap-gen3.c */
++#ifndef CONFIG_RCAR_GEN3
+ #ifdef CONFIG_ARCH_CPU_INIT
+ int arch_cpu_init(void)
+ {
+@@ -20,6 +22,7 @@ void enable_caches(void)
+ 	dcache_enable();
+ }
+ #endif
++#endif
+ 
+ #ifdef CONFIG_DISPLAY_CPUINFO
+ static u32 __rmobile_get_cpu_type(void)
+diff --git a/arch/arm/mach-rmobile/memmap-gen3.c b/arch/arm/mach-rmobile/memmap-gen3.c
+index 92c8f2e80d..7e29ccc351 100644
+--- a/arch/arm/mach-rmobile/memmap-gen3.c
++++ b/arch/arm/mach-rmobile/memmap-gen3.c
+@@ -8,7 +8,9 @@
+ #include <common.h>
+ #include <asm/armv8/mmu.h>
+ 
+-static struct mm_region gen3_mem_map[] = {
++#define GEN3_NR_REGIONS 16
++
++static struct mm_region gen3_mem_map[GEN3_NR_REGIONS] = {
+ 	{
+ 		.virt = 0x0UL,
+ 		.phys = 0x0UL,
+@@ -42,3 +44,88 @@ static struct mm_region gen3_mem_map[] = {
+ };
+ 
+ struct mm_region *mem_map = gen3_mem_map;
++
++DECLARE_GLOBAL_DATA_PTR;
++
++void enable_caches(void)
++{
++	u64 start, size;
++	int bank, i = 0;
++
++	/* Create map for RPC access */
++	gen3_mem_map[i].virt = 0x0ULL;
++	gen3_mem_map[i].phys = 0x0ULL;
++	gen3_mem_map[i].size = 0x40000000ULL;
++	gen3_mem_map[i].attrs = PTE_BLOCK_MEMTYPE(MT_DEVICE_NGNRNE) |
++				PTE_BLOCK_NON_SHARE |
++				PTE_BLOCK_PXN | PTE_BLOCK_UXN;
++	i++;
++
++	/* Generate entires for DRAM in 32bit address space */
++	for (bank = 0; bank < CONFIG_NR_DRAM_BANKS; bank++) {
++		start = gd->bd->bi_dram[bank].start;
++		size = gd->bd->bi_dram[bank].size;
++
++		/* Skip empty DRAM banks */
++		if (!size)
++			continue;
++
++		/* Skip DRAM above 4 GiB */
++		if (start >> 32ULL)
++			continue;
++
++		/* Mark memory reserved by ATF as cacheable too. */
++		if (start == 0x48000000) {
++			start = 0x40000000ULL;
++			size += 0x08000000ULL;
++		}
++
++		gen3_mem_map[i].virt = start;
++		gen3_mem_map[i].phys = start;
++		gen3_mem_map[i].size = size;
++		gen3_mem_map[i].attrs = PTE_BLOCK_MEMTYPE(MT_NORMAL) |
++					PTE_BLOCK_INNER_SHARE;
++		i++;
++	}
++
++	/* Create map for register access */
++	gen3_mem_map[i].virt = 0xc0000000ULL;
++	gen3_mem_map[i].phys = 0xc0000000ULL;
++	gen3_mem_map[i].size = 0x40000000ULL;
++	gen3_mem_map[i].attrs = PTE_BLOCK_MEMTYPE(MT_DEVICE_NGNRNE) |
++				PTE_BLOCK_NON_SHARE |
++				PTE_BLOCK_PXN | PTE_BLOCK_UXN;
++	i++;
++
++	/* Generate entires for DRAM in 64bit address space */
++	for (bank = 0; bank < CONFIG_NR_DRAM_BANKS; bank++) {
++		start = gd->bd->bi_dram[bank].start;
++		size = gd->bd->bi_dram[bank].size;
++
++		/* Skip empty DRAM banks */
++		if (!size)
++			continue;
++
++		/* Skip DRAM below 4 GiB */
++		if (!(start >> 32ULL))
++			continue;
++
++		gen3_mem_map[i].virt = start;
++		gen3_mem_map[i].phys = start;
++		gen3_mem_map[i].size = size;
++		gen3_mem_map[i].attrs = PTE_BLOCK_MEMTYPE(MT_NORMAL) |
++					PTE_BLOCK_INNER_SHARE;
++		i++;
++	}
++
++	/* Zero out the remaining regions. */
++	for (; i < GEN3_NR_REGIONS; i++) {
++		gen3_mem_map[i].virt = 0;
++		gen3_mem_map[i].phys = 0;
++		gen3_mem_map[i].size = 0;
++		gen3_mem_map[i].attrs = 0;
++	}
++
++	icache_enable();
++	dcache_enable();
++}
+-- 
+2.18.1
+

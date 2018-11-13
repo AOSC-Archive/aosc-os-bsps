@@ -1,0 +1,63 @@
+From 06c5110cefcabbdc9799f3fe3295129c5bb32b3e Mon Sep 17 00:00:00 2001
+From: Vasily Khoruzhick <anarsoul@gmail.com>
+Date: Tue, 6 Nov 2018 19:30:36 -0800
+Subject: [PATCH 40/44] sunxi-mmc: introduce new MMC_SUNXI_HAS_MODE_SWITCH
+ option
+
+A64 doesn't have a mode switch in CCM, and CCM_MMC_CTRL_MODE_SEL_NEW
+is not defined, so compilation fails if MMC_SUNXI_HAS_NEW_MODE is enabled
+
+Introduce new MMC_SUNXI_HAS_MODE_SWITCH option to be able to ifdef usage
+of CCM_MMC_CTRL_MODE_SEL_NEW
+
+Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
+---
+ arch/arm/mach-sunxi/Kconfig | 1 +
+ drivers/mmc/Kconfig         | 4 ++++
+ drivers/mmc/sunxi_mmc.c     | 2 ++
+ 3 files changed, 7 insertions(+)
+
+diff --git a/arch/arm/mach-sunxi/Kconfig b/arch/arm/mach-sunxi/Kconfig
+index 560dc9b25d..66fff6c6d3 100644
+--- a/arch/arm/mach-sunxi/Kconfig
++++ b/arch/arm/mach-sunxi/Kconfig
+@@ -230,6 +230,7 @@ config MACH_SUN8I_A83T
+ 	select PHY_SUN4I_USB
+ 	select SUNXI_GEN_SUN6I
+ 	select MMC_SUNXI_HAS_NEW_MODE
++	select MMC_SUNXI_HAS_MODE_SWITCH
+ 	select SUPPORT_SPL
+ 
+ config MACH_SUN8I_H3
+diff --git a/drivers/mmc/Kconfig b/drivers/mmc/Kconfig
+index 27246ee465..3f7458d409 100644
+--- a/drivers/mmc/Kconfig
++++ b/drivers/mmc/Kconfig
+@@ -569,6 +569,10 @@ config MMC_SUNXI_HAS_NEW_MODE
+ 	bool
+ 	depends on MMC_SUNXI
+ 
++config MMC_SUNXI_HAS_MODE_SWITCH
++	bool
++	depends on MMC_SUNXI
++
+ config GENERIC_ATMEL_MCI
+ 	bool "Atmel Multimedia Card Interface support"
+ 	depends on DM_MMC && BLK && ARCH_AT91
+diff --git a/drivers/mmc/sunxi_mmc.c b/drivers/mmc/sunxi_mmc.c
+index 147eb9b4d5..b3526f5e3f 100644
+--- a/drivers/mmc/sunxi_mmc.c
++++ b/drivers/mmc/sunxi_mmc.c
+@@ -176,7 +176,9 @@ static int mmc_set_mod_clk(struct sunxi_mmc_priv *priv, unsigned int hz)
+ 
+ 	if (new_mode) {
+ #ifdef CONFIG_MMC_SUNXI_HAS_NEW_MODE
++#ifdef CONFIG_MMC_SUNXI_HAS_MODE_SWITCH
+ 		val = CCM_MMC_CTRL_MODE_SEL_NEW;
++#endif
+ 		setbits_le32(&priv->reg->ntsr, SUNXI_MMC_NTSR_MODE_SEL_NEW);
+ #endif
+ 	} else if (!calibrate) {
+-- 
+2.18.1
+

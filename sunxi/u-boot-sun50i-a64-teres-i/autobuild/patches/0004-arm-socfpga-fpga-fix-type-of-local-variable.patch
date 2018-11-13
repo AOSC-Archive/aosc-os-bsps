@@ -1,0 +1,44 @@
+From d5de3d497849d337b4da601c93a4cee2d127c20a Mon Sep 17 00:00:00 2001
+From: Simon Goldschmidt <simon.k.r.goldschmidt@gmail.com>
+Date: Mon, 15 Oct 2018 20:35:10 +0200
+Subject: [PATCH 04/44] arm: socfpga: fpga: fix type of local variable
+
+The 'status' variable in 'socfpga_load()' for both gen5 and arria10
+is of type 'unsigned long' while it is always used as 'int' only.
+Change it to 'int'.
+
+Signed-off-by: Simon Goldschmidt <simon.k.r.goldschmidt@gmail.com>
+---
+ drivers/fpga/socfpga_arria10.c | 2 +-
+ drivers/fpga/socfpga_gen5.c    | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/fpga/socfpga_arria10.c b/drivers/fpga/socfpga_arria10.c
+index d6b59498e5..114dd910ab 100644
+--- a/drivers/fpga/socfpga_arria10.c
++++ b/drivers/fpga/socfpga_arria10.c
+@@ -453,7 +453,7 @@ int fpgamgr_program_finish(void)
+  */
+ int socfpga_load(Altera_desc *desc, const void *rbf_data, size_t rbf_size)
+ {
+-	unsigned long status;
++	int status;
+ 
+ 	/* disable all signals from hps peripheral controller to fpga */
+ 	writel(0, &system_manager_base->fpgaintf_en_global);
+diff --git a/drivers/fpga/socfpga_gen5.c b/drivers/fpga/socfpga_gen5.c
+index 184de743fd..6d16e0b37f 100644
+--- a/drivers/fpga/socfpga_gen5.c
++++ b/drivers/fpga/socfpga_gen5.c
+@@ -204,7 +204,7 @@ static int fpgamgr_program_poll_usermode(void)
+  */
+ int socfpga_load(Altera_desc *desc, const void *rbf_data, size_t rbf_size)
+ {
+-	unsigned long status;
++	int status;
+ 
+ 	if ((uint32_t)rbf_data & 0x3) {
+ 		puts("FPGA: Unaligned data, realign to 32bit boundary.\n");
+-- 
+2.18.1
+

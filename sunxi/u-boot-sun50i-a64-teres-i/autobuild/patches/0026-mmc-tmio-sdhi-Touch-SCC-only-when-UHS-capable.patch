@@ -1,0 +1,40 @@
+From 52e17968836525fdb1e806d482093bd4cfd7b604 Mon Sep 17 00:00:00 2001
+From: Marek Vasut <marek.vasut+renesas@gmail.com>
+Date: Sun, 28 Oct 2018 15:30:06 +0100
+Subject: [PATCH 26/44] mmc: tmio: sdhi: Touch SCC only when UHS capable
+
+Add check to avoid touching the SCC tuning registers in case the IP
+doesn't support them or if the support isn't in place yet.
+
+Signed-off-by: Marek Vasut <marek.vasut+renesas@gmail.com>
+Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+---
+ drivers/mmc/renesas-sdhi.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/mmc/renesas-sdhi.c b/drivers/mmc/renesas-sdhi.c
+index f8dc5f57ce..7c92bd92ad 100644
+--- a/drivers/mmc/renesas-sdhi.c
++++ b/drivers/mmc/renesas-sdhi.c
+@@ -294,7 +294,8 @@ static int renesas_sdhi_set_ios(struct udevice *dev)
+ #if CONFIG_IS_ENABLED(MMC_HS200_SUPPORT)
+ 	struct tmio_sd_priv *priv = dev_get_priv(dev);
+ 
+-	renesas_sdhi_reset_tuning(priv);
++	if (priv->caps & TMIO_SD_CAP_RCAR_UHS)
++		renesas_sdhi_reset_tuning(priv);
+ #endif
+ 
+ 	return ret;
+@@ -373,7 +374,7 @@ static int renesas_sdhi_probe(struct udevice *dev)
+ 
+ 	ret = tmio_sd_probe(dev, quirks);
+ #if CONFIG_IS_ENABLED(MMC_HS200_SUPPORT)
+-	if (!ret)
++	if (!ret && (priv->caps & TMIO_SD_CAP_RCAR_UHS))
+ 		renesas_sdhi_reset_tuning(priv);
+ #endif
+ 	return ret;
+-- 
+2.18.1
+
