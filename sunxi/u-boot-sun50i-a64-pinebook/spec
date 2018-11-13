@@ -1,2 +1,3 @@
 VER=2018.11rc3.pb20181109
+REL=1
 SRCTBL="ftp://ftp.denx.de/pub/u-boot/u-boot-2018.11-rc3.tar.bz2"
