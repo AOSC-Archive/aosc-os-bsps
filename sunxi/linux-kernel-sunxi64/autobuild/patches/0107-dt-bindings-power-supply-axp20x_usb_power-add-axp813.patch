@@ -1,0 +1,30 @@
+From 7ad480e9d1236e3ed4977925bc558c3a04955773 Mon Sep 17 00:00:00 2001
+From: Chen-Yu Tsai <wens@csie.org>
+Date: Thu, 21 Mar 2019 16:48:42 +0800
+Subject: [PATCH 107/128] dt-bindings: power: supply: axp20x_usb_power: add
+ axp813 compatible
+
+This adds the "x-powers,axp813-usb-power-supply" to the list of
+compatibles for AXP20X VBUS power supply driver.
+
+Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+---
+ .../devicetree/bindings/power/supply/axp20x_usb_power.txt        | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Documentation/devicetree/bindings/power/supply/axp20x_usb_power.txt b/Documentation/devicetree/bindings/power/supply/axp20x_usb_power.txt
+index ba8d35f66cbe..b2d4968fde7d 100644
+--- a/Documentation/devicetree/bindings/power/supply/axp20x_usb_power.txt
++++ b/Documentation/devicetree/bindings/power/supply/axp20x_usb_power.txt
+@@ -4,6 +4,7 @@ Required Properties:
+ -compatible: One of: "x-powers,axp202-usb-power-supply"
+                      "x-powers,axp221-usb-power-supply"
+                      "x-powers,axp223-usb-power-supply"
++		     "x-powers,axp813-usb-power-supply"
+ 
+ The AXP223 PMIC shares most of its behaviour with the AXP221 but has slight
+ variations such as the former being able to set the VBUS power supply max
+-- 
+2.18.1
+

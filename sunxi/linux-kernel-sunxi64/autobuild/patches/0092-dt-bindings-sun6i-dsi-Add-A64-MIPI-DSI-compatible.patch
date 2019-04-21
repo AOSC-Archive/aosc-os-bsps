@@ -1,0 +1,31 @@
+From 3d63532472787c2db3e01ac99e59385b5bf29695 Mon Sep 17 00:00:00 2001
+From: Jagan Teki <jagan@amarulasolutions.com>
+Date: Wed, 5 Sep 2018 21:12:10 +0530
+Subject: [PATCH 092/128] dt-bindings: sun6i-dsi: Add A64 MIPI-DSI compatible
+
+The MIPI DSI controller in Allwinner A64 is similar to A33.
+
+But unlike A33, A64 doesn't have DSI_SCLK gating so it is valid
+to with separate compatible for A64 on the same driver.
+
+Signed-off-by: Jagan Teki <jagan@amarulasolutions.com>
+Reviewed-by: Rob Herring <robh@kernel.org>
+---
+ Documentation/devicetree/bindings/display/sunxi/sun6i-dsi.txt | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Documentation/devicetree/bindings/display/sunxi/sun6i-dsi.txt b/Documentation/devicetree/bindings/display/sunxi/sun6i-dsi.txt
+index 69e233e8fad1..adc7cdf129dd 100644
+--- a/Documentation/devicetree/bindings/display/sunxi/sun6i-dsi.txt
++++ b/Documentation/devicetree/bindings/display/sunxi/sun6i-dsi.txt
+@@ -12,6 +12,7 @@ The DSI Encoder generates the DSI signal from the TCON's.
+ Required properties:
+   - compatible: value must be one of:
+     * allwinner,sun6i-a31-mipi-dsi
++    * allwinner,sun50i-a64-mipi-dsi
+   - reg: base address and size of memory-mapped region
+   - interrupts: interrupt associated to this IP
+   - clocks: phandles to the clocks feeding the DSI encoder
+-- 
+2.18.1
+

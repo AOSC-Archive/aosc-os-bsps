@@ -1,7 +1,7 @@
-From 8b9f792cc8a532612efb53f4d0fbf7766fb44951 Mon Sep 17 00:00:00 2001
+From bfad5d6b32e87c2ced5ac2e65d15f79623ad25ff Mon Sep 17 00:00:00 2001
 From: Philipp Rossak <embed3d@gmail.com>
 Date: Fri, 26 Jan 2018 01:17:14 +0100
-Subject: [PATCH 026/152] arm: dts: sun8i: a83t: add thermal zone to A83T
+Subject: [PATCH 026/128] arm: dts: sun8i: a83t: add thermal zone to A83T
 
 This patch adds the thermal zones to the A83T. Sensor 0 is located besides the
 cpu cluster 0. Sensor 1 is located besides cluster 1 and sensor 2 is located
@@ -13,10 +13,10 @@ Signed-off-by: Philipp Rossak <embed3d@gmail.com>
  1 file changed, 20 insertions(+)
 
 diff --git a/arch/arm/boot/dts/sun8i-a83t.dtsi b/arch/arm/boot/dts/sun8i-a83t.dtsi
-index 6bdfcc7a1ac3..ec22157419b6 100644
+index e848b41030f1..e2febf7c6876 100644
 --- a/arch/arm/boot/dts/sun8i-a83t.dtsi
 +++ b/arch/arm/boot/dts/sun8i-a83t.dtsi
-@@ -1033,4 +1033,24 @@
+@@ -1046,4 +1046,24 @@
  			#size-cells = <0>;
  		};
  	};

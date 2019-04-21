@@ -1,7 +1,7 @@
-From 134470619113578dd4d7ff242d0878ac62e0559a Mon Sep 17 00:00:00 2001
+From 116e155839de2ce7cb353e13b5b11bffa740465a Mon Sep 17 00:00:00 2001
 From: Philipp Rossak <embed3d@gmail.com>
 Date: Fri, 26 Jan 2018 01:15:17 +0100
-Subject: [PATCH 025/152] arm: dts: sun8i: a83t: add support for the thermal
+Subject: [PATCH 025/128] arm: dts: sun8i: a83t: add support for the thermal
  sensor in A83T
 
 As we have gained the support for the thermal sensor in A83T,
@@ -15,10 +15,10 @@ Signed-off-by: Philipp Rossak <embed3d@gmail.com>
  1 file changed, 8 insertions(+)
 
 diff --git a/arch/arm/boot/dts/sun8i-a83t.dtsi b/arch/arm/boot/dts/sun8i-a83t.dtsi
-index 00a02b037320..6bdfcc7a1ac3 100644
+index b099d2fbb5cd..e848b41030f1 100644
 --- a/arch/arm/boot/dts/sun8i-a83t.dtsi
 +++ b/arch/arm/boot/dts/sun8i-a83t.dtsi
-@@ -757,6 +757,14 @@
+@@ -752,6 +752,14 @@
  			clocks = <&osc24M>;
  		};
  

@@ -1,0 +1,61 @@
+From 3653b9c1b5d81f4a3bbb81b0fb7dee5c8e720d28 Mon Sep 17 00:00:00 2001
+From: Chen-Yu Tsai <wens@csie.org>
+Date: Thu, 21 Mar 2019 16:48:43 +0800
+Subject: [PATCH 108/128] power: supply: axp20x_usb_power: Fix typo in VBUS
+ current limit macros
+
+The VBUS current limit value macros have VBUS typed as VBUC, while
+the bitmask macro is named correctly. Fix it.
+
+Fixes: 69fb4dcada77 ("power: Add an axp20x-usb-power driver")
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+---
+ drivers/power/supply/axp20x_usb_power.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/power/supply/axp20x_usb_power.c b/drivers/power/supply/axp20x_usb_power.c
+index f52fe77edb6f..cd9b90d79839 100644
+--- a/drivers/power/supply/axp20x_usb_power.c
++++ b/drivers/power/supply/axp20x_usb_power.c
+@@ -36,10 +36,10 @@
+ #define AXP20X_VBUS_VHOLD_MASK		GENMASK(5, 3)
+ #define AXP20X_VBUS_VHOLD_OFFSET	3
+ #define AXP20X_VBUS_CLIMIT_MASK		3
+-#define AXP20X_VBUC_CLIMIT_900mA	0
+-#define AXP20X_VBUC_CLIMIT_500mA	1
+-#define AXP20X_VBUC_CLIMIT_100mA	2
+-#define AXP20X_VBUC_CLIMIT_NONE		3
++#define AXP20X_VBUS_CLIMIT_900mA	0
++#define AXP20X_VBUS_CLIMIT_500mA	1
++#define AXP20X_VBUS_CLIMIT_100mA	2
++#define AXP20X_VBUS_CLIMIT_NONE		3
+ 
+ #define AXP20X_ADC_EN1_VBUS_CURR	BIT(2)
+ #define AXP20X_ADC_EN1_VBUS_VOLT	BIT(3)
+@@ -107,19 +107,19 @@ static int axp20x_usb_power_get_property(struct power_supply *psy,
+ 			return ret;
+ 
+ 		switch (v & AXP20X_VBUS_CLIMIT_MASK) {
+-		case AXP20X_VBUC_CLIMIT_100mA:
++		case AXP20X_VBUS_CLIMIT_100mA:
+ 			if (power->axp20x_id == AXP221_ID)
+ 				val->intval = -1; /* No 100mA limit */
+ 			else
+ 				val->intval = 100000;
+ 			break;
+-		case AXP20X_VBUC_CLIMIT_500mA:
++		case AXP20X_VBUS_CLIMIT_500mA:
+ 			val->intval = 500000;
+ 			break;
+-		case AXP20X_VBUC_CLIMIT_900mA:
++		case AXP20X_VBUS_CLIMIT_900mA:
+ 			val->intval = 900000;
+ 			break;
+-		case AXP20X_VBUC_CLIMIT_NONE:
++		case AXP20X_VBUS_CLIMIT_NONE:
+ 			val->intval = -1;
+ 			break;
+ 		}
+-- 
+2.18.1
+

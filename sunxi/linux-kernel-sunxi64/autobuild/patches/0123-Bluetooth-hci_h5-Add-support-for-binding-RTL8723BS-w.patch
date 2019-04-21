@@ -1,0 +1,82 @@
+From cbf362a59c05811edd1fe4573ae16796d8d3938c Mon Sep 17 00:00:00 2001
+From: Vasily Khoruzhick <anarsoul@gmail.com>
+Date: Wed, 31 Oct 2018 20:07:41 -0700
+Subject: [PATCH 123/128] Bluetooth: hci_h5: Add support for binding RTL8723BS
+ with device tree
+
+RTL8723BS is often used in ARM boards, so add ability to bind it
+using device tree.
+
+Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
+---
+ drivers/bluetooth/Kconfig  |  1 -
+ drivers/bluetooth/hci_h5.c | 20 ++++++++++++++++++++
+ 2 files changed, 20 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/bluetooth/Kconfig b/drivers/bluetooth/Kconfig
+index 7b2e76e7f22f..ec4748f9dd9a 100644
+--- a/drivers/bluetooth/Kconfig
++++ b/drivers/bluetooth/Kconfig
+@@ -200,7 +200,6 @@ config BT_HCIUART_RTL
+ 	depends on BT_HCIUART
+ 	depends on BT_HCIUART_SERDEV
+ 	depends on GPIOLIB
+-	depends on ACPI
+ 	select BT_HCIUART_3WIRE
+ 	select BT_RTL
+ 	help
+diff --git a/drivers/bluetooth/hci_h5.c b/drivers/bluetooth/hci_h5.c
+index 7ead8c3d8657..c6f499a72b92 100644
+--- a/drivers/bluetooth/hci_h5.c
++++ b/drivers/bluetooth/hci_h5.c
+@@ -26,6 +26,7 @@
+ #include <linux/gpio/consumer.h>
+ #include <linux/kernel.h>
+ #include <linux/mod_devicetable.h>
++#include <linux/of_device.h>
+ #include <linux/serdev.h>
+ #include <linux/skbuff.h>
+ 
+@@ -823,6 +824,11 @@ static int h5_serdev_probe(struct serdev_device *serdev)
+ 		if (h5->vnd->acpi_gpio_map)
+ 			devm_acpi_dev_add_driver_gpios(dev,
+ 						       h5->vnd->acpi_gpio_map);
++	} else {
++		h5->vnd = (const struct h5_vnd *)
++				of_device_get_match_data(&serdev->dev);
++		of_property_read_string(serdev->dev.of_node,
++					"firmware-postfix", &h5->id);
+ 	}
+ 
+ 	h5->enable_gpio = devm_gpiod_get_optional(dev, "enable", GPIOD_OUT_LOW);
+@@ -1024,6 +1030,19 @@ static const struct dev_pm_ops h5_serdev_pm_ops = {
+ 	SET_SYSTEM_SLEEP_PM_OPS(h5_serdev_suspend, h5_serdev_resume)
+ };
+ 
++static struct h5_vnd rtl8723_of_vnd = {
++	.setup		= h5_btrtl_setup,
++	.open		= h5_btrtl_open,
++	.close		= h5_btrtl_close,
++};
++
++static const struct of_device_id h5_of_match[] = {
++	{ .compatible = "realtek,rtl8723bs-bt", .data = &rtl8723_of_vnd },
++	{ .compatible = "realtek,rtl8723cs-bt", .data = &rtl8723_of_vnd },
++	{ /* sentinel */ },
++};
++MODULE_DEVICE_TABLE(of, h5_of_match);
++
+ static struct serdev_device_driver h5_serdev_driver = {
+ 	.probe = h5_serdev_probe,
+ 	.remove = h5_serdev_remove,
+@@ -1031,6 +1050,7 @@ static struct serdev_device_driver h5_serdev_driver = {
+ 		.name = "hci_uart_h5",
+ 		.acpi_match_table = ACPI_PTR(h5_acpi_match),
+ 		.pm = &h5_serdev_pm_ops,
++		.of_match_table = of_match_ptr(h5_of_match),
+ 	},
+ };
+ 
+-- 
+2.18.1
+

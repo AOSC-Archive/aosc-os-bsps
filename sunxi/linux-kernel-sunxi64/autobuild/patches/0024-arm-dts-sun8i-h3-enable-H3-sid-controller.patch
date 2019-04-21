@@ -1,7 +1,7 @@
-From e5728353fc4cdbeb166bf73464444872dc060ff6 Mon Sep 17 00:00:00 2001
+From efd10e35e13876db79f947bde3f1ec59b6a0cc8b Mon Sep 17 00:00:00 2001
 From: Philipp Rossak <embed3d@gmail.com>
 Date: Tue, 23 Jan 2018 10:57:37 +0100
-Subject: [PATCH 024/152] arm: dts: sun8i: h3: enable H3 sid controller
+Subject: [PATCH 024/128] arm: dts: sun8i: h3: enable H3 sid controller
 
 This patch enables the the sid controller in the H3. It can be used
 for thermal calibration data.
@@ -12,10 +12,10 @@ Signed-off-by: Philipp Rossak <embed3d@gmail.com>
  1 file changed, 7 insertions(+)
 
 diff --git a/arch/arm/boot/dts/sun8i-h3.dtsi b/arch/arm/boot/dts/sun8i-h3.dtsi
-index b34c92085a22..63d30612deb6 100644
+index 5f4fc0056947..7e1e501c01d7 100644
 --- a/arch/arm/boot/dts/sun8i-h3.dtsi
 +++ b/arch/arm/boot/dts/sun8i-h3.dtsi
-@@ -169,6 +169,13 @@
+@@ -180,6 +180,13 @@
  		};
  	};
  
