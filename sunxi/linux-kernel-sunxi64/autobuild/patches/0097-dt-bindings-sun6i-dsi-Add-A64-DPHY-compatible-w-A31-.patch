@@ -1,0 +1,32 @@
+From dffae30c23622b5989f90c2bc69e0cf75a7ef171 Mon Sep 17 00:00:00 2001
+From: Jagan Teki <jagan@amarulasolutions.com>
+Date: Tue, 23 Oct 2018 19:15:09 +0530
+Subject: [PATCH 097/131] dt-bindings: sun6i-dsi: Add A64 DPHY compatible (w/
+ A31 fallback)
+
+The MIPI DSI PHY controller on Allwinner A64 is similar
+on the one on A31.
+
+Add A64 compatible and append A31 compatible as fallback.
+
+Signed-off-by: Jagan Teki <jagan@amarulasolutions.com>
+Reviewed-by: Rob Herring <robh@kernel.org>
+---
+ Documentation/devicetree/bindings/display/sunxi/sun6i-dsi.txt | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Documentation/devicetree/bindings/display/sunxi/sun6i-dsi.txt b/Documentation/devicetree/bindings/display/sunxi/sun6i-dsi.txt
+index adc7cdf129dd..08f1f57abff5 100644
+--- a/Documentation/devicetree/bindings/display/sunxi/sun6i-dsi.txt
++++ b/Documentation/devicetree/bindings/display/sunxi/sun6i-dsi.txt
+@@ -40,6 +40,7 @@ D-PHY
+ Required properties:
+   - compatible: value must be one of:
+     * allwinner,sun6i-a31-mipi-dphy
++    * "allwinner,sun50i-a64-mipi-dphy", "allwinner,sun6i-a31-mipi-dphy"
+   - reg: base address and size of memory-mapped region
+   - clocks: phandles to the clocks feeding the DSI encoder
+     * bus: the DSI interface clock
+-- 
+2.18.1
+

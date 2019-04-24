@@ -1,0 +1,66 @@
+From cac7e6ac7169fb0f0a59acdbdfe828528f509aef Mon Sep 17 00:00:00 2001
+From: Chen-Yu Tsai <wens@csie.org>
+Date: Mon, 18 Mar 2019 15:33:52 +0800
+Subject: [PATCH 007/131] nvmem: sunxi_sid: Read out data in native format
+
+Originally the SID e-fuses were thought to be in big-endian format.
+Later sources show that they are in fact native or little-endian.
+The most compelling evidence is the thermal sensor calibration data,
+which is a set of one to three 16-bit values. In native-endian they
+are in 16-bit cells with increasing offsets, whereas with big-endian
+they are in the wrong order, and a gap with no data will show if there
+are one or three cells.
+
+Switch to a native endian representation for the nvmem device. For the
+H3, the register read-out method was already returning data in native
+endian. This only affects the other SoCs.
+
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+Acked-by: Maxime Ripard <maxime.ripard@bootlin.com>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+---
+ drivers/nvmem/sunxi_sid.c | 23 +----------------------
+ 1 file changed, 1 insertion(+), 22 deletions(-)
+
+diff --git a/drivers/nvmem/sunxi_sid.c b/drivers/nvmem/sunxi_sid.c
+index 75c1f48cb3d0..14c114620ed6 100644
+--- a/drivers/nvmem/sunxi_sid.c
++++ b/drivers/nvmem/sunxi_sid.c
+@@ -46,33 +46,12 @@ struct sunxi_sid {
+ 	u32			value_offset;
+ };
+ 
+-/* We read the entire key, due to a 32 bit read alignment requirement. Since we
+- * want to return the requested byte, this results in somewhat slower code and
+- * uses 4 times more reads as needed but keeps code simpler. Since the SID is
+- * only very rarely probed, this is not really an issue.
+- */
+-static u8 sunxi_sid_read_byte(const struct sunxi_sid *sid,
+-			      const unsigned int offset)
+-{
+-	u32 sid_key;
+-
+-	sid_key = ioread32be(sid->base + round_down(offset, 4));
+-	sid_key >>= (offset % 4) * 8;
+-
+-	return sid_key; /* Only return the last byte */
+-}
+-
+ static int sunxi_sid_read(void *context, unsigned int offset,
+ 			  void *val, size_t bytes)
+ {
+ 	struct sunxi_sid *sid = context;
+-	u8 *buf = val;
+-
+-	/* Offset the read operation to the real position of SID */
+-	offset += sid->value_offset;
+ 
+-	while (bytes--)
+-		*buf++ = sunxi_sid_read_byte(sid, offset++);
++	memcpy_fromio(val, sid->base + sid->value_offset + offset, bytes);
+ 
+ 	return 0;
+ }
+-- 
+2.18.1
+

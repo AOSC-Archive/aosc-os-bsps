@@ -1,0 +1,36 @@
+From a007fea8dd577383ee0311872dec0f79c985fe4e Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Cl=C3=A9ment=20P=C3=A9ron?= <peron.clem@gmail.com>
+Date: Thu, 11 Apr 2019 12:57:17 +0200
+Subject: [PATCH 082/131] arm64: dts: allwinner: Add mali GPU supply for Pine
+ H64
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Enable and add supply to the Mali GPU node on the
+Pine H64 board.
+
+Signed-off-by: Clément Péron <peron.clem@gmail.com>
+---
+ arch/arm64/boot/dts/allwinner/sun50i-h6-pine-h64.dts | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6-pine-h64.dts b/arch/arm64/boot/dts/allwinner/sun50i-h6-pine-h64.dts
+index 084d8da14ad9..af0678238055 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-h6-pine-h64.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-h6-pine-h64.dts
+@@ -90,6 +90,11 @@
+ 	status = "okay";
+ };
+ 
++&gpu {
++	mali-supply = <&reg_dcdcc>;
++	status = "okay";
++};
++
+ &hdmi {
+ 	status = "okay";
+ };
+-- 
+2.18.1
+

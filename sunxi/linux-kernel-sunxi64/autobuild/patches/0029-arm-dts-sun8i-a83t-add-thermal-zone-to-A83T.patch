@@ -1,0 +1,46 @@
+From 28f85a63a656707eb9bc604b18293ee194ea06e1 Mon Sep 17 00:00:00 2001
+From: Philipp Rossak <embed3d@gmail.com>
+Date: Fri, 26 Jan 2018 01:17:14 +0100
+Subject: [PATCH 029/131] arm: dts: sun8i: a83t: add thermal zone to A83T
+
+This patch adds the thermal zones to the A83T. Sensor 0 is located besides the
+cpu cluster 0. Sensor 1 is located besides cluster 1 and sensor 2 is located
+besides in the gpu.
+
+Signed-off-by: Philipp Rossak <embed3d@gmail.com>
+---
+ arch/arm/boot/dts/sun8i-a83t.dtsi | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+
+diff --git a/arch/arm/boot/dts/sun8i-a83t.dtsi b/arch/arm/boot/dts/sun8i-a83t.dtsi
+index e848b41030f1..e2febf7c6876 100644
+--- a/arch/arm/boot/dts/sun8i-a83t.dtsi
++++ b/arch/arm/boot/dts/sun8i-a83t.dtsi
+@@ -1046,4 +1046,24 @@
+ 			#size-cells = <0>;
+ 		};
+ 	};
++
++	thermal-zones {
++		cpu0_thermal: cpu0-thermal {
++			polling-delay-passive = <1000>;
++			polling-delay = <5000>;
++			thermal-sensors = <&ths 0>;
++		};
++
++		cpu1_thermal: cpu1-thermal {
++			polling-delay-passive = <1000>;
++			polling-delay = <5000>;
++			thermal-sensors = <&ths 1>;
++		};
++
++		gpu_thermal: gpu-thermal {
++			polling-delay-passive = <1000>;
++			polling-delay = <5000>;
++			thermal-sensors = <&ths 2>;
++		};
++	};
+ };
+-- 
+2.18.1
+
