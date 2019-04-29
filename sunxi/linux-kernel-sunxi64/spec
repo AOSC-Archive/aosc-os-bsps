@@ -1,4 +1,3 @@
-VER=5.1.0rc6
-REL=1
-SRCTBL="https://git.kernel.org/torvalds/t/linux-5.1-rc6.tar.gz"
-CHKSUM="sha256::7bfab5fd33dfd545595462c01e377387e279537c430dd0a2a496b54e160fe568"
+VER=5.1.0rc7
+SRCTBL="https://git.kernel.org/torvalds/t/linux-5.1-rc7.tar.gz"
+CHKSUM="sha256::412798ddc1bbd85b696275a29076ca973ebb9f4c117928747175d849902c0814"
