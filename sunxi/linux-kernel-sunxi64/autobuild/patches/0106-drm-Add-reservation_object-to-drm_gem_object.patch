@@ -1,7 +1,7 @@
-From bc571fdb0d2fe0653ac47262740e39aeddaaf4a9 Mon Sep 17 00:00:00 2001
+From f878fdab7f7028088bfff83a34f185a432de3f31 Mon Sep 17 00:00:00 2001
 From: Rob Herring <robh@kernel.org>
 Date: Sat, 2 Feb 2019 09:41:54 -0600
-Subject: [PATCH 106/131] drm: Add reservation_object to drm_gem_object
+Subject: [PATCH 106/147] drm: Add reservation_object to drm_gem_object
 
 Many users of drm_gem_object embed a struct reservation_object into
 their subclassed struct, so let's add one to struct drm_gem_object.
@@ -177,5 +177,5 @@ index c95727425284..25f1ff2df464 100644
  			    u32 handle, u64 *offset);
  int drm_gem_dumb_destroy(struct drm_file *file,
 -- 
-2.18.1
+2.21.0
 

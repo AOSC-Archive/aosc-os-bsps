@@ -1,7 +1,7 @@
-From f3a5cd3b99225cbc9b5bfa0b62dc47a03cdba0ea Mon Sep 17 00:00:00 2001
+From af982f5b8bbc8e3107516e72ef77e07d680d9fe4 Mon Sep 17 00:00:00 2001
 From: Quentin Schulz <quentin.schulz@bootlin.com>
 Date: Thu, 21 Mar 2019 16:48:46 +0800
-Subject: [PATCH 115/131] power: supply: axp20x_usb_power: add function to get
+Subject: [PATCH 115/147] power: supply: axp20x_usb_power: add function to get
  max current
 
 To prepare for a new PMIC, factor out the code responsible of returning
@@ -84,5 +84,5 @@ index ac061bcdc056..90d06027bf98 100644
  		if (IS_ENABLED(CONFIG_AXP20X_ADC)) {
  			ret = iio_read_channel_processed(power->vbus_i,
 -- 
-2.18.1
+2.21.0
 

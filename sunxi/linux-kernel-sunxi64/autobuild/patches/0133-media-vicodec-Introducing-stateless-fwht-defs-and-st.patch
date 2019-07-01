@@ -1,7 +1,7 @@
-From 49be02a1e856e712c2417eb0e7d9ab2942d985ab Mon Sep 17 00:00:00 2001
+From f8ec4030ac9b60cf26e9b25aabf9a4bec41b7a4b Mon Sep 17 00:00:00 2001
 From: Dafna Hirschfeld <dafna3@gmail.com>
 Date: Wed, 6 Mar 2019 16:13:40 -0500
-Subject: [PATCH 133/137] media: vicodec: Introducing stateless fwht defs and
+Subject: [PATCH 133/147] media: vicodec: Introducing stateless fwht defs and
  structs
 
 Add structs and definitions needed to implement stateless
@@ -22,7 +22,7 @@ Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
  create mode 100644 include/media/fwht-ctrls.h
 
 diff --git a/drivers/media/platform/vicodec/vicodec-core.c b/drivers/media/platform/vicodec/vicodec-core.c
-index d7636fe9e174..bde67668d692 100644
+index 8788369e59a0..cbacd256f1cf 100644
 --- a/drivers/media/platform/vicodec/vicodec-core.c
 +++ b/drivers/media/platform/vicodec/vicodec-core.c
 @@ -64,6 +64,10 @@ static const struct v4l2_fwht_pixfmt_info pixfmt_fwht = {
@@ -36,7 +36,7 @@ index d7636fe9e174..bde67668d692 100644
  static void vicodec_dev_release(struct device *dev)
  {
  }
-@@ -1473,10 +1477,6 @@ static int queue_init(void *priv, struct vb2_queue *src_vq,
+@@ -1477,10 +1481,6 @@ static int queue_init(void *priv, struct vb2_queue *src_vq,
  	return vb2_queue_init(dst_vq);
  }
  
@@ -47,7 +47,7 @@ index d7636fe9e174..bde67668d692 100644
  static int vicodec_s_ctrl(struct v4l2_ctrl *ctrl)
  {
  	struct vicodec_ctx *ctx = container_of(ctrl->handler,
-@@ -1486,10 +1486,10 @@ static int vicodec_s_ctrl(struct v4l2_ctrl *ctrl)
+@@ -1490,10 +1490,10 @@ static int vicodec_s_ctrl(struct v4l2_ctrl *ctrl)
  	case V4L2_CID_MPEG_VIDEO_GOP_SIZE:
  		ctx->state.gop_size = ctrl->val;
  		return 0;
@@ -60,7 +60,7 @@ index d7636fe9e174..bde67668d692 100644
  		ctx->state.p_frame_qp = ctrl->val;
  		return 0;
  	}
-@@ -1500,26 +1500,9 @@ static const struct v4l2_ctrl_ops vicodec_ctrl_ops = {
+@@ -1504,26 +1504,9 @@ static const struct v4l2_ctrl_ops vicodec_ctrl_ops = {
  	.s_ctrl = vicodec_s_ctrl,
  };
  
@@ -90,7 +90,7 @@ index d7636fe9e174..bde67668d692 100644
  };
  
  /*
-@@ -1552,8 +1535,10 @@ static int vicodec_open(struct file *file)
+@@ -1556,8 +1539,10 @@ static int vicodec_open(struct file *file)
  	v4l2_ctrl_handler_init(hdl, 4);
  	v4l2_ctrl_new_std(hdl, &vicodec_ctrl_ops, V4L2_CID_MPEG_VIDEO_GOP_SIZE,
  			  1, 16, 1, 10);
@@ -104,7 +104,7 @@ index d7636fe9e174..bde67668d692 100644
  		rc = hdl->error;
  		v4l2_ctrl_handler_free(hdl);
 diff --git a/drivers/media/v4l2-core/v4l2-ctrls.c b/drivers/media/v4l2-core/v4l2-ctrls.c
-index 115fb8debe23..cb6800eac452 100644
+index 2c08629e6f1a..891d278b8785 100644
 --- a/drivers/media/v4l2-core/v4l2-ctrls.c
 +++ b/drivers/media/v4l2-core/v4l2-ctrls.c
 @@ -853,6 +853,9 @@ const char *v4l2_ctrl_get_name(u32 id)
@@ -185,7 +185,7 @@ index 000000000000..615027410e47
 +
 +#endif
 diff --git a/include/media/v4l2-ctrls.h b/include/media/v4l2-ctrls.h
-index e5cae37ced2d..e8118ceb4a8d 100644
+index 200f8a66ecaa..bd621cec65a5 100644
 --- a/include/media/v4l2-ctrls.h
 +++ b/include/media/v4l2-ctrls.h
 @@ -23,10 +23,11 @@
@@ -245,5 +245,5 @@ index 1db220da3bcc..496e6453450c 100644
  /*  Vendor-specific formats   */
  #define V4L2_PIX_FMT_CPIA1    v4l2_fourcc('C', 'P', 'I', 'A') /* cpia1 YUV */
 -- 
-2.18.1
+2.21.0
 

@@ -1,7 +1,7 @@
-From 66e853d19388715f9918d5d94750dd99a458c1ea Mon Sep 17 00:00:00 2001
+From 6b15033bb36123cf6d9dd66856d31a25ad62c533 Mon Sep 17 00:00:00 2001
 From: Qiang Yu <yuq825@gmail.com>
 Date: Sat, 9 Mar 2019 20:20:12 +0800
-Subject: [PATCH 107/131] drm/lima: driver for ARM Mali4xx GPUs
+Subject: [PATCH 107/147] drm/lima: driver for ARM Mali4xx GPUs
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -4648,5 +4648,5 @@ index 000000000000..95a00fb867e6
 +
 +#endif /* __LIMA_DRM_H__ */
 -- 
-2.18.1
+2.21.0
 

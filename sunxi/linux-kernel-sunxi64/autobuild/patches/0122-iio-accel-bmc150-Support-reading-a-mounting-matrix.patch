@@ -1,7 +1,7 @@
-From 6fc105e4858563ffddd7f9bdead4e227585a4949 Mon Sep 17 00:00:00 2001
+From a6b751af6c4d39738559e96d150f11da3bfc961b Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 10 Apr 2019 13:14:04 +0800
-Subject: [PATCH 122/131] iio: accel: bmc150: Support reading a mounting matrix
+Subject: [PATCH 122/147] iio: accel: bmc150: Support reading a mounting matrix
 
 This adds support for the mounting matrix to the BMC150 driver.
 
@@ -63,5 +63,5 @@ index 383c802eb5b8..3ff2ca3b35a1 100644
  
  	indio_dev->dev.parent = dev;
 -- 
-2.18.1
+2.21.0
 

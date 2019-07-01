@@ -1,7 +1,7 @@
-From ce2ae1ea1476c9c0a2e67e2b6ddc11023a3e0954 Mon Sep 17 00:00:00 2001
+From 66e8381ee0a05f68a3bbceb58e8c6b1d90585881 Mon Sep 17 00:00:00 2001
 From: Ondrej Jirman <megous@megous.com>
 Date: Sat, 6 Apr 2019 01:45:13 +0200
-Subject: [PATCH 003/131] brcmfmac: Loading the correct firmware for brcm43456
+Subject: [PATCH 003/147] brcmfmac: Loading the correct firmware for brcm43456
 
 SDIO based brcm43456 is currently misdetected as brcm43455 and the wrong
 firmware name is used. Correct the detection and load the correct
@@ -14,7 +14,7 @@ Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
  1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-index 4d104ab80fd8..50e56fd056ba 100644
+index f757c9e72e71..f9f23e3293cd 100644
 --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
 +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
 @@ -622,6 +622,7 @@ BRCMF_FW_DEF(43430A0, "brcmfmac43430a0-sdio");
@@ -36,5 +36,5 @@ index 4d104ab80fd8..50e56fd056ba 100644
  	BRCMF_FW_ENTRY(BRCM_CC_4356_CHIP_ID, 0xFFFFFFFF, 4356),
  	BRCMF_FW_ENTRY(CY_CC_4373_CHIP_ID, 0xFFFFFFFF, 4373),
 -- 
-2.18.1
+2.21.0
 

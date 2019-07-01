@@ -1,7 +1,7 @@
-From dafffa3119e00e9b684c389f3ccc0cea671db9e4 Mon Sep 17 00:00:00 2001
+From f0f61dc3deb7d95a88310a851ec1309a1e9524e8 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 9 Apr 2019 21:51:43 +0800
-Subject: [PATCH 121/131] arm64: allwinner: a64: pinetab: enable USB power
+Subject: [PATCH 121/147] arm64: allwinner: a64: pinetab: enable USB power
  supply
 
 As we now have the support for the USB power supply of AXP803, enable it
@@ -31,5 +31,5 @@ index dbe4e641368c..47c9606b171d 100644
  	usb1_vbus-supply = <&reg_ldo_io0>;
  	status = "okay";
 -- 
-2.18.1
+2.21.0
 

@@ -1,7 +1,7 @@
-From 05c91df5cd0dc0ca90e8803075ca385e846daa59 Mon Sep 17 00:00:00 2001
+From a24ce0cf77ac44d07eb6eaaff492729600ea1168 Mon Sep 17 00:00:00 2001
 From: Jernej Skrabec <jernej.skrabec@siol.net>
 Date: Mon, 28 Jan 2019 15:54:59 -0500
-Subject: [PATCH 1/8] media: dt-bindings: media: cedrus: Add H6 compatible
+Subject: [PATCH 138/147] media: dt-bindings: media: cedrus: Add H6 compatible
 
 This adds a compatible for H6. H6 VPU supports 10-bit HEVC decoding and
 additional AFBC output format for HEVC.
@@ -28,5 +28,5 @@ index bce0705df953..20c82fb0c343 100644
  - clocks		: list of clock specifiers, corresponding to entries in
  			  the clock-names property;
 -- 
-2.18.1
+2.21.0
 

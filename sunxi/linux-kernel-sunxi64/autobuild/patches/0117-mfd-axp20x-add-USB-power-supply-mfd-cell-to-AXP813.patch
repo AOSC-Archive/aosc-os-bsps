@@ -1,7 +1,7 @@
-From c01574b2bc5002f63647b422ca85386f89651854 Mon Sep 17 00:00:00 2001
+From d10c57eed033cb55f460cbeb6c7c8d977a8ab934 Mon Sep 17 00:00:00 2001
 From: Quentin Schulz <quentin.schulz@bootlin.com>
 Date: Thu, 21 Mar 2019 16:48:48 +0800
-Subject: [PATCH 117/131] mfd: axp20x: add USB power supply mfd cell to AXP813
+Subject: [PATCH 117/147] mfd: axp20x: add USB power supply mfd cell to AXP813
 
 The AXP813 has a VBUS power input. Now that the axp20x_usb_power driver
 supports this variant, we can add an mfd cell for it to use it.
@@ -44,5 +44,5 @@ index 3c97f2c0fdfe..902f9f27e748 100644
  };
  
 -- 
-2.18.1
+2.21.0
 

@@ -1,7 +1,7 @@
-From 41e0e9b04dc96e2371b25632b17df9421899cc5f Mon Sep 17 00:00:00 2001
+From 0793c7a465d70bc186a49bcad55a3c1a4d956417 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 21 Apr 2019 21:43:14 +0800
-Subject: [PATCH 131/131] arm64: allwinner: a64: enable Bluetooth On Olimex
+Subject: [PATCH 131/147] arm64: allwinner: a64: enable Bluetooth On Olimex
  TERES-I
 
 Olimex TERES-I has an RTL8723BS WiFi + BT module, BT is connected to
@@ -41,5 +41,5 @@ index e908e0859ec6..6d9644f76bb9 100644
  	usb1_vbus-supply = <&reg_usb1_vbus>;
  	status = "okay";
 -- 
-2.18.1
+2.21.0
 

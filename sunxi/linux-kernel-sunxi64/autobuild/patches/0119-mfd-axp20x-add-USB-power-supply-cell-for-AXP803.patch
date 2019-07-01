@@ -1,7 +1,7 @@
-From e70619c17457cc30a08fd8acfde9557f9b7f81c2 Mon Sep 17 00:00:00 2001
+From a3e2c9a9196b821ac571846abb1ef771b15a7b05 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 9 Apr 2019 21:48:05 +0800
-Subject: [PATCH 119/131] mfd: axp20x: add USB power supply cell for AXP803
+Subject: [PATCH 119/147] mfd: axp20x: add USB power supply cell for AXP803
 
 The USB power supply cell of AXP803 is compatible with AXP813 one.
 
@@ -29,5 +29,5 @@ index 902f9f27e748..2215660dfa05 100644
  	{	.name		= "axp20x-regulator" },
  };
 -- 
-2.18.1
+2.21.0
 

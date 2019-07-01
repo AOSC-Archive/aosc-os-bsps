@@ -1,7 +1,7 @@
-From e10bd63070de5210d3dd762f234ce770622f9e33 Mon Sep 17 00:00:00 2001
+From e47858504cadc48a8f33a416b0b09b40cddb31b5 Mon Sep 17 00:00:00 2001
 From: Fish Lin <linfish@google.com>
 Date: Thu, 28 Mar 2019 23:20:46 -0400
-Subject: [PATCH 132/137] media: v4l: add I / P frame min max QP definitions
+Subject: [PATCH 132/147] media: v4l: add I / P frame min max QP definitions
 
 Add following V4L2 QP parameters for H.264:
 * V4L2_CID_MPEG_VIDEO_H264_I_FRAME_MIN_QP
@@ -57,7 +57,7 @@ index c97fb7923be5..5b2db52d3b4e 100644
      Quantization parameter for an I frame for MPEG4. Valid range: from 1
      to 31.
 diff --git a/drivers/media/v4l2-core/v4l2-ctrls.c b/drivers/media/v4l2-core/v4l2-ctrls.c
-index b79d3bbd8350..115fb8debe23 100644
+index 54d66dbc2a31..2c08629e6f1a 100644
 --- a/drivers/media/v4l2-core/v4l2-ctrls.c
 +++ b/drivers/media/v4l2-core/v4l2-ctrls.c
 @@ -828,6 +828,10 @@ const char *v4l2_ctrl_get_name(u32 id)
@@ -87,5 +87,5 @@ index 06479f2fb3ae..93feaf9c8a37 100644
  #define V4L2_CID_MPEG_VIDEO_MPEG4_P_FRAME_QP	(V4L2_CID_MPEG_BASE+401)
  #define V4L2_CID_MPEG_VIDEO_MPEG4_B_FRAME_QP	(V4L2_CID_MPEG_BASE+402)
 -- 
-2.18.1
+2.21.0
 

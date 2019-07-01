@@ -1,7 +1,7 @@
-From 4c06b0d09ccbe951bd82e198572cb5a8fb68307c Mon Sep 17 00:00:00 2001
+From 5a0a5601fcbb96564a41ee90d7bd21391605176e Mon Sep 17 00:00:00 2001
 From: Maxime Ripard <maxime.ripard@bootlin.com>
 Date: Wed, 24 Apr 2019 16:22:36 +0200
-Subject: [PATCH 136/137] media: pixfmt: Add H264_SLICE_RAW format
+Subject: [PATCH 136/147] media: pixfmt: Add H264_SLICE_RAW format
  documentation
 
 The H264_SLICE_RAW format introduced before is meant for stateless
@@ -52,5 +52,5 @@ index 2675bef3eefe..2eff0bdfbf7b 100644
  
        - ``V4L2_PIX_FMT_H263``
 -- 
-2.18.1
+2.21.0
 

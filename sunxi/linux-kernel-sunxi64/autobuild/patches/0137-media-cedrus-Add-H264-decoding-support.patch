@@ -1,7 +1,7 @@
-From e82b171a8a369637d543c83f1084aa9edfae090b Mon Sep 17 00:00:00 2001
+From 1fc3342b95eede13b6de83c56717fd09438ed1d2 Mon Sep 17 00:00:00 2001
 From: Maxime Ripard <maxime.ripard@bootlin.com>
 Date: Wed, 24 Apr 2019 16:22:37 +0200
-Subject: [PATCH 137/137] media: cedrus: Add H264 decoding support
+Subject: [PATCH 137/147] media: cedrus: Add H264 decoding support
 
 Introduce some basic H264 decoding support in cedrus. So far, only the
 baseline profile videos have been tested, and some more advanced features
@@ -83,10 +83,10 @@ index ff11cbeba205..68cf9a45bb28 100644
  	mutex_init(&dev->dev_mutex);
  
 diff --git a/drivers/staging/media/sunxi/cedrus/cedrus.h b/drivers/staging/media/sunxi/cedrus/cedrus.h
-index 4aedd24a9848..89ebe51ff667 100644
+index c57c04b41d2e..bef79f630520 100644
 --- a/drivers/staging/media/sunxi/cedrus/cedrus.h
 +++ b/drivers/staging/media/sunxi/cedrus/cedrus.h
-@@ -30,7 +30,7 @@
+@@ -32,7 +32,7 @@
  
  enum cedrus_codec {
  	CEDRUS_CODEC_MPEG2,
@@ -95,7 +95,7 @@ index 4aedd24a9848..89ebe51ff667 100644
  	CEDRUS_CODEC_LAST,
  };
  
-@@ -40,6 +40,12 @@ enum cedrus_irq_status {
+@@ -42,6 +42,12 @@ enum cedrus_irq_status {
  	CEDRUS_IRQ_OK,
  };
  
@@ -108,7 +108,7 @@ index 4aedd24a9848..89ebe51ff667 100644
  struct cedrus_control {
  	u32			id;
  	u32			elem_size;
-@@ -47,6 +53,14 @@ struct cedrus_control {
+@@ -49,6 +55,14 @@ struct cedrus_control {
  	unsigned char		required:1;
  };
  
@@ -123,7 +123,7 @@ index 4aedd24a9848..89ebe51ff667 100644
  struct cedrus_mpeg2_run {
  	const struct v4l2_ctrl_mpeg2_slice_params	*slice_params;
  	const struct v4l2_ctrl_mpeg2_quantization	*quantization;
-@@ -57,12 +71,20 @@ struct cedrus_run {
+@@ -59,12 +73,20 @@ struct cedrus_run {
  	struct vb2_v4l2_buffer	*dst;
  
  	union {
@@ -144,7 +144,7 @@ index 4aedd24a9848..89ebe51ff667 100644
  };
  
  struct cedrus_ctx {
-@@ -77,6 +99,19 @@ struct cedrus_ctx {
+@@ -79,6 +101,19 @@ struct cedrus_ctx {
  	struct v4l2_ctrl		**ctrls;
  
  	struct vb2_buffer		*dst_bufs[VIDEO_MAX_FRAME];
@@ -164,7 +164,7 @@ index 4aedd24a9848..89ebe51ff667 100644
  };
  
  struct cedrus_dec_ops {
-@@ -118,6 +153,7 @@ struct cedrus_dev {
+@@ -121,6 +156,7 @@ struct cedrus_dev {
  };
  
  extern struct cedrus_dec_ops cedrus_dec_ops_mpeg2;
@@ -779,7 +779,7 @@ index 000000000000..a30bb283f69f
 +	.trigger	= cedrus_h264_trigger,
 +};
 diff --git a/drivers/staging/media/sunxi/cedrus/cedrus_hw.c b/drivers/staging/media/sunxi/cedrus/cedrus_hw.c
-index 0acf219a8c91..ab402b0cac4e 100644
+index fbfff7c1c771..748f7f673547 100644
 --- a/drivers/staging/media/sunxi/cedrus/cedrus_hw.c
 +++ b/drivers/staging/media/sunxi/cedrus/cedrus_hw.c
 @@ -46,6 +46,10 @@ int cedrus_engine_enable(struct cedrus_dev *dev, enum cedrus_codec codec)
@@ -928,5 +928,5 @@ index b47854b3bce4..d151080f8a1f 100644
  		return -EINVAL;
  	}
 -- 
-2.18.1
+2.21.0
 

@@ -1,7 +1,7 @@
-From 081e752f4923d9a456487d4ea927865e2a07f451 Mon Sep 17 00:00:00 2001
+From b4665e9d2d588ced24fcf42cfdd3af0c09a632b8 Mon Sep 17 00:00:00 2001
 From: Chen-Yu Tsai <wens@csie.org>
 Date: Mon, 18 Mar 2019 15:33:50 +0800
-Subject: [PATCH 005/131] nvmem: sunxi_sid: Optimize register read-out method
+Subject: [PATCH 005/147] nvmem: sunxi_sid: Optimize register read-out method
 
 SID cells are 32-bit aligned, and a multiple of 32 bits in length. The
 only outlier is the thermal sensor calibration data, which is 16 bits
@@ -29,7 +29,7 @@ Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
  1 file changed, 18 insertions(+), 20 deletions(-)
 
 diff --git a/drivers/nvmem/sunxi_sid.c b/drivers/nvmem/sunxi_sid.c
-index 704c35edf796..15fbfab62595 100644
+index eeb76e389e2d..fa5c8c4099ef 100644
 --- a/drivers/nvmem/sunxi_sid.c
 +++ b/drivers/nvmem/sunxi_sid.c
 @@ -115,36 +115,34 @@ static int sun8i_sid_register_readout(const struct sunxi_sid *sid,
@@ -88,5 +88,5 @@ index 704c35edf796..15fbfab62595 100644
  }
  
 -- 
-2.18.1
+2.21.0
 

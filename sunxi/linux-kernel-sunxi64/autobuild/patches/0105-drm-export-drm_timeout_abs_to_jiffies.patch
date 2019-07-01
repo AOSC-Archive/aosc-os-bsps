@@ -1,7 +1,7 @@
-From ee781422a81b7ad71135a8fae1cea45fb247fb46 Mon Sep 17 00:00:00 2001
+From e64ba3373266bd43f8b7fd76da0960889c5052bf Mon Sep 17 00:00:00 2001
 From: Qiang Yu <yuq825@gmail.com>
 Date: Mon, 25 Feb 2019 22:07:16 +0800
-Subject: [PATCH 105/131] drm: export drm_timeout_abs_to_jiffies
+Subject: [PATCH 105/147] drm: export drm_timeout_abs_to_jiffies
 
 For other driver like lima usage.
 
@@ -51,5 +51,5 @@ index a803988d8579..70775748d243 100644
 +
  #endif
 -- 
-2.18.1
+2.21.0
 

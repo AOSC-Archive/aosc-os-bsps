@@ -1,7 +1,7 @@
-From 248fd30b3dac694c0bc541e76f9b2092ba197d0e Mon Sep 17 00:00:00 2001
+From 6e27087023511e8e6d1bad6d275e11f93496edf6 Mon Sep 17 00:00:00 2001
 From: Vasily Khoruzhick <anarsoul@gmail.com>
 Date: Wed, 31 Oct 2018 20:33:22 -0700
-Subject: [PATCH 128/131] Bluetooth: btrtl: add support for the RTL8723CS
+Subject: [PATCH 128/147] Bluetooth: btrtl: add support for the RTL8723CS
 
 The Realtek RTL8723CS is SDIO WiFi chip. It also contains a Bluetooth
 module which is connected via UART to the host.
@@ -307,5 +307,5 @@ index c6f499a72b92..da41e2ef0097 100644
  out_free:
  	btrtl_free(btrtl_dev);
 -- 
-2.18.1
+2.21.0
 

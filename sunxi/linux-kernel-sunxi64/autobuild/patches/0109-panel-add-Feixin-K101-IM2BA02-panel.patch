@@ -1,7 +1,7 @@
-From ef9db82d4ab678f2f25e19568d9f4c2b4d023135 Mon Sep 17 00:00:00 2001
+From 8b0a90318b7c3803ec1a792f34845237595f903e Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 9 Apr 2019 05:34:54 +0800
-Subject: [PATCH 109/131] panel: add Feixin K101-IM2BA02 panel
+Subject: [PATCH 109/147] panel: add Feixin K101-IM2BA02 panel
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---
@@ -589,5 +589,5 @@ index 000000000000..c15a31993f0d
 +MODULE_DESCRIPTION("k101_im2ba02 MIPI-DSI LCD panel with jd9365da controller");
 +MODULE_LICENSE("GPL");
 -- 
-2.18.1
+2.21.0
 

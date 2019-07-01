@@ -1,7 +1,7 @@
-From 304bd9b691d221d207b270b1b291b1094d52d7c2 Mon Sep 17 00:00:00 2001
+From 6ef6dfb70e1b0fb37255c9ba159fe849e1a01f22 Mon Sep 17 00:00:00 2001
 From: Pawel Osciak <posciak@chromium.org>
 Date: Wed, 24 Apr 2019 16:22:34 +0200
-Subject: [PATCH 134/137] media: uapi: Add H264 low-level decoder API compound
+Subject: [PATCH 134/147] media: uapi: Add H264 low-level decoder API compound
  controls.
 
 Stateless video codecs will require both the H264 metadata and slices in
@@ -684,7 +684,7 @@ index 64d348e67df9..55cbe324b9fc 100644
  # V4L2 capability defines
  replace define V4L2_CAP_VIDEO_CAPTURE device-capabilities
 diff --git a/drivers/media/v4l2-core/v4l2-ctrls.c b/drivers/media/v4l2-core/v4l2-ctrls.c
-index cb6800eac452..752b2229f90e 100644
+index 891d278b8785..815589efba75 100644
 --- a/drivers/media/v4l2-core/v4l2-ctrls.c
 +++ b/drivers/media/v4l2-core/v4l2-ctrls.c
 @@ -832,6 +832,11 @@ const char *v4l2_ctrl_get_name(u32 id)
@@ -758,7 +758,7 @@ index cb6800eac452..752b2229f90e 100644
  		if (type < V4L2_CTRL_COMPOUND_TYPES)
  			elem_size = sizeof(s32);
 diff --git a/include/media/v4l2-ctrls.h b/include/media/v4l2-ctrls.h
-index e8118ceb4a8d..99e875a9f1ca 100644
+index bd621cec65a5..cee5dcdfba6f 100644
 --- a/include/media/v4l2-ctrls.h
 +++ b/include/media/v4l2-ctrls.h
 @@ -23,11 +23,12 @@
@@ -800,5 +800,5 @@ index e8118ceb4a8d..99e875a9f1ca 100644
  };
  
 -- 
-2.18.1
+2.21.0
 

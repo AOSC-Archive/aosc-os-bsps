@@ -1,7 +1,7 @@
-From d6d965ec809ee15d0fda164bbc3e59ee271028e5 Mon Sep 17 00:00:00 2001
+From ffcebe55fe47b44f5a38a2c6f8efb1fb375ee32a Mon Sep 17 00:00:00 2001
 From: Ondrej Jirman <megous@megous.com>
 Date: Thu, 11 Apr 2019 00:06:12 +0200
-Subject: [PATCH 002/131] pinctrl: sunxi: Support I/O bias voltage setting on
+Subject: [PATCH 002/147] pinctrl: sunxi: Support I/O bias voltage setting on
  H6
 
 H6 SoC has a "pio group withstand voltage mode" register (datasheet
@@ -88,5 +88,5 @@ index 4bfc8a6d9dce..36186906f0a7 100644
  
  struct sunxi_desc_function {
 -- 
-2.18.1
+2.21.0
 

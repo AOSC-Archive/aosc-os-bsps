@@ -1,7 +1,7 @@
-From cac7e6ac7169fb0f0a59acdbdfe828528f509aef Mon Sep 17 00:00:00 2001
+From 0ddbb4dc1c7284af14935a3521e1e19c30135f27 Mon Sep 17 00:00:00 2001
 From: Chen-Yu Tsai <wens@csie.org>
 Date: Mon, 18 Mar 2019 15:33:52 +0800
-Subject: [PATCH 007/131] nvmem: sunxi_sid: Read out data in native format
+Subject: [PATCH 007/147] nvmem: sunxi_sid: Read out data in native format
 
 Originally the SID e-fuses were thought to be in big-endian format.
 Later sources show that they are in fact native or little-endian.
@@ -23,7 +23,7 @@ Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
  1 file changed, 1 insertion(+), 22 deletions(-)
 
 diff --git a/drivers/nvmem/sunxi_sid.c b/drivers/nvmem/sunxi_sid.c
-index 75c1f48cb3d0..14c114620ed6 100644
+index 1fa708cb7203..e7936380ce89 100644
 --- a/drivers/nvmem/sunxi_sid.c
 +++ b/drivers/nvmem/sunxi_sid.c
 @@ -46,33 +46,12 @@ struct sunxi_sid {
@@ -62,5 +62,5 @@ index 75c1f48cb3d0..14c114620ed6 100644
  	return 0;
  }
 -- 
-2.18.1
+2.21.0
 

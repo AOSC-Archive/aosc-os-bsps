@@ -1,7 +1,7 @@
-From 46b05efc5299d2d97efc290ab3029bb21bdda575 Mon Sep 17 00:00:00 2001
+From eb2dfc5337b08bbf08e7a0d86044b6330e88e83d Mon Sep 17 00:00:00 2001
 From: Chen-Yu Tsai <wens@csie.org>
 Date: Mon, 18 Mar 2019 15:33:51 +0800
-Subject: [PATCH 006/131] nvmem: sunxi_sid: Dynamically allocate nvmem_config
+Subject: [PATCH 006/147] nvmem: sunxi_sid: Dynamically allocate nvmem_config
  structure
 
 The sunxi_sid driver currently uses a statically allocated nvmem_config
@@ -20,7 +20,7 @@ Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
  1 file changed, 17 insertions(+), 15 deletions(-)
 
 diff --git a/drivers/nvmem/sunxi_sid.c b/drivers/nvmem/sunxi_sid.c
-index 15fbfab62595..75c1f48cb3d0 100644
+index fa5c8c4099ef..1fa708cb7203 100644
 --- a/drivers/nvmem/sunxi_sid.c
 +++ b/drivers/nvmem/sunxi_sid.c
 @@ -35,13 +35,6 @@
@@ -86,5 +86,5 @@ index 15fbfab62595..75c1f48cb3d0 100644
  	kfree(randomness);
  
 -- 
-2.18.1
+2.21.0
 

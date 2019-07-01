@@ -1,7 +1,7 @@
-From c1c867854478e715f4927e163c62a671c340c428 Mon Sep 17 00:00:00 2001
+From 65300eb6aa1783a36851ec9ca2d532cbf1f61ad0 Mon Sep 17 00:00:00 2001
 From: Chen-Yu Tsai <wens@csie.org>
 Date: Thu, 21 Mar 2019 16:48:45 +0800
-Subject: [PATCH 114/131] power: supply: axp20x_usb_power: use polling to
+Subject: [PATCH 114/147] power: supply: axp20x_usb_power: use polling to
  detect vbus status change
 
 On AXP221 and later AXP PMICs that have the N_VBUSEN pin, when this pin
@@ -135,5 +135,5 @@ index e2f353906bb1..ac061bcdc056 100644
  		.name = DRVNAME,
  		.of_match_table = axp20x_usb_power_match,
 -- 
-2.18.1
+2.21.0
 

@@ -1,7 +1,7 @@
-From eebd24743625be18d5cf4467dd07505a71ceba41 Mon Sep 17 00:00:00 2001
+From 60109cdef51e15fdd95b9dbe216eeed69fffcff5 Mon Sep 17 00:00:00 2001
 From: Vasily Khoruzhick <anarsoul@gmail.com>
 Date: Wed, 31 Oct 2018 19:40:18 -0700
-Subject: [PATCH 124/131] Bluetooth: Add new quirk for broken local ext
+Subject: [PATCH 124/147] Bluetooth: Add new quirk for broken local ext
  features max_page
 
 Some adapters (e.g. RTL8723CS) advertise that they have more than
@@ -17,7 +17,7 @@ Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
  2 files changed, 10 insertions(+), 1 deletion(-)
 
 diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
-index fbba43e9bef5..e2c3f9c3e1b6 100644
+index 9a5330eed794..88a028c50c77 100644
 --- a/include/net/bluetooth/hci.h
 +++ b/include/net/bluetooth/hci.h
 @@ -204,6 +204,13 @@ enum {
@@ -35,7 +35,7 @@ index fbba43e9bef5..e2c3f9c3e1b6 100644
  
  /* HCI device flags */
 diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 609fd6871c5a..15320b671568 100644
+index 8b893baf9bbe..f7f548739f65 100644
 --- a/net/bluetooth/hci_event.c
 +++ b/net/bluetooth/hci_event.c
 @@ -639,7 +639,9 @@ static void hci_cc_read_local_ext_features(struct hci_dev *hdev,
@@ -50,5 +50,5 @@ index 609fd6871c5a..15320b671568 100644
  
  	if (rp->page < HCI_MAX_PAGES)
 -- 
-2.18.1
+2.21.0
 

@@ -1,7 +1,7 @@
-From 5f66ab95a5578aba8e0821fecf40e2f41cabcd7c Mon Sep 17 00:00:00 2001
+From 8897333cbd900c2f996bf305945d64d5894a28e6 Mon Sep 17 00:00:00 2001
 From: Quentin Schulz <quentin.schulz@bootlin.com>
 Date: Thu, 21 Mar 2019 16:48:47 +0800
-Subject: [PATCH 116/131] power: supply: axp20x_usb_power: add support for
+Subject: [PATCH 116/147] power: supply: axp20x_usb_power: add support for
  AXP813
 
 This adds support for AXP813 PMIC. It is almost the same as AXP22X but
@@ -133,5 +133,5 @@ index 90d06027bf98..d39c450b14c6 100644
  };
  MODULE_DEVICE_TABLE(of, axp20x_usb_power_match);
 -- 
-2.18.1
+2.21.0
 

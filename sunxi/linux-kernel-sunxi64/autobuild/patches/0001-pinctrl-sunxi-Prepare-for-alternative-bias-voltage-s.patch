@@ -1,7 +1,7 @@
-From c475589fb1a0086cd5cde1c360c03fcca1984a27 Mon Sep 17 00:00:00 2001
+From 08056f300539be14f127e3f6f706cdd22219e67c Mon Sep 17 00:00:00 2001
 From: Ondrej Jirman <megous@megous.com>
 Date: Sun, 24 Feb 2019 14:47:22 +0100
-Subject: [PATCH 001/131] pinctrl: sunxi: Prepare for alternative bias voltage
+Subject: [PATCH 001/147] pinctrl: sunxi: Prepare for alternative bias voltage
  setting methods
 
 H6 has a different I/O voltage bias setting method than A80. Prepare
@@ -151,5 +151,5 @@ index ee15ab067b5f..4bfc8a6d9dce 100644
  
  struct sunxi_pinctrl_function {
 -- 
-2.18.1
+2.21.0
 

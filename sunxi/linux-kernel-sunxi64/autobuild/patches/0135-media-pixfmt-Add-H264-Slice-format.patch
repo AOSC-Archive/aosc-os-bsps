@@ -1,7 +1,7 @@
-From 741fc9f6cab6d02f63c6d201a699499121ff533e Mon Sep 17 00:00:00 2001
+From f074b658d371b010c0fcd5a04c47f3f7f7604303 Mon Sep 17 00:00:00 2001
 From: Maxime Ripard <maxime.ripard@bootlin.com>
 Date: Wed, 24 Apr 2019 16:22:35 +0200
-Subject: [PATCH 135/137] media: pixfmt: Add H264 Slice format
+Subject: [PATCH 135/147] media: pixfmt: Add H264 Slice format
 
 The H264_SLICE_RAW format is meant to hold the parsed slice data without
 the start code. This will be needed by stateless decoders.
@@ -230,5 +230,5 @@ index 000000000000..e1404d78d6ff
 +
 +#endif
 -- 
-2.18.1
+2.21.0
 

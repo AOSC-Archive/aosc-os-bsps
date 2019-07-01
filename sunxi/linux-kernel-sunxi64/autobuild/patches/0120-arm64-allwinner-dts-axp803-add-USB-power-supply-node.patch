@@ -1,7 +1,7 @@
-From e9f56feb6e42684a1f82787cd5166fbebf5ca3ce Mon Sep 17 00:00:00 2001
+From fab419285bea33861509e0d1e9013116a5506afb Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 9 Apr 2019 21:50:06 +0800
-Subject: [PATCH 120/131] arm64: allwinner: dts: axp803: add USB power supply
+Subject: [PATCH 120/147] arm64: allwinner: dts: axp803: add USB power supply
  node
 
 The AXP803 PMIC has a VBUS power input. Add a device node for it, now
@@ -28,5 +28,5 @@ index c3a618e1279a..f0349ef4bfdd 100644
 +	};
  };
 -- 
-2.18.1
+2.21.0
 

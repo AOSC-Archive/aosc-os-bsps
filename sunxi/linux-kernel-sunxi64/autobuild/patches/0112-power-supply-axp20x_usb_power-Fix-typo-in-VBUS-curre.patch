@@ -1,7 +1,7 @@
-From 7221b1eb110eab466135b1b60b3c46c3bf08fe95 Mon Sep 17 00:00:00 2001
+From e45b62aa526bae5b3da5dd86b31162bb59a7b895 Mon Sep 17 00:00:00 2001
 From: Chen-Yu Tsai <wens@csie.org>
 Date: Thu, 21 Mar 2019 16:48:43 +0800
-Subject: [PATCH 112/131] power: supply: axp20x_usb_power: Fix typo in VBUS
+Subject: [PATCH 112/147] power: supply: axp20x_usb_power: Fix typo in VBUS
  current limit macros
 
 The VBUS current limit value macros have VBUS typed as VBUC, while
@@ -57,5 +57,5 @@ index f52fe77edb6f..cd9b90d79839 100644
  			break;
  		}
 -- 
-2.18.1
+2.21.0
 

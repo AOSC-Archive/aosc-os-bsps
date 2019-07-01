@@ -1,7 +1,7 @@
-From 6a068625dbb9015d7d0e65c585bff183197092d8 Mon Sep 17 00:00:00 2001
+From cbb4595084b6d31074edc344d4f2aaa9f3b44579 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 10 Apr 2019 13:58:51 +0800
-Subject: [PATCH 123/131] arm64: allwinner: a64: pinetab: add accel sensor
+Subject: [PATCH 123/147] arm64: allwinner: a64: pinetab: add accel sensor
  mount matrix
 
 The accel sensor installation orientation is different to the screen
@@ -29,5 +29,5 @@ index 47c9606b171d..f2641a426fee 100644
  };
  
 -- 
-2.18.1
+2.21.0
 
