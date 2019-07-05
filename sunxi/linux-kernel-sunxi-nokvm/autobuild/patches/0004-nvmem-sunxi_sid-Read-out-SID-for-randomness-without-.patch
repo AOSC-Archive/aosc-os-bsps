@@ -1,0 +1,45 @@
+From 6e11bf1fbf6a0f071b41f5de37423b449c4c91b9 Mon Sep 17 00:00:00 2001
+From: Chen-Yu Tsai <wens@csie.org>
+Date: Mon, 18 Mar 2019 15:33:49 +0800
+Subject: [PATCH 004/147] nvmem: sunxi_sid: Read out SID for randomness without
+ looping
+
+Since the reg_read callbacks already support arbitrary, but 4-byte
+aligned. offsets and lengths into the SID, there is no need for another
+for loop just to use it to read 1 byte at a time.
+
+Read out the whole SID block in one go.
+
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+Acked-by: Maxime Ripard <maxime.ripard@bootlin.com>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+---
+ drivers/nvmem/sunxi_sid.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/nvmem/sunxi_sid.c b/drivers/nvmem/sunxi_sid.c
+index ef3d776bb16e..eeb76e389e2d 100644
+--- a/drivers/nvmem/sunxi_sid.c
++++ b/drivers/nvmem/sunxi_sid.c
+@@ -154,7 +154,7 @@ static int sunxi_sid_probe(struct platform_device *pdev)
+ 	struct resource *res;
+ 	struct nvmem_device *nvmem;
+ 	struct sunxi_sid *sid;
+-	int i, size;
++	int size;
+ 	char *randomness;
+ 	const struct sunxi_sid_cfg *cfg;
+ 
+@@ -189,8 +189,7 @@ static int sunxi_sid_probe(struct platform_device *pdev)
+ 	if (!randomness)
+ 		return -ENOMEM;
+ 
+-	for (i = 0; i < size; i++)
+-		econfig.reg_read(sid, i, &randomness[i], 1);
++	econfig.reg_read(sid, 0, randomness, size);
+ 
+ 	add_device_randomness(randomness, size);
+ 	kfree(randomness);
+-- 
+2.21.0
+

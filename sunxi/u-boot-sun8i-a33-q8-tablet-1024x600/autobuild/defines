@@ -1,0 +1,8 @@
+PKGNAME=u-boot-sun8i-a33-q8-tablet-1024x600
+PKGDES="U-Boot for Q8 tablet w/ A33 and 1024x600 LCD"
+PKGSEC=embedded
+BUILDDEP="dtc swig"
+
+ABSTRIP=no
+ABELFDEP=no
+ABRPMAUTOPROVONLY=yes

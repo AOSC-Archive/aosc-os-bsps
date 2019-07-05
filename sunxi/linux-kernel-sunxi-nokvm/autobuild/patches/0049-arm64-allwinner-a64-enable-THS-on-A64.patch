@@ -1,0 +1,98 @@
+From 9b0de6e4b62e1c880386a5d224b95408973c88cd Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Wed, 15 Aug 2018 13:03:43 +0800
+Subject: [PATCH 049/147] arm64: allwinner: a64: enable THS on A64
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi | 62 +++++++++++++++++++
+ 1 file changed, 62 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
+index 880a19a33458..c6793249aaaa 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
+@@ -49,6 +49,7 @@
+ #include <dt-bindings/reset/sun50i-a64-ccu.h>
+ #include <dt-bindings/reset/sun8i-de2.h>
+ #include <dt-bindings/reset/sun8i-r-ccu.h>
++#include <dt-bindings/thermal/thermal.h>
+ 
+ / {
+ 	interrupt-parent = <&gic>;
+@@ -755,6 +756,17 @@
+ 			status = "disabled";
+ 		};
+ 
++		ths: thermal-sensor@1c25000 {
++			compatible = "allwinner,sun50i-a64-ths";
++			reg = <0x01c25000 0x100>;
++			interrupts = <GIC_SPI 31 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&ccu CLK_BUS_THS>, <&ccu CLK_THS>;
++			clock-names = "bus", "mod";
++			resets = <&ccu RST_BUS_THS>;
++			#io-channel-cells = <0>;
++			#thermal-sensor-cells = <1>;
++		};
++
+ 		uart0: serial@1c28000 {
+ 			compatible = "snps,dw-apb-uart";
+ 			reg = <0x01c28000 0x400>;
+@@ -1105,4 +1117,54 @@
+ 			interrupts = <GIC_SPI 25 IRQ_TYPE_LEVEL_HIGH>;
+ 		};
+ 	};
++
++	thermal-zones {
++		cpu-thermal {
++			/* milliseconds */
++			polling-delay-passive = <250>;
++			polling-delay = <1000>;
++			thermal-sensors = <&ths 0>;
++
++			cooling-maps {
++				map0 {
++					trip = <&cpu_alert0>;
++					cooling-device = <&cpu0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
++				};
++				map1 {
++					trip = <&cpu_alert1>;
++					cooling-device = <&cpu0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
++				};
++			};
++
++			trips {
++				cpu_alert0: cpu-alert0 {
++					/* milliCelsius */
++					temperature = <75000>;
++					hysteresis = <2000>;
++					type = "passive";
++				};
++
++				cpu_alert1: cpu-alert1 {
++					/* milliCelsius */
++					temperature = <90000>;
++					hysteresis = <2000>;
++					type = "hot";
++				};
++
++				cpu_crit: cpu-crit {
++					/* milliCelsius */
++					temperature = <105000>;
++					hysteresis = <2000>;
++					type = "critical";
++				};
++			};
++		};
++
++		gpu-thermal {
++			/* milliseconds */
++			polling-delay-passive = <250>;
++			polling-delay = <1000>;
++			thermal-sensors = <&ths 1>;
++		};
++	};
+ };
+-- 
+2.21.0
+

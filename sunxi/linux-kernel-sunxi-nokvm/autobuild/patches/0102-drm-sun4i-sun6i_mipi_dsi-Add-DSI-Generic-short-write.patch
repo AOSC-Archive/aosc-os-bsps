@@ -1,0 +1,31 @@
+From 87495940afd62765308259ceb1eec083113fddf8 Mon Sep 17 00:00:00 2001
+From: Jagan Teki <jagan@amarulasolutions.com>
+Date: Tue, 25 Sep 2018 14:36:34 +0530
+Subject: [PATCH 102/147] drm/sun4i: sun6i_mipi_dsi: Add DSI Generic short
+ write 2 param transfer
+
+Short transfer write support for DCS and Generic transfer types
+share similar way to process command sequence in DSI block so
+add generic write 2 param transfer type macro so-that the panels
+which are requesting similar transfer type may process properly.
+
+Signed-off-by: Jagan Teki <jagan@amarulasolutions.com>
+---
+ drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c b/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c
+index 7f6d753deade..975dbb7be89d 100644
+--- a/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c
++++ b/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c
+@@ -994,6 +994,7 @@ static ssize_t sun6i_dsi_transfer(struct mipi_dsi_host *host,
+ 	switch (msg->type) {
+ 	case MIPI_DSI_DCS_SHORT_WRITE:
+ 	case MIPI_DSI_DCS_SHORT_WRITE_PARAM:
++	case MIPI_DSI_GENERIC_SHORT_WRITE_2_PARAM:
+ 		ret = sun6i_dsi_dcs_write_short(dsi, msg);
+ 		break;
+ 
+-- 
+2.21.0
+

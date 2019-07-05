@@ -1,0 +1,155 @@
+From 08056f300539be14f127e3f6f706cdd22219e67c Mon Sep 17 00:00:00 2001
+From: Ondrej Jirman <megous@megous.com>
+Date: Sun, 24 Feb 2019 14:47:22 +0100
+Subject: [PATCH 001/147] pinctrl: sunxi: Prepare for alternative bias voltage
+ setting methods
+
+H6 has a different I/O voltage bias setting method than A80. Prepare
+existing code for using alternative bias voltage setting methods.
+
+Signed-off-by: Ondrej Jirman <megous@megous.com>
+
+pinctrl: sunxi: Support I/O bias voltage setting on H6
+
+H6 SoC has a "pio group withstand voltage mode" register (datasheet
+description), that needs to be used to select either 1.8V or 3.3V I/O mode,
+based on what voltage is powering the respective pin banks and is thus used
+for I/O signals.
+
+Add support for configuring this register according to the voltage of the
+pin bank regulator (if enabled).
+
+This is similar to the support for I/O bias voltage setting patch for A80
+and the same concerns apply. See:
+
+  commit 402bfb3c1352 ("Support I/O bias voltage setting on A80")
+
+Signed-off-by: Ondrej Jirman <megous@megous.com>
+---
+ drivers/pinctrl/sunxi/pinctrl-sun9i-a80-r.c |  2 +-
+ drivers/pinctrl/sunxi/pinctrl-sun9i-a80.c   |  2 +-
+ drivers/pinctrl/sunxi/pinctrl-sunxi.c       | 47 ++++++++++++---------
+ drivers/pinctrl/sunxi/pinctrl-sunxi.h       |  9 +++-
+ 4 files changed, 37 insertions(+), 23 deletions(-)
+
+diff --git a/drivers/pinctrl/sunxi/pinctrl-sun9i-a80-r.c b/drivers/pinctrl/sunxi/pinctrl-sun9i-a80-r.c
+index e05dd9a5551d..a191a65217ac 100644
+--- a/drivers/pinctrl/sunxi/pinctrl-sun9i-a80-r.c
++++ b/drivers/pinctrl/sunxi/pinctrl-sun9i-a80-r.c
+@@ -153,7 +153,7 @@ static const struct sunxi_pinctrl_desc sun9i_a80_r_pinctrl_data = {
+ 	.pin_base = PL_BASE,
+ 	.irq_banks = 2,
+ 	.disable_strict_mode = true,
+-	.has_io_bias_cfg = true,
++	.io_bias_cfg_variant = BIAS_VOLTAGE_GRP_CONFIG,
+ };
+ 
+ static int sun9i_a80_r_pinctrl_probe(struct platform_device *pdev)
+diff --git a/drivers/pinctrl/sunxi/pinctrl-sun9i-a80.c b/drivers/pinctrl/sunxi/pinctrl-sun9i-a80.c
+index da37d594a13d..0633a03d5e13 100644
+--- a/drivers/pinctrl/sunxi/pinctrl-sun9i-a80.c
++++ b/drivers/pinctrl/sunxi/pinctrl-sun9i-a80.c
+@@ -722,7 +722,7 @@ static const struct sunxi_pinctrl_desc sun9i_a80_pinctrl_data = {
+ 	.npins = ARRAY_SIZE(sun9i_a80_pins),
+ 	.irq_banks = 5,
+ 	.disable_strict_mode = true,
+-	.has_io_bias_cfg = true,
++	.io_bias_cfg_variant = BIAS_VOLTAGE_GRP_CONFIG,
+ };
+ 
+ static int sun9i_a80_pinctrl_probe(struct platform_device *pdev)
+diff --git a/drivers/pinctrl/sunxi/pinctrl-sunxi.c b/drivers/pinctrl/sunxi/pinctrl-sunxi.c
+index 8dd25caea2cf..8b2d5b424e97 100644
+--- a/drivers/pinctrl/sunxi/pinctrl-sunxi.c
++++ b/drivers/pinctrl/sunxi/pinctrl-sunxi.c
+@@ -610,7 +610,7 @@ static int sunxi_pinctrl_set_io_bias_cfg(struct sunxi_pinctrl *pctl,
+ 	u32 val, reg;
+ 	int uV;
+ 
+-	if (!pctl->desc->has_io_bias_cfg)
++	if (!pctl->desc->io_bias_cfg_variant)
+ 		return 0;
+ 
+ 	uV = regulator_get_voltage(supply);
+@@ -621,25 +621,32 @@ static int sunxi_pinctrl_set_io_bias_cfg(struct sunxi_pinctrl *pctl,
+ 	if (uV == 0)
+ 		return 0;
+ 
+-	/* Configured value must be equal or greater to actual voltage */
+-	if (uV <= 1800000)
+-		val = 0x0; /* 1.8V */
+-	else if (uV <= 2500000)
+-		val = 0x6; /* 2.5V */
+-	else if (uV <= 2800000)
+-		val = 0x9; /* 2.8V */
+-	else if (uV <= 3000000)
+-		val = 0xA; /* 3.0V */
+-	else
+-		val = 0xD; /* 3.3V */
+-
+-	pin -= pctl->desc->pin_base;
+-
+-	reg = readl(pctl->membase + sunxi_grp_config_reg(pin));
+-	reg &= ~IO_BIAS_MASK;
+-	writel(reg | val, pctl->membase + sunxi_grp_config_reg(pin));
+-
+-	return 0;
++	switch (pctl->desc->io_bias_cfg_variant) {
++	case BIAS_VOLTAGE_GRP_CONFIG:
++		/*
++		 * Configured value must be equal or greater to actual
++		 * voltage.
++		 */
++		if (uV <= 1800000)
++			val = 0x0; /* 1.8V */
++		else if (uV <= 2500000)
++			val = 0x6; /* 2.5V */
++		else if (uV <= 2800000)
++			val = 0x9; /* 2.8V */
++		else if (uV <= 3000000)
++			val = 0xA; /* 3.0V */
++		else
++			val = 0xD; /* 3.3V */
++
++		pin -= pctl->desc->pin_base;
++
++		reg = readl(pctl->membase + sunxi_grp_config_reg(pin));
++		reg &= ~IO_BIAS_MASK;
++		writel(reg | val, pctl->membase + sunxi_grp_config_reg(pin));
++		return 0;
++	default:
++		return -EINVAL;
++	}
+ }
+ 
+ static int sunxi_pmx_get_funcs_cnt(struct pinctrl_dev *pctldev)
+diff --git a/drivers/pinctrl/sunxi/pinctrl-sunxi.h b/drivers/pinctrl/sunxi/pinctrl-sunxi.h
+index ee15ab067b5f..4bfc8a6d9dce 100644
+--- a/drivers/pinctrl/sunxi/pinctrl-sunxi.h
++++ b/drivers/pinctrl/sunxi/pinctrl-sunxi.h
+@@ -95,6 +95,13 @@
+ #define PINCTRL_SUN7I_A20	BIT(7)
+ #define PINCTRL_SUN8I_R40	BIT(8)
+ 
++enum sunxi_desc_bias_voltage {
++	BIAS_VOLTAGE_NONE,
++	/* Bias voltage configuration is done through
++	 * Pn_GRP_CONFIG registers, as seen on A80 SoC. */
++	BIAS_VOLTAGE_GRP_CONFIG,
++};
++
+ struct sunxi_desc_function {
+ 	unsigned long	variant;
+ 	const char	*name;
+@@ -117,7 +124,7 @@ struct sunxi_pinctrl_desc {
+ 	const unsigned int		*irq_bank_map;
+ 	bool				irq_read_needs_mux;
+ 	bool				disable_strict_mode;
+-	bool				has_io_bias_cfg;
++	int				io_bias_cfg_variant;
+ };
+ 
+ struct sunxi_pinctrl_function {
+-- 
+2.21.0
+

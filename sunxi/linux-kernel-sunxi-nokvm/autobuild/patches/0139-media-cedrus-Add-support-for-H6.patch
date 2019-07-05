@@ -1,0 +1,46 @@
+From 960cf5b49046599ad69f0640df81e60ad21945c4 Mon Sep 17 00:00:00 2001
+From: Jernej Skrabec <jernej.skrabec@siol.net>
+Date: Mon, 28 Jan 2019 15:55:01 -0500
+Subject: [PATCH 139/147] media: cedrus: Add support for H6
+
+H6 has improved VPU. It supports 10-bit HEVC decoding and AFBC output
+format for HEVC.
+
+Signed-off-by: Jernej Skrabec <jernej.skrabec@siol.net>
+Acked-by: Maxime Ripard <maxime.ripard@bootlin.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+---
+ drivers/staging/media/sunxi/cedrus/cedrus.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/drivers/staging/media/sunxi/cedrus/cedrus.c b/drivers/staging/media/sunxi/cedrus/cedrus.c
+index 68cf9a45bb28..d613f5c24a2f 100644
+--- a/drivers/staging/media/sunxi/cedrus/cedrus.c
++++ b/drivers/staging/media/sunxi/cedrus/cedrus.c
+@@ -427,6 +427,11 @@ static const struct cedrus_variant sun50i_h5_cedrus_variant = {
+ 	.capabilities	= CEDRUS_CAPABILITY_UNTILED,
+ };
+ 
++static const struct cedrus_variant sun50i_h6_cedrus_variant = {
++	.capabilities	= CEDRUS_CAPABILITY_UNTILED,
++	.quirks		= CEDRUS_QUIRK_NO_DMA_OFFSET,
++};
++
+ static const struct of_device_id cedrus_dt_match[] = {
+ 	{
+ 		.compatible = "allwinner,sun4i-a10-video-engine",
+@@ -456,6 +461,10 @@ static const struct of_device_id cedrus_dt_match[] = {
+ 		.compatible = "allwinner,sun50i-h5-video-engine",
+ 		.data = &sun50i_h5_cedrus_variant,
+ 	},
++	{
++		.compatible = "allwinner,sun50i-h6-video-engine",
++		.data = &sun50i_h6_cedrus_variant,
++	},
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, cedrus_dt_match);
+-- 
+2.21.0
+

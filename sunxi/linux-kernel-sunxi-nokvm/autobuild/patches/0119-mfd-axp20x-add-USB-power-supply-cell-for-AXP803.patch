@@ -1,0 +1,33 @@
+From a3e2c9a9196b821ac571846abb1ef771b15a7b05 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Tue, 9 Apr 2019 21:48:05 +0800
+Subject: [PATCH 119/147] mfd: axp20x: add USB power supply cell for AXP803
+
+The USB power supply cell of AXP803 is compatible with AXP813 one.
+
+Add the cell with AXP813 compatible.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ drivers/mfd/axp20x.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/drivers/mfd/axp20x.c b/drivers/mfd/axp20x.c
+index 902f9f27e748..2215660dfa05 100644
+--- a/drivers/mfd/axp20x.c
++++ b/drivers/mfd/axp20x.c
+@@ -747,6 +747,11 @@ static const struct mfd_cell axp803_cells[] = {
+ 		.of_compatible	= "x-powers,axp813-ac-power-supply",
+ 		.num_resources	= ARRAY_SIZE(axp20x_ac_power_supply_resources),
+ 		.resources	= axp20x_ac_power_supply_resources,
++	}, {
++		.name		= "axp20x-usb-power-supply",
++		.num_resources	= ARRAY_SIZE(axp803_usb_power_supply_resources),
++		.resources	= axp803_usb_power_supply_resources,
++		.of_compatible	= "x-powers,axp813-usb-power-supply",
+ 	},
+ 	{	.name		= "axp20x-regulator" },
+ };
+-- 
+2.21.0
+
