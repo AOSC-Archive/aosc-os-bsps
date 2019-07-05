@@ -8,6 +8,8 @@ for i in \
 	sun7i-a20-cubietruck \
 	sun8i-a23-q8-tablet \
 	sun8i-a33-q8-tablet \
+	sun8i-a33-q8-tablet-800x480 \
+	sun8i-a33-q8-tablet-1024x600 \
 	sun8i-h2-plus-orangepi-zero \
 	sun8i-h2-plus-bananapi-m2-zero \
 	sun8i-h3-bananapi-m2-plus \
