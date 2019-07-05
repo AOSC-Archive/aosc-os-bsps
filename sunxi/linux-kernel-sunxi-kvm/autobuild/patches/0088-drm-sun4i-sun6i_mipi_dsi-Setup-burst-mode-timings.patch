@@ -1,0 +1,54 @@
+From 545ee57f30cd9d4f0a5288af74055b8d140105fc Mon Sep 17 00:00:00 2001
+From: Jagan Teki <jagan@amarulasolutions.com>
+Date: Mon, 26 Nov 2018 11:47:02 +0530
+Subject: [PATCH 088/147] drm/sun4i: sun6i_mipi_dsi: Setup burst mode timings
+
+Burst mode display timings are different from conventional
+video mode, for burst mode most of the timings hsa, hbp, hfp,
+vblk are 0 and hblk is computed as (mode->hdisplay * Bpp)
+
+This patch add burst mode timings and directly goto alloc buffer.
+
+Reference code taken from BSP (from linux-sunxi/
+drivers/video/sunxi/disp2/disp/de/lowlevel_sun50iw1/de_dsi.c)
+
+dsi_hsa  = 0;
+dsi_hbp  = 0;
+dsi_hact = x*dsi_pixel_bits[format]/8;
+dsi_hblk = dsi_hact;
+dsi_hfp  = 0;
+dsi_vblk = 0;
+
+Signed-off-by: Jagan Teki <jagan@amarulasolutions.com>
+---
+ drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c b/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c
+index 915c2b7f8960..44dacdc09ace 100644
+--- a/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c
++++ b/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c
+@@ -478,6 +478,12 @@ static void sun6i_dsi_setup_timings(struct sun6i_dsi *dsi,
+ 
+ 	/* Do all timing calculations up front to allocate buffer space */
+ 
++	if (device->mode_flags & MIPI_DSI_MODE_VIDEO_BURST) {
++		hbp = hfp = hsa = vblk = 0;
++		hblk = (mode->hdisplay * Bpp);
++		goto alloc_buf;
++	}
++
+ 	/*
+ 	 * A sync period is composed of a blanking packet (4 bytes +
+ 	 * payload + 2 bytes) and a sync event packet (4 bytes). Its
+@@ -516,6 +522,7 @@ static void sun6i_dsi_setup_timings(struct sun6i_dsi *dsi,
+ 	 */
+ 	vblk = 0;
+ 
++alloc_buf:
+ 	/* How many bytes do we need to send all payloads? */
+ 	bytes = max_t(size_t, max(max(hfp, hblk), max(hsa, hbp)), vblk);
+ 	buffer = kmalloc(bytes, GFP_KERNEL);
+-- 
+2.21.0
+

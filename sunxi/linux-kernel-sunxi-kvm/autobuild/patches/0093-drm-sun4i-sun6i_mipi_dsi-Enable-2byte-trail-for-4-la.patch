@@ -1,0 +1,50 @@
+From 65b385a42fb830ec9a4962450e4eb252fd395ce9 Mon Sep 17 00:00:00 2001
+From: Jagan Teki <jagan@amarulasolutions.com>
+Date: Fri, 2 Nov 2018 22:41:19 +0530
+Subject: [PATCH 093/147] drm/sun4i: sun6i_mipi_dsi: Enable 2byte trail for
+ 4-lane burst mode
+
+For 4-lane, burst mode panels would need to enable 2byte trail_fill
+along with filling trail_env in dsi base control register.
+
+Similar reference code avialable in BSP (from linux-sunxi/
+drivers/video/sunxi/disp2/disp/de/lowlevel_sun50iw1/de_dsi.c)
+
+if (panel->lcd_dsi_lane == 4)
+{
+   dsi_dev[sel]->dsi_basic_ctl.bits.trail_inv = 0xc;
+   dsi_dev[sel]->dsi_basic_ctl.bits.trail_fill     = 1;
+}
+
+Signed-off-by: Jagan Teki <jagan@amarulasolutions.com>
+---
+ drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c b/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c
+index 8ef86e72a6bf..32e6a499c51a 100644
+--- a/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c
++++ b/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c
+@@ -34,6 +34,8 @@
+ #define SUN6I_DSI_CTL_EN			BIT(0)
+ 
+ #define SUN6I_DSI_BASIC_CTL_REG		0x00c
++#define SUN6I_DSI_BASIC_CTL_TRAIL_INV(n)	(((n) & 0xf) << 4)
++#define SUN6I_DSI_BASIC_CTL_TRAIL_FILL		BIT(3)
+ #define SUN6I_DSI_BASIC_CTL_HBP_DIS		BIT(2)
+ #define SUN6I_DSI_BASIC_CTL_HSA_HSE_DIS		BIT(1)
+ #define SUN6I_DSI_BASIC_CTL_VIDEO_BURST		BIT(0)
+@@ -465,6 +467,10 @@ static void sun6i_dsi_setup_burst(struct sun6i_dsi *dsi,
+ 	/* enable burst mode */
+ 	regmap_read(dsi->regs, SUN6I_DSI_BASIC_CTL_REG, &val);
+ 	val |= SUN6I_DSI_BASIC_CTL_VIDEO_BURST;
++	if (device->lanes == 4) {
++		val |= SUN6I_DSI_BASIC_CTL_TRAIL_INV(0xc);
++		val |= SUN6I_DSI_BASIC_CTL_TRAIL_FILL;
++	}
+ 	regmap_write(dsi->regs, SUN6I_DSI_BASIC_CTL_REG, val);
+ }
+ 
+-- 
+2.21.0
+

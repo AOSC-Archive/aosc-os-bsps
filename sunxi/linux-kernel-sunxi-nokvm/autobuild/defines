@@ -1,8 +1,8 @@
-PKGNAME=linux-kernel-sunxi-nokvm-4.19.0
+PKGNAME=linux-kernel-sunxi-nokvm-5.1.14
 PKGSEC=kernel
 PKGDEP=""
 BUILDDEP="bc dracut git"
-PKGDES="Linux Kernel version 4.19.0 optimized for Allwinner/sunXi SoCs, all ARMv7s, without KVM"
+PKGDES="Linux Kernel version 5.1.14 optimized for Allwinner/sunXi SoCs, all ARMv7s, without KVM"
 
 ABSTRIP=no
 ABELFDEP=no
