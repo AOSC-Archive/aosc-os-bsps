@@ -1,0 +1,6 @@
+PKGNAME=esp8089
+PKGSEC=net
+PKGDES="DKMS driver for the Espressif ESP8089 Wi-Fi chip"
+PKGDEP="dkms"
+
+ABHOST=noarch

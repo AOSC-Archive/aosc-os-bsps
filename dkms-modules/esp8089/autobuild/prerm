@@ -1,0 +1,5 @@
+unset ARCH
+
+DATE=20190705
+
+dkms remove esp8089/$DATE --all || true > /dev/null
