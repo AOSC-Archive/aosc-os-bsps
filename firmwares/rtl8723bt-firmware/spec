@@ -1,0 +1,3 @@
+VER=0+git20190224
+GITSRC="https://github.com/anarsoul/rtl8723bt-firmware"
+GITCO="28ad3584927c0fe1f321176f73a7fd42cccec56f"

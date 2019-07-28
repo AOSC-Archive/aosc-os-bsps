@@ -1,0 +1,2 @@
+mkdir -p "$PKGDIR"/lib/firmware
+cp -r rtl_bt/ "$PKGDIR"/lib/firmware/

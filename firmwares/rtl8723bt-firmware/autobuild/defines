@@ -1,0 +1,5 @@
+PKGNAME=rtl8723bt-firmware
+PKGSEC=non-free/kernel
+PKGDES="Firmwares for RTL8723BS/CS bluetooth"
+
+ABHOST=noarch
