@@ -1,5 +1,5 @@
 unset ARCH
 
-DATE=20190402
+DATE=20190728
 
 dkms remove rtl8723cs/$DATE --all || true > /dev/null
