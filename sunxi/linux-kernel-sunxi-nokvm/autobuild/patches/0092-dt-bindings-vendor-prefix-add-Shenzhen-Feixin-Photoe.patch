@@ -1,0 +1,32 @@
+From aaf5d281da0973cd1b5f6faa68c49933d88a7e56 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Fri, 12 Apr 2019 19:15:36 +0800
+Subject: [PATCH 092/109] dt-bindings: vendor-prefix: add Shenzhen Feixin
+ Photoelectics Co., Ltd
+
+Shenzhen Feixin Photoelectics Co., Ltd is a company to provide LCD
+modules.
+
+Add its vendor prefix.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+index 6992bbbbffab..f0bf3e81b75a 100644
+--- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
++++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+@@ -325,6 +325,8 @@ patternProperties:
+     description: Fastrax Oy
+   "^fcs,.*":
+     description: Fairchild Semiconductor
++  "^feixin,.*":
++    description: Shenzhen Feixin Photoelectic Co., Ltd
+   "^feiyang,.*":
+     description: Shenzhen Fly Young Technology Co.,LTD.
+   "^firefly,.*":
+-- 
+2.21.0
+

@@ -1,0 +1,43 @@
+From 1de4d1ecd6be1e3be5526b68b2a093c246830c13 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Wed, 15 Aug 2018 13:50:28 +0800
+Subject: [PATCH 063/109] arm64: allwinner: a64: fill OPP table with higher
+ frequencies
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
+index 5a5683cb8db6..59c7e5a2c237 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
+@@ -95,6 +95,24 @@
+ 			opp-microvolt = <1100000>;
+ 			clock-latency-ns = <244144>; /* 8 32k periods */
+ 		};
++
++		opp-1008000000 {
++			opp-hz = /bits/ 64 <1008000000>;
++			opp-microvolt = <1200000>;
++			clock-latency-ns = <244144>; /* 8 32k periods */
++		};
++
++		opp-1104000000 {
++			opp-hz = /bits/ 64 <1104000000>;
++			opp-microvolt = <1260000>;
++			clock-latency-ns = <244144>; /* 8 32k periods */
++		};
++
++		opp-1152000000 {
++			opp-hz = /bits/ 64 <1152000000>;
++			opp-microvolt = <1300000>;
++			clock-latency-ns = <244144>; /* 8 32k periods */
++		};
+ 	};
+ 
+ 	cpus {
+-- 
+2.21.0
+

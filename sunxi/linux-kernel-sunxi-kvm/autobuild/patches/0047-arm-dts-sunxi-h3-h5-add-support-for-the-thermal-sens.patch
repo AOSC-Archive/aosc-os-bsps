@@ -1,0 +1,54 @@
+From 579e3bb9b7b93a01ca1afa86600989b34c779c14 Mon Sep 17 00:00:00 2001
+From: Philipp Rossak <embed3d@gmail.com>
+Date: Fri, 26 Jan 2018 01:01:34 +0100
+Subject: [PATCH 047/109] arm: dts: sunxi-h3-h5: add support for the thermal
+ sensor in H3 and H5
+
+As we have gained the support for the thermal sensor in H3 and H5,
+we can now add its device nodes to the device tree. The H3 and H5 share
+most of its compatible. The compatible and the thermal sensor cells
+will be added in an additional patch per device.
+
+Signed-off-by: Philipp Rossak <embed3d@gmail.com>
+---
+ arch/arm/boot/dts/sunxi-h3-h5.dtsi | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/arch/arm/boot/dts/sunxi-h3-h5.dtsi b/arch/arm/boot/dts/sunxi-h3-h5.dtsi
+index 84977d4eb97a..402f729bef0c 100644
+--- a/arch/arm/boot/dts/sunxi-h3-h5.dtsi
++++ b/arch/arm/boot/dts/sunxi-h3-h5.dtsi
+@@ -230,6 +230,12 @@
+ 		sid: eeprom@1c14000 {
+ 			/* compatible is in per SoC .dtsi file */
+ 			reg = <0x1c14000 0x400>;
++			#address-cells = <1>;
++			#size-cells = <1>;
++
++			ths_calib: thermal-sensor-calibration@34 {
++				reg = <0x34 0x8>;
++			};
+ 		};
+ 
+ 		usb_otg: usb@1c19000 {
+@@ -483,6 +489,17 @@
+ 			};
+ 		};
+ 
++		ths: thermal-sensor@1c25000 {
++			/* compatible is in per SoC .dtsi file */
++			reg = <0x01c25000 0x100>;
++			interrupts = <GIC_SPI 31 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&ccu CLK_BUS_THS>, <&ccu CLK_THS>;
++			clock-names = "bus", "mod";
++			resets = <&ccu RST_BUS_THS>;
++			nvmem-cells = <&ths_calib>;
++			nvmem-cell-names = "calib";
++		};
++
+ 		timer@1c20c00 {
+ 			compatible = "allwinner,sun4i-a10-timer";
+ 			reg = <0x01c20c00 0xa0>;
+-- 
+2.21.0
+

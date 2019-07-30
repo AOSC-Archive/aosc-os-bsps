@@ -1,0 +1,31 @@
+From 297755bd76c0de5d8f1e699fa6ce1d1dccd2d846 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Mon, 29 Jul 2019 00:42:58 +0800
+Subject: [PATCH 032/109] dt-bindings: thermal: add binding for Allwinner H5
+ thermal sensor
+
+The thermal sensor in H5 is similar to the ones in H3/A64, but with 2
+sensors in it.
+
+Add binding for the H5 thermal sensor.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ Documentation/devicetree/bindings/thermal/sun8i-thermal.yaml | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Documentation/devicetree/bindings/thermal/sun8i-thermal.yaml b/Documentation/devicetree/bindings/thermal/sun8i-thermal.yaml
+index 83feed75b3b6..625656a98388 100644
+--- a/Documentation/devicetree/bindings/thermal/sun8i-thermal.yaml
++++ b/Documentation/devicetree/bindings/thermal/sun8i-thermal.yaml
+@@ -18,6 +18,7 @@ properties:
+     enum:
+       - allwinner,sun8i-h3-ths
+       - allwinner,sun50i-a64-ths
++      - allwinner,sun50i-h5-ths
+       - allwinner,sun50i-h6-ths
+ 
+   reg:
+-- 
+2.21.0
+

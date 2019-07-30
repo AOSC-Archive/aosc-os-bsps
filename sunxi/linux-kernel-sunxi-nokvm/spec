@@ -1,3 +1,3 @@
-VER=5.1.15
-SRCTBL="https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.1.15.tar.xz"
-CHKSUM="sha256::e8a128702680cea9f37c44bbeb456ea1c2ef1ae1eba0e05dcfc11d7d6cdc1399"
+VER=5.3.0~rc2
+SRCTBL="https://git.kernel.org/torvalds/t/linux-5.3-rc2.tar.gz"
+CHKSUM="sha256::8c5bfdeadd35b56bc4b71142750c93142b3182870fd7ff66ab8f24e4d0283580"
