@@ -1,19 +1,13 @@
-From e0cff45fe0348d6639c300338e276415e00c685c Mon Sep 17 00:00:00 2001
-From: Icenowy Zheng <icenowy@aosc.io>
-Date: Tue, 30 Jul 2019 23:05:43 +0800
-Subject: [PATCH] ASoC: sun4i-i2s: fix A64 internal codec I2S bus
+From 69229c90a696d6e93cd6733ddf058ddb07cdb128 Mon Sep 17 00:00:00 2001
+From: Marcus Cooper <codekipper@gmail.com>
+Date: Mon, 29 Jul 2019 17:21:30 +0200
+Subject: [PATCH] ASoC: sun4i-i2s: Incorrect SR and WSS computation
 
-The I2S bus used by the internal audio codec of Allwinner A64 SoC
-features SR and WSS values similar to the A10/A20/A31 I2S controllers
-rather than the H3 one (and the A64 external I2S controller). However,
-the codepath of calculating SR and WSS is wrongly set to the H3 one,
-which breaks the A64 internal audio codec.
+The A64 audio codec uses the original I2S block but the SR and
+WSS computation currently assigned is for the newer block.
 
-Fix the internal I2S bus of A64 audio codec by switching the SR/WSS
-codepath to the A10/A20/A31 one.
-
-Fixes: 619c15f7fac9 ("ASoC: sun4i-i2s: Change SR and WSS computation")
-Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+Fixes: 619c15f7fac9 (ASoC: sun4i-i2s: Change SR and WSS computation)
+Signed-off-by: Marcus Cooper <codekipper@gmail.com>
 ---
  sound/soc/sunxi/sun4i-i2s.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
