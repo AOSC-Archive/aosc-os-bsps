@@ -1,0 +1,38 @@
+From e0cff45fe0348d6639c300338e276415e00c685c Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Tue, 30 Jul 2019 23:05:43 +0800
+Subject: [PATCH] ASoC: sun4i-i2s: fix A64 internal codec I2S bus
+
+The I2S bus used by the internal audio codec of Allwinner A64 SoC
+features SR and WSS values similar to the A10/A20/A31 I2S controllers
+rather than the H3 one (and the A64 external I2S controller). However,
+the codepath of calculating SR and WSS is wrongly set to the H3 one,
+which breaks the A64 internal audio codec.
+
+Fix the internal I2S bus of A64 audio codec by switching the SR/WSS
+codepath to the A10/A20/A31 one.
+
+Fixes: 619c15f7fac9 ("ASoC: sun4i-i2s: Change SR and WSS computation")
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ sound/soc/sunxi/sun4i-i2s.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/sound/soc/sunxi/sun4i-i2s.c b/sound/soc/sunxi/sun4i-i2s.c
+index 9b2232908b65..7fa5c61169db 100644
+--- a/sound/soc/sunxi/sun4i-i2s.c
++++ b/sound/soc/sunxi/sun4i-i2s.c
+@@ -1002,8 +1002,8 @@ static const struct sun4i_i2s_quirks sun50i_a64_codec_i2s_quirks = {
+ 	.field_rxchanmap	= REG_FIELD(SUN4I_I2S_RX_CHAN_MAP_REG, 0, 31),
+ 	.field_txchansel	= REG_FIELD(SUN4I_I2S_TX_CHAN_SEL_REG, 0, 2),
+ 	.field_rxchansel	= REG_FIELD(SUN4I_I2S_RX_CHAN_SEL_REG, 0, 2),
+-	.get_sr			= sun8i_i2s_get_sr_wss,
+-	.get_wss		= sun8i_i2s_get_sr_wss,
++	.get_sr			= sun4i_i2s_get_sr,
++	.get_wss		= sun4i_i2s_get_wss,
+ };
+ 
+ static int sun4i_i2s_init_regmap_fields(struct device *dev,
+-- 
+2.21.0
+
