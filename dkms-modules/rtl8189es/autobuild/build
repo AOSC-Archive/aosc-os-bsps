@@ -1,5 +1,5 @@
 DATE=20190724
-REV=a81804c4961d9cc661bff1e73617dfe5a341d562
+REV=28d84253471f5f8f39e3e70955e577c1085d7c30
 
 mkdir -p "$PKGDIR"/usr/src/
 git clone https://github.com/jwrdegoede/rtl8189ES_linux "$PKGDIR"/usr/src/rtl8189es-$DATE
