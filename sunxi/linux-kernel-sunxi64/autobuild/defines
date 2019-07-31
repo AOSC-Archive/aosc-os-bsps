@@ -1,7 +1,7 @@
 PKGNAME=linux-kernel-sunxi64-5.3.0-rc2
 PKGSEC=kernel
 PKGDEP=""
-BUILDDEP="bc dracut git gcc+cross-armel"
+BUILDDEP="bc dracut git"
 PKGDES="Linux Kernel version 5.3.0-rc2 optimized for Allwinner/sunXi SoCs with 64-bit ARMv8 cores"
 
 ABSTRIP=no
