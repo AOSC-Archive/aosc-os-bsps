@@ -1,0 +1,51 @@
+From 9458d2ed9d9b737ab2223744351b07d48e2de37a Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Mon, 29 Jul 2019 23:12:26 +0800
+Subject: [PATCH 103/110] ARM: dts: sun8i: r40: enable AC/USB/Battery power
+ supplies for BPi M2 Ultra
+
+The Banana Pi M2 Ultra board has 3 possible power inputs -- DC
+jack (connected to ACIN of AXP221s), microUSB (connected to VBUS
+of AXP221s) and a battery connector (connected to battery charger
+of AXP221s).
+
+Enable the power supply related to these power inputs.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm/boot/dts/sun8i-r40-bananapi-m2-ultra.dts | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/arch/arm/boot/dts/sun8i-r40-bananapi-m2-ultra.dts b/arch/arm/boot/dts/sun8i-r40-bananapi-m2-ultra.dts
+index e46ece20e6c8..96a18db56c5d 100644
+--- a/arch/arm/boot/dts/sun8i-r40-bananapi-m2-ultra.dts
++++ b/arch/arm/boot/dts/sun8i-r40-bananapi-m2-ultra.dts
+@@ -168,6 +168,14 @@
+ 
+ #include "axp22x.dtsi"
+ 
++&ac_power_supply {
++	status = "okay";
++};
++
++&battery_power_supply {
++	status = "okay";
++};
++
+ &mmc0 {
+ 	vmmc-supply = <&reg_dcdc1>;
+ 	bus-width = <4>;
+@@ -328,6 +336,10 @@
+ 	};
+ };
+ 
++&usb_power_supply {
++	status = "okay";
++};
++
+ &usbphy {
+ 	usb1_vbus-supply = <&reg_vcc5v0>;
+ 	usb2_vbus-supply = <&reg_vcc5v0>;
+-- 
+2.21.0
+

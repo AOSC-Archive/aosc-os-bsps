@@ -1,4 +1,3 @@
-VER=5.3.0~rc2
-REL=1
-SRCTBL="https://git.kernel.org/torvalds/t/linux-5.3-rc2.tar.gz"
-CHKSUM="sha256::8c5bfdeadd35b56bc4b71142750c93142b3182870fd7ff66ab8f24e4d0283580"
+VER=5.3.0~rc5
+SRCTBL="https://git.kernel.org/torvalds/t/linux-5.3-rc5.tar.gz"
+CHKSUM="sha256::7749cc70d241aef1c8965a7da561b82791d8701e91a00ff8d93906eb466955c3"
