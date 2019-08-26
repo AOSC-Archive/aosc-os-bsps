@@ -1,0 +1,37 @@
+From 711d58f56f8d01e15c704524e5caef93e0bfb6b7 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Thu, 25 Jul 2019 00:46:58 +0800
+Subject: [PATCH 001/110] Revert "drm/sun4i: dsi: Rework a bit the hblk
+ calculation"
+
+This reverts commit 62e7511a4f4dcf07f753893d3424decd9466c98b.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c b/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c
+index a1fc8b520985..c79bbde10933 100644
+--- a/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c
++++ b/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c
+@@ -577,14 +577,9 @@ static void sun6i_dsi_setup_timings(struct sun6i_dsi *dsi,
+ 			  (mode->hsync_start - mode->hdisplay) * Bpp - HFP_PACKET_OVERHEAD);
+ 
+ 		/*
+-		 * The blanking is set using a sync event (4 bytes)
+-		 * and a blanking packet (4 bytes + payload + 2
+-		 * bytes). Its minimal size is therefore 10 bytes.
++		 * hblk seems to be the line + porches length.
+ 		 */
+-#define HBLK_PACKET_OVERHEAD	10
+-		hblk = max((unsigned int)HBLK_PACKET_OVERHEAD,
+-			   (mode->htotal - (mode->hsync_end - mode->hsync_start)) * Bpp -
+-			   HBLK_PACKET_OVERHEAD);
++		hblk = mode->htotal * Bpp - hsa;
+ 
+ 		/*
+ 		 * And I'm not entirely sure what vblk is about. The driver in
+-- 
+2.21.0
+

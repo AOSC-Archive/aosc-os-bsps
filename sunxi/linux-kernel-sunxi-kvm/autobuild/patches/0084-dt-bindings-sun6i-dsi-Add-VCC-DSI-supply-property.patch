@@ -1,0 +1,37 @@
+From a9f421947e938b6a62c1940615101e7feb5853ee Mon Sep 17 00:00:00 2001
+From: Jagan Teki <jagan@amarulasolutions.com>
+Date: Mon, 29 Oct 2018 20:25:33 +0530
+Subject: [PATCH 084/110] dt-bindings: sun6i-dsi: Add VCC-DSI supply property
+
+Most of the Allwinner MIPI DSI controllers are supply with
+VCC-DSI pin. which need to supply for some of the boards to
+trigger the power.
+
+So, document the supply property so-that the required board
+can eable it via device tree.
+
+Signed-off-by: Jagan Teki <jagan@amarulasolutions.com>
+Reviewed-by: Rob Herring <robh@kernel.org>
+---
+ .../bindings/display/allwinner,sun6i-a31-mipi-dsi.yaml       | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/display/allwinner,sun6i-a31-mipi-dsi.yaml b/Documentation/devicetree/bindings/display/allwinner,sun6i-a31-mipi-dsi.yaml
+index 47950fced28d..1fe9eecdf35f 100644
+--- a/Documentation/devicetree/bindings/display/allwinner,sun6i-a31-mipi-dsi.yaml
++++ b/Documentation/devicetree/bindings/display/allwinner,sun6i-a31-mipi-dsi.yaml
+@@ -50,6 +50,11 @@ properties:
+       port should be the input endpoint, usually coming from the
+       associated TCON.
+ 
++  dsi-supply:
++    description:
++      VCC-DSI supply for the DSI encoder
++
++
+ patternProperties:
+   "^panel@[0-9]+$": true
+ 
+-- 
+2.21.0
+

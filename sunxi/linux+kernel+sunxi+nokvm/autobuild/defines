@@ -1,6 +1,6 @@
 PKGNAME=linux+kernel+sunxi+nokvm
 PKGSEC=kernel
-PKGDEP="linux-kernel-sunxi-nokvm-5.3.0-rc2"
+PKGDEP="linux-kernel-sunxi-nokvm-5.3.0-rc5"
 PKGDES="The Linux Kernel optimized for Allwinner/sunXi SoCs, for all ARMv7s, but no KVM support"
 
 ABSTRIP=no

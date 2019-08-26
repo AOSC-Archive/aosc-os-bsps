@@ -1,0 +1,62 @@
+From e60b409574a376b25f5e0997eafd8ebcc11bcb6b Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Thu, 2 Nov 2017 16:48:27 +0800
+Subject: [PATCH 076/110] arm64: allwinner: a64: enable Wi-Fi for SoPine
+ Baseboard
+
+The Wi-Fi modules of SoPine Baseboard is powered via DLDO4 and ELDO1
+(the latter one provides I/O voltage).
+
+Add device node for it.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ .../allwinner/sun50i-a64-sopine-baseboard.dts  | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-sopine-baseboard.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-sopine-baseboard.dts
+index e6fb9683f213..b841776590b8 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a64-sopine-baseboard.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-sopine-baseboard.dts
+@@ -47,6 +47,8 @@
+ 
+ #include "sun50i-a64-sopine.dtsi"
+ 
++#include <dt-bindings/gpio/gpio.h>
++
+ / {
+ 	model = "SoPine with baseboard";
+ 	compatible = "pine64,sopine-baseboard", "pine64,sopine",
+@@ -78,6 +80,11 @@
+ 		regulator-min-microvolt = <1800000>;
+ 		regulator-max-microvolt = <1800000>;
+ 	};
++
++	wifi_pwrseq: wifi_pwrseq {
++		compatible = "mmc-pwrseq-simple";
++		reset-gpios = <&r_pio 0 2 GPIO_ACTIVE_LOW>; /* PL2 */
++	};
+ };
+ 
+ &ac_power_supply {
+@@ -139,6 +146,17 @@
+ 	};
+ };
+ 
++&mmc1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&mmc1_pins>;
++	vmmc-supply = <&reg_dldo4>;
++	vqmmc-supply = <&reg_eldo1>;
++	mmc-pwrseq = <&wifi_pwrseq>;
++	non-removable;
++	bus-width = <4>;
++	status = "okay";
++};
++
+ &mmc2 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&mmc2_pins>;
+-- 
+2.21.0
+
