@@ -1,7 +1,7 @@
-From 6f79c2d72db06ee9b6bad5eea6a4ac8d930f0f8f Mon Sep 17 00:00:00 2001
+From b1725cf7373d17e4e808a8df38837dfd33a35216 Mon Sep 17 00:00:00 2001
 From: Vasily Khoruzhick <anarsoul@gmail.com>
 Date: Sat, 13 Jul 2019 09:32:33 -0700
-Subject: [PATCH 028/110] thermal: sun8i: add thermal driver for A64
+Subject: [PATCH 028/120] thermal: sun8i: add thermal driver for A64
 
 Thermal sensor controller in A64 is similar to H3, but it has 3 sensors.
 Extend H3 functions to add support for multiple sensors.

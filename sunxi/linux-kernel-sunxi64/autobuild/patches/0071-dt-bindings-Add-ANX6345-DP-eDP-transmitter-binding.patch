@@ -1,7 +1,7 @@
-From 43d247c67faba77a630b8952624f2a698b62e986 Mon Sep 17 00:00:00 2001
+From ebc1cf36996b1b9f385fb61b682f72f4d6362619 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 7 May 2017 14:32:23 +0800
-Subject: [PATCH 071/110] dt-bindings: Add ANX6345 DP/eDP transmitter binding
+Subject: [PATCH 071/120] dt-bindings: Add ANX6345 DP/eDP transmitter binding
 
 The ANX6345 is an ultra-low power DisplayPort/eDP transmitter designed
 for portable devices.

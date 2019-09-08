@@ -1,7 +1,7 @@
-From 13181af4ff4f3604adda7b4ff3beb066a23919bb Mon Sep 17 00:00:00 2001
+From 6738b64bc86a487c09f616a356ecb372b539874c Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 30 Jun 2019 22:45:34 +0800
-Subject: [PATCH 102/110] arm64: allwinner: a64: dts: fix LRADC compatible
+Subject: [PATCH 102/120] arm64: allwinner: a64: dts: fix LRADC compatible
 
 The LRADC reference voltage of A64 is 2.0V, and AVCC is 3.0V. So the
 internal voltage divider is 2/3 (the A10 value), not 3/4 (the A83T

@@ -1,7 +1,7 @@
-From f4c91d84602fb3de852b94da7da40d8dba823677 Mon Sep 17 00:00:00 2001
+From e1ed6315cad891e696d5e615f3d62b64f0ca4172 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.xyz>
 Date: Sun, 6 Nov 2016 18:46:07 +0800
-Subject: [PATCH 005/110] drm: panel: simple-panel: get the enable gpio as-is
+Subject: [PATCH 005/120] drm: panel: simple-panel: get the enable gpio as-is
 
 The enable gpio of simple-panel may be used by a simplefb or other
 driver on the panel's display before the KMS driver get load.

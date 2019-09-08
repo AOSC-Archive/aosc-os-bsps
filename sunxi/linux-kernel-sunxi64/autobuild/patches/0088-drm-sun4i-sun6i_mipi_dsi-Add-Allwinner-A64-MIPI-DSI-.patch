@@ -1,7 +1,7 @@
-From 4291b33e1722682a53ce74a78e8a1eeef56533d4 Mon Sep 17 00:00:00 2001
+From 696c50c4dfaf4f5f9792ac4e19c66fb0b10dc005 Mon Sep 17 00:00:00 2001
 From: Jagan Teki <jagan@amarulasolutions.com>
 Date: Sat, 26 Jan 2019 19:41:41 +0530
-Subject: [PATCH 088/110] drm/sun4i: sun6i_mipi_dsi: Add Allwinner A64 MIPI DSI
+Subject: [PATCH 088/120] drm/sun4i: sun6i_mipi_dsi: Add Allwinner A64 MIPI DSI
  support
 
 The MIPI DSI controller in Allwinner A64 is similar to A33.
@@ -15,10 +15,10 @@ Signed-off-by: Jagan Teki <jagan@amarulasolutions.com>
  1 file changed, 7 insertions(+)
 
 diff --git a/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c b/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c
-index 3b3bedf93cb2..c288fb7ab2e6 100644
+index 694d0555f058..0bd18228e65f 100644
 --- a/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c
 +++ b/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c
-@@ -1229,11 +1229,18 @@ static const struct sun6i_dsi_variant sun6i_a31_mipi_dsi = {
+@@ -1230,11 +1230,18 @@ static const struct sun6i_dsi_variant sun6i_a31_mipi_dsi = {
  	.has_mod_clk = true,
  };
  

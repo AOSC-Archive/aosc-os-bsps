@@ -1,7 +1,7 @@
-From fd88743f7a81b2be797d860b0b75d3de56c7f992 Mon Sep 17 00:00:00 2001
+From c577dd24a20c749e093330f56ceae8b53d6686d7 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 29 Jul 2019 01:06:21 +0800
-Subject: [PATCH 035/110] arm64: allwinner: h6: add basic thermal zones
+Subject: [PATCH 035/120] arm64: allwinner: h6: add basic thermal zones
 
 The Allwinner H6 SoC has two thermal zones -- one for CPU and one for
 GPU.

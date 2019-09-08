@@ -1,7 +1,7 @@
-From 601659ebf6107f2a9407cc251029d762d2bb0c8b Mon Sep 17 00:00:00 2001
+From 690bbc8355d3376e0d7ac9aa4281be6b624a36ec Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 27 Jul 2018 19:19:28 +0800
-Subject: [PATCH 040/110] arm64: allwinner: dts: h6: add CPU supply for Pine
+Subject: [PATCH 040/120] arm64: allwinner: dts: h6: add CPU supply for Pine
  H64
 
 The Pine H64, follows the reference design on the AXP805 DCDC

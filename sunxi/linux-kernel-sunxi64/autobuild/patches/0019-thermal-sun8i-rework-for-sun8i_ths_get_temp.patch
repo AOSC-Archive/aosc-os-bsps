@@ -1,7 +1,7 @@
-From dad57bf2d62bfc6a140e947a1d007f247e17f7fe Mon Sep 17 00:00:00 2001
+From 3c656d67d385d71f57c7205579202a81402844a9 Mon Sep 17 00:00:00 2001
 From: Yangtao Li <tiny.windzz@gmail.com>
 Date: Sun, 16 Jun 2019 11:19:05 +0800
-Subject: [PATCH 019/110] thermal: sun8i: rework for sun8i_ths_get_temp()
+Subject: [PATCH 019/120] thermal: sun8i: rework for sun8i_ths_get_temp()
 
 For different socs, the way they get and calculate the
 temperature is roughly the same. So get the difference

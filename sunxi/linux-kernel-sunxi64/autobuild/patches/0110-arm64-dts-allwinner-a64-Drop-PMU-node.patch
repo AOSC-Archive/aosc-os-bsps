@@ -1,7 +1,7 @@
-From dfd2ae03526622c431a931490ff59c150cfba323 Mon Sep 17 00:00:00 2001
+From f1e074aff1ac8d66bd58eb38217681dd88b8f4ab Mon Sep 17 00:00:00 2001
 From: Vasily Khoruzhick <anarsoul@gmail.com>
 Date: Tue, 6 Aug 2019 06:57:26 -0700
-Subject: [PATCH 110/110] arm64: dts: allwinner: a64: Drop PMU node
+Subject: [PATCH 110/120] arm64: dts: allwinner: a64: Drop PMU node
 
 Looks like PMU in A64 is broken, it generates no interrupts at all and
 as result 'perf top' shows no events.

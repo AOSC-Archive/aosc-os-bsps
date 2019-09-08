@@ -1,7 +1,7 @@
-From a9f421947e938b6a62c1940615101e7feb5853ee Mon Sep 17 00:00:00 2001
+From 12f62ff57fe12fca1ca42d2c505b557f5c60e1c0 Mon Sep 17 00:00:00 2001
 From: Jagan Teki <jagan@amarulasolutions.com>
 Date: Mon, 29 Oct 2018 20:25:33 +0530
-Subject: [PATCH 084/110] dt-bindings: sun6i-dsi: Add VCC-DSI supply property
+Subject: [PATCH 084/120] dt-bindings: sun6i-dsi: Add VCC-DSI supply property
 
 Most of the Allwinner MIPI DSI controllers are supply with
 VCC-DSI pin. which need to supply for some of the boards to

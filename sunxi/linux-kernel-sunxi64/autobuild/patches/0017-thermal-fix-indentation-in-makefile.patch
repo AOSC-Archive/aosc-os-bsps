@@ -1,7 +1,7 @@
-From 385efa1d829915659b5ff6a1c8739c9bda81fdd1 Mon Sep 17 00:00:00 2001
+From e66aa00939f979ea80cea778765b69ec1358d280 Mon Sep 17 00:00:00 2001
 From: Yangtao Li <tiny.windzz@gmail.com>
 Date: Sat, 15 Jun 2019 11:25:00 +0800
-Subject: [PATCH 017/110] thermal: fix indentation in makefile
+Subject: [PATCH 017/120] thermal: fix indentation in makefile
 
 To unify code style.
 

@@ -1,7 +1,7 @@
-From 42926ebe932c33149bbc65b6fc777ab5c7aba884 Mon Sep 17 00:00:00 2001
+From 80d23e6eae4fef43df4ff35f4b3c77448293bcb5 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 29 Jul 2019 01:00:20 +0800
-Subject: [PATCH 033/110] thermal: sun8i: add support for Allwinner R40 thermal
+Subject: [PATCH 033/120] thermal: sun8i: add support for Allwinner R40 thermal
  sensor
 
 The thermal sensor in Allwinner R40 SoC is quite similar to the one in

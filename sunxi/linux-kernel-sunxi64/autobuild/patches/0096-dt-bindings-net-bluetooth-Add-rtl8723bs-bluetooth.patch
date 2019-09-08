@@ -1,7 +1,7 @@
-From 53560b9c7a0883e82ec89281e3d0b8f7220e7410 Mon Sep 17 00:00:00 2001
+From 238c6ea62127e2328ae8613174c0c3f673bc7d95 Mon Sep 17 00:00:00 2001
 From: Vasily Khoruzhick <anarsoul@gmail.com>
 Date: Wed, 31 Oct 2018 20:05:14 -0700
-Subject: [PATCH 096/110] dt-bindings: net: bluetooth: Add rtl8723bs-bluetooth
+Subject: [PATCH 096/120] dt-bindings: net: bluetooth: Add rtl8723bs-bluetooth
 
 Add binding document for bluetooth part of RTL8723BS/RTL8723CS
 

@@ -1,7 +1,7 @@
-From a6035f39fc0efb76ef548e777ae1cac937ded43f Mon Sep 17 00:00:00 2001
+From 8eeefc6b236f7c23d735b65f0b8e334517820b67 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 29 Jul 2019 10:28:26 +0800
-Subject: [PATCH 063/110] ARM: dts: sun8i: r40: enable thermal sensor
+Subject: [PATCH 063/120] ARM: dts: sun8i: r40: enable thermal sensor
 
 The Allwinner R40 SoC contains a thermal sensor that is capable of
 reading out the temperature of the CPU and GPU in the SoC.

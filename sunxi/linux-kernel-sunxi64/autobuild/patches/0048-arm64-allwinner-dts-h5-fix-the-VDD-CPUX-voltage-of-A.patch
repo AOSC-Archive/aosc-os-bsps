@@ -1,7 +1,7 @@
-From cf3a3e580fe46ad260ce9cb62e152cc047c0c3bd Mon Sep 17 00:00:00 2001
+From 2e1183db07750dd479a464d4a8ac3a37ea7fe36c Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 15 Aug 2018 20:14:20 +0800
-Subject: [PATCH 048/110] arm64: allwinner: dts: h5: fix the VDD-CPUX voltage
+Subject: [PATCH 048/120] arm64: allwinner: dts: h5: fix the VDD-CPUX voltage
  of ALL-H3-CC H5 ver
 
 The VDD-CPUX voltage of the H5 ver of Libre Computer ALL-H3-CC is not

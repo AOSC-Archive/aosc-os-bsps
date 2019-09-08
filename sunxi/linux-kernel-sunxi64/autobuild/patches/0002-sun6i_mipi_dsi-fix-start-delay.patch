@@ -1,7 +1,7 @@
-From d0bc5e16e6fe37aaf1b73a854cd42f6f6f010c98 Mon Sep 17 00:00:00 2001
+From ce73cb3d8e603c6c0676fa5c748617364b9b2326 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 25 Jul 2019 01:31:47 +0800
-Subject: [PATCH 002/110] sun6i_mipi_dsi: fix start delay
+Subject: [PATCH 002/120] sun6i_mipi_dsi: fix start delay
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---
@@ -9,7 +9,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 1 insertion(+), 7 deletions(-)
 
 diff --git a/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c b/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c
-index c79bbde10933..68b2c33f4b3d 100644
+index ac668b4dc6ff..950f6a5fe933 100644
 --- a/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c
 +++ b/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c
 @@ -364,13 +364,7 @@ static void sun6i_dsi_inst_init(struct sun6i_dsi *dsi,

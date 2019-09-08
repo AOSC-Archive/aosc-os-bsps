@@ -1,7 +1,7 @@
-From 104ec7aa0d5ad39a652244d6cc122b095a2341db Mon Sep 17 00:00:00 2001
+From f5bbc66ddb847a2e9fb8748b2e36e7a390cb4a7c Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 29 Jul 2019 00:55:10 +0800
-Subject: [PATCH 032/110] dt-bindings: thermal: add binding for Allwinner R40
+Subject: [PATCH 032/120] dt-bindings: thermal: add binding for Allwinner R40
  thermal sensor
 
 The Allwinner R40 thermal sensor is just the similar to the one in A64.

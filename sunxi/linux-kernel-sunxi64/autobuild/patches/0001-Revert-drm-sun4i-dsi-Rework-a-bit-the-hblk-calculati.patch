@@ -1,7 +1,7 @@
-From 711d58f56f8d01e15c704524e5caef93e0bfb6b7 Mon Sep 17 00:00:00 2001
+From 21e4dc1287eb1dbce96c9062e32d3fbde15a428e Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 25 Jul 2019 00:46:58 +0800
-Subject: [PATCH 001/110] Revert "drm/sun4i: dsi: Rework a bit the hblk
+Subject: [PATCH 001/120] Revert "drm/sun4i: dsi: Rework a bit the hblk
  calculation"
 
 This reverts commit 62e7511a4f4dcf07f753893d3424decd9466c98b.
@@ -12,7 +12,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 2 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c b/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c
-index a1fc8b520985..c79bbde10933 100644
+index b889ad3e86e1..ac668b4dc6ff 100644
 --- a/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c
 +++ b/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c
 @@ -577,14 +577,9 @@ static void sun6i_dsi_setup_timings(struct sun6i_dsi *dsi,

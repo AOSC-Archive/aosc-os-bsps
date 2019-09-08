@@ -1,7 +1,7 @@
-From b46c1f926b7f6a4ab4c96e004c6e7fdc948252a6 Mon Sep 17 00:00:00 2001
+From 862dce7cdbfff44d8219c4bc59018fa85efde09e Mon Sep 17 00:00:00 2001
 From: Jagan Teki <jagan@amarulasolutions.com>
 Date: Sat, 26 Jan 2019 19:37:40 +0530
-Subject: [PATCH 087/110] drm/sun4i: sun6i_mipi_dsi: Add has_mod_clk quirk
+Subject: [PATCH 087/120] drm/sun4i: sun6i_mipi_dsi: Add has_mod_clk quirk
 
 As per the user manual, look like mod clock is not mandatory
 for all Allwinner MIPI DSI controllers, it is connected to
@@ -16,7 +16,7 @@ Signed-off-by: Jagan Teki <jagan@amarulasolutions.com>
  2 files changed, 32 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c b/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c
-index 286700d1d706..3b3bedf93cb2 100644
+index d3437e7bc1b8..694d0555f058 100644
 --- a/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c
 +++ b/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c
 @@ -10,6 +10,7 @@
@@ -27,7 +27,7 @@ index 286700d1d706..3b3bedf93cb2 100644
  #include <linux/pm_runtime.h>
  #include <linux/regmap.h>
  #include <linux/reset.h>
-@@ -1079,6 +1080,7 @@ static int sun6i_dsi_probe(struct platform_device *pdev)
+@@ -1080,6 +1081,7 @@ static int sun6i_dsi_probe(struct platform_device *pdev)
  	dsi->dev = dev;
  	dsi->host.ops = &sun6i_dsi_host_ops;
  	dsi->host.dev = dev;
@@ -35,7 +35,7 @@ index 286700d1d706..3b3bedf93cb2 100644
  
  	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
  	base = devm_ioremap_resource(dev, res);
-@@ -1106,17 +1108,20 @@ static int sun6i_dsi_probe(struct platform_device *pdev)
+@@ -1107,17 +1109,20 @@ static int sun6i_dsi_probe(struct platform_device *pdev)
  		return PTR_ERR(dsi->reset);
  	}
  
@@ -61,7 +61,7 @@ index 286700d1d706..3b3bedf93cb2 100644
  
  	dsi->dphy = devm_phy_get(dev, "dphy");
  	if (IS_ERR(dsi->dphy)) {
-@@ -1146,7 +1151,8 @@ static int sun6i_dsi_probe(struct platform_device *pdev)
+@@ -1147,7 +1152,8 @@ static int sun6i_dsi_probe(struct platform_device *pdev)
  err_pm_disable:
  	pm_runtime_disable(dev);
  err_unprotect_clk:
@@ -71,7 +71,7 @@ index 286700d1d706..3b3bedf93cb2 100644
  	return ret;
  }
  
-@@ -1158,7 +1164,8 @@ static int sun6i_dsi_remove(struct platform_device *pdev)
+@@ -1159,7 +1165,8 @@ static int sun6i_dsi_remove(struct platform_device *pdev)
  	component_del(&pdev->dev, &sun6i_dsi_ops);
  	mipi_dsi_host_unregister(&dsi->host);
  	pm_runtime_disable(dev);
@@ -81,7 +81,7 @@ index 286700d1d706..3b3bedf93cb2 100644
  
  	return 0;
  }
-@@ -1175,7 +1182,8 @@ static int __maybe_unused sun6i_dsi_runtime_resume(struct device *dev)
+@@ -1176,7 +1183,8 @@ static int __maybe_unused sun6i_dsi_runtime_resume(struct device *dev)
  	}
  
  	reset_control_deassert(dsi->reset);
@@ -91,7 +91,7 @@ index 286700d1d706..3b3bedf93cb2 100644
  
  	/*
  	 * Enable the DSI block.
-@@ -1203,7 +1211,8 @@ static int __maybe_unused sun6i_dsi_runtime_suspend(struct device *dev)
+@@ -1204,7 +1212,8 @@ static int __maybe_unused sun6i_dsi_runtime_suspend(struct device *dev)
  {
  	struct sun6i_dsi *dsi = dev_get_drvdata(dev);
  
@@ -101,7 +101,7 @@ index 286700d1d706..3b3bedf93cb2 100644
  	reset_control_assert(dsi->reset);
  	regulator_disable(dsi->regulator);
  
-@@ -1216,9 +1225,16 @@ static const struct dev_pm_ops sun6i_dsi_pm_ops = {
+@@ -1217,9 +1226,16 @@ static const struct dev_pm_ops sun6i_dsi_pm_ops = {
  			   NULL)
  };
  

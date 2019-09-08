@@ -1,7 +1,7 @@
-From 684302201e69ac4d1a00e66fb435f14d7fd88ddd Mon Sep 17 00:00:00 2001
+From ffe338be21b3ad38ed2d9897a11a8374a67b4806 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 27 Jul 2018 19:30:10 +0800
-Subject: [PATCH 043/110] arm64: allwinner: h6: add extra operating points
+Subject: [PATCH 043/120] arm64: allwinner: h6: add extra operating points
 
 As we have all H6 boards' CPU regulator configured, we can now add
 extra operating points that are higher than the boot voltage.

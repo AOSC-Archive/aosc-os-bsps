@@ -1,7 +1,7 @@
-From e89fd5c16526981d8600d3e9c572d023d7cbfdf5 Mon Sep 17 00:00:00 2001
+From 317a0c6de63e8ba81d2b2421b8533b0c539df659 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 9 Feb 2017 00:18:56 +0800
-Subject: [PATCH 075/110] arm64: allwinner: a64: enable Wi-Fi for Pine64
+Subject: [PATCH 075/120] arm64: allwinner: a64: enable Wi-Fi for Pine64
 
 The Wi-Fi modules of Pine64 is powered via DLDO4 and ELDO1 (the latter
 one provides I/O voltage).

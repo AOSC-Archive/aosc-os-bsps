@@ -1,7 +1,7 @@
-From ea22ab709b321d7a4a738563348914328ee58eea Mon Sep 17 00:00:00 2001
+From 916fcce81481a3f2007fca41e45804e1fa286b9b Mon Sep 17 00:00:00 2001
 From: Yangtao Li <tiny.windzz@gmail.com>
 Date: Sun, 16 Jun 2019 00:54:06 +0800
-Subject: [PATCH 018/110] thermal: sun8i: get ths sensor number from device
+Subject: [PATCH 018/120] thermal: sun8i: get ths sensor number from device
  compatible
 
 For different socs, the number of ths sensors is different.

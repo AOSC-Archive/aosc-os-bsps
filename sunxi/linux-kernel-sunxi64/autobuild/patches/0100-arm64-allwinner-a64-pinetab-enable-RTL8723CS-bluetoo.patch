@@ -1,7 +1,7 @@
-From 2d00a6c2da0c9ffaca5cb8f57f757dd4460c59c9 Mon Sep 17 00:00:00 2001
+From 50a92b5fe33c8a1cd1b4bad8c814373c7256d41d Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 14 Apr 2019 23:46:47 +0800
-Subject: [PATCH 100/110] arm64: allwinner: a64: pinetab: enable RTL8723CS
+Subject: [PATCH 100/120] arm64: allwinner: a64: pinetab: enable RTL8723CS
  bluetooth
 
 PineTab has a RTL8723CS Wi-Fi/BT combo chip on board, the bluetooth part

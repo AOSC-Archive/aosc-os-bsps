@@ -1,7 +1,7 @@
-From 07bfb2b6ed591b56c00917c38ba4d14e837c0b58 Mon Sep 17 00:00:00 2001
+From 8535a80d837e25f7b846b2158403bba058b5e28a Mon Sep 17 00:00:00 2001
 From: Yangtao Li <tiny.windzz@gmail.com>
 Date: Sat, 15 Jun 2019 11:13:51 +0800
-Subject: [PATCH 016/110] thermal: sun8i: add thermal driver for h6
+Subject: [PATCH 016/120] thermal: sun8i: add thermal driver for h6
 
 This patch adds the support for allwinner thermal sensor, within
 allwinner SoC. It will register sensors for thermal framework
@@ -17,7 +17,7 @@ Signed-off-by: Yangtao Li <tiny.windzz@gmail.com>
  create mode 100644 drivers/thermal/sun8i_thermal.c
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index e81e60bd7c26..3d2c69368402 100644
+index e7a47b5210fd..3cd99ece565d 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
 @@ -682,6 +682,13 @@ L:	linux-crypto@vger.kernel.org
@@ -32,7 +32,7 @@ index e81e60bd7c26..3d2c69368402 100644
 +F:	drivers/thermal/sun8i_thermal.c
 +
  ALLWINNER VPU DRIVER
- M:	Maxime Ripard <maxime.ripard@bootlin.com>
+ M:	Maxime Ripard <mripard@kernel.org>
  M:	Paul Kocialkowski <paul.kocialkowski@bootlin.com>
 diff --git a/drivers/thermal/Kconfig b/drivers/thermal/Kconfig
 index 9966364a6deb..f8b73b32b92d 100644

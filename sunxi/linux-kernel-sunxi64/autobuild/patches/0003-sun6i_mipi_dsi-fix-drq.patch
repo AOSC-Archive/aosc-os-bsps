@@ -1,7 +1,7 @@
-From 98d89a25f1210bd154644b7650d39fdb7adfba0d Mon Sep 17 00:00:00 2001
+From 071d35f2760e2de29d7976b715f086ea22f49308 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 25 Jul 2019 01:32:02 +0800
-Subject: [PATCH 003/110] sun6i_mipi_dsi: fix drq
+Subject: [PATCH 003/120] sun6i_mipi_dsi: fix drq
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---
@@ -9,7 +9,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c b/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c
-index 68b2c33f4b3d..786e42e05fbb 100644
+index 950f6a5fe933..8d0e3ed7332c 100644
 --- a/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c
 +++ b/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c
 @@ -430,9 +430,9 @@ static void sun6i_dsi_setup_burst(struct sun6i_dsi *dsi,

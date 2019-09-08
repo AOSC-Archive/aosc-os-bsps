@@ -1,7 +1,7 @@
-From 876ef9ff8393fda8f40594f4720e11e04a21f5b6 Mon Sep 17 00:00:00 2001
+From 00874f3fc627fbceffcd046fe8a5fa9f698de1c8 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 29 Jul 2019 00:34:33 +0800
-Subject: [PATCH 029/110] thermal: sun8i: allow to use custom temperature
+Subject: [PATCH 029/120] thermal: sun8i: allow to use custom temperature
  calculation function
 
 The H5 temperature calculation function is strange. Firstly, it's

@@ -1,7 +1,7 @@
-From 3a4ce9f8e7b10f0b86358abba1d66b25782641f1 Mon Sep 17 00:00:00 2001
+From dd4d01418d7d8c2026294193335d27dabe1e65a9 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 22 Sep 2017 23:46:39 +0800
-Subject: [PATCH 059/110] arm64: allwinner: a64: add CPU opp table
+Subject: [PATCH 059/120] arm64: allwinner: a64: add CPU opp table
 
 Add the operating table for the CPU (ARM cores) on Allwinner A64 SoC.
 

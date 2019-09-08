@@ -1,7 +1,7 @@
-From cbe355e6c87e2177e28f72b368f10d2eac86d714 Mon Sep 17 00:00:00 2001
+From c6107e77cb3f58bc2972c8f2b48b242834eb40c2 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 29 Jul 2019 10:35:15 +0800
-Subject: [PATCH 065/110] ARM: dts: sun8i: r40: add operating points for higher
+Subject: [PATCH 065/120] ARM: dts: sun8i: r40: add operating points for higher
  frequencies
 
 As we now have thermal throttling and voltage scaling for R40 boards,

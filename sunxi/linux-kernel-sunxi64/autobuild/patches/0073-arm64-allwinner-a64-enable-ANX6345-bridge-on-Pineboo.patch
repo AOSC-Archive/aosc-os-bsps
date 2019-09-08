@@ -1,7 +1,7 @@
-From 9755c00201ef16ab96721daed73d54f0dfe58c3f Mon Sep 17 00:00:00 2001
+From 832d81d5714c3caffe9c85a62b2786a38c7a60ab Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 7 May 2017 14:41:24 +0800
-Subject: [PATCH 073/110] arm64: allwinner: a64: enable ANX6345 bridge on
+Subject: [PATCH 073/120] arm64: allwinner: a64: enable ANX6345 bridge on
  Pinebook
 
 Pinebook has an ANX6345 bridge connected to the RGB666 LCD output, and

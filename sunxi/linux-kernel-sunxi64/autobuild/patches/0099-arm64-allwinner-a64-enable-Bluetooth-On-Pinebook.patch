@@ -1,7 +1,7 @@
-From 807af5b651fda0b65e6a2a621a78edceab81bfdf Mon Sep 17 00:00:00 2001
+From 33d591137a8987ce82e480e2fd6c52d5d35fd598 Mon Sep 17 00:00:00 2001
 From: Vasily Khoruzhick <anarsoul@gmail.com>
 Date: Wed, 31 Oct 2018 20:43:26 -0700
-Subject: [PATCH 099/110] arm64: allwinner: a64: enable Bluetooth On Pinebook
+Subject: [PATCH 099/120] arm64: allwinner: a64: enable Bluetooth On Pinebook
 
 Pinebook has an RTL8723CS WiFi + BT chip, BT is connected to UART1
 and uses PL4 as BT reset, PL5 as device wake GPIO, PL6 as host wake GPIO
