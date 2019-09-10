@@ -1,7 +1,7 @@
 From df817a42b0c8fb6118a668195b08d3a8b032e8b6 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 15 Aug 2018 20:47:44 +0800
-Subject: [PATCH 083/120] arm64: allwinner: h6: enable Wi-Fi for Pine H64
+Subject: [PATCH 083/122] arm64: allwinner: h6: enable Wi-Fi for Pine H64
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---

@@ -1,7 +1,7 @@
 From 0ffdc32d2eebca4e913f1272f79bce0e79af5ca4 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 29 Jul 2019 23:12:26 +0800
-Subject: [PATCH 103/120] ARM: dts: sun8i: r40: enable AC/USB/Battery power
+Subject: [PATCH 103/122] ARM: dts: sun8i: r40: enable AC/USB/Battery power
  supplies for BPi M2 Ultra
 
 The Banana Pi M2 Ultra board has 3 possible power inputs -- DC

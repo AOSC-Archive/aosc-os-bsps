@@ -1,7 +1,7 @@
 From 0b52e342faeb72c01cf0b4e0cf216de9ed93c2e8 Mon Sep 17 00:00:00 2001
 From: Vasily Khoruzhick <anarsoul@gmail.com>
 Date: Wed, 31 Oct 2018 19:48:25 -0700
-Subject: [PATCH 095/120] Bluetooth: hci_h5: Add support for reset GPIO
+Subject: [PATCH 095/122] Bluetooth: hci_h5: Add support for reset GPIO
 
 Some boards (e.g. Pine64 and Pinebook) wire a GPIO to reset pin of
 RTL8723BS

@@ -1,7 +1,7 @@
 From 1be62b1cc535eb697ba1e5125ed7d56543567603 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 29 Jul 2019 01:04:19 +0800
-Subject: [PATCH 034/120] arm64: allwinner: h6: add thermal sensor device node
+Subject: [PATCH 034/122] arm64: allwinner: h6: add thermal sensor device node
 
 The Allwinner H6 SoC has a thermal sensor that can monitor the
 temperature of the CPU and GPU. It also have some calibration data

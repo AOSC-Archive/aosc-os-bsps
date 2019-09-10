@@ -1,7 +1,7 @@
 From b6f0d9543a5c05758d461ca887b15057bc06d545 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.xyz>
 Date: Fri, 18 Nov 2016 08:05:46 +0800
-Subject: [PATCH 008/120] ARM: dts: sun8i: a33-q8-tablet: Enable audio nodes
+Subject: [PATCH 008/122] ARM: dts: sun8i: a33-q8-tablet: Enable audio nodes
 
 Enable the audio codec and the audio dai for A33 Q8 tablets.
 

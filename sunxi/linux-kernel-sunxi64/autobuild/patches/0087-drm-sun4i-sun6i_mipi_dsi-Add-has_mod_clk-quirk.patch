@@ -1,7 +1,7 @@
 From 862dce7cdbfff44d8219c4bc59018fa85efde09e Mon Sep 17 00:00:00 2001
 From: Jagan Teki <jagan@amarulasolutions.com>
 Date: Sat, 26 Jan 2019 19:37:40 +0530
-Subject: [PATCH 087/120] drm/sun4i: sun6i_mipi_dsi: Add has_mod_clk quirk
+Subject: [PATCH 087/122] drm/sun4i: sun6i_mipi_dsi: Add has_mod_clk quirk
 
 As per the user manual, look like mod clock is not mandatory
 for all Allwinner MIPI DSI controllers, it is connected to

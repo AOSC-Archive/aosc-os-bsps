@@ -1,7 +1,7 @@
 From 0520f6fcff488145ad21e315f61b2ec55bf521fd Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 7 Aug 2019 21:15:51 +0800
-Subject: [PATCH 106/120] Input: axp20x-pek - resume device on all AXP variants
+Subject: [PATCH 106/122] Input: axp20x-pek - resume device on all AXP variants
 
 On all AXP-based devices, the power key of AXP is expected as a resume
 source.

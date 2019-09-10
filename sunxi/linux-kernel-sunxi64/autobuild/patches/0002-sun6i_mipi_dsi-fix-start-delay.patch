@@ -1,7 +1,7 @@
 From ce73cb3d8e603c6c0676fa5c748617364b9b2326 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 25 Jul 2019 01:31:47 +0800
-Subject: [PATCH 002/120] sun6i_mipi_dsi: fix start delay
+Subject: [PATCH 002/122] sun6i_mipi_dsi: fix start delay
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---

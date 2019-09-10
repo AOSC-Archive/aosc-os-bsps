@@ -1,7 +1,7 @@
 From 34edaf16addeb7d1357d04394b0294199e090430 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 15 Aug 2018 12:58:05 +0800
-Subject: [PATCH 054/120] arm64: allwinner: dts: h5: add support for the
+Subject: [PATCH 054/122] arm64: allwinner: dts: h5: add support for the
  thermal sensor in H5
 
 This patch adds the missing compatible and the thermal sensor cells.

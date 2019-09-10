@@ -1,7 +1,7 @@
 From b67baea36b09c76b394e942db1ff142b97e00d9a Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 9 Apr 2019 05:35:09 +0800
-Subject: [PATCH 092/120] arm64: allwinner: a64: dts: add PineTab board
+Subject: [PATCH 092/122] arm64: allwinner: a64: dts: add PineTab board
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---

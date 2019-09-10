@@ -1,7 +1,7 @@
 From 4c392a9a68e6056ebaab8b095efca71bfc1831b9 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 24 Aug 2019 23:44:07 +0800
-Subject: [PATCH 114/120] drm/sun4i: sun6i_mipi_dsi: add support for generic
+Subject: [PATCH 114/122] drm/sun4i: sun6i_mipi_dsi: add support for generic
  long write
 
 Add support for DSI generic long write transmission by reusing the code

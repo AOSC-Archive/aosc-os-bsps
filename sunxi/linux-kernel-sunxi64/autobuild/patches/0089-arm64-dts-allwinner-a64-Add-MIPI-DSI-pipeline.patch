@@ -1,7 +1,7 @@
 From 06a76b59f22b828c95eada1c317046bd0c1d433c Mon Sep 17 00:00:00 2001
 From: Jagan Teki <jagan@amarulasolutions.com>
 Date: Mon, 3 Dec 2018 00:05:29 +0530
-Subject: [PATCH 089/120] arm64: dts: allwinner: a64: Add MIPI DSI pipeline
+Subject: [PATCH 089/122] arm64: dts: allwinner: a64: Add MIPI DSI pipeline
 
 Add MIPI DSI pipeline for Allwinner A64.
 

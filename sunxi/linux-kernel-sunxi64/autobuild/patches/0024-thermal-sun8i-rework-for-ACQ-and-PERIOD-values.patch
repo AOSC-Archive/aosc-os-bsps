@@ -1,7 +1,7 @@
 From 4071bf8156c7ae71bdb65b8b6821f9b81787acae Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 29 Jul 2019 00:07:39 +0800
-Subject: [PATCH 024/120] thermal: sun8i: rework for ACQ and PERIOD values
+Subject: [PATCH 024/122] thermal: sun8i: rework for ACQ and PERIOD values
 
 Different chips may need different ACQ and PERIOD values.
 

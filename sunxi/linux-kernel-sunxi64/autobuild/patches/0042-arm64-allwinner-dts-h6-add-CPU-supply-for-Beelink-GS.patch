@@ -1,7 +1,7 @@
 From 7ba70ac0aa7ef80aff671df408d44a7b1dec0b22 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 29 Jul 2019 01:22:44 +0800
-Subject: [PATCH 042/120] arm64: allwinner: dts: h6: add CPU supply for Beelink
+Subject: [PATCH 042/122] arm64: allwinner: dts: h6: add CPU supply for Beelink
  GS1
 
 The Beelink GS1, follows the reference design on the AXP805 DCDC

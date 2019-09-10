@@ -1,7 +1,7 @@
 From 07b23c3ff2cb3970527f58f78efaf2076c28546e Mon Sep 17 00:00:00 2001
 From: Yangtao Li <tiny.windzz@gmail.com>
 Date: Wed, 19 Jun 2019 02:54:58 +0800
-Subject: [PATCH 025/120] dt-bindings: thermal: add binding document for h3
+Subject: [PATCH 025/122] dt-bindings: thermal: add binding document for h3
  thermal controller
 
 This patch adds binding document for allwinner h3 thermal controller.

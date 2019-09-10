@@ -1,7 +1,7 @@
 From 7bf96c74f8a5ff9aadb103debb2dc62f54ff306e Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 29 Jul 2019 10:24:31 +0800
-Subject: [PATCH 062/120] ARM: dts: sun8i: r40: add a basic DVFS table
+Subject: [PATCH 062/122] ARM: dts: sun8i: r40: add a basic DVFS table
 
 The Allwinner R40 SoC is capable of voltage/frequency scaling on the CPU
 cores.

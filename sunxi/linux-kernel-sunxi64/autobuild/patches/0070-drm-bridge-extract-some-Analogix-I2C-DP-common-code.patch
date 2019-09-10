@@ -1,7 +1,7 @@
 From 9032b4e83a9cc3c7522de1d720f770f3c1082441 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 7 May 2017 00:44:27 +0800
-Subject: [PATCH 070/120] drm/bridge: extract some Analogix I2C DP common code
+Subject: [PATCH 070/122] drm/bridge: extract some Analogix I2C DP common code
 
 Some code can be shared within different DP bridges by Analogix.
 

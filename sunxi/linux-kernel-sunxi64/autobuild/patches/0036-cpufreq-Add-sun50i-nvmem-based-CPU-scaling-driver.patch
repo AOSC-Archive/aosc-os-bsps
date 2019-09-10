@@ -1,7 +1,7 @@
 From ec8035b453b40ea58d441bd3f454e3576a137411 Mon Sep 17 00:00:00 2001
 From: Yangtao Li <tiny.windzz@gmail.com>
 Date: Wed, 12 Jun 2019 12:28:15 -0400
-Subject: [PATCH 036/120] cpufreq: Add sun50i nvmem based CPU scaling driver
+Subject: [PATCH 036/122] cpufreq: Add sun50i nvmem based CPU scaling driver
 
 For some SoCs, the CPU frequency subset and voltage value of each OPP
 varies based on the silicon variant in use. The sun50i-cpufreq-nvmem

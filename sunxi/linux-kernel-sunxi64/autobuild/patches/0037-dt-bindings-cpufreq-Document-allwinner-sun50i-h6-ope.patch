@@ -1,7 +1,7 @@
 From d3906b085ea640021075b279e688439c6e3f191a Mon Sep 17 00:00:00 2001
 From: Yangtao Li <tiny.windzz@gmail.com>
 Date: Wed, 12 Jun 2019 12:28:16 -0400
-Subject: [PATCH 037/120] dt-bindings: cpufreq: Document
+Subject: [PATCH 037/122] dt-bindings: cpufreq: Document
  allwinner,sun50i-h6-operating-points
 
 Allwinner Process Voltage Scaling Tables defines the voltage and

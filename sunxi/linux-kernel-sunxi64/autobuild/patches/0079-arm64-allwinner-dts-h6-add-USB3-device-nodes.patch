@@ -1,7 +1,7 @@
 From b48ce4bc2d925a4569f3505504dfdcfa4e12ec55 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 25 Dec 2017 12:10:06 +0800
-Subject: [PATCH 079/120] arm64: allwinner: dts: h6: add USB3 device nodes
+Subject: [PATCH 079/122] arm64: allwinner: dts: h6: add USB3 device nodes
 
 Allwinner H6 SoC features USB3 functionality, with a DWC3 controller and
 a custom PHY.

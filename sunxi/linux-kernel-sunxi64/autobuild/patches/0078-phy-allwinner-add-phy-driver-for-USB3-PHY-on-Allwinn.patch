@@ -1,7 +1,7 @@
 From afdfcd347d03fcc942b11ef67398b8cbe8aed193 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 25 Dec 2017 12:04:02 +0800
-Subject: [PATCH 078/120] phy: allwinner: add phy driver for USB3 PHY on
+Subject: [PATCH 078/122] phy: allwinner: add phy driver for USB3 PHY on
  Allwinner H6 SoC
 
 Allwinner H6 SoC contains a USB3 PHY (with USB2 DP/DM lines also

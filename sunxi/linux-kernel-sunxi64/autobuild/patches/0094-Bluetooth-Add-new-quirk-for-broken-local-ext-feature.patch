@@ -1,7 +1,7 @@
 From 9071a28092496a0ba7275468db44c4ff6efddd30 Mon Sep 17 00:00:00 2001
 From: Vasily Khoruzhick <anarsoul@gmail.com>
 Date: Wed, 31 Oct 2018 19:40:18 -0700
-Subject: [PATCH 094/120] Bluetooth: Add new quirk for broken local ext
+Subject: [PATCH 094/122] Bluetooth: Add new quirk for broken local ext
  features max_page
 
 Some adapters (e.g. RTL8723CS) advertise that they have more than
