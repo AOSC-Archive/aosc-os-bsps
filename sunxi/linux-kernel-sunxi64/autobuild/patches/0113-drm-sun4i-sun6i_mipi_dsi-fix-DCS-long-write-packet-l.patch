@@ -1,7 +1,7 @@
 From 0e3ec89c2cae060ad842725244744d44b8b6bd59 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 24 Aug 2019 14:53:23 +0800
-Subject: [PATCH 113/122] drm/sun4i: sun6i_mipi_dsi: fix DCS long write packet
+Subject: [PATCH 113/124] drm/sun4i: sun6i_mipi_dsi: fix DCS long write packet
  length
 
 The packet length of DCS long write packet should not be added with 1

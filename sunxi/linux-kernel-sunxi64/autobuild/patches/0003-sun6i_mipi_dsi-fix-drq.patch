@@ -1,7 +1,7 @@
 From 071d35f2760e2de29d7976b715f086ea22f49308 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 25 Jul 2019 01:32:02 +0800
-Subject: [PATCH 003/122] sun6i_mipi_dsi: fix drq
+Subject: [PATCH 003/124] sun6i_mipi_dsi: fix drq
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---

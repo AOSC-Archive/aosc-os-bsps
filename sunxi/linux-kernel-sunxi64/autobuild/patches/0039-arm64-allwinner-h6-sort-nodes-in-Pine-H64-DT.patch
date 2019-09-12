@@ -1,7 +1,7 @@
 From bb747d1c2d7e77636e7af4673f8d3c23e075d5c7 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 29 Jul 2019 01:20:01 +0800
-Subject: [PATCH 039/122] arm64: allwinner: h6: sort nodes in Pine H64 DT
+Subject: [PATCH 039/124] arm64: allwinner: h6: sort nodes in Pine H64 DT
 
 Currently the sequence of nodes in Pine H64 device tree file is messed
 up.

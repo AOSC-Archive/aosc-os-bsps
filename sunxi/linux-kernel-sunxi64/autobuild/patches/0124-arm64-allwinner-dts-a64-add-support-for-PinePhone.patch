@@ -1,7 +1,7 @@
-From aeda6e5b58dc9bdd497fe7fae8b3dfb9573f27aa Mon Sep 17 00:00:00 2001
+From 907e760165cae4cee0277ab405adbc78e23e3b43 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 24 Aug 2019 23:45:39 +0800
-Subject: [PATCH 122/122] arm64: allwinner: dts: a64: add support for PinePhone
+Subject: [PATCH 124/124] arm64: allwinner: dts: a64: add support for PinePhone
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---

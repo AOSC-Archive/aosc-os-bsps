@@ -1,7 +1,7 @@
 From 45bc6e58f37857b4855b8b73a0d8ce36319d71dd Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.xyz>
 Date: Mon, 20 Mar 2017 01:38:50 +0800
-Subject: [PATCH 012/122] dt-bindings: add binding for RTL8211E Ethernet PHY
+Subject: [PATCH 012/124] dt-bindings: add binding for RTL8211E Ethernet PHY
 
 Some RTL8211E Ethernet PHY have an issue that needs a workaround
 indicated with device tree.

@@ -1,7 +1,7 @@
 From 1854b4cf01f20ba543ae5192b3d7d7b2f1b90c46 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 9 Apr 2019 05:34:54 +0800
-Subject: [PATCH 091/122] panel: add Feixin K101-IM2BA02 panel
+Subject: [PATCH 091/124] panel: add Feixin K101-IM2BA02 panel
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---

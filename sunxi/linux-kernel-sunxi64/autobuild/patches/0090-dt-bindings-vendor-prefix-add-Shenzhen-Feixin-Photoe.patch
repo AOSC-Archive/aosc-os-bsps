@@ -1,7 +1,7 @@
 From 457bdf9e59b4d2dd7e7c358cbff78b33292152c8 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 12 Apr 2019 19:15:36 +0800
-Subject: [PATCH 090/122] dt-bindings: vendor-prefix: add Shenzhen Feixin
+Subject: [PATCH 090/124] dt-bindings: vendor-prefix: add Shenzhen Feixin
  Photoelectics Co., Ltd
 
 Shenzhen Feixin Photoelectics Co., Ltd is a company to provide LCD

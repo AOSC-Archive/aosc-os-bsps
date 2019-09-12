@@ -1,7 +1,7 @@
 From 8535a80d837e25f7b846b2158403bba058b5e28a Mon Sep 17 00:00:00 2001
 From: Yangtao Li <tiny.windzz@gmail.com>
 Date: Sat, 15 Jun 2019 11:13:51 +0800
-Subject: [PATCH 016/122] thermal: sun8i: add thermal driver for h6
+Subject: [PATCH 016/124] thermal: sun8i: add thermal driver for h6
 
 This patch adds the support for allwinner thermal sensor, within
 allwinner SoC. It will register sensors for thermal framework

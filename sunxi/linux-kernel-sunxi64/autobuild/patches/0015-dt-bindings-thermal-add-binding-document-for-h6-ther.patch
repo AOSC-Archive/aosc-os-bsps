@@ -1,7 +1,7 @@
 From 9954566edaa050cfe279398ce7156bb81b6771bf Mon Sep 17 00:00:00 2001
 From: Yangtao Li <tiny.windzz@gmail.com>
 Date: Sat, 15 Jun 2019 11:22:15 +0800
-Subject: [PATCH 015/122] dt-bindings: thermal: add binding document for h6
+Subject: [PATCH 015/124] dt-bindings: thermal: add binding document for h6
  thermal controller
 
 This patch adds binding document for allwinner h6 thermal controller.

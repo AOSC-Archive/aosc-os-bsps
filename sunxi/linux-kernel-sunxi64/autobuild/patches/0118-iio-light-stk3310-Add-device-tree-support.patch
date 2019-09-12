@@ -1,7 +1,7 @@
 From cce55b39384050a2d0185a4617c783d84776aded Mon Sep 17 00:00:00 2001
 From: Luca Weiss <luca@z3ntu.xyz>
 Date: Wed, 3 Jul 2019 20:05:59 +0200
-Subject: [PATCH 118/122] iio: light: stk3310: Add device tree support
+Subject: [PATCH 118/124] iio: light: stk3310: Add device tree support
 
 Add device tree support for the stk33xx family of ambient light sensors.
 

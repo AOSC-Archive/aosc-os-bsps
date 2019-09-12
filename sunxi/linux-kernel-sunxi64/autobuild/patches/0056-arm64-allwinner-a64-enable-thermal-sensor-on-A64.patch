@@ -1,7 +1,7 @@
 From 502f88a87a7a3063e6ccfdeb0823cd5d1a76d348 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 15 Aug 2018 13:03:43 +0800
-Subject: [PATCH 056/122] arm64: allwinner: a64: enable thermal sensor on A64
+Subject: [PATCH 056/124] arm64: allwinner: a64: enable thermal sensor on A64
 
 The Allwinner A64 SoC has an integrated thermal sensor for monitoring
 the temperature of the CPU/GPU.

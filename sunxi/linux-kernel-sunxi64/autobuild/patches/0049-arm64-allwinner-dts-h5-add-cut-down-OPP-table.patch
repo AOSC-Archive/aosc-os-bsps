@@ -1,7 +1,7 @@
 From 41f668e3d9b23cb3d0ab5880bf49ac46afd7c10c Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 15 Aug 2018 13:09:20 +0800
-Subject: [PATCH 049/122] arm64: allwinner: dts: h5: add cut down OPP table
+Subject: [PATCH 049/124] arm64: allwinner: dts: h5: add cut down OPP table
 
 As currently we don't have all H5 boards' ARM core regulator set, add a
 cut down operating point table to the H5 DTSI, including only OPPs lower

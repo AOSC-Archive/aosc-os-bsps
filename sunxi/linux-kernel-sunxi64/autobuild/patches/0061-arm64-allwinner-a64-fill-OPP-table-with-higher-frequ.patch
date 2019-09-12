@@ -1,7 +1,7 @@
 From 49ca1f3537e23a1a645dcecb5d8c635afda5c8b4 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 15 Aug 2018 13:50:28 +0800
-Subject: [PATCH 061/122] arm64: allwinner: a64: fill OPP table with higher
+Subject: [PATCH 061/124] arm64: allwinner: a64: fill OPP table with higher
  frequencies
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>

@@ -1,7 +1,7 @@
 From 00fe8627be571c796ef7799fcf7d65814ff619aa Mon Sep 17 00:00:00 2001
 From: Vasily Khoruzhick <anarsoul@gmail.com>
 Date: Sat, 7 Sep 2019 19:48:00 -0700
-Subject: [PATCH 112/122] drm/lima: fix lima_gem_wait() return value
+Subject: [PATCH 112/124] drm/lima: fix lima_gem_wait() return value
 
 drm_gem_reservation_object_wait() returns 0 if it succeeds and -ETIME
 if it timeouts, but lima driver assumed that 0 is error.

@@ -1,7 +1,7 @@
 From e1da2eb5058cc76441f9040c8fe5f94710b8efe8 Mon Sep 17 00:00:00 2001
 From: Yangtao Li <tiny.windzz@gmail.com>
 Date: Sun, 16 Jun 2019 18:50:50 +0800
-Subject: [PATCH 021/122] thermal: sun8i: rework for ths irq handler func
+Subject: [PATCH 021/124] thermal: sun8i: rework for ths irq handler func
 
 Here, we do something to prepare for the subsequent
 support of multiple platforms.
