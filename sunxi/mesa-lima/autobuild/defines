@@ -26,7 +26,7 @@ MESON_AFTER="--prefix=/opt/mesa-lima \
              -Dllvm=false \
              -Dlmsensors=false \
              -Dosmesa=none \
-             -Dshared-glapi=false \
+             -Dshared-glapi=true \
              -Db_lto=false \
              -Ddri-drivers= \
              -Dgallium-drivers=lima,kmsro,swrast \

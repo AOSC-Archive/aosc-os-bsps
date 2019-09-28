@@ -1,0 +1,10 @@
+if [ upgrade != "$1" ]; then
+	dpkg-divert --package mesa-lima --add --rename \
+	    --divert /usr/lib/libglapi.so.0.system-mesa /usr/lib/libglapi.so.0
+	dpkg-divert --package mesa-lima --add --rename \
+	    --divert /usr/lib/libgbm.so.1.system-mesa /usr/lib/libgbm.so.1
+	dpkg-divert --package mesa-lima --add --rename \
+	    --divert /usr/lib/libEGL_mesa.so.0.system-mesa /usr/lib/libEGL_mesa.so.0
+	dpkg-divert --package mesa-lima --add --rename \
+	    --divert /usr/lib/libGLX_mesa.so.0.system-mesa /usr/lib/libGLX_mesa.so.0
+fi

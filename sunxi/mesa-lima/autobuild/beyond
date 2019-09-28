@@ -1,3 +1,2 @@
-mkdir -p "$PKGDIR"/usr/lib/
-ln -sfv /opt/mesa-lima/lib/libGLX_mesa.so.0 "$PKGDIR"/usr/lib/libGLX_mesalima.so.0
-ln -sfv /opt/mesa-lima/lib/libEGL_mesa.so.0 "$PKGDIR"/usr/lib/libEGL_mesalima.so.0
+mkdir -p "$PKGDIR"
+ln -sfv /opt/mesa-lima/lib/lib{glapi.so.0,gbm.so.1,EGL_mesa.so.0,GLX_mesa.so.0} "$PKGDIR"/usr/lib/
