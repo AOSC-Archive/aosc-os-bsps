@@ -1,4 +1,4 @@
 VER=5.3.1
-REL=1
+REL=2
 SRCTBL="https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.3.1.tar.xz"
 CHKSUM="sha256::9890b5a909d316211d045a95f5f0680e39749f2319cb26d7cd067efaa692f858"
