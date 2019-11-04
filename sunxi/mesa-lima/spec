@@ -1,3 +1,3 @@
-VER=19.3.0~devel+git20191022+icenowyexp
+VER=19.4~devel+git20191104+icenowyexp
 GITSRC="https://gitlab.freedesktop.org/icenowy/mesa.git"
-GITCO="68edf6a63f0d0c621d3674dda56d309d7f09f6ba"
+GITCO="8e4e71c4b5e80a960844dced221a6954e3ed6208"
