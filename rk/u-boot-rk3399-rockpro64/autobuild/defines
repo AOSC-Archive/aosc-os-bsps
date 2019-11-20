@@ -1,0 +1,8 @@
+PKGNAME=u-boot-rk3399-rockpro64
+PKGDES="U-Boot for RockPro64"
+PKGSEC=embedded
+BUILDDEP="dtc swig"
+
+ABSTRIP=no
+ABELFDEP=no
+ABRPMAUTOPROVONLY=yes
