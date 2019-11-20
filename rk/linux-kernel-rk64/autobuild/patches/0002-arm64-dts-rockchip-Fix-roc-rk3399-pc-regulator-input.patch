@@ -1,0 +1,90 @@
+From d6e68afd080b739d5978a5d288be15d52ca818e7 Mon Sep 17 00:00:00 2001
+From: Jagan Teki <jagan@amarulasolutions.com>
+Date: Thu, 19 Sep 2019 10:58:22 +0530
+Subject: [PATCH 02/44] arm64: dts: rockchip: Fix roc-rk3399-pc regulator input
+ rails
+
+Few, know rk808 pmic regulators VCC[1-4], VCC[6-7], VCC[9-11],
+VDD_LOG, VDD_GPU, VDD_CPU_B, VCC3V3_SYS are inputting with vcc_sys
+which is 5V power rail from dc_12v.
+
+So, replace the vin-supply of above mentioned regulators
+with vcc_sys as per the PMIC-RK808-D page of roc-rk3399-pc
+schematics.
+
+Signed-off-by: Jagan Teki <jagan@amarulasolutions.com>
+Link: https://lore.kernel.org/r/20190919052822.10403-7-jagan@amarulasolutions.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+---
+ .../arm64/boot/dts/rockchip/rk3399-roc-pc.dts | 26 +++++++++----------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dts b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dts
+index 603c4d7274b8..257543d069d8 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dts
+@@ -85,7 +85,7 @@
+ 		regulator-boot-on;
+ 		regulator-min-microvolt = <3300000>;
+ 		regulator-max-microvolt = <3300000>;
+-		vin-supply = <&dc_12v>;
++		vin-supply = <&vcc_sys>;
+ 	};
+ 
+ 	/* Actually 3 regulators (host0, 1, 2) controlled by the same gpio */
+@@ -129,7 +129,7 @@
+ 		regulator-boot-on;
+ 		regulator-min-microvolt = <800000>;
+ 		regulator-max-microvolt = <1400000>;
+-		vin-supply = <&vcc3v3_sys>;
++		vin-supply = <&vcc_sys>;
+ 	};
+ };
+ 
+@@ -202,16 +202,16 @@
+ 		rockchip,system-power-controller;
+ 		wakeup-source;
+ 
+-		vcc1-supply = <&vcc3v3_sys>;
+-		vcc2-supply = <&vcc3v3_sys>;
+-		vcc3-supply = <&vcc3v3_sys>;
+-		vcc4-supply = <&vcc3v3_sys>;
+-		vcc6-supply = <&vcc3v3_sys>;
+-		vcc7-supply = <&vcc3v3_sys>;
++		vcc1-supply = <&vcc_sys>;
++		vcc2-supply = <&vcc_sys>;
++		vcc3-supply = <&vcc_sys>;
++		vcc4-supply = <&vcc_sys>;
++		vcc6-supply = <&vcc_sys>;
++		vcc7-supply = <&vcc_sys>;
+ 		vcc8-supply = <&vcc3v3_sys>;
+-		vcc9-supply = <&vcc3v3_sys>;
+-		vcc10-supply = <&vcc3v3_sys>;
+-		vcc11-supply = <&vcc3v3_sys>;
++		vcc9-supply = <&vcc_sys>;
++		vcc10-supply = <&vcc_sys>;
++		vcc11-supply = <&vcc_sys>;
+ 		vcc12-supply = <&vcc3v3_sys>;
+ 		vddio-supply = <&vcc1v8_pmu>;
+ 
+@@ -385,7 +385,7 @@
+ 		regulator-ramp-delay = <1000>;
+ 		regulator-always-on;
+ 		regulator-boot-on;
+-		vin-supply = <&vcc3v3_sys>;
++		vin-supply = <&vcc_sys>;
+ 
+ 		regulator-state-mem {
+ 			regulator-off-in-suspend;
+@@ -404,7 +404,7 @@
+ 		regulator-ramp-delay = <1000>;
+ 		regulator-always-on;
+ 		regulator-boot-on;
+-		vin-supply = <&vcc3v3_sys>;
++		vin-supply = <&vcc_sys>;
+ 
+ 		regulator-state-mem {
+ 			regulator-off-in-suspend;
+-- 
+2.23.0
+

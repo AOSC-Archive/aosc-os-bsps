@@ -1,0 +1,37 @@
+From 17433a3a5ddd4993c9cecc24b554b7106baf0779 Mon Sep 17 00:00:00 2001
+From: Tobias Schramm <tobias@t-sys.eu>
+Date: Fri, 8 Nov 2019 13:39:02 +0100
+Subject: [PATCH 32/44] panel-simple: Slow down display clock a little
+
+This might help with marginal designs a bit and does still archieve 60 Hz
+refresh rate
+---
+ drivers/gpu/drm/panel/panel-simple.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index cce539b99c35..11c96029bdf2 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -1035,15 +1035,15 @@ static const struct panel_desc boe_nv101wxmn51 = {
+ 
+ static const struct drm_display_mode boe_nv140fhmn49_modes[] = {
+ 	{
+-		.clock = 150000,
++		.clock = 148500,
+ 		.hdisplay = 1920,
+ 		.hsync_start = 1920 + 48,
+ 		.hsync_end = 1920 + 48 + 32,
+-		.htotal = 1920 + 48 + 32 + 80,
++		.htotal = 2200,
+ 		.vdisplay = 1080,
+ 		.vsync_start = 1080 + 3,
+ 		.vsync_end = 1080 + 3 + 5,
+-		.vtotal = 1080 + 3 + 5 + 24,
++		.vtotal = 1125,
+ 		.vrefresh = 60,
+ 	},
+ };
+-- 
+2.23.0
+

@@ -1,0 +1,75 @@
+From 8af7a7e6f148e0145792d7e98229477e49f25a01 Mon Sep 17 00:00:00 2001
+From: Tobias Schramm <tobias@t-sys.eu>
+Date: Tue, 5 Nov 2019 18:34:02 +0100
+Subject: [PATCH 28/44] panel-simple: Add support for BOE NV140FHM-N49 Full HD
+ eDP panel
+
+This panel is used in the Pinebook Pro.
+
+Signed-off-by: Tobias Schramm <tobias@t-sys.eu>
+---
+ drivers/gpu/drm/panel/panel-simple.c | 34 ++++++++++++++++++++++++++++
+ 1 file changed, 34 insertions(+)
+
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index 28fa6ba7b767..cce539b99c35 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -1033,6 +1033,36 @@ static const struct panel_desc boe_nv101wxmn51 = {
+ 	},
+ };
+ 
++static const struct drm_display_mode boe_nv140fhmn49_modes[] = {
++	{
++		.clock = 150000,
++		.hdisplay = 1920,
++		.hsync_start = 1920 + 48,
++		.hsync_end = 1920 + 48 + 32,
++		.htotal = 1920 + 48 + 32 + 80,
++		.vdisplay = 1080,
++		.vsync_start = 1080 + 3,
++		.vsync_end = 1080 + 3 + 5,
++		.vtotal = 1080 + 3 + 5 + 24,
++		.vrefresh = 60,
++	},
++};
++
++static const struct panel_desc boe_nv140fhmn49 = {
++	.modes = boe_nv140fhmn49_modes,
++	.num_modes = ARRAY_SIZE(boe_nv140fhmn49_modes),
++	.bpc = 8,
++	.size = {
++		.width = 309,
++		.height = 174,
++	},
++	.delay = {
++		.prepare = 210,
++		.enable = 50,
++		.unprepare = 160,
++	},
++};
++
+ static const struct drm_display_mode cdtech_s043wq26h_ct7_mode = {
+ 	.clock = 9000,
+ 	.hdisplay = 480,
+@@ -3138,6 +3168,9 @@ static const struct of_device_id platform_of_match[] = {
+ 	}, {
+ 		.compatible = "boe,nv101wxmn51",
+ 		.data = &boe_nv101wxmn51,
++	}, {
++		.compatible = "boe,nv140fhmn49",
++		.data = &boe_nv140fhmn49,
+ 	}, {
+ 		.compatible = "cdtech,s043wq26h-ct7",
+ 		.data = &cdtech_s043wq26h_ct7,
+@@ -3430,6 +3463,7 @@ static struct platform_driver panel_simple_platform_driver = {
+ 	.driver = {
+ 		.name = "panel-simple",
+ 		.of_match_table = platform_of_match,
++		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
+ 	},
+ 	.probe = panel_simple_platform_probe,
+ 	.remove = panel_simple_platform_remove,
+-- 
+2.23.0
+

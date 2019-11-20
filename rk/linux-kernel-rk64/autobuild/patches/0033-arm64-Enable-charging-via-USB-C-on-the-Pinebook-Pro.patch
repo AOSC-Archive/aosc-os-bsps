@@ -1,0 +1,53 @@
+From 393aab27d20f8a4cb1840c56489ac91cfe26bee9 Mon Sep 17 00:00:00 2001
+From: Tobias Schramm <tobias@t-sys.eu>
+Date: Fri, 8 Nov 2019 16:41:56 +0100
+Subject: [PATCH 33/44] arm64: Enable charging via USB-C on the Pinebook Pro
+
+---
+ .../boot/dts/rockchip/rk3399-pinebook-pro.dts      | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+index 569c1490b024..8140c33ae812 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+@@ -7,6 +7,7 @@
+ /dts-v1/;
+ #include <dt-bindings/input/linux-event-codes.h>
+ #include <dt-bindings/pwm/pwm.h>
++#include <dt-bindings/usb/pd.h>
+ #include "rk3399.dtsi"
+ #include "rk3399-opp.dtsi"
+ 
+@@ -311,7 +312,6 @@
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&vcc5v0_typec_en>;
+ 		regulator-name = "vcc5v0_typec";
+-		regulator-always-on;
+ 		vin-supply = <&vcc_sys>;
+ 	};
+ 
+@@ -719,10 +719,18 @@
+ 		reg = <0x22>;
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&fusb0_int>;
+-		vbus-5v-gpios = <&gpio1 RK_PA3 GPIO_ACTIVE_HIGH>;
+-		int-n-gpios = <&gpio1 RK_PA2 GPIO_ACTIVE_HIGH>;
+ 		fcs,int_n = <&gpio1 RK_PA2 GPIO_ACTIVE_HIGH>;
++		vbus-supply = <&vcc5v0_typec>;
+ 		status = "okay";
++		connector {
++			compatible = "usb-c-connector";
++			label = "USB-C";
++			power-role = "dual";
++			try-power-role = "sink";
++			source-pdos = <PDO_FIXED(5000, 1400, PDO_FIXED_USB_COMM)>;
++			sink-pdos = <PDO_FIXED(5000, 2500, PDO_FIXED_USB_COMM)>;
++			op-sink-microwatt = <1000000>;
++		};
+ 	};
+ 
+ 	cw2015@62 {
+-- 
+2.23.0
+

@@ -1,0 +1,79 @@
+From 8fd89041a236934ca3a46deaa45dda20e2eb1a15 Mon Sep 17 00:00:00 2001
+From: Markus Reichl <m.reichl@fivetechno.de>
+Date: Thu, 31 Oct 2019 12:04:29 +0100
+Subject: [PATCH 18/44] arm64: dts: rockchip: Add nodes for buttons on
+ rk3399-roc-pc
+
+rk3399-roc-pc has a power and a recovery button, enable them.
+
+Signed-off-by: Markus Reichl <m.reichl@fivetechno.de>
+Link: https://lore.kernel.org/r/1ce152cc-bd6b-63af-7892-221e084d087f@fivetechno.de
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+---
+ .../arm64/boot/dts/rockchip/rk3399-roc-pc.dts | 36 +++++++++++++++++++
+ 1 file changed, 36 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dts b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dts
+index 12d38f6e00ac..e1a595a86b98 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dts
+@@ -4,6 +4,7 @@
+  */
+ 
+ /dts-v1/;
++#include <dt-bindings/input/linux-event-codes.h>
+ #include <dt-bindings/pwm/pwm.h>
+ #include "rk3399.dtsi"
+ #include "rk3399-opp.dtsi"
+@@ -28,6 +29,35 @@
+ 		#clock-cells = <0>;
+ 	};
+ 
++	adc-keys {
++		compatible = "adc-keys";
++		io-channels = <&saradc 1>;
++		io-channel-names = "buttons";
++		keyup-threshold-microvolt = <1500000>;
++		poll-interval = <100>;
++
++		recovery {
++			label = "Recovery";
++			linux,code = <KEY_VENDOR>;
++			press-threshold-microvolt = <18000>;
++		};
++	};
++
++	gpio-keys {
++		compatible = "gpio-keys";
++		autorepeat;
++		pinctrl-names = "default";
++		pinctrl-0 = <&pwr_key_l>;
++
++		power {
++			label = "GPIO Key Power";
++			debounce-interval = <100>;
++			gpios = <&gpio0 RK_PA5 GPIO_ACTIVE_LOW>;
++			linux,code = <KEY_POWER>;
++			wakeup-source;
++		};
++	};
++
+ 	leds {
+ 		compatible = "gpio-leds";
+ 		pinctrl-names = "default";
+@@ -515,6 +545,12 @@
+ };
+ 
+ &pinctrl {
++	buttons {
++		pwr_key_l: pwr-key-l {
++			rockchip,pins = <0 RK_PA5 RK_FUNC_GPIO &pcfg_pull_up>;
++		};
++	};
++
+ 	lcd-panel {
+ 		lcd_panel_reset: lcd-panel-reset {
+ 			rockchip,pins = <4 RK_PD6 RK_FUNC_GPIO &pcfg_pull_up>;
+-- 
+2.23.0
+

@@ -1,0 +1,9 @@
+PKGNAME=linux-kernel-rk64-5.4-rc8
+PKGSEC=kernel
+PKGDEP=""
+BUILDDEP="bc dracut git"
+PKGDES="Linux Kernel version 5.4-rc8 optimized for Rockchip SoCs with 64-bit ARMv8 cores"
+
+ABSTRIP=no
+ABELFDEP=no
+ABRPMAUTOPROVONLY=yes

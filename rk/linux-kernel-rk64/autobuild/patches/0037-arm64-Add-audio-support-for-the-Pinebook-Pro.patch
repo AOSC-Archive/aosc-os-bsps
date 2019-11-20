@@ -1,0 +1,142 @@
+From b389bb6588e8fb2913d2a68abb23f48eb614b74a Mon Sep 17 00:00:00 2001
+From: Tobias Schramm <tobias@t-sys.eu>
+Date: Thu, 7 Nov 2019 20:46:08 +0100
+Subject: [PATCH 37/44] arm64: Add audio support for the Pinebook Pro
+
+---
+ .../boot/dts/rockchip/rk3399-pinebook-pro.dts | 64 +++++++++----------
+ 1 file changed, 29 insertions(+), 35 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+index 9b577b25f07f..08a6de6b3e26 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+@@ -202,21 +202,27 @@
+ 		BT,wake_host_irq = <&gpio0 RK_PA4 GPIO_ACTIVE_HIGH>;
+ 		status = "okay";
+ 	};
+-/*
++
+ 	es8316-sound {
+ 		status = "okay";
+ 		compatible = "simple-audio-card";
+ 		simple-audio-card,name = "rockchip,es8316-codec";
+ 		simple-audio-card,format = "i2s";
+ 		simple-audio-card,mclk-fs = <256>;
++
+ 		simple-audio-card,widgets =
+ 			"Microphone", "Mic Jack",
+-			"Headphone", "Headphone Jack";
++			"Headphone", "Headphones",
++			"Speaker", "Speaker";
+ 		simple-audio-card,routing =
+-			"Mic Jack", "MICBIAS1",
+-			"IN1P", "Mic Jack",
+-			"Headphone Jack", "HPOL",
+-			"Headphone Jack", "HPOR";
++			"MIC1", "Mic Jack",
++			"Headphones", "HPOL",
++			"Headphones", "HPOR",
++			"Speaker", "HPOL",
++			"Speaker", "HPOR";
++
++		simple-audio-card,hp-det-gpio = <&gpio0 RK_PB0 GPIO_ACTIVE_HIGH>;
++		simple-audio-card,aux-devs = <&speaker_amp>;
+ 
+ 		simple-audio-card,cpu {
+ 			sound-dai = <&i2s1>;
+@@ -226,22 +232,12 @@
+ 			sound-dai = <&es8316>;
+ 		};
+ 	};
+-*/
+-	speaker-sound {
+-		status = "okay";
+-		compatible = "simple-audio-card";
+-		simple-audio-card,format = "i2s";
+-		simple-audio-card,name = "rk-es8316-spk-sound";
+-		simple-audio-card,mclk-fs = <256>;
+ 
+-		simple-audio-card,cpu {
+-			sound-dai = <&i2s1>;
+-			system-clock-frequency = <12288000>;
+-		};
+-		simple-audio-card,codec {
+-			sound-dai = <&es8316>;
+-			system-clock-frequency = <12288000>;
+-		};
++	speaker_amp: speaker-amplifier {
++		status = "okay";
++		compatible = "simple-audio-amplifier";
++		enable-gpios = <&gpio4 RK_PD3 GPIO_ACTIVE_HIGH>;
++		VCC-supply = <&vcc5v0_host>;
+ 	};
+ 
+ 	fan0: pwm-fan {
+@@ -685,20 +681,18 @@
+ };
+ 
+ &i2c1 {
+-	i2c-scl-rising-time-ns = <300>;
+-	i2c-scl-falling-time-ns = <15>;
++	i2c-scl-rising-time-ns = <168>;
++	i2c-scl-falling-time-ns = <4>;
+ 	status = "okay";
+ 
++	clock-frequency = <100000>;
++
+ 	es8316: es8316@11 {
+ 		#sound-dai-cells = <0>;
+ 		compatible = "everest,es8316";
+ 		reg = <0x11>;
+ 		clocks = <&cru SCLK_I2S_8CH_OUT>;
+ 		clock-names = "mclk";
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&i2s_8ch_mclk>;
+-		spk-con-gpio = <&gpio4 RK_PD3 GPIO_ACTIVE_HIGH>;
+-		hp-det-gpio = <&gpio0 RK_PB0 GPIO_ACTIVE_HIGH>;
+ 	};
+ };
+ 
+@@ -756,22 +750,22 @@
+ };
+ 
+ &i2s0 {
+-	rockchip,playback-channels = <8>;
+-	rockchip,capture-channels = <8>;
+-	#sound-dai-cells = <0>;
+-	status = "okay";
++	status = "disabled";
+ };
+ 
+ &i2s1 {
+-	rockchip,playback-channels = <2>;
+-	rockchip,capture-channels = <2>;
++	rockchip,i2s-broken-burst-len;
++	rockchip,playback-channels = <8>;
++	rockchip,capture-channels = <8>;
+ 	#sound-dai-cells = <0>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&i2s_8ch_mclk>, <&i2s1_2ch_bus>;
+ 	status = "okay";
+ };
+ 
+ &i2s2 {
+ 	#sound-dai-cells = <0>;
+-	status = "okay";
++	status = "disabled";
+ };
+ 
+ &io_domains {
+@@ -889,7 +883,7 @@
+ 		};
+ 	};
+ 
+-	i2s0 {
++	i2s1 {
+ 		i2s_8ch_mclk: i2s-8ch-mclk {
+ 			rockchip,pins = <4 0 RK_FUNC_1 &pcfg_pull_none>;
+ 		};
+-- 
+2.23.0
+

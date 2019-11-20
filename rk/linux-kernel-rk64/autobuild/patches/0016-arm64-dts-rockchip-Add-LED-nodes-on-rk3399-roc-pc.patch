@@ -1,0 +1,76 @@
+From 68218885e6c6ee436d3d1d4baeef4758ee830453 Mon Sep 17 00:00:00 2001
+From: Markus Reichl <m.reichl@fivetechno.de>
+Date: Sun, 27 Oct 2019 19:06:19 +0100
+Subject: [PATCH 16/44] arm64: dts: rockchip: Add LED nodes on rk3399-roc-pc
+
+rk3399-roc-pc has three gpio LEDs, enable them.
+
+Signed-off-by: Markus Reichl <m.reichl@fivetechno.de>
+Link: https://lore.kernel.org/r/7d8d85c9-5fde-7943-a6b6-639bca38bdc1@fivetechno.de
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+---
+ .../arm64/boot/dts/rockchip/rk3399-roc-pc.dts | 41 +++++++++++++++++++
+ 1 file changed, 41 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dts b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dts
+index 257543d069d8..12d38f6e00ac 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dts
+@@ -28,6 +28,33 @@
+ 		#clock-cells = <0>;
+ 	};
+ 
++	leds {
++		compatible = "gpio-leds";
++		pinctrl-names = "default";
++		pinctrl-0 = <&work_led_gpio>, <&diy_led_gpio>, <&yellow_led_gpio>;
++
++		work-led {
++			label = "green:work";
++			gpios = <&gpio2 RK_PD3 GPIO_ACTIVE_HIGH>;
++			default-state = "on";
++			linux,default-trigger = "heartbeat";
++		};
++
++		diy-led {
++			label = "red:diy";
++			gpios = <&gpio0 RK_PB5 GPIO_ACTIVE_HIGH>;
++			default-state = "off";
++			linux,default-trigger = "mmc1";
++		};
++
++		yellow-led {
++			label = "yellow:yellow-led";
++			gpios = <&gpio0 RK_PA2 GPIO_ACTIVE_HIGH>;
++			default-state = "off";
++			linux,default-trigger = "mmc0";
++		};
++	};
++
+ 	sdio_pwrseq: sdio-pwrseq {
+ 		compatible = "mmc-pwrseq-simple";
+ 		clocks = <&rk808 1>;
+@@ -494,6 +521,20 @@
+ 		};
+ 	};
+ 
++	leds {
++		diy_led_gpio: diy_led-gpio {
++			rockchip,pins = <0 RK_PB5 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++
++		work_led_gpio: work_led-gpio {
++			rockchip,pins = <2 RK_PD3 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++
++		yellow_led_gpio: yellow_led-gpio {
++			rockchip,pins = <0 RK_PA2 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++	};
++
+ 	pmic {
+ 		vsel1_gpio: vsel1-gpio {
+ 			rockchip,pins = <1 RK_PC2 RK_FUNC_GPIO &pcfg_pull_down>;
+-- 
+2.23.0
+

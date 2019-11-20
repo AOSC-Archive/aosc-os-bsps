@@ -1,0 +1,59 @@
+From dbcbc6392bcd581f58158508176c207eb2c1858a Mon Sep 17 00:00:00 2001
+From: Jagan Teki <jagan@amarulasolutions.com>
+Date: Thu, 19 Sep 2019 10:58:21 +0530
+Subject: [PATCH 01/44] arm64: dts: rockchip: Rename vcc12v_sys into dc_12v for
+ roc-rk3399-pc
+
+It is always better practice to follow regulator naming conventions
+as per the schematics for future references.
+
+This would indeed helpful to review and check the naming convention
+directly on schematics, both for the code reviewers and the developers.
+
+So, rename vcc12v_sys into dc_12v as per rk3399 power tree as per
+roc-rk3399-pc schematics.
+
+Signed-off-by: Jagan Teki <jagan@amarulasolutions.com>
+Link: https://lore.kernel.org/r/20190919052822.10403-6-jagan@amarulasolutions.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+---
+ arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dts | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dts b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dts
+index 19f7732d728c..603c4d7274b8 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dts
+@@ -57,9 +57,9 @@
+ 	 * should be placed inside mp8859, but not until mp8859 has
+ 	 * its own dt-binding.
+ 	 */
+-	vcc12v_sys: mp8859-dcdc1 {
++	dc_12v: mp8859-dcdc1 {
+ 		compatible = "regulator-fixed";
+-		regulator-name = "vcc12v_sys";
++		regulator-name = "dc_12v";
+ 		regulator-always-on;
+ 		regulator-boot-on;
+ 		regulator-min-microvolt = <12000000>;
+@@ -85,7 +85,7 @@
+ 		regulator-boot-on;
+ 		regulator-min-microvolt = <3300000>;
+ 		regulator-max-microvolt = <3300000>;
+-		vin-supply = <&vcc12v_sys>;
++		vin-supply = <&dc_12v>;
+ 	};
+ 
+ 	/* Actually 3 regulators (host0, 1, 2) controlled by the same gpio */
+@@ -118,7 +118,7 @@
+ 		regulator-boot-on;
+ 		regulator-min-microvolt = <5000000>;
+ 		regulator-max-microvolt = <5000000>;
+-		vin-supply = <&vcc12v_sys>;
++		vin-supply = <&dc_12v>;
+ 	};
+ 
+ 	vdd_log: vdd-log {
+-- 
+2.23.0
+

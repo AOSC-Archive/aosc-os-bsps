@@ -1,0 +1,61 @@
+From d696c5514cf322a75c4783ac9ad1921ee1bcc6c0 Mon Sep 17 00:00:00 2001
+From: Johan Jonker <jbx6244@gmail.com>
+Date: Tue, 15 Oct 2019 22:58:51 +0200
+Subject: [PATCH 10/44] arm64: dts: rockchip: restyle rockchip,pins on
+ rk3399-rock-pi-4
+
+The define RK_FUNC_1 is no longer used,
+so restyle the rockchip,pins definitions.
+
+Signed-off-by: Johan Jonker <jbx6244@gmail.com>
+Link: https://lore.kernel.org/r/20191015205852.4200-1-jbx6244@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+---
+ .../boot/dts/rockchip/rk3399-rock-pi-4.dts     | 18 +++++++-----------
+ 1 file changed, 7 insertions(+), 11 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dts b/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dts
+index 1ae1ebd4efdd..188d9dfc297b 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dts
+@@ -486,21 +486,18 @@
+ 
+ 	sdio0 {
+ 		sdio0_bus4: sdio0-bus4 {
+-			rockchip,pins =
+-				<2 20 RK_FUNC_1 &pcfg_pull_up_20ma>,
+-				<2 21 RK_FUNC_1 &pcfg_pull_up_20ma>,
+-				<2 22 RK_FUNC_1 &pcfg_pull_up_20ma>,
+-				<2 23 RK_FUNC_1 &pcfg_pull_up_20ma>;
++			rockchip,pins = <2 RK_PC4 1 &pcfg_pull_up_20ma>,
++					<2 RK_PC5 1 &pcfg_pull_up_20ma>,
++					<2 RK_PC6 1 &pcfg_pull_up_20ma>,
++					<2 RK_PC7 1 &pcfg_pull_up_20ma>;
+ 		};
+ 
+ 		sdio0_cmd: sdio0-cmd {
+-			rockchip,pins =
+-				<2 24 RK_FUNC_1 &pcfg_pull_up_20ma>;
++			rockchip,pins = <2 RK_PD0 1 &pcfg_pull_up_20ma>;
+ 		};
+ 
+ 		sdio0_clk: sdio0-clk {
+-			rockchip,pins =
+-				<2 25 RK_FUNC_1 &pcfg_pull_none_20ma>;
++			rockchip,pins = <2 RK_PD1 1 &pcfg_pull_none_20ma>;
+ 		};
+ 	};
+ 
+@@ -532,8 +529,7 @@
+ 
+ 	wifi {
+ 		wifi_enable_h: wifi-enable-h {
+-			rockchip,pins =
+-				<0 RK_PB2 RK_FUNC_GPIO &pcfg_pull_none>;
++			rockchip,pins = <0 RK_PB2 RK_FUNC_GPIO &pcfg_pull_none>;
+ 		};
+ 
+ 		wifi_host_wake_l: wifi-host-wake-l {
+-- 
+2.23.0
+

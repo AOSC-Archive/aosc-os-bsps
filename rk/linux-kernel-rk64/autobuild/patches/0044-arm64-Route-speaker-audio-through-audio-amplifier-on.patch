@@ -1,0 +1,38 @@
+From 0dc252b50731aefc77163f19e92136406b9fa2d5 Mon Sep 17 00:00:00 2001
+From: Tobias Schramm <tobias@t-sys.eu>
+Date: Tue, 12 Nov 2019 19:37:11 +0100
+Subject: [PATCH 44/44] arm64: Route speaker audio through audio amplifier on
+ Ponebook Pro
+
+---
+ arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+index 6b57057fa028..3a27da05197f 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+@@ -234,8 +234,10 @@
+ 			"MIC1", "Mic Jack",
+ 			"Headphones", "HPOL",
+ 			"Headphones", "HPOR",
+-			"Speaker", "HPOL",
+-			"Speaker", "HPOR";
++			"Speaker Amplifier INL", "HPOL",
++			"Speaker Amplifier INR", "HPOR",
++			"Speaker", "Speaker Amplifier OUTL",
++			"Speaker", "Speaker Amplifier OUTR";
+ 
+ 		simple-audio-card,hp-det-gpio = <&gpio0 RK_PB0 GPIO_ACTIVE_HIGH>;
+ 		simple-audio-card,aux-devs = <&speaker_amp>;
+@@ -254,6 +256,7 @@
+ 		compatible = "simple-audio-amplifier";
+ 		enable-gpios = <&gpio4 RK_PD3 GPIO_ACTIVE_HIGH>;
+ 		VCC-supply = <&vcc5v0_host>;
++		sound-name-prefix = "Speaker Amplifier";
+ 	};
+ 
+ 	fan0: pwm-fan {
+-- 
+2.23.0
+

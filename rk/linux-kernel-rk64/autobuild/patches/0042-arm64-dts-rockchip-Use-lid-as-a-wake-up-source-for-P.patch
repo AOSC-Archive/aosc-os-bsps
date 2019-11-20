@@ -1,0 +1,32 @@
+From 76930da2b026135fcac6830893a02a5aac6fbd9f Mon Sep 17 00:00:00 2001
+From: Daniel Thompson <daniel.thompson@linaro.org>
+Date: Mon, 11 Nov 2019 18:52:06 +0000
+Subject: [PATCH 42/44] arm64: dts: rockchip: Use lid as a wake up source for
+ Pinebook Pro
+
+Generally speaking closing the lid triggers a suspend and opening it
+should cause a wakeup.
+
+Tested using suspend-to-idle (and probably not sufficient to wake up
+from a deep suspend).
+
+Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
+---
+ arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+index 15816f4a5413..1ddca1cbcd4a 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+@@ -109,6 +109,7 @@
+ 			label = "Lid";
+ 			linux,code = <SW_LID>;
+ 			linux,input-type = <EV_SW>;
++			wakeup-source;
+ 		};
+ 	};
+ 	
+-- 
+2.23.0
+
