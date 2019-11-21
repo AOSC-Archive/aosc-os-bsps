@@ -1,7 +1,7 @@
-From 06a76b59f22b828c95eada1c317046bd0c1d433c Mon Sep 17 00:00:00 2001
+From 21784688558dcb203b12310024b60b9fa2be726f Mon Sep 17 00:00:00 2001
 From: Jagan Teki <jagan@amarulasolutions.com>
 Date: Mon, 3 Dec 2018 00:05:29 +0530
-Subject: [PATCH 089/124] arm64: dts: allwinner: a64: Add MIPI DSI pipeline
+Subject: [PATCH 089/128] arm64: dts: allwinner: a64: Add MIPI DSI pipeline
 
 Add MIPI DSI pipeline for Allwinner A64.
 
@@ -16,10 +16,10 @@ Signed-off-by: Jagan Teki <jagan@amarulasolutions.com>
  1 file changed, 45 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
-index 59c7e5a2c237..38db7f7720ca 100644
+index 740f8a54a4f6..d8e6f49692ae 100644
 --- a/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
-@@ -425,6 +425,12 @@
+@@ -416,6 +416,12 @@
  					#address-cells = <1>;
  					#size-cells = <0>;
  					reg = <1>;
@@ -32,7 +32,7 @@ index 59c7e5a2c237..38db7f7720ca 100644
  				};
  			};
  		};
-@@ -1050,6 +1056,45 @@
+@@ -1041,6 +1047,45 @@
  			status = "disabled";
  		};
  
@@ -79,5 +79,5 @@ index 59c7e5a2c237..38db7f7720ca 100644
  			compatible = "allwinner,sun50i-a64-csi";
  			reg = <0x01cb0000 0x1000>;
 -- 
-2.21.0
+2.23.0
 

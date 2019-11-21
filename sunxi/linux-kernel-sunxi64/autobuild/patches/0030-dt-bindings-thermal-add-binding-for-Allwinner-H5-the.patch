@@ -1,7 +1,7 @@
-From dd436fbd59e8a72d02048d339fb37dad51891606 Mon Sep 17 00:00:00 2001
+From 66da26fe63a65b105a37926ac247b3e6e29a4fb0 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 29 Jul 2019 00:42:58 +0800
-Subject: [PATCH 030/124] dt-bindings: thermal: add binding for Allwinner H5
+Subject: [PATCH 030/128] dt-bindings: thermal: add binding for Allwinner H5
  thermal sensor
 
 The thermal sensor in H5 is similar to the ones in H3/A64, but with 2
@@ -27,5 +27,5 @@ index 83feed75b3b6..625656a98388 100644
  
    reg:
 -- 
-2.21.0
+2.23.0
 

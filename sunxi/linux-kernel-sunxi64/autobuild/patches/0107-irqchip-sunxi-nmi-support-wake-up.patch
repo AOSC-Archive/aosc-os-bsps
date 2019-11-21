@@ -1,7 +1,7 @@
-From bdb670388562b7b4b699995ecd709a6f773d5a92 Mon Sep 17 00:00:00 2001
+From 71ddb32c7307f00a84006ea0d7d0a551d44b7514 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 9 Aug 2019 10:50:20 +0800
-Subject: [PATCH 107/124] irqchip/sunxi-nmi: support wake up
+Subject: [PATCH 107/128] irqchip/sunxi-nmi: support wake up
 
 On Allwinner boards, the NMI of the SoC is usually hooked to X-Powers
 AXP series PMIC, which have power key support.
@@ -31,5 +31,5 @@ index a412b5d5d0fa..4399bd1207ed 100644
  	gc->chip_types[0].regs.mask		= reg_offs->enable;
  	gc->chip_types[0].regs.type		= reg_offs->ctrl;
 -- 
-2.21.0
+2.23.0
 

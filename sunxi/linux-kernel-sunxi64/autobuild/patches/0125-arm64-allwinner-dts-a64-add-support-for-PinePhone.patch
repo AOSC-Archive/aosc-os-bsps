@@ -1,7 +1,7 @@
-From 907e760165cae4cee0277ab405adbc78e23e3b43 Mon Sep 17 00:00:00 2001
+From c141dc6410a36560e5d6d9c6f04554384a0af5b1 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 24 Aug 2019 23:45:39 +0800
-Subject: [PATCH 124/124] arm64: allwinner: dts: a64: add support for PinePhone
+Subject: [PATCH 125/128] arm64: allwinner: dts: a64: add support for PinePhone
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---
@@ -24,7 +24,7 @@ index cba344e77e33..b1b58100a87c 100644
  dtb-$(CONFIG_ARCH_SUNXI) += sun50i-h5-bananapi-m2-plus.dtb
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dts
 new file mode 100644
-index 000000000000..0d8bd874915b
+index 000000000000..adfe62571e66
 --- /dev/null
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dts
 @@ -0,0 +1,533 @@
@@ -232,7 +232,7 @@ index 000000000000..0d8bd874915b
 +	status = "okay";
 +
 +	touchscreen@5d {
-+		compatible = "goodix,gt917s", "goodix,gt911";
++		compatible = "goodix,gt917s";
 +		reg = <0x5d>;
 +		interrupt-parent = <&pio>;
 +		interrupts = <7 4 IRQ_TYPE_LEVEL_HIGH>; /* PH4 */
@@ -486,8 +486,8 @@ index 000000000000..0d8bd874915b
 +
 +&reg_ldo_io0 {
 +	regulator-always-on;
-+	regulator-min-microvolt = <2800000>;
-+	regulator-max-microvolt = <2800000>;
++	regulator-min-microvolt = <3300000>;
++	regulator-max-microvolt = <3300000>;
 +	regulator-name = "vcc-lcd";
 +	status = "okay";
 +};
@@ -562,5 +562,5 @@ index 000000000000..0d8bd874915b
 +	status = "okay";
 +};
 -- 
-2.21.0
+2.23.0
 

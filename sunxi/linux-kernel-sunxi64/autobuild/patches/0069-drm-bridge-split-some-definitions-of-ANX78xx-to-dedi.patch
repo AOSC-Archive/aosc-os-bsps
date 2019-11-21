@@ -1,7 +1,7 @@
-From af9f0717120346364be56a4225755c663a79b85b Mon Sep 17 00:00:00 2001
+From 4ffb653f95193ae877ef0d2c1894a4a22b05df74 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 6 May 2017 15:41:56 +0800
-Subject: [PATCH 069/124] drm/bridge: split some definitions of ANX78xx to
+Subject: [PATCH 069/128] drm/bridge: split some definitions of ANX78xx to
  dedicated headers
 
 Some definitions currently in analogix-anx78xx.h are not restricted to
@@ -1017,5 +1017,5 @@ index 000000000000..25ceabe34a39
 +
 +#endif /* _ANALOGIX_I2C_TXCOMMON_H_ */
 -- 
-2.21.0
+2.23.0
 

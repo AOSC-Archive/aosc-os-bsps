@@ -1,7 +1,7 @@
-From f23d4f37e25133efc2212be70e5181dc03396878 Mon Sep 17 00:00:00 2001
+From 86821a83b3b775173fc3c2c4c6a358ba0d93a389 Mon Sep 17 00:00:00 2001
 From: Yangtao Li <tiny.windzz@gmail.com>
 Date: Sun, 16 Jun 2019 18:58:31 +0800
-Subject: [PATCH 022/124] thermal: sun8i: support mod clocks
+Subject: [PATCH 022/128] thermal: sun8i: support mod clocks
 
 H3 has extra clock, so introduce something in ths_thermal_chip/ths_device
 and adds the process of the clock.
@@ -81,5 +81,5 @@ index a16e86b3afd5..f7fde760a2ae 100644
  	reset_control_assert(tmdev->reset);
  
 -- 
-2.21.0
+2.23.0
 

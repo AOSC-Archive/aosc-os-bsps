@@ -1,7 +1,7 @@
-From 502f88a87a7a3063e6ccfdeb0823cd5d1a76d348 Mon Sep 17 00:00:00 2001
+From a28afb733d2acde500200b867d7a87760020e0d1 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 15 Aug 2018 13:03:43 +0800
-Subject: [PATCH 056/124] arm64: allwinner: a64: enable thermal sensor on A64
+Subject: [PATCH 056/128] arm64: allwinner: a64: enable thermal sensor on A64
 
 The Allwinner A64 SoC has an integrated thermal sensor for monitoring
 the temperature of the CPU/GPU.
@@ -14,7 +14,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 69 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
-index 9cc9bdde81ac..4022bb3c8a6f 100644
+index cd92f546c483..54a28452e9ff 100644
 --- a/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
 @@ -49,6 +49,7 @@
@@ -25,7 +25,7 @@ index 9cc9bdde81ac..4022bb3c8a6f 100644
  
  / {
  	interrupt-parent = <&gic>;
-@@ -485,6 +486,12 @@
+@@ -476,6 +477,12 @@
  		sid: eeprom@1c14000 {
  			compatible = "allwinner,sun50i-a64-sid";
  			reg = <0x1c14000 0x400>;
@@ -38,7 +38,7 @@ index 9cc9bdde81ac..4022bb3c8a6f 100644
  		};
  
  		usb_otg: usb@1c19000 {
-@@ -799,6 +806,18 @@
+@@ -790,6 +797,18 @@
  			status = "disabled";
  		};
  
@@ -57,7 +57,7 @@ index 9cc9bdde81ac..4022bb3c8a6f 100644
  		uart0: serial@1c28000 {
  			compatible = "snps,dw-apb-uart";
  			reg = <0x01c28000 0x400>;
-@@ -1153,4 +1172,54 @@
+@@ -1144,4 +1163,54 @@
  			interrupts = <GIC_SPI 25 IRQ_TYPE_LEVEL_HIGH>;
  		};
  	};
@@ -113,5 +113,5 @@ index 9cc9bdde81ac..4022bb3c8a6f 100644
 +	};
  };
 -- 
-2.21.0
+2.23.0
 

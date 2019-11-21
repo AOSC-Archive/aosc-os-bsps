@@ -1,7 +1,7 @@
-From 65e8c584803ebeb9caf4682c591da8c2f88a769d Mon Sep 17 00:00:00 2001
+From 03e9897b9d1b9faf0d2c9ffe1324848ece13251a Mon Sep 17 00:00:00 2001
 From: Ondrej Jirman <megous@megous.com>
 Date: Tue, 3 Sep 2019 12:26:59 +0200
-Subject: [PATCH 2/2] drm: sun4i: Mark one of the UI planes as a cursor one
+Subject: [PATCH 127/128] drm: sun4i: Mark one of the UI planes as a cursor one
 
 Signed-off-by: Ondrej Jirman <megous@megous.com>
 ---
@@ -68,5 +68,5 @@ index f4ab1cf6cded..41d613fd2ae6 100644
 +					       enum drm_plane_type type);
  #endif /* _SUN8I_UI_LAYER_H_ */
 -- 
-2.21.0
+2.23.0
 

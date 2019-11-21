@@ -1,7 +1,7 @@
-From 696c50c4dfaf4f5f9792ac4e19c66fb0b10dc005 Mon Sep 17 00:00:00 2001
+From ae3bbc3e1d51cbcfc229bc6ea00346dc67785645 Mon Sep 17 00:00:00 2001
 From: Jagan Teki <jagan@amarulasolutions.com>
 Date: Sat, 26 Jan 2019 19:41:41 +0530
-Subject: [PATCH 088/124] drm/sun4i: sun6i_mipi_dsi: Add Allwinner A64 MIPI DSI
+Subject: [PATCH 088/128] drm/sun4i: sun6i_mipi_dsi: Add Allwinner A64 MIPI DSI
  support
 
 The MIPI DSI controller in Allwinner A64 is similar to A33.
@@ -38,5 +38,5 @@ index 694d0555f058..0bd18228e65f 100644
  };
  MODULE_DEVICE_TABLE(of, sun6i_dsi_of_table);
 -- 
-2.21.0
+2.23.0
 

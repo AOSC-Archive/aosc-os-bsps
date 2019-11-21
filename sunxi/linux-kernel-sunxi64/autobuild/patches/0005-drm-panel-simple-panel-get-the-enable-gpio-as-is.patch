@@ -1,7 +1,7 @@
-From e1ed6315cad891e696d5e615f3d62b64f0ca4172 Mon Sep 17 00:00:00 2001
+From 8285bd2550f63c8d76908c93e9d7a9a325c9aaa0 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.xyz>
 Date: Sun, 6 Nov 2016 18:46:07 +0800
-Subject: [PATCH 005/124] drm: panel: simple-panel: get the enable gpio as-is
+Subject: [PATCH 005/128] drm: panel: simple-panel: get the enable gpio as-is
 
 The enable gpio of simple-panel may be used by a simplefb or other
 driver on the panel's display before the KMS driver get load.
@@ -15,7 +15,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.xyz>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-index 5a93c4edf1e4..bc40c28557a1 100644
+index ee6900eb3906..b16172a5eb41 100644
 --- a/drivers/gpu/drm/panel/panel-simple.c
 +++ b/drivers/gpu/drm/panel/panel-simple.c
 @@ -321,7 +321,7 @@ static int panel_simple_probe(struct device *dev, const struct panel_desc *desc)
@@ -28,5 +28,5 @@ index 5a93c4edf1e4..bc40c28557a1 100644
  		err = PTR_ERR(panel->enable_gpio);
  		if (err != -EPROBE_DEFER)
 -- 
-2.21.0
+2.23.0
 

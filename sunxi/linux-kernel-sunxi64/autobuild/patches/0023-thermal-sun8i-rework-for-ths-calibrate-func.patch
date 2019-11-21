@@ -1,7 +1,7 @@
-From b8f1ddaf09bc8f738de93d4bbf1e460adfd00a5a Mon Sep 17 00:00:00 2001
+From 1730ad7c845aea467422f13fab753bed0b20378a Mon Sep 17 00:00:00 2001
 From: Yangtao Li <tiny.windzz@gmail.com>
 Date: Sun, 16 Jun 2019 19:23:23 +0800
-Subject: [PATCH 023/124] thermal: sun8i: rework for ths calibrate func
+Subject: [PATCH 023/128] thermal: sun8i: rework for ths calibrate func
 
 Here, we do something to prepare for the subsequent
 support of multiple platforms.
@@ -146,5 +146,5 @@ index f7fde760a2ae..507a74469de0 100644
  	.irq_ack = sun50i_h6_irq_ack,
  };
 -- 
-2.21.0
+2.23.0
 

@@ -1,7 +1,7 @@
-From bfc72c2679cba09e974072e14d5977e45ed2c6a9 Mon Sep 17 00:00:00 2001
+From d1a172c31b8485b756d82eebcd48f32e73a0c52a Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 25 Aug 2019 18:06:23 +0800
-Subject: [PATCH 119/124] iio: light: stk3310: add chip id for STK3311-X
+Subject: [PATCH 117/128] iio: light: stk3310: add chip id for STK3311-X
  variant
 
 The STK3311 chip has a variant called STK3311-X, which has a different
@@ -35,5 +35,5 @@ index 185c24a75ae6..1a8401d198a4 100644
  		dev_err(&client->dev, "invalid chip id: 0x%x\n", chipid);
  		return -ENODEV;
 -- 
-2.21.0
+2.23.0
 

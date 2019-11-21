@@ -1,7 +1,7 @@
-From 53eec531d051db7fff17fca036eb1345c7176348 Mon Sep 17 00:00:00 2001
+From dab083e6309adbc01c42df9d5c1df03bc7e2ece8 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 1 Aug 2018 11:42:46 +0800
-Subject: [PATCH 081/124] dt-bindings: simplefb-sunxi: add pipeline strings for
+Subject: [PATCH 081/128] dt-bindings: simplefb-sunxi: add pipeline strings for
  DE2/3 w/ TCON_TOP
 
 Newer Allwinner SoCs come with a display pipeline muxing component
@@ -28,5 +28,5 @@ index 678776b6012a..a95189232b32 100644
    amlogic,pipeline:
      description: Pipeline used by the framebuffer on Amlogic SoCs
 -- 
-2.21.0
+2.23.0
 

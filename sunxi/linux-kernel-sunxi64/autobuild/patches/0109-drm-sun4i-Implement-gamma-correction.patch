@@ -1,7 +1,7 @@
-From 8a66bf283386dc859be9ad07eb39efbfcad849aa Mon Sep 17 00:00:00 2001
+From 8972f66d429029145f3709c4ad92102f07ac7e13 Mon Sep 17 00:00:00 2001
 From: Vasily Khoruzhick <anarsoul@gmail.com>
 Date: Wed, 13 Mar 2019 19:50:17 -0700
-Subject: [PATCH 109/124] drm/sun4i: Implement gamma correction
+Subject: [PATCH 109/128] drm/sun4i: Implement gamma correction
 
 Add support for gamma corretion to sun4i TCON driver. Its LUT has 256
 entries and can be updated only when gamma correction is disabled.
@@ -135,5 +135,5 @@ index f9f1fe80b206..29931d4da335 100644
  extern const struct of_device_id sun4i_tcon_of_table[];
  
 -- 
-2.21.0
+2.23.0
 

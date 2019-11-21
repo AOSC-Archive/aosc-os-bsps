@@ -1,7 +1,7 @@
-From 0e940a4911d6845a5f95cfe686da4d338b45575e Mon Sep 17 00:00:00 2001
+From 5e603a858ff52a1d7a207f43374007fec5bfbb64 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 13 Sep 2019 01:21:36 +0800
-Subject: [PATCH 122/124] power: supply: axp20x_usb_power: enable USB BC
+Subject: [PATCH 120/128] power: supply: axp20x_usb_power: enable USB BC
  detection on AXP813
 
 The AXP813 PMIC has support for detection of USB Battery Charging
@@ -42,5 +42,5 @@ index 289275fb1199..53e975135f39 100644
  	psy_cfg.drv_data = power;
  
 -- 
-2.21.0
+2.23.0
 

@@ -1,7 +1,7 @@
-From 19db487cc19bd61b988d511981da2525cfff622f Mon Sep 17 00:00:00 2001
+From 699fff30f04640179cd7bee1f66384b8b9610900 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 9 Aug 2019 12:50:23 +0800
-Subject: [PATCH 108/124] iio: bmc150: hack for iio-sensor-proxy
+Subject: [PATCH 108/128] iio: bmc150: hack for iio-sensor-proxy
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---
@@ -9,7 +9,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
-index cf6c0e3a83d3..664dc1dfcf2f 100644
+index 121b4e89f038..74b39bb30c64 100644
 --- a/drivers/iio/accel/bmc150-accel-core.c
 +++ b/drivers/iio/accel/bmc150-accel-core.c
 @@ -799,7 +799,7 @@ bmc150_accel_get_mount_matrix(const struct iio_dev *indio_dev,
@@ -22,5 +22,5 @@ index cf6c0e3a83d3..664dc1dfcf2f 100644
  };
  
 -- 
-2.21.0
+2.23.0
 

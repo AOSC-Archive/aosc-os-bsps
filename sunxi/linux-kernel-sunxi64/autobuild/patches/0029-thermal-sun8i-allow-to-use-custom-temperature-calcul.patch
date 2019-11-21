@@ -1,7 +1,7 @@
-From 00874f3fc627fbceffcd046fe8a5fa9f698de1c8 Mon Sep 17 00:00:00 2001
+From ebc2c782da7d516863b67561d7c8665dc1cf97e5 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 29 Jul 2019 00:34:33 +0800
-Subject: [PATCH 029/124] thermal: sun8i: allow to use custom temperature
+Subject: [PATCH 029/128] thermal: sun8i: allow to use custom temperature
  calculation function
 
 The H5 temperature calculation function is strange. Firstly, it's
@@ -62,5 +62,5 @@ index 108b5cdee78a..10d3f20bb0f8 100644
  
  		/*
 -- 
-2.21.0
+2.23.0
 

@@ -1,7 +1,7 @@
-From 2119ed74c1627271257d5c64b59bc0cff7c06792 Mon Sep 17 00:00:00 2001
+From 86415d6b5d469600a240bb9fd8218d80b386adf2 Mon Sep 17 00:00:00 2001
 From: Philipp Rossak <embed3d@gmail.com>
 Date: Fri, 26 Jan 2018 01:01:34 +0100
-Subject: [PATCH 045/124] arm: dts: sunxi-h3-h5: add support for the thermal
+Subject: [PATCH 045/128] arm: dts: sunxi-h3-h5: add support for the thermal
  sensor in H3 and H5
 
 As we have gained the support for the thermal sensor in H3 and H5,
@@ -50,5 +50,5 @@ index 84977d4eb97a..402f729bef0c 100644
  			compatible = "allwinner,sun4i-a10-timer";
  			reg = <0x01c20c00 0xa0>;
 -- 
-2.21.0
+2.23.0
 

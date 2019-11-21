@@ -1,7 +1,7 @@
-From 741f1442600ea7a570a78ceb3c8530056154a856 Mon Sep 17 00:00:00 2001
+From 2e5394ceefc24b21045027bd046fe8aed51c7e08 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 2 Nov 2017 16:48:27 +0800
-Subject: [PATCH 076/124] arm64: allwinner: a64: enable Wi-Fi for SoPine
+Subject: [PATCH 076/128] arm64: allwinner: a64: enable Wi-Fi for SoPine
  Baseboard
 
 The Wi-Fi modules of SoPine Baseboard is powered via DLDO4 and ELDO1
@@ -15,7 +15,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 18 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-sopine-baseboard.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-sopine-baseboard.dts
-index e6fb9683f213..b841776590b8 100644
+index 25099202c52c..c28a675d76ac 100644
 --- a/arch/arm64/boot/dts/allwinner/sun50i-a64-sopine-baseboard.dts
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-sopine-baseboard.dts
 @@ -47,6 +47,8 @@
@@ -58,5 +58,5 @@ index e6fb9683f213..b841776590b8 100644
  	pinctrl-names = "default";
  	pinctrl-0 = <&mmc2_pins>;
 -- 
-2.21.0
+2.23.0
 

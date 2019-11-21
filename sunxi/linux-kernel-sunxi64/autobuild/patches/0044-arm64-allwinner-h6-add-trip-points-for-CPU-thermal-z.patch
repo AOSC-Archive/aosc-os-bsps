@@ -1,7 +1,7 @@
-From b297110003af913f8f11692299327b0c212d5740 Mon Sep 17 00:00:00 2001
+From 1fcd2d4e1126193c6f4c19e7e0e662630ee34424 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 27 Jul 2018 19:28:31 +0800
-Subject: [PATCH 044/124] arm64: allwinner: h6: add trip points for CPU thermal
+Subject: [PATCH 044/128] arm64: allwinner: h6: add trip points for CPU thermal
  zone
 
 As we can now do DVFS on the CPU, add CPU thermal zone trip points.
@@ -58,5 +58,5 @@ index 20b73884f907..84154c30d33f 100644
  
  		gpu_thermal {
 -- 
-2.21.0
+2.23.0
 

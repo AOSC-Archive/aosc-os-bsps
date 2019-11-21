@@ -1,7 +1,7 @@
-From 354724030208cad332d922612053d7b821ab1445 Mon Sep 17 00:00:00 2001
+From 956fe8accf3e044a07baf1c308decddc3730bf1c Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 29 Jul 2019 10:33:11 +0800
-Subject: [PATCH 064/124] ARM: dts: sun8i: r40/v40: add CPU core voltage
+Subject: [PATCH 064/128] ARM: dts: sun8i: r40/v40: add CPU core voltage
  regulator for boards
 
 The CPU core voltage regulator is required to be set to get working
@@ -46,5 +46,5 @@ index 15c22b06fc4b..fb9fc62e9d88 100644
  	status = "okay";
  };
 -- 
-2.21.0
+2.23.0
 

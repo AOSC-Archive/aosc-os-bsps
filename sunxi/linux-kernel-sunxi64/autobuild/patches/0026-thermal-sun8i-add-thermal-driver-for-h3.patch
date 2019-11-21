@@ -1,7 +1,7 @@
-From cf8e21bf5a9c51b52cbb5bb8960c6bf6a515ccf6 Mon Sep 17 00:00:00 2001
+From 6426dd6573d35070ff8d424941e67449d820eea0 Mon Sep 17 00:00:00 2001
 From: Yangtao Li <tiny.windzz@gmail.com>
 Date: Wed, 19 Jun 2019 02:55:59 +0800
-Subject: [PATCH 026/124] thermal: sun8i: add thermal driver for h3
+Subject: [PATCH 026/128] thermal: sun8i: add thermal driver for h3
 
 This patch adds the support for allwinner h3 thermal sensor.
 
@@ -154,5 +154,5 @@ index 1a263ab05d7e..d1387da8300b 100644
  	{ /* sentinel */ },
  };
 -- 
-2.21.0
+2.23.0
 

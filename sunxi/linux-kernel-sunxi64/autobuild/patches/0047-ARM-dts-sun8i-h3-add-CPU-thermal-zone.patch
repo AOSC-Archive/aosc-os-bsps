@@ -1,7 +1,7 @@
-From d8fe90c16fb69e842cb292a621304470b8a9ce12 Mon Sep 17 00:00:00 2001
+From cc041e049f2946c8bccacc8c48b4819f8751352a Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 23 Jul 2017 19:16:25 +0800
-Subject: [PATCH 047/124] ARM: dts: sun8i: h3: add CPU thermal zone
+Subject: [PATCH 047/128] ARM: dts: sun8i: h3: add CPU thermal zone
 
 Add a thermal zone which claims the H3 THS as the thermal sensor, and
 controls the frequency of the ARM cores.
@@ -74,5 +74,5 @@ index 57405770faa2..aac4e61d2101 100644
  
  &ccu {
 -- 
-2.21.0
+2.23.0
 

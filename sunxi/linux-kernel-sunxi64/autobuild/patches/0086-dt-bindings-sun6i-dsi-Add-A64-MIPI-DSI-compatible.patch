@@ -1,7 +1,7 @@
-From fc5aca710c6b7935c684661aec958b2225f04507 Mon Sep 17 00:00:00 2001
+From 1b60ce2883d89256ccf70d6924f09d7fc1e3c2d7 Mon Sep 17 00:00:00 2001
 From: Jagan Teki <jagan@amarulasolutions.com>
 Date: Wed, 5 Sep 2018 21:12:10 +0530
-Subject: [PATCH 086/124] dt-bindings: sun6i-dsi: Add A64 MIPI-DSI compatible
+Subject: [PATCH 086/128] dt-bindings: sun6i-dsi: Add A64 MIPI-DSI compatible
 
 The MIPI DSI controller in Allwinner A64 is similar to A33.
 
@@ -27,5 +27,5 @@ index 1fe9eecdf35f..12d412c01043 100644
    reg:
      maxItems: 1
 -- 
-2.21.0
+2.23.0
 

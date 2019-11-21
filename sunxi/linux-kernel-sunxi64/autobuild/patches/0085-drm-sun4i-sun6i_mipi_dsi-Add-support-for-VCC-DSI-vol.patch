@@ -1,7 +1,7 @@
-From 6c24255080b39bbbf19a964e38b1df6076c8ab22 Mon Sep 17 00:00:00 2001
+From 0ffdce6230ee5b6ce7887cc334be45734ab6681c Mon Sep 17 00:00:00 2001
 From: Jagan Teki <jagan@amarulasolutions.com>
 Date: Thu, 25 Oct 2018 20:22:27 +0530
-Subject: [PATCH 085/124] drm/sun4i: sun6i_mipi_dsi: Add support for VCC-DSI
+Subject: [PATCH 085/128] drm/sun4i: sun6i_mipi_dsi: Add support for VCC-DSI
  voltage regulator
 
 Some boards have VCC-DSI pin connected to voltage regulator which may
@@ -77,5 +77,5 @@ index 5c3ad5be0690..9c5461e61086 100644
  	struct phy		*dphy;
  
 -- 
-2.21.0
+2.23.0
 

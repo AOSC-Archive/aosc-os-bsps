@@ -1,0 +1,30 @@
+From ca88d5609839cecf02b31ddb165ea94ca2742056 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Thu, 21 Nov 2019 10:58:34 +0800
+Subject: [PATCH 122/128] dt-bindings: input: touchscreen: add compatible
+ string for Goodix GT917S
+
+Goodix GT917S is a new touchscreen chip from Goodix.
+
+Add its compatible string to the device tree binding.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ Documentation/devicetree/bindings/input/touchscreen/goodix.txt | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Documentation/devicetree/bindings/input/touchscreen/goodix.txt b/Documentation/devicetree/bindings/input/touchscreen/goodix.txt
+index fc03ea4cf5ab..c5447b136eb3 100644
+--- a/Documentation/devicetree/bindings/input/touchscreen/goodix.txt
++++ b/Documentation/devicetree/bindings/input/touchscreen/goodix.txt
+@@ -8,6 +8,7 @@ Required properties:
+ 				 or "goodix,gt911"
+ 				 or "goodix,gt9110"
+ 				 or "goodix,gt912"
++				 or "goodix,gt917s"
+ 				 or "goodix,gt927"
+ 				 or "goodix,gt9271"
+ 				 or "goodix,gt928"
+-- 
+2.23.0
+

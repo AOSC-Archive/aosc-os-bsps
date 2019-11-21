@@ -1,7 +1,7 @@
-From 428d5a9f51fbc5ea0562c795a04dc28a09a74958 Mon Sep 17 00:00:00 2001
+From 9efb07abc23f9cd831cb9feb1888eb7bc7eeda27 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 15 Aug 2018 20:29:29 +0800
-Subject: [PATCH 051/124] arm64: allwinner: dts: h5: add SY8106A regulator on
+Subject: [PATCH 051/128] arm64: allwinner: dts: h5: add SY8106A regulator on
  Orange Pi PC2/Prime
 
 The Orange Pi PC2/Prime boards use a SY8106A regulator as the CPUX
@@ -90,5 +90,5 @@ index d9b3ed257088..66a98a3fe9af 100644
  	pinctrl-names = "default";
  	pinctrl-0 = <&uart0_pa_pins>;
 -- 
-2.21.0
+2.23.0
 

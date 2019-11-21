@@ -1,7 +1,7 @@
-From 9b6564fdea965b4163c0919625a25a2684efeb70 Mon Sep 17 00:00:00 2001
+From 201a72e7b18b88bc49351ff460a4852e747d64a9 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 24 Aug 2019 23:45:25 +0800
-Subject: [PATCH 115/124] drm: panel: add Xingbangda XBD599 panel
+Subject: [PATCH 113/128] drm: panel: add Xingbangda XBD599 panel
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---
@@ -397,5 +397,5 @@ index 000000000000..b8bfcb7c643d
 +MODULE_DESCRIPTION("DRM driver for Xingbangda XBD599 MIPI DSI panel");
 +MODULE_LICENSE("GPL v2");
 -- 
-2.21.0
+2.23.0
 

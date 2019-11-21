@@ -1,7 +1,8 @@
-From b1cec4bb7d5eafe0d741e2b8d152ae40e8457ac2 Mon Sep 17 00:00:00 2001
+From cb53488d286e165acf422f98a9cb8452902ef577 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 25 Sep 2019 23:34:37 +0800
-Subject: [PATCH 1/2] drm/lima: allow to retry when allocating memory for BO
+Subject: [PATCH 126/128] drm/lima: allow to retry when allocating memory for
+ BO
 
 Currently, when allocating the memory for BO by Mesa, the lima kernel
 driver set only GFP_DMA32 flag; and this allocation may fail when the
@@ -30,5 +31,5 @@ index 5c41f859a72f..b89011ecbe59 100644
  		if (IS_ERR(bo->pages)) {
  			ret = ERR_CAST(bo->pages);
 -- 
-2.21.0
+2.23.0
 

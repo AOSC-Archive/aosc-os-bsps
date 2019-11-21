@@ -1,7 +1,7 @@
-From f5bbc66ddb847a2e9fb8748b2e36e7a390cb4a7c Mon Sep 17 00:00:00 2001
+From 450e6e789252d59136167add7888b67b33cfe751 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 29 Jul 2019 00:55:10 +0800
-Subject: [PATCH 032/124] dt-bindings: thermal: add binding for Allwinner R40
+Subject: [PATCH 032/128] dt-bindings: thermal: add binding for Allwinner R40
  thermal sensor
 
 The Allwinner R40 thermal sensor is just the similar to the one in A64.
@@ -26,5 +26,5 @@ index 625656a98388..56f8a0c1b1db 100644
        - allwinner,sun50i-h5-ths
        - allwinner,sun50i-h6-ths
 -- 
-2.21.0
+2.23.0
 

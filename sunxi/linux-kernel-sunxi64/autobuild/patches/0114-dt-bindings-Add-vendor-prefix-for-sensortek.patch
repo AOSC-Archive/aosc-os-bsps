@@ -1,7 +1,7 @@
-From 85ff3bba094559c84866380683eaa631bc17cc18 Mon Sep 17 00:00:00 2001
+From 041ccbb526562a82f26261496326615fef0754ae Mon Sep 17 00:00:00 2001
 From: Luca Weiss <luca@z3ntu.xyz>
 Date: Wed, 3 Jul 2019 20:05:57 +0200
-Subject: [PATCH 116/124] dt-bindings: Add vendor prefix for sensortek
+Subject: [PATCH 114/128] dt-bindings: Add vendor prefix for sensortek
 
 Sensortek Technology Corp. produces Proximity Sensors with ALS and
 Accelerometers.
@@ -26,5 +26,5 @@ index f0bf3e81b75a..8cb9da452983 100644
      description: Small Form Factor Committee
    "^sgd,.*":
 -- 
-2.21.0
+2.23.0
 

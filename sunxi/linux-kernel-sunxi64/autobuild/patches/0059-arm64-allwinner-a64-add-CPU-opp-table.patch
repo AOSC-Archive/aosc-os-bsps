@@ -1,7 +1,7 @@
-From dd4d01418d7d8c2026294193335d27dabe1e65a9 Mon Sep 17 00:00:00 2001
+From db9e1f7a0eff06893804d00a9a2722a836cba7af Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 22 Sep 2017 23:46:39 +0800
-Subject: [PATCH 059/124] arm64: allwinner: a64: add CPU opp table
+Subject: [PATCH 059/128] arm64: allwinner: a64: add CPU opp table
 
 Add the operating table for the CPU (ARM cores) on Allwinner A64 SoC.
 
@@ -15,7 +15,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 24 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
-index 4022bb3c8a6f..5a5683cb8db6 100644
+index 54a28452e9ff..26fcfe939e31 100644
 --- a/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
 @@ -80,6 +80,23 @@
@@ -78,5 +78,5 @@ index 4022bb3c8a6f..5a5683cb8db6 100644
  
  		L2: l2-cache {
 -- 
-2.21.0
+2.23.0
 

@@ -1,7 +1,8 @@
-From 86a63c385dfd79e8334d90ee8fa38eb6429ea052 Mon Sep 17 00:00:00 2001
+From 6c67e673a18c9f92523a03dbc4593762a4f0452e Mon Sep 17 00:00:00 2001
 From: Ondrej Jirman <megous@megous.com>
 Date: Sun, 8 Sep 2019 11:42:29 +0200
-Subject: [PATCH] drm: sun8i-ui/vi: Fix layer zpos change/atomic modesetting
+Subject: [PATCH 128/128] drm: sun8i-ui/vi: Fix layer zpos change/atomic
+ modesetting
 
 A problem was found where identical configuration of planes leads
 to different register settings at the HW layer when using a X server
@@ -418,5 +419,5 @@ index bd0e6a52d1d8..675ebcdac00b 100644
  };
  
 -- 
-2.21.0
+2.23.0
 

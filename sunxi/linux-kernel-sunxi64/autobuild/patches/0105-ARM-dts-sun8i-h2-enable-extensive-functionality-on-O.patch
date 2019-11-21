@@ -1,7 +1,7 @@
-From 2da8562ed9df3aeab531af74d960a5a89d4becae Mon Sep 17 00:00:00 2001
+From 1ced2178c9b40d9bb48293641ea3066377e507d6 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 3 Aug 2019 16:50:49 +0800
-Subject: [PATCH 105/124] ARM: dts: sun8i: h2+: enable extensive functionality
+Subject: [PATCH 105/128] ARM: dts: sun8i: h2+: enable extensive functionality
  on OPi Zero
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
@@ -72,5 +72,5 @@ index f19ed981da9d..fb0c581acc96 100644
  	/* Disable SPI NOR by default: it optional on Orange Pi Zero boards */
  	status = "disabled";
 -- 
-2.21.0
+2.23.0
 

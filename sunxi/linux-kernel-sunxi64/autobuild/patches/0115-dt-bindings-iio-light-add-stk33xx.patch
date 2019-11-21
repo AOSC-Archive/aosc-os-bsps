@@ -1,7 +1,7 @@
-From 8d41bff36bc033d1c27a397a3a35b44fa4ab3f3b Mon Sep 17 00:00:00 2001
+From 206857e265b8609cfd08b47626bbaccf2639a66e Mon Sep 17 00:00:00 2001
 From: Luca Weiss <luca@z3ntu.xyz>
 Date: Wed, 3 Jul 2019 20:05:58 +0200
-Subject: [PATCH 117/124] dt-bindings: iio: light: add stk33xx
+Subject: [PATCH 115/128] dt-bindings: iio: light: add stk33xx
 
 Add binding documentation for the stk33xx family of ambient light
 sensors.
@@ -69,5 +69,5 @@ index 000000000000..aae8a6d627c9
 +    };
 +...
 -- 
-2.21.0
+2.23.0
 

@@ -1,7 +1,7 @@
-From 3e919f28df1dce31f9dc26a6c043b0a1d20f6959 Mon Sep 17 00:00:00 2001
+From 2676bcb6e27b58dd8117371fb9191a355d611685 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 1 Aug 2018 12:23:01 +0800
-Subject: [PATCH 082/124] arm64: allwinner: dts: h6: add simplefb-related
+Subject: [PATCH 082/128] arm64: allwinner: dts: h6: add simplefb-related
  device nodes
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
@@ -36,5 +36,5 @@ index e22e75aff0b5..db71807255ef 100644
  		#address-cells = <1>;
  		#size-cells = <0>;
 -- 
-2.21.0
+2.23.0
 

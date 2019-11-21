@@ -1,7 +1,7 @@
-From b1f660da448757c1368bdd2d4d42fe5aade99e4e Mon Sep 17 00:00:00 2001
+From dbd086e219cfb309d4140cb0a7e583a9d6bb0917 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 6 May 2017 22:34:24 +0800
-Subject: [PATCH 066/124] arm64: allwinner: h5: add GPU device node
+Subject: [PATCH 066/128] arm64: allwinner: h5: add GPU device node
 
 Allwinner H5 has a Mali-450 MP4 GPU.
 
@@ -62,5 +62,5 @@ index 2a876c698f44..d4fe21312d92 100644
  		compatible = "arm,armv8-timer";
  		interrupts = <GIC_PPI 13
 -- 
-2.21.0
+2.23.0
 

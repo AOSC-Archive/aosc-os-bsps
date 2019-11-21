@@ -1,7 +1,7 @@
-From 8e0e72f5016922e2b16fd7211ee5788a9a3236fa Mon Sep 17 00:00:00 2001
+From 775745c80d272b6511108f89d0c8c2de3d1dbeb0 Mon Sep 17 00:00:00 2001
 From: Yangtao Li <tiny.windzz@gmail.com>
 Date: Sun, 16 Jun 2019 12:26:47 +0800
-Subject: [PATCH 020/124] thermal: sun8i: get ths init func from device
+Subject: [PATCH 020/128] thermal: sun8i: get ths init func from device
  compatible
 
 There are some differences in register initialization for
@@ -43,5 +43,5 @@ index abd20a812ff8..04a74e8cbb0e 100644
  
  static const struct of_device_id of_ths_match[] = {
 -- 
-2.21.0
+2.23.0
 

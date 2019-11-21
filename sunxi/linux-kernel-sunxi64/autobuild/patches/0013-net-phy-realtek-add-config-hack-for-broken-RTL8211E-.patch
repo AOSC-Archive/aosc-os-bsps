@@ -1,7 +1,7 @@
-From 0290ebd9fd52f5d51e34ab66f10e597c06ec0a57 Mon Sep 17 00:00:00 2001
+From 810c191ab38700f00c3591aa6a7ab3e0ec40dad3 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 29 Jul 2019 17:27:26 +0800
-Subject: [PATCH 013/124] net: phy: realtek: add config hack for broken
+Subject: [PATCH 013/128] net: phy: realtek: add config hack for broken
  RTL8211E on Pine64+ boards
 
 Some RTL8211E chips have broken GbE function, which needs a hack to
@@ -69,5 +69,5 @@ index a669945eb829..ace1a6340ca9 100644
  	return phy_restore_page(phydev, oldpage, ret);
  }
 -- 
-2.21.0
+2.23.0
 

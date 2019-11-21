@@ -1,7 +1,7 @@
-From cce55b39384050a2d0185a4617c783d84776aded Mon Sep 17 00:00:00 2001
+From 7349ff9920368f1416bbddb8c22eef0f4a5eccd6 Mon Sep 17 00:00:00 2001
 From: Luca Weiss <luca@z3ntu.xyz>
 Date: Wed, 3 Jul 2019 20:05:59 +0200
-Subject: [PATCH 118/124] iio: light: stk3310: Add device tree support
+Subject: [PATCH 116/128] iio: light: stk3310: Add device tree support
 
 Add device tree support for the stk33xx family of ambient light sensors.
 
@@ -36,5 +36,5 @@ index b955183edfe8..185c24a75ae6 100644
  		.acpi_match_table = ACPI_PTR(stk3310_acpi_id),
  	},
 -- 
-2.21.0
+2.23.0
 
