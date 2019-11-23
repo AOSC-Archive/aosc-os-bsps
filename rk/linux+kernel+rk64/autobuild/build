@@ -1,0 +1,12 @@
+KERNVER=5.4.0-rc8
+
+mkdir -p "$PKGDIR"/usr/lib/aosc-os-arm64-rockchip-boot/
+mkdir -p "$PKGDIR"/usr/lib/aosc-os-arm64-rockchip-boot/linux-kernel-${KERNVER}-aosc-rockchip64/modules
+ln -sfv linux-kernel-${KERNVER}-aosc-rk64 "$PKGDIR"/usr/lib/aosc-os-arm64-rockchip-boot/linux-kernel-rk64
+for i in \
+	rk3328-rock64 \
+	rk3399-rockpro64
+do
+	mkdir -p "$PKGDIR"/usr/lib/aosc-os-arm64-rockchip-boot/dtb-$i
+	ln -sfv ../dtbs-kernel-${KERNVER}-aosc-rk64/$i.dtb "$PKGDIR"/usr/lib/aosc-os-arm64-sunxi-boot/dtb-$i/dtb.dtb
+done
