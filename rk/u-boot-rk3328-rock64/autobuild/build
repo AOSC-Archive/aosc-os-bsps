@@ -1,0 +1,18 @@
+UBOOT_BOARD=rock64-rk3328
+LINUX_BOARD=rk3328-rock64
+
+unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
+
+ln -sv /usr/bin/ld.bfd ld
+export PATH="$PWD:$PATH"
+
+. autobuild/build-common/build-atf
+
+make ${UBOOT_BOARD}_defconfig
+make
+make idbloader.img
+make u-boot.itb
+mkdir -p "$PKGDIR"/usr/lib/u-boot-${LINUX_BOARD}
+cp u-boot.img u-boot.itb spl/u-boot-spl.bin tpl/u-boot-tpl.bin tpl/u-boot-tpl.img idbloader.img "$PKGDIR"/usr/lib/u-boot-${LINUX_BOARD}
+mkdir -p "$PKGDIR"/usr/lib/aosc-os-arm64-rockchip-boot/
+ln -sfv ../u-boot-${LINUX_BOARD} "$PKGDIR"/usr/lib/aosc-os-arm64-rockchip-boot/

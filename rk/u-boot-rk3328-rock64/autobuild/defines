@@ -1,0 +1,8 @@
+PKGNAME=u-boot-rk3328-rock64
+PKGDES="U-Boot for Rock64"
+PKGSEC=embedded
+BUILDDEP="dtc swig"
+
+ABSTRIP=no
+ABELFDEP=no
+ABRPMAUTOPROVONLY=yes
