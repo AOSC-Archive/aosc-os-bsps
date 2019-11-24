@@ -8,5 +8,5 @@ for i in \
 	rk3399-rockpro64
 do
 	mkdir -p "$PKGDIR"/usr/lib/aosc-os-arm64-rockchip-boot/dtb-$i
-	ln -sfv ../dtbs-kernel-${KERNVER}-aosc-rk64/$i.dtb "$PKGDIR"/usr/lib/aosc-os-arm64-sunxi-boot/dtb-$i/dtb.dtb
+	ln -sfv ../dtbs-kernel-${KERNVER}-aosc-rk64/$i.dtb "$PKGDIR"/usr/lib/aosc-os-arm64-rockchip-boot/dtb-$i/dtb.dtb
 done
