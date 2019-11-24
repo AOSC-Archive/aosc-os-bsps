@@ -1,7 +1,7 @@
 From 3ee9fad24642712ebb390de2cd7288e30760c270 Mon Sep 17 00:00:00 2001
 From: Andy Yan <andy.yan@rock-chips.com>
 Date: Wed, 30 Oct 2019 15:28:11 +0800
-Subject: [PATCH 22/44] arm64: dts: rockchip: Add devicetree for board
+Subject: [PATCH 22/28] arm64: dts: rockchip: Add devicetree for board
  roc-rk3308-cc
 
 ROC-RK3308-CC is a rk3308 based board designed by Firelfy,

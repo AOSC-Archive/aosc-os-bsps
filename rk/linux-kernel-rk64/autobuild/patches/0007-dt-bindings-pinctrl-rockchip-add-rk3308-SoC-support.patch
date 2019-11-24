@@ -1,7 +1,7 @@
 From edd94a824a61ad6584b1740a688a45479ff20bb2 Mon Sep 17 00:00:00 2001
 From: Jianqun Xu <jay.xu@rock-chips.com>
 Date: Tue, 15 Oct 2019 17:17:07 +0800
-Subject: [PATCH 07/44] dt-bindings: pinctrl: rockchip: add rk3308 SoC support
+Subject: [PATCH 07/28] dt-bindings: pinctrl: rockchip: add rk3308 SoC support
 
 Add rk3308 SoC support to rockchip pinctrl.
 

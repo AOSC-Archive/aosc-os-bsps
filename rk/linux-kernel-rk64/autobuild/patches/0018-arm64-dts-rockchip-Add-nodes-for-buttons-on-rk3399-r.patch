@@ -1,7 +1,7 @@
 From 8fd89041a236934ca3a46deaa45dda20e2eb1a15 Mon Sep 17 00:00:00 2001
 From: Markus Reichl <m.reichl@fivetechno.de>
 Date: Thu, 31 Oct 2019 12:04:29 +0100
-Subject: [PATCH 18/44] arm64: dts: rockchip: Add nodes for buttons on
+Subject: [PATCH 18/28] arm64: dts: rockchip: Add nodes for buttons on
  rk3399-roc-pc
 
 rk3399-roc-pc has a power and a recovery button, enable them.

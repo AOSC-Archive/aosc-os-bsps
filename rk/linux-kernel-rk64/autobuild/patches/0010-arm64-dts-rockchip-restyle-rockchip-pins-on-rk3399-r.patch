@@ -1,7 +1,7 @@
 From d696c5514cf322a75c4783ac9ad1921ee1bcc6c0 Mon Sep 17 00:00:00 2001
 From: Johan Jonker <jbx6244@gmail.com>
 Date: Tue, 15 Oct 2019 22:58:51 +0200
-Subject: [PATCH 10/44] arm64: dts: rockchip: restyle rockchip,pins on
+Subject: [PATCH 10/28] arm64: dts: rockchip: restyle rockchip,pins on
  rk3399-rock-pi-4
 
 The define RK_FUNC_1 is no longer used,

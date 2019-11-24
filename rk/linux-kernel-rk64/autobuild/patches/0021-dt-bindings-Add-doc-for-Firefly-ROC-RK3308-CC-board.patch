@@ -1,7 +1,7 @@
 From 27c0878df8134b641207eb3119c6a25dcf94824f Mon Sep 17 00:00:00 2001
 From: Andy Yan <andy.yan@rock-chips.com>
 Date: Wed, 30 Oct 2019 15:26:48 +0800
-Subject: [PATCH 21/44] dt-bindings: Add doc for Firefly ROC-RK3308-CC board
+Subject: [PATCH 21/28] dt-bindings: Add doc for Firefly ROC-RK3308-CC board
 
 Add compatible for Firefly ROC-RK3308-CC board.
 

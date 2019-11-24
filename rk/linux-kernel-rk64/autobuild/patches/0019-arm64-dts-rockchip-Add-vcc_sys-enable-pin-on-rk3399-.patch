@@ -1,7 +1,7 @@
 From ea50e367a9089755b5e66640a9581a6d4ee9f4cb Mon Sep 17 00:00:00 2001
 From: Markus Reichl <m.reichl@fivetechno.de>
 Date: Thu, 31 Oct 2019 09:51:56 +0100
-Subject: [PATCH 19/44] arm64: dts: rockchip: Add vcc_sys enable pin on
+Subject: [PATCH 19/28] arm64: dts: rockchip: Add vcc_sys enable pin on
  rk3399-roc-pc
 
 rk3399-roc-pc has vcc_sys 5V supply for USB and other peripherals.

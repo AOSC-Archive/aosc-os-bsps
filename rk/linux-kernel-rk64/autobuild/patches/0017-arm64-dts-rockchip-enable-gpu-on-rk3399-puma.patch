@@ -1,7 +1,7 @@
 From 84f6eb0709bedbbb8c0c075e639dd2dfbba481c4 Mon Sep 17 00:00:00 2001
 From: Heiko Stuebner <heiko@sntech.de>
 Date: Thu, 24 Oct 2019 00:39:54 +0200
-Subject: [PATCH 17/44] arm64: dts: rockchip: enable gpu on rk3399-puma
+Subject: [PATCH 17/28] arm64: dts: rockchip: enable gpu on rk3399-puma
 
 Set the supplying regulator and enable the gpu node on the rk3399-puma som.
 

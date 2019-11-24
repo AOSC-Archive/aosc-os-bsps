@@ -1,7 +1,7 @@
 From a709565934851f27d0f8e986bf644a080b685259 Mon Sep 17 00:00:00 2001
 From: Robin Murphy <robin.murphy@arm.com>
 Date: Mon, 7 Oct 2019 12:33:26 +0100
-Subject: [PATCH 05/44] arm64: dts: rockchip: Update nanopi4 phy reset
+Subject: [PATCH 05/28] arm64: dts: rockchip: Update nanopi4 phy reset
  properties
 
 Use the now-preferred generic phy reset properties instead of the

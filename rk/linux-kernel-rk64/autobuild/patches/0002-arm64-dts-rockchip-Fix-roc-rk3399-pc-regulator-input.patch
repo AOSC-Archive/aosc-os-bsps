@@ -1,7 +1,7 @@
 From d6e68afd080b739d5978a5d288be15d52ca818e7 Mon Sep 17 00:00:00 2001
 From: Jagan Teki <jagan@amarulasolutions.com>
 Date: Thu, 19 Sep 2019 10:58:22 +0530
-Subject: [PATCH 02/44] arm64: dts: rockchip: Fix roc-rk3399-pc regulator input
+Subject: [PATCH 02/28] arm64: dts: rockchip: Fix roc-rk3399-pc regulator input
  rails
 
 Few, know rk808 pmic regulators VCC[1-4], VCC[6-7], VCC[9-11],

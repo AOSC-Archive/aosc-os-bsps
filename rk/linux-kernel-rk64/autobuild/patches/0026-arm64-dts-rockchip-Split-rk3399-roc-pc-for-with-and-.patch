@@ -1,7 +1,7 @@
 From fc484b167fc8376d8dda31e6a7b64e37a452ea58 Mon Sep 17 00:00:00 2001
 From: Markus Reichl <m.reichl@fivetechno.de>
 Date: Fri, 8 Nov 2019 22:04:33 +0100
-Subject: [PATCH 26/44] arm64: dts: rockchip: Split rk3399-roc-pc for with and
+Subject: [PATCH 26/28] arm64: dts: rockchip: Split rk3399-roc-pc for with and
  without mezzanine board.
 
 For rk3399-roc-pc is a mezzanine board available that carries M.2 and

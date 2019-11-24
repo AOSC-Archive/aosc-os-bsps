@@ -1,7 +1,7 @@
 From 033d03a8d1589a96f601651cee7c9fb0f81b9b70 Mon Sep 17 00:00:00 2001
 From: Robin Murphy <robin.murphy@arm.com>
 Date: Mon, 7 Oct 2019 12:33:25 +0100
-Subject: [PATCH 06/44] arm64: dts: rockchip: Enable nanopi4 HDMI audio
+Subject: [PATCH 06/28] arm64: dts: rockchip: Enable nanopi4 HDMI audio
 
 All the nanopi4 boards have HDMI, so let them make noise on it.
 

@@ -1,7 +1,7 @@
 From ca31ec07f0679f5a5bde663c2159d907fa2e4ba9 Mon Sep 17 00:00:00 2001
 From: Robin Murphy <robin.murphy@arm.com>
 Date: Mon, 14 Oct 2019 23:19:06 +0100
-Subject: [PATCH 25/44] arm64: dts: rockchip: Add Beelink A1
+Subject: [PATCH 25/28] arm64: dts: rockchip: Add Beelink A1
 
 Beelink A1 is a TV box implementing the higher-end options of the
 RK3328 reference design - the DTB from the stock Android firmware is

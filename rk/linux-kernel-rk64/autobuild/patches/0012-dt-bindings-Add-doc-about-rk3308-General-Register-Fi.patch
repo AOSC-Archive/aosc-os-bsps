@@ -1,7 +1,7 @@
 From 830fc62430f01a9636c2b23ebfd97b9f7780a938 Mon Sep 17 00:00:00 2001
 From: Andy Yan <andy.yan@rock-chips.com>
 Date: Mon, 21 Oct 2019 16:45:55 +0800
-Subject: [PATCH 12/44] dt-bindings: Add doc about rk3308 General Register
+Subject: [PATCH 12/28] dt-bindings: Add doc about rk3308 General Register
  Files
 
 RK3308 GRF is divided into four sections: GRF, SGRF,

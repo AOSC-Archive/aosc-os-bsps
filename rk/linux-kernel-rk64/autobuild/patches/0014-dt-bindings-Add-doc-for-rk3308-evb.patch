@@ -1,7 +1,7 @@
 From 5bad9226471f8989b90ace116ade02a1002e98e0 Mon Sep 17 00:00:00 2001
 From: Andy Yan <andy.yan@rock-chips.com>
 Date: Mon, 21 Oct 2019 16:46:42 +0800
-Subject: [PATCH 14/44] dt-bindings: Add doc for rk3308-evb
+Subject: [PATCH 14/28] dt-bindings: Add doc for rk3308-evb
 
 Add compatible for RK3308 Evaluation board
 

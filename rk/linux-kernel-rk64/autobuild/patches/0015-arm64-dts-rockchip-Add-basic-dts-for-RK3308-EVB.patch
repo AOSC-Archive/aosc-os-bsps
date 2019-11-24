@@ -1,7 +1,7 @@
 From 4dcb9dfb1589483d4019068a689e73bf7b507793 Mon Sep 17 00:00:00 2001
 From: Andy Yan <andy.yan@rock-chips.com>
 Date: Mon, 21 Oct 2019 16:46:57 +0800
-Subject: [PATCH 15/44] arm64: dts: rockchip: Add basic dts for RK3308 EVB
+Subject: [PATCH 15/28] arm64: dts: rockchip: Add basic dts for RK3308 EVB
 
 This board use uart4 as debug port and arm core voltage
 is modulated by pwm, logic voltage is fixed to 1.05V.

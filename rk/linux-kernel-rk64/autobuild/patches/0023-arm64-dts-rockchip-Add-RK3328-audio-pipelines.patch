@@ -1,7 +1,7 @@
 From 52a95958679185d975a95dae55acaf36ce8505ad Mon Sep 17 00:00:00 2001
 From: Robin Murphy <robin.murphy@arm.com>
 Date: Mon, 14 Oct 2019 23:19:05 +0100
-Subject: [PATCH 23/44] arm64: dts: rockchip: Add RK3328 audio pipelines
+Subject: [PATCH 23/28] arm64: dts: rockchip: Add RK3328 audio pipelines
 
 The audio pipelines for HDMI and the analog codec are internal to the
 SoC, so it makes sense to describe them at that level such that boards

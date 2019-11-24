@@ -1,7 +1,7 @@
 From 17b070b21296a27bc0c11b3a9d39d537de7f3067 Mon Sep 17 00:00:00 2001
 From: Johan Jonker <jbx6244@gmail.com>
 Date: Tue, 15 Oct 2019 22:58:52 +0200
-Subject: [PATCH 11/44] include: dt-bindings: rockchip: mark RK_FUNC defines as
+Subject: [PATCH 11/28] include: dt-bindings: rockchip: mark RK_FUNC defines as
  deprecated
 
 The defines RK_FUNC_1, RK_FUNC_2, RK_FUNC_3 and RK_FUNC_4

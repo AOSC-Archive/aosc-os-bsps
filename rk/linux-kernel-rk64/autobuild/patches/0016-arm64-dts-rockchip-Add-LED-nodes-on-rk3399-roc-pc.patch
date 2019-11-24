@@ -1,7 +1,7 @@
 From 68218885e6c6ee436d3d1d4baeef4758ee830453 Mon Sep 17 00:00:00 2001
 From: Markus Reichl <m.reichl@fivetechno.de>
 Date: Sun, 27 Oct 2019 19:06:19 +0100
-Subject: [PATCH 16/44] arm64: dts: rockchip: Add LED nodes on rk3399-roc-pc
+Subject: [PATCH 16/28] arm64: dts: rockchip: Add LED nodes on rk3399-roc-pc
 
 rk3399-roc-pc has three gpio LEDs, enable them.
 

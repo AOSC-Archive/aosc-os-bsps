@@ -1,7 +1,7 @@
 From 0eda9ceb8d6de064fd7f914e074b454a8e211a09 Mon Sep 17 00:00:00 2001
 From: Andy Yan <andy.yan@rock-chips.com>
 Date: Mon, 21 Oct 2019 16:46:16 +0800
-Subject: [PATCH 13/44] arm64: dts: rockchip: Add core dts for RK3308 SOC
+Subject: [PATCH 13/28] arm64: dts: rockchip: Add core dts for RK3308 SOC
 
 RK3308 is a quad Cortex A35 based SOC with rich audio
 interfaces(I2S/PCM/TDM/PDM/SPDIF/VAD/HDMI ARC), which

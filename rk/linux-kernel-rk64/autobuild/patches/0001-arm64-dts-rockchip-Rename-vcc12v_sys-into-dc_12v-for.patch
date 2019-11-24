@@ -1,7 +1,7 @@
 From dbcbc6392bcd581f58158508176c207eb2c1858a Mon Sep 17 00:00:00 2001
 From: Jagan Teki <jagan@amarulasolutions.com>
 Date: Thu, 19 Sep 2019 10:58:21 +0530
-Subject: [PATCH 01/44] arm64: dts: rockchip: Rename vcc12v_sys into dc_12v for
+Subject: [PATCH 01/28] arm64: dts: rockchip: Rename vcc12v_sys into dc_12v for
  roc-rk3399-pc
 
 It is always better practice to follow regulator naming conventions

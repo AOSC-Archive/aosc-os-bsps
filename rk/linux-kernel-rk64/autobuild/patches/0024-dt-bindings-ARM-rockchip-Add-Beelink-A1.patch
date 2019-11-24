@@ -1,7 +1,7 @@
 From cd41127c0928c72623c0669bb81190118c5ef640 Mon Sep 17 00:00:00 2001
 From: Robin Murphy <robin.murphy@arm.com>
 Date: Mon, 14 Oct 2019 23:19:04 +0100
-Subject: [PATCH 24/44] dt-bindings: ARM: rockchip: Add Beelink A1
+Subject: [PATCH 24/28] dt-bindings: ARM: rockchip: Add Beelink A1
 
 Add a binding for the RK3328-based Beelink A1 TV box.
 

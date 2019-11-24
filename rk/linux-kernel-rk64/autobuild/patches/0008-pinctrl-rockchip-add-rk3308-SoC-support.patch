@@ -1,7 +1,7 @@
 From 97860efaca4739c18e5e1103e61e07eb99202fd2 Mon Sep 17 00:00:00 2001
 From: Jianqun Xu <jay.xu@rock-chips.com>
 Date: Tue, 15 Oct 2019 17:17:08 +0800
-Subject: [PATCH 08/44] pinctrl: rockchip: add rk3308 SoC support
+Subject: [PATCH 08/28] pinctrl: rockchip: add rk3308 SoC support
 
 This patch do support pinctrl for RK3308 SoCs.
 

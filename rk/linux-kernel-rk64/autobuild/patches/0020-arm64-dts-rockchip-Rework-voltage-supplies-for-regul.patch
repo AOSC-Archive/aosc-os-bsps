@@ -1,7 +1,7 @@
 From 9cb6b0f31a45084aeab6db1fa399aeeb81c13f54 Mon Sep 17 00:00:00 2001
 From: Markus Reichl <m.reichl@fivetechno.de>
 Date: Thu, 31 Oct 2019 14:30:06 +0100
-Subject: [PATCH 20/44] arm64: dts: rockchip: Rework voltage supplies for
+Subject: [PATCH 20/28] arm64: dts: rockchip: Rework voltage supplies for
  regulators on rk3399-roc-pc
 
 Correct the voltage supplies according to the board schematics

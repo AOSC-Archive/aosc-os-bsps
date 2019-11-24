@@ -1,7 +1,7 @@
 From 1f10fab9da23be59efb5578d0071cbba873aec6b Mon Sep 17 00:00:00 2001
 From: Peter Geis <pgwipeout@gmail.com>
 Date: Wed, 16 Oct 2019 18:59:46 +0000
-Subject: [PATCH 27/44] arm64: dts: rockchip: fix sdmmc detection on boot on
+Subject: [PATCH 27/28] arm64: dts: rockchip: fix sdmmc detection on boot on
  rk3328-roc-cc
 
 With working GPIO, during init the GPIO state s reset.

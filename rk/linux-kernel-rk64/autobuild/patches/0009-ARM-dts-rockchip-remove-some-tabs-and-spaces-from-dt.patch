@@ -1,7 +1,7 @@
 From 449eec0f3e4dc4e8d6b27a96bd811b1d9e2db5bb Mon Sep 17 00:00:00 2001
 From: Johan Jonker <jbx6244@gmail.com>
 Date: Mon, 14 Oct 2019 23:06:19 +0200
-Subject: [PATCH 09/44] ARM: dts: rockchip: remove some tabs and spaces from
+Subject: [PATCH 09/28] ARM: dts: rockchip: remove some tabs and spaces from
  dtsi files
 
 Cleanup the Rockchip dtsi files a little bit
