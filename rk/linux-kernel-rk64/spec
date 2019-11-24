@@ -1,4 +1,4 @@
 VER=5.4.0~rc8
-REL=1
+REL=2
 SRCTBL="https://git.kernel.org/torvalds/t/linux-5.4-rc8.tar.gz"
 CHKSUM="sha256::b310b110f06f297a617fedbd1c0bf2cfc07825c6ddbadb3aba7d8177184a0d4d"
