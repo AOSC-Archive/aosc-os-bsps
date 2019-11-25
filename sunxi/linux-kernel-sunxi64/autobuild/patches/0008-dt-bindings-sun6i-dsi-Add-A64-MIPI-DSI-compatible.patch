@@ -1,0 +1,33 @@
+From ad16caad16143f9f0dd2237fbcefe08928bf6352 Mon Sep 17 00:00:00 2001
+From: Jagan Teki <jagan@amarulasolutions.com>
+Date: Sat, 5 Oct 2019 19:49:08 +0530
+Subject: [PATCH 008/125] dt-bindings: sun6i-dsi: Add A64 MIPI-DSI compatible
+
+The MIPI DSI controller in Allwinner A64 is similar to A33.
+
+But unlike A33, A64 doesn't have DSI_SCLK gating so it is valid
+to with separate compatible for A64 on the same driver.
+
+Signed-off-by: Jagan Teki <jagan@amarulasolutions.com>
+---
+ .../bindings/display/allwinner,sun6i-a31-mipi-dsi.yaml        | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/Documentation/devicetree/bindings/display/allwinner,sun6i-a31-mipi-dsi.yaml b/Documentation/devicetree/bindings/display/allwinner,sun6i-a31-mipi-dsi.yaml
+index dafc0980c4fa..cfcc84d38084 100644
+--- a/Documentation/devicetree/bindings/display/allwinner,sun6i-a31-mipi-dsi.yaml
++++ b/Documentation/devicetree/bindings/display/allwinner,sun6i-a31-mipi-dsi.yaml
+@@ -15,7 +15,9 @@ properties:
+   "#size-cells": true
+ 
+   compatible:
+-    const: allwinner,sun6i-a31-mipi-dsi
++    enum:
++      - const: allwinner,sun6i-a31-mipi-dsi
++      - const: allwinner,sun50i-a64-mipi-dsi
+ 
+   reg:
+     maxItems: 1
+-- 
+2.23.0
+

@@ -1,0 +1,47 @@
+From d8f4ec7397d44d7e825dfb0de4cb07e40a82b22c Mon Sep 17 00:00:00 2001
+From: Yangtao Li <tiny.windzz@gmail.com>
+Date: Sun, 16 Jun 2019 12:26:47 +0800
+Subject: [PATCH 028/125] thermal: sun8i: get ths init func from device
+ compatible
+
+There are some differences in register initialization for
+different socs. So we get different initialization functions
+from device compatible.
+
+Signed-off-by: Yangtao Li <tiny.windzz@gmail.com>
+---
+ drivers/thermal/sun8i_thermal.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/thermal/sun8i_thermal.c b/drivers/thermal/sun8i_thermal.c
+index abd20a812ff8..04a74e8cbb0e 100644
+--- a/drivers/thermal/sun8i_thermal.c
++++ b/drivers/thermal/sun8i_thermal.c
+@@ -59,6 +59,7 @@ struct ths_thermal_chip {
+ 	int		scale;
+ 	int		ft_deviation;
+ 	int		temp_data_base;
++	int		(*init)(struct ths_device *tmdev);
+ };
+ 
+ struct ths_device {
+@@ -365,7 +366,7 @@ static int sun8i_ths_probe(struct platform_device *pdev)
+ 	if (irq < 0)
+ 		return irq;
+ 
+-	ret = sun50i_thermal_init(tmdev);
++	ret = tmdev->chip->init(tmdev);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -403,6 +404,7 @@ static const struct ths_thermal_chip sun50i_h6_ths = {
+ 	.scale = -67,
+ 	.ft_deviation = SUN50I_H6_FT_DEVIATION,
+ 	.temp_data_base = SUN50I_H6_THS_TEMP_DATA,
++	.init = sun50i_thermal_init,
+ };
+ 
+ static const struct of_device_id of_ths_match[] = {
+-- 
+2.23.0
+

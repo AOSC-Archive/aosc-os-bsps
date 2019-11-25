@@ -1,7 +1,7 @@
-From 1ced2178c9b40d9bb48293641ea3066377e507d6 Mon Sep 17 00:00:00 2001
+From 940669c0b4b6f60bb74955505058cf40b0270962 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 3 Aug 2019 16:50:49 +0800
-Subject: [PATCH 105/128] ARM: dts: sun8i: h2+: enable extensive functionality
+Subject: [PATCH 105/125] ARM: dts: sun8i: h2+: enable extensive functionality
  on OPi Zero
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>

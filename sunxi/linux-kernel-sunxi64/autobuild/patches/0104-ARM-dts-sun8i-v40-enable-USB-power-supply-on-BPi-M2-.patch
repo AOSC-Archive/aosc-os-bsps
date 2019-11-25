@@ -1,7 +1,7 @@
-From b3e63dc46254cf26463c4ff187fb8e854a66b94c Mon Sep 17 00:00:00 2001
+From f4ae20b5af8d3a7ebd690ad9f8c2fdec4da0ad5b Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 29 Jul 2019 23:14:19 +0800
-Subject: [PATCH 104/128] ARM: dts: sun8i: v40: enable USB power supply on BPi
+Subject: [PATCH 104/125] ARM: dts: sun8i: v40: enable USB power supply on BPi
  M2 Berry
 
 The Banana Pi M2 Berry board has only one possible power input, via the

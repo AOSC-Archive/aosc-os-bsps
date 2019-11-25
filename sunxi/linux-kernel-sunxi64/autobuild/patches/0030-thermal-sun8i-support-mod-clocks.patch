@@ -1,0 +1,85 @@
+From ea75dad829e4482ae065022c98beba4025158ee5 Mon Sep 17 00:00:00 2001
+From: Yangtao Li <tiny.windzz@gmail.com>
+Date: Sun, 16 Jun 2019 18:58:31 +0800
+Subject: [PATCH 030/125] thermal: sun8i: support mod clocks
+
+H3 has extra clock, so introduce something in ths_thermal_chip/ths_device
+and adds the process of the clock.
+
+This is pre-work for support it.
+
+Signed-off-by: Yangtao Li <tiny.windzz@gmail.com>
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ drivers/thermal/sun8i_thermal.c | 22 +++++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/thermal/sun8i_thermal.c b/drivers/thermal/sun8i_thermal.c
+index a16e86b3afd5..f7fde760a2ae 100644
+--- a/drivers/thermal/sun8i_thermal.c
++++ b/drivers/thermal/sun8i_thermal.c
+@@ -54,6 +54,7 @@ struct tsensor {
+ };
+ 
+ struct ths_thermal_chip {
++	bool            has_mod_clk;
+ 	int		sensor_num;
+ 	int		offset;
+ 	int		scale;
+@@ -69,6 +70,7 @@ struct ths_device {
+ 	struct regmap				*regmap;
+ 	struct reset_control			*reset;
+ 	struct clk				*bus_clk;
++	struct clk                              *mod_clk;
+ 	struct tsensor				sensor[MAX_SENSOR_NUM];
+ };
+ 
+@@ -280,6 +282,12 @@ static int sun8i_ths_resource_init(struct ths_device *tmdev)
+ 	if (IS_ERR(tmdev->bus_clk))
+ 		return PTR_ERR(tmdev->bus_clk);
+ 
++	if (tmdev->chip->has_mod_clk) {
++		tmdev->mod_clk = devm_clk_get(&pdev->dev, "mod");
++		if (IS_ERR(tmdev->mod_clk))
++			return PTR_ERR(tmdev->mod_clk);
++	}
++
+ 	ret = reset_control_deassert(tmdev->reset);
+ 	if (ret)
+ 		return ret;
+@@ -288,12 +296,21 @@ static int sun8i_ths_resource_init(struct ths_device *tmdev)
+ 	if (ret)
+ 		goto assert_reset;
+ 
++	if (tmdev->chip->has_mod_clk) {
++		ret = clk_prepare_enable(tmdev->mod_clk);
++		if (ret)
++			goto bus_disable;
++	}
++
+ 	ret = sun50i_ths_calibrate(tmdev);
+ 	if (ret)
+-		goto bus_disable;
++		goto mod_disable;
+ 
+ 	return 0;
+ 
++mod_disable:
++	if (tmdev->chip->has_mod_clk)
++		clk_disable_unprepare(tmdev->mod_clk);
+ bus_disable:
+ 	clk_disable_unprepare(tmdev->bus_clk);
+ assert_reset:
+@@ -403,6 +420,9 @@ static int sun8i_ths_remove(struct platform_device *pdev)
+ {
+ 	struct ths_device *tmdev = platform_get_drvdata(pdev);
+ 
++	if (tmdev->chip->has_mod_clk)
++		clk_disable_unprepare(tmdev->mod_clk);
++
+ 	clk_disable_unprepare(tmdev->bus_clk);
+ 	reset_control_assert(tmdev->reset);
+ 
+-- 
+2.23.0
+

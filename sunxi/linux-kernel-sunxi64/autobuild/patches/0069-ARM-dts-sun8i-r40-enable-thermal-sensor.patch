@@ -1,0 +1,104 @@
+From b5567b9a91a6e35c605548f887fd3781c295cb49 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Mon, 29 Jul 2019 10:28:26 +0800
+Subject: [PATCH 069/125] ARM: dts: sun8i: r40: enable thermal sensor
+
+The Allwinner R40 SoC contains a thermal sensor that is capable of
+reading out the temperature of the CPU and GPU in the SoC.
+
+Enable it in the device tree, and add the corresponding thermal zones.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm/boot/dts/sun8i-r40.dtsi | 61 ++++++++++++++++++++++++++++++++
+ 1 file changed, 61 insertions(+)
+
+diff --git a/arch/arm/boot/dts/sun8i-r40.dtsi b/arch/arm/boot/dts/sun8i-r40.dtsi
+index e200467a6021..57894ea2a0b8 100644
+--- a/arch/arm/boot/dts/sun8i-r40.dtsi
++++ b/arch/arm/boot/dts/sun8i-r40.dtsi
+@@ -46,6 +46,7 @@
+ #include <dt-bindings/clock/sun8i-r40-ccu.h>
+ #include <dt-bindings/reset/sun8i-r40-ccu.h>
+ #include <dt-bindings/reset/sun8i-de2.h>
++#include <dt-bindings/thermal/thermal.h>
+ 
+ / {
+ 	#address-cells = <1>;
+@@ -451,6 +452,16 @@
+ 			clocks = <&osc24M>;
+ 		};
+ 
++		ths: thermal-sensor@1c24c00 {
++			compatible = "allwinner,sun8i-r40-ths";
++			reg = <0x01c24c00 0x100>;
++			interrupts = <GIC_SPI 36 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&ccu CLK_BUS_THS>, <&ccu CLK_THS>;
++			clock-names = "bus", "mod";
++			resets = <&ccu RST_BUS_THS>;
++			#thermal-sensor-cells = <1>;
++		};
++
+ 		uart0: serial@1c28000 {
+ 			compatible = "snps,dw-apb-uart";
+ 			reg = <0x01c28000 0x400>;
+@@ -886,6 +897,56 @@
+ 		};
+ 	};
+ 
++	thermal-zones {
++		cpu-thermal {
++			/* milliseconds */
++			polling-delay-passive = <250>;
++			polling-delay = <1000>;
++			thermal-sensors = <&ths 0>;
++
++			cooling-maps {
++				map0 {
++					trip = <&cpu_alert0>;
++					cooling-device = <&cpu0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
++				};
++				map1 {
++					trip = <&cpu_alert1>;
++					cooling-device = <&cpu0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
++				};
++			};
++
++			trips {
++				cpu_alert0: cpu-alert0 {
++					/* milliCelsius */
++					temperature = <75000>;
++					hysteresis = <2000>;
++					type = "passive";
++				};
++
++				cpu_alert1: cpu-alert1 {
++					/* milliCelsius */
++					temperature = <90000>;
++					hysteresis = <2000>;
++					type = "hot";
++				};
++
++				cpu_crit: cpu-crit {
++					/* milliCelsius */
++					temperature = <105000>;
++					hysteresis = <2000>;
++					type = "critical";
++				};
++			};
++		};
++
++		gpu-thermal {
++			/* milliseconds */
++			polling-delay-passive = <250>;
++			polling-delay = <1000>;
++			thermal-sensors = <&ths 1>;
++		};
++	};
++
+ 	timer {
+ 		compatible = "arm,armv7-timer";
+ 		interrupts = <GIC_PPI 13 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>,
+-- 
+2.23.0
+

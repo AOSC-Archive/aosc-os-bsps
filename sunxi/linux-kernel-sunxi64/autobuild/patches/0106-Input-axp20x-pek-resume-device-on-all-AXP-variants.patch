@@ -1,7 +1,7 @@
-From 9b2a1ac355a2512ee00bece68ce8412eab480a85 Mon Sep 17 00:00:00 2001
+From 5c15dc00fdb4ae40e888b57ed93775378cdb52c1 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 7 Aug 2019 21:15:51 +0800
-Subject: [PATCH 106/128] Input: axp20x-pek - resume device on all AXP variants
+Subject: [PATCH 106/125] Input: axp20x-pek - resume device on all AXP variants
 
 On all AXP-based devices, the power key of AXP is expected as a resume
 source.
@@ -15,10 +15,10 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 1 insertion(+), 5 deletions(-)
 
 diff --git a/drivers/input/misc/axp20x-pek.c b/drivers/input/misc/axp20x-pek.c
-index debeeaeb8812..e6d0df15c48c 100644
+index 17c1cca74498..900062b27b8d 100644
 --- a/drivers/input/misc/axp20x-pek.c
 +++ b/drivers/input/misc/axp20x-pek.c
-@@ -288,8 +288,7 @@ static int axp20x_pek_probe_input_device(struct axp20x_pek *axp20x_pek,
+@@ -279,8 +279,7 @@ static int axp20x_pek_probe_input_device(struct axp20x_pek *axp20x_pek,
  		return error;
  	}
  
@@ -28,7 +28,7 @@ index debeeaeb8812..e6d0df15c48c 100644
  
  	return 0;
  }
-@@ -372,9 +371,6 @@ static int __maybe_unused axp20x_pek_resume_noirq(struct device *dev)
+@@ -356,9 +355,6 @@ static int __maybe_unused axp20x_pek_resume_noirq(struct device *dev)
  {
  	struct axp20x_pek *axp20x_pek = dev_get_drvdata(dev);
  

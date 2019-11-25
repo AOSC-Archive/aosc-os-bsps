@@ -1,7 +1,7 @@
-From 699fff30f04640179cd7bee1f66384b8b9610900 Mon Sep 17 00:00:00 2001
+From 1e617337e55c941e8922b2ae4891579a678e3d42 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 9 Aug 2019 12:50:23 +0800
-Subject: [PATCH 108/128] iio: bmc150: hack for iio-sensor-proxy
+Subject: [PATCH 108/125] iio: bmc150: hack for iio-sensor-proxy
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---
