@@ -1,7 +1,7 @@
 From d163cb6281647f5239d7d7a38617839584ff671d Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 6 Oct 2019 23:30:27 +0800
-Subject: [PATCH 006/125] drm/sun4i: dsi: fix the overhead of the horizontal
+Subject: [PATCH 006/126] drm/sun4i: dsi: fix the overhead of the horizontal
  front porch
 
 The formula in the BSP kernel indicates that a 16-byte overhead is used

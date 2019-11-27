@@ -1,0 +1,65 @@
+From 7061fa9d24b1bc04e315453a6abc13d600d0b01c Mon Sep 17 00:00:00 2001
+From: Vasily Khoruzhick <anarsoul@gmail.com>
+Date: Sat, 13 Jul 2019 09:32:33 -0700
+Subject: [PATCH 037/126] thermal: sun8i: add thermal driver for A64
+
+Thermal sensor controller in A64 is similar to H3, but it has 3 sensors.
+Extend H3 functions to add support for multiple sensors.
+
+Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ drivers/thermal/sun8i_thermal.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/thermal/sun8i_thermal.c b/drivers/thermal/sun8i_thermal.c
+index d1387da8300b..108b5cdee78a 100644
+--- a/drivers/thermal/sun8i_thermal.c
++++ b/drivers/thermal/sun8i_thermal.c
+@@ -405,7 +405,7 @@ static int sun8i_h3_thermal_init(struct ths_device *tmdev)
+ 	return 0;
+ }
+ 
+-static int sun50i_thermal_init(struct ths_device *tmdev)
++static int sun50i_h6_thermal_init(struct ths_device *tmdev)
+ {
+ 	int val;
+ 
+@@ -527,6 +527,19 @@ static const struct ths_thermal_chip sun8i_h3_ths = {
+ 	.irq_ack = sun8i_h3_irq_ack,
+ };
+ 
++static const struct ths_thermal_chip sun50i_a64_ths = {
++	.sensor_num = 3,
++	.offset = -2170,
++	.scale = -117,
++	.acq = 400,
++	.period = 24,
++	.has_mod_clk = true,
++	.temp_data_base = SUN8I_THS_TEMP_DATA,
++	.calibrate = sun8i_h3_ths_calibrate,
++	.init = sun8i_h3_thermal_init,
++	.irq_ack = sun8i_h3_irq_ack,
++};
++
+ static const struct ths_thermal_chip sun50i_h6_ths = {
+ 	.sensor_num = 2,
+ 	.offset = -2794,
+@@ -536,12 +549,13 @@ static const struct ths_thermal_chip sun50i_h6_ths = {
+ 	.ft_deviation = SUN50I_H6_FT_DEVIATION,
+ 	.temp_data_base = SUN50I_H6_THS_TEMP_DATA,
+ 	.calibrate = sun50i_h6_ths_calibrate,
+-	.init = sun50i_thermal_init,
++	.init = sun50i_h6_thermal_init,
+ 	.irq_ack = sun50i_h6_irq_ack,
+ };
+ 
+ static const struct of_device_id of_ths_match[] = {
+ 	{ .compatible = "allwinner,sun8i-h3-ths", .data = &sun8i_h3_ths },
++	{ .compatible = "allwinner,sun50i-a64-ths", .data = &sun50i_a64_ths },
+ 	{ .compatible = "allwinner,sun50i-h6-ths", .data = &sun50i_h6_ths },
+ 	{ /* sentinel */ },
+ };
+-- 
+2.23.0
+

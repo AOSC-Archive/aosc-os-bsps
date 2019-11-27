@@ -1,7 +1,7 @@
 From 5f64925e76e76dc6eea6ca314697bac5378c1583 Mon Sep 17 00:00:00 2001
 From: Jagan Teki <jagan@amarulasolutions.com>
 Date: Thu, 3 Oct 2019 12:15:23 +0530
-Subject: [PATCH 005/125] drm/sun4i: dsi: Fix video start delay computation
+Subject: [PATCH 005/126] drm/sun4i: dsi: Fix video start delay computation
 
 The LCD timing definitions between Linux DRM vs Allwinner are different,
 below diagram shows this clear differences.

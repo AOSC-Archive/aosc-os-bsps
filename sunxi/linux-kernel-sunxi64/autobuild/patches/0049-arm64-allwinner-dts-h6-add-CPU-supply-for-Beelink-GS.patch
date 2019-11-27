@@ -1,0 +1,35 @@
+From e67cb000c6eac086bc272e1eebb9b31024154244 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Mon, 29 Jul 2019 01:22:44 +0800
+Subject: [PATCH 049/126] arm64: allwinner: dts: h6: add CPU supply for Beelink
+ GS1
+
+The Beelink GS1, follows the reference design on the AXP805 DCDC
+assignment, connects DCDCA (polyphased with DCDCB) to the ARM
+cores' power supply.
+
+Add this to the device tree, to enable voltage scaling.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm64/boot/dts/allwinner/sun50i-h6-beelink-gs1.dts | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6-beelink-gs1.dts b/arch/arm64/boot/dts/allwinner/sun50i-h6-beelink-gs1.dts
+index 1d05d570142f..a6f20a329814 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-h6-beelink-gs1.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-h6-beelink-gs1.dts
+@@ -72,6 +72,10 @@
+ 	};
+ };
+ 
++&cpu0 {
++	cpu-supply = <&reg_dcdca>;
++};
++
+ &de {
+ 	status = "okay";
+ };
+-- 
+2.23.0
+

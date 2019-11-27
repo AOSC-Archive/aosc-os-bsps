@@ -1,7 +1,7 @@
 From 6b73723cf9f7845680bb718ba4fa73cb3b5b9252 Mon Sep 17 00:00:00 2001
 From: Jagan Teki <jagan@amarulasolutions.com>
 Date: Thu, 3 Oct 2019 12:15:21 +0530
-Subject: [PATCH 003/125] drm/sun4i: dsi: Fix TCON DRQ set bits
+Subject: [PATCH 003/126] drm/sun4i: dsi: Fix TCON DRQ set bits
 
 The LCD timing definitions between Linux DRM vs Allwinner are different,
 below diagram shows this clear differences.

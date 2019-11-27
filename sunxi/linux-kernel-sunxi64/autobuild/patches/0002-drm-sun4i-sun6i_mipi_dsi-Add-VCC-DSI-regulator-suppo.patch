@@ -1,7 +1,7 @@
 From 69c51eff788ea2646478b343f7e01bfc49f96465 Mon Sep 17 00:00:00 2001
 From: Jagan Teki <jagan@amarulasolutions.com>
 Date: Thu, 3 Oct 2019 12:15:25 +0530
-Subject: [PATCH 002/125] drm/sun4i: sun6i_mipi_dsi: Add VCC-DSI regulator
+Subject: [PATCH 002/126] drm/sun4i: sun6i_mipi_dsi: Add VCC-DSI regulator
  support
 
 Allwinner MIPI DSI controllers are supplied with SoC
