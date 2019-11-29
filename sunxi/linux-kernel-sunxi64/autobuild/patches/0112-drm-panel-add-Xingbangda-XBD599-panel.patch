@@ -1,4 +1,4 @@
-From 756ca3b88c4d0233a49f43d30d95d5b846c44f90 Mon Sep 17 00:00:00 2001
+From 8c50f6e9d3a03c61327b3490e83482f4c1c45d40 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 24 Aug 2019 23:45:25 +0800
 Subject: [PATCH 112/126] drm: panel: add Xingbangda XBD599 panel
@@ -40,7 +40,7 @@ index 81ed6bae1d69..1f5ec0e97287 100644
 +obj-$(CONFIG_DRM_PANEL_XINGBANGDA_XBD599) += panel-xingbangda-xbd599.o
 diff --git a/drivers/gpu/drm/panel/panel-xingbangda-xbd599.c b/drivers/gpu/drm/panel/panel-xingbangda-xbd599.c
 new file mode 100644
-index 000000000000..f73b3ff177e0
+index 000000000000..4c0968fb35db
 --- /dev/null
 +++ b/drivers/gpu/drm/panel/panel-xingbangda-xbd599.c
 @@ -0,0 +1,352 @@
@@ -142,7 +142,7 @@ index 000000000000..f73b3ff177e0
 +	dsi_dcs_write_seq(dsi, ST7703_CMD_SETEQ,
 +			  0x00, 0x00, 0x0B, 0x0B, 0x10, 0x10, 0x00, 0x00,
 +			  0x00, 0x00, 0xFF, 0x00, 0xC0, 0x10);
-+	dsi_dcs_write_seq(dsi, 0xC6, 0x01, 0x00, 0xFF, 0xFF, 0x00, 0x20);
++	dsi_dcs_write_seq(dsi, 0xC6, 0x01, 0x00, 0xFF, 0xFF, 0x00);
 +	dsi_dcs_write_seq(dsi, ST7703_CMD_SETPOWER,
 +			  0x74, 0x00, 0x32, 0x32, 0x77, 0xF1, 0xFF, 0xFF,
 +			  0xCC, 0xCC, 0x77, 0x77);
