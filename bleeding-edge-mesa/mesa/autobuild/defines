@@ -1,0 +1,37 @@
+PKGNAME=mesa
+PKGDES="MesaLib - a OpenGL implementation, bleeding edge version"
+PKGDEP="x11-lib libdrm expat systemd elfutils libvdpau nettle \
+        libva wayland s2tc lm-sensors libglvnd llvm-runtime libclc"
+BUILDDEP="x11-proto mako systemd valgrind llvm glslang"
+PKGSEC=libs
+
+MESON_AFTER="-Ddri-drivers-path=/usr/lib/xorg/modules/dri \
+             -Db_ndebug=true \
+             -Dplatforms=x11,wayland,drm,surfaceless \
+             -Dvulkan-overlay-layer=true \
+             -Ddri3=true \
+             -Degl=true \
+             -Dgallium-extra-hud=true \
+             -Dgallium-nine=true \
+             -Dgallium-opencl=icd \
+             -Dgallium-va=true \
+             -Dgallium-vdpau=true \
+             -Dgallium-xa=true \
+             -Dgallium-xvmc=false \
+             -Dgbm=true \
+             -Dgles1=true \
+             -Dgles2=true \
+             -Dglvnd=true \
+             -Dglx=dri \
+             -Dllvm=true \
+             -Dlmsensors=true \
+             -Dosmesa=gallium \
+             -Dshared-glapi=true \
+             -Dvalgrind=true \
+             -Db_lto=false \
+             -Ddri-drivers=r100,r200,nouveau \
+             -Dgallium-drivers=freedreno,tegra,vc4,r300,r600,radeonsi,nouveau,virgl,swrast,etnaviv,lima,panfrost,kmsro \
+             -Dvulkan-drivers=amd \
+             -Dlibunwind=false"
+
+PKGEPOCH=1
