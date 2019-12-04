@@ -13,7 +13,6 @@ MESON_AFTER="-Ddri-drivers-path=/usr/lib/xorg/modules/dri \
              -Degl=true \
              -Dgallium-extra-hud=true \
              -Dgallium-nine=true \
-             -Dgallium-opencl=icd \
              -Dgallium-va=true \
              -Dgallium-vdpau=true \
              -Dgallium-xa=true \
