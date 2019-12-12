@@ -1,0 +1,50 @@
+From 8a5341e85a6e4a1cc6d15297949f4a9b604a41fd Mon Sep 17 00:00:00 2001
+From: Andrey Grodzovsky <andrey.grodzovsky@amd.com>
+Date: Tue, 29 Oct 2019 11:03:05 -0400
+Subject: [PATCH 130/130] drm/sched:  Fix passing zero to 'PTR_ERR' warning v2
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Fix a static code checker warning.
+
+v2: Drop PTR_ERR_OR_ZERO.
+
+Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@amd.com>
+Reviewed-by: Emily Deng <Emily.Deng@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+---
+ drivers/gpu/drm/scheduler/sched_main.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/gpu/drm/scheduler/sched_main.c b/drivers/gpu/drm/scheduler/sched_main.c
+index 4815155ea447..cb828a302154 100644
+--- a/drivers/gpu/drm/scheduler/sched_main.c
++++ b/drivers/gpu/drm/scheduler/sched_main.c
+@@ -525,8 +525,10 @@ void drm_sched_resubmit_jobs(struct drm_gpu_scheduler *sched)
+ 		fence = sched->ops->run_job(s_job);
+ 
+ 		if (IS_ERR_OR_NULL(fence)) {
++			if (IS_ERR(fence))
++				dma_fence_set_error(&s_fence->finished, PTR_ERR(fence));
++
+ 			s_job->s_fence->parent = NULL;
+-			dma_fence_set_error(&s_fence->finished, PTR_ERR(fence));
+ 		} else {
+ 			s_job->s_fence->parent = fence;
+ 		}
+@@ -773,8 +775,9 @@ static int drm_sched_main(void *param)
+ 					  r);
+ 			dma_fence_put(fence);
+ 		} else {
++			if (IS_ERR(fence))
++				dma_fence_set_error(&s_fence->finished, PTR_ERR(fence));
+ 
+-			dma_fence_set_error(&s_fence->finished, PTR_ERR(fence));
+ 			drm_sched_process_job(NULL, &sched_job->cb);
+ 		}
+ 
+-- 
+2.23.0
+
