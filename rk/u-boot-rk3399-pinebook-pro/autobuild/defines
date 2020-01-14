@@ -1,4 +1,4 @@
-PKGNAME=u-boot-rk3399-pinebook-pro"
+PKGNAME=u-boot-rk3399-pinebook-pro
 PKGDES="U-Boot for Pinebook Pro"
 PKGSEC=embedded
 BUILDDEP="dtc swig"
