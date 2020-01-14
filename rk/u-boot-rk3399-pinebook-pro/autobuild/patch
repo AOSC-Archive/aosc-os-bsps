@@ -1,5 +1,5 @@
 wget https://github.com/ayufan-rock64/rkbin/raw/master/rk33/rk3399_bl31_v1.25.elf -O rk3399bl31.elf
-wget https://github.com/rockchip-linux/rkbin/blob/master/bin/rk33/rk3399_ddr_933MHz_v1.24.bin -O rk3399ddr.bin
+wget https://github.com/rockchip-linux/rkbin/raw/master/bin/rk33/rk3399_ddr_933MHz_v1.24.bin -O rk3399ddr.bin
 
 ln -sfv ../../include/libfdt_env.h lib/libfdt/
 
