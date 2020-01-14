@@ -1,0 +1,8 @@
+PKGNAME=u-boot-rk3399-pinebook-pro"
+PKGDES="U-Boot for Pinebook Pro"
+PKGSEC=embedded
+BUILDDEP="dtc swig"
+
+ABSTRIP=no
+ABELFDEP=no
+ABRPMAUTOPROVONLY=yes
