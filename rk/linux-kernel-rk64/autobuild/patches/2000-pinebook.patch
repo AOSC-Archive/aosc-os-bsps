@@ -5059,3 +5059,49 @@ index 0411cc497961..0f295c39b8d0 100644
 -- 
 2.23.0
 
+From a7645906a81a148b1422371b077d8736329f4d36 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Wed, 15 Jan 2020 19:26:04 +0800
+Subject: [PATCH] pinebook-pro: use OOB irq for wifi
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ .../boot/dts/rockchip/rk3399-pinebook-pro.dts     | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+index 0f295c39b8d0..45665685745d 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+@@ -887,6 +887,10 @@
+ 	};
+ 
+ 	wireless-bluetooth {
++		wifi_int_l: wifi-int-l {
++			rockchip,pins = <0 RK_PA3 RK_FUNC_GPIO &pcfg_pull_up>;
++		};
++
+ 		uart0_gpios: uart0-gpios {
+ 			rockchip,pins =
+ 				<2 RK_PC3 RK_FUNC_GPIO &pcfg_pull_none>;
+@@ -935,7 +939,16 @@
+ 	pinctrl-0 = <&sdio0_bus4 &sdio0_cmd &sdio0_clk>;
+ 	sd-uhs-sdr104;
+ 	status = "okay";
+-	defer_pcie = <2000>;
++
++	brcm: sdio-wifi@1 {
++		reg = <1>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&wifi_int_l>;
++		compatible = "brcm,bcm4329-fmac";
++		interrupt-parent = <&gpio0>;
++		interrupts = <RK_PA3 IRQ_TYPE_LEVEL_LOW>;
++		interrupt-names = "host-wake";
++	};
+ };
+ 
+ &sdhci {
+-- 
+2.23.0
+
