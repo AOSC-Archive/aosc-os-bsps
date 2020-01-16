@@ -1,50 +1,86 @@
-From 8a5341e85a6e4a1cc6d15297949f4a9b604a41fd Mon Sep 17 00:00:00 2001
+From a03130232209fd1c8f1911f92182d46719e33d19 Mon Sep 17 00:00:00 2001
 From: Andrey Grodzovsky <andrey.grodzovsky@amd.com>
-Date: Tue, 29 Oct 2019 11:03:05 -0400
-Subject: [PATCH 130/130] drm/sched:  Fix passing zero to 'PTR_ERR' warning v2
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date: Mon, 18 Nov 2019 12:52:25 -0500
+Subject: [PATCH 129/129] drm/scheduler: Avoid accessing freed bad job.
 
-Fix a static code checker warning.
+Problem:
+Due to a race between drm_sched_cleanup_jobs in sched thread and
+drm_sched_job_timedout in timeout work there is a possiblity that
+bad job was already freed while still being accessed from the
+timeout thread.
 
-v2: Drop PTR_ERR_OR_ZERO.
+Fix:
+Instead of just peeking at the bad job in the mirror list
+remove it from the list under lock and then put it back later when
+we are garanteed no race with main sched thread is possible which
+is after the thread is parked.
+
+v2: Lock around processing ring_mirror_list in drm_sched_cleanup_jobs.
 
 Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@amd.com>
-Reviewed-by: Emily Deng <Emily.Deng@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Tested-by: Emily Deng <Emily.Deng@amd.com>
 ---
- drivers/gpu/drm/scheduler/sched_main.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/scheduler/sched_main.c | 29 ++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
 diff --git a/drivers/gpu/drm/scheduler/sched_main.c b/drivers/gpu/drm/scheduler/sched_main.c
-index 4815155ea447..cb828a302154 100644
+index fbb6446c4f69..9b8509f8d70e 100644
 --- a/drivers/gpu/drm/scheduler/sched_main.c
 +++ b/drivers/gpu/drm/scheduler/sched_main.c
-@@ -525,8 +525,10 @@ void drm_sched_resubmit_jobs(struct drm_gpu_scheduler *sched)
- 		fence = sched->ops->run_job(s_job);
+@@ -284,10 +284,24 @@ static void drm_sched_job_timedout(struct work_struct *work)
+ 	unsigned long flags;
  
- 		if (IS_ERR_OR_NULL(fence)) {
-+			if (IS_ERR(fence))
-+				dma_fence_set_error(&s_fence->finished, PTR_ERR(fence));
+ 	sched = container_of(work, struct drm_gpu_scheduler, work_tdr.work);
 +
- 			s_job->s_fence->parent = NULL;
--			dma_fence_set_error(&s_fence->finished, PTR_ERR(fence));
- 		} else {
- 			s_job->s_fence->parent = fence;
- 		}
-@@ -773,8 +775,9 @@ static int drm_sched_main(void *param)
- 					  r);
- 			dma_fence_put(fence);
- 		} else {
-+			if (IS_ERR(fence))
-+				dma_fence_set_error(&s_fence->finished, PTR_ERR(fence));
++	/*
++	 * Protects against concurrent deletion in drm_sched_cleanup_jobs that
++	 * is already in progress.
++	 */
++	spin_lock_irqsave(&sched->job_list_lock, flags);
+ 	job = list_first_entry_or_null(&sched->ring_mirror_list,
+ 				       struct drm_sched_job, node);
  
--			dma_fence_set_error(&s_fence->finished, PTR_ERR(fence));
- 			drm_sched_process_job(NULL, &sched_job->cb);
- 		}
+ 	if (job) {
++		/*
++		 * Remove the bad job so it cannot be freed by already in progress
++		 * drm_sched_cleanup_jobs. It will be reinsrted back after sched->thread
++		 * is parked at which point it's safe.
++		 */
++		list_del_init(&job->node);
++		spin_unlock_irqrestore(&sched->job_list_lock, flags);
++
+ 		job->sched->ops->timedout_job(job);
  
+ 		/*
+@@ -299,6 +313,8 @@ static void drm_sched_job_timedout(struct work_struct *work)
+ 			sched->free_guilty = false;
+ 		}
+ 	}
++	else
++		spin_unlock_irqrestore(&sched->job_list_lock, flags);
+ 
+ 	spin_lock_irqsave(&sched->job_list_lock, flags);
+ 	drm_sched_start_timeout(sched);
+@@ -369,6 +385,19 @@ void drm_sched_stop(struct drm_gpu_scheduler *sched, struct drm_sched_job *bad)
+ 
+ 	kthread_park(sched->thread);
+ 
++	/*
++	 * Reinsert back the bad job here - now it's safe as drm_sched_cleanup_jobs
++	 * cannot race against us and release the bad job at this point - we parked
++	 * (waited for) any in progress (earlier) cleanups and any later ones will
++	 * bail out due to sched->thread being parked.
++	 */
++	if (bad && bad->sched == sched)
++		/*
++		 * Add at the head of the queue to reflect it was the earliest
++		 * job extracted.
++		 */
++		list_add(&bad->node, &sched->ring_mirror_list);
++
+ 	/*
+ 	 * Iterate the job list from later to  earlier one and either deactive
+ 	 * their HW callbacks or remove them from mirror list if they already
 -- 
 2.23.0
 

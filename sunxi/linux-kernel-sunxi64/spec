@@ -1,3 +1,3 @@
-VER=5.4.3
-SRCTBL="https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.4.3.tar.xz"
-CHKSUM="sha256::6731682f32e1b1ee53b0e7f66b8dc263d25a0e809e78e2139cb0ed77c378ee51"
+VER=5.4.12
+SRCTBL="https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.4.12.tar.xz"
+CHKSUM="sha256::d9c3c7a2d52d25c24cbca0f89d55511422d3d207c573d42ec58f7f17c948d0fb"
