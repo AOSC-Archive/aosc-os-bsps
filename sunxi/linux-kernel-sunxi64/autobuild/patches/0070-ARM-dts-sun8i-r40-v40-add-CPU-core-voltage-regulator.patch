@@ -1,0 +1,50 @@
+From 96c3e71b0f5e5412086ceab0b99563b274ca5d5e Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Mon, 29 Jul 2019 10:33:11 +0800
+Subject: [PATCH 070/136] ARM: dts: sun8i: r40/v40: add CPU core voltage
+ regulator for boards
+
+The CPU core voltage regulator is required to be set to get working
+voltage scaling.
+
+Set the regulator for current R40/V40 boards.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm/boot/dts/sun8i-r40-bananapi-m2-ultra.dts | 4 ++++
+ arch/arm/boot/dts/sun8i-v40-bananapi-m2-berry.dts | 4 ++++
+ 2 files changed, 8 insertions(+)
+
+diff --git a/arch/arm/boot/dts/sun8i-r40-bananapi-m2-ultra.dts b/arch/arm/boot/dts/sun8i-r40-bananapi-m2-ultra.dts
+index 42d62d1ba1dc..e46ece20e6c8 100644
+--- a/arch/arm/boot/dts/sun8i-r40-bananapi-m2-ultra.dts
++++ b/arch/arm/boot/dts/sun8i-r40-bananapi-m2-ultra.dts
+@@ -113,6 +113,10 @@
+ 	status = "okay";
+ };
+ 
++&cpu0 {
++	cpu-supply = <&reg_dcdc2>;
++};
++
+ &de {
+ 	status = "okay";
+ };
+diff --git a/arch/arm/boot/dts/sun8i-v40-bananapi-m2-berry.dts b/arch/arm/boot/dts/sun8i-v40-bananapi-m2-berry.dts
+index 15c22b06fc4b..fb9fc62e9d88 100644
+--- a/arch/arm/boot/dts/sun8i-v40-bananapi-m2-berry.dts
++++ b/arch/arm/boot/dts/sun8i-v40-bananapi-m2-berry.dts
+@@ -107,6 +107,10 @@
+ 	status = "okay";
+ };
+ 
++&cpu0 {
++	cpu-supply = <&reg_dcdc2>;
++};
++
+ &de {
+ 	status = "okay";
+ };
+-- 
+2.24.1
+

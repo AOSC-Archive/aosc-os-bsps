@@ -1,0 +1,30 @@
+From b1e8190392f7cd621164d7755ff2714e7a5b0ff2 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Mon, 29 Jul 2019 00:55:10 +0800
+Subject: [PATCH 040/136] dt-bindings: thermal: add binding for Allwinner R40
+ thermal sensor
+
+The Allwinner R40 thermal sensor is just the similar to the one in A64.
+
+Add device tree binding for it.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ Documentation/devicetree/bindings/thermal/sun8i-thermal.yaml | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Documentation/devicetree/bindings/thermal/sun8i-thermal.yaml b/Documentation/devicetree/bindings/thermal/sun8i-thermal.yaml
+index 625656a98388..56f8a0c1b1db 100644
+--- a/Documentation/devicetree/bindings/thermal/sun8i-thermal.yaml
++++ b/Documentation/devicetree/bindings/thermal/sun8i-thermal.yaml
+@@ -17,6 +17,7 @@ properties:
+   compatible:
+     enum:
+       - allwinner,sun8i-h3-ths
++      - allwinner,sun8i-r40-ths
+       - allwinner,sun50i-a64-ths
+       - allwinner,sun50i-h5-ths
+       - allwinner,sun50i-h6-ths
+-- 
+2.24.1
+

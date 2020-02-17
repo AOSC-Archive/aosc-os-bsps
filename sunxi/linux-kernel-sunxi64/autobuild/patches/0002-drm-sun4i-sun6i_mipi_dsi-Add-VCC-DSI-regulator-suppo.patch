@@ -1,7 +1,7 @@
-From 69c51eff788ea2646478b343f7e01bfc49f96465 Mon Sep 17 00:00:00 2001
+From c6357a74dedc0ddd7d505f8ba3b1479135418a4a Mon Sep 17 00:00:00 2001
 From: Jagan Teki <jagan@amarulasolutions.com>
 Date: Thu, 3 Oct 2019 12:15:25 +0530
-Subject: [PATCH 002/126] drm/sun4i: sun6i_mipi_dsi: Add VCC-DSI regulator
+Subject: [PATCH 002/136] drm/sun4i: sun6i_mipi_dsi: Add VCC-DSI regulator
  support
 
 Allwinner MIPI DSI controllers are supplied with SoC
@@ -21,7 +21,7 @@ Link: https://patchwork.freedesktop.org/patch/msgid/20191003064527.15128-6-jagan
  2 files changed, 16 insertions(+)
 
 diff --git a/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c b/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c
-index 1636344ba9ec..6f6f3a0d8e26 100644
+index f83522717488..2c945001e526 100644
 --- a/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c
 +++ b/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c
 @@ -16,6 +16,7 @@
@@ -80,5 +80,5 @@ index 5c3ad5be0690..3f4846f581ef 100644
  	struct phy		*dphy;
  
 -- 
-2.23.0
+2.24.1
 

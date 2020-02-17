@@ -1,7 +1,7 @@
-From f1c75a52a44662d49015338c4baee8016c9fa9c1 Mon Sep 17 00:00:00 2001
+From 9c1e989d47caf6e008ee796e521f90d734cc226b Mon Sep 17 00:00:00 2001
 From: Andrey Grodzovsky <andrey.grodzovsky@amd.com>
 Date: Mon, 18 Nov 2019 12:52:25 -0500
-Subject: [PATCH] drm/scheduler: Avoid accessing freed bad job.
+Subject: [PATCH 129/136] drm/scheduler: Avoid accessing freed bad job.
 
 Problem:
 Due to a race between drm_sched_cleanup_jobs in sched thread and
@@ -82,5 +82,5 @@ index fbb6446c4f69..9b8509f8d70e 100644
  	 * Iterate the job list from later to  earlier one and either deactive
  	 * their HW callbacks or remove them from mirror list if they already
 -- 
-2.23.0
+2.24.1
 

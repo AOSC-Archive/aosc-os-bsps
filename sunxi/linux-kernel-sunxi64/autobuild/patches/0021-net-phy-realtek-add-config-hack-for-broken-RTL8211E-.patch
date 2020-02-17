@@ -1,0 +1,73 @@
+From fe428424cd7ae7ea939b1e7f0614a2fa6597a353 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Mon, 29 Jul 2019 17:27:26 +0800
+Subject: [PATCH 021/136] net: phy: realtek: add config hack for broken
+ RTL8211E on Pine64+ boards
+
+Some RTL8211E chips have broken GbE function, which needs a hack to
+fix.
+
+Currently only some Pine64+ boards are known to used this broken batch
+of RTL8211E chips.
+
+Enable this hack when a certain device tree property is set.
+
+As this hack is not documented on the datasheet at all, it contains
+magic numbers, and could not be revealed. These magic numbers are
+received from Realtek via Pine64.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ drivers/net/phy/realtek.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/drivers/net/phy/realtek.c b/drivers/net/phy/realtek.c
+index 677c45985338..adeaaf0aadad 100644
+--- a/drivers/net/phy/realtek.c
++++ b/drivers/net/phy/realtek.c
+@@ -9,6 +9,7 @@
+  * Copyright (c) 2004 Freescale Semiconductor, Inc.
+  */
+ #include <linux/bitops.h>
++#include <linux/of.h>
+ #include <linux/phy.h>
+ #include <linux/module.h>
+ 
+@@ -32,6 +33,13 @@
+ #define RTL8211E_TX_DELAY			BIT(1)
+ #define RTL8211E_RX_DELAY			BIT(2)
+ #define RTL8211E_MODE_MII_GMII			BIT(3)
++/*
++ * The following number resides in the same register with
++ * the delay bits and mode bit above. However, no known
++ * document can explain this, and this value is directly
++ * received from Realtek via Pine64.
++ */
++#define RTL8211E_CONF_MAGIC_PINE64		0xb400
+ 
+ #define RTL8201F_ISR				0x1e
+ #define RTL8201F_IER				0x13
+@@ -196,6 +204,7 @@ static int rtl8211e_config_init(struct phy_device *phydev)
+ {
+ 	int ret = 0, oldpage;
+ 	u16 val;
++	struct device_node *of_node = phydev->mdio.dev.of_node;
+ 
+ 	/* enable TX/RX delay for rgmii-* modes, and disable them for rgmii. */
+ 	switch (phydev->interface) {
+@@ -234,6 +243,12 @@ static int rtl8211e_config_init(struct phy_device *phydev)
+ 	ret = __phy_modify(phydev, 0x1c, RTL8211E_TX_DELAY | RTL8211E_RX_DELAY,
+ 			   val);
+ 
++	if (of_node &&
++	    of_property_read_bool(of_node, "realtek,config-magic-for-pine64")) {
++		ret = __phy_modify(phydev, 0x1c, GENMASK(15, 9),
++				   RTL8211E_CONF_MAGIC_PINE64);
++	}
++
+ err_restore_page:
+ 	return phy_restore_page(phydev, oldpage, ret);
+ }
+-- 
+2.24.1
+

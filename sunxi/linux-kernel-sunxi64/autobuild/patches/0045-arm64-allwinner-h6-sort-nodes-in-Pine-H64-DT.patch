@@ -1,0 +1,69 @@
+From fc0e6e89d80704aa7a07e59fc4816b768069c697 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Mon, 29 Jul 2019 01:20:01 +0800
+Subject: [PATCH 045/136] arm64: allwinner: h6: sort nodes in Pine H64 DT
+
+Currently the sequence of nodes in Pine H64 device tree file is messed
+up.
+
+Sort them by alphabetical order.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ .../boot/dts/allwinner/sun50i-h6-pine-h64.dts | 24 +++++++++----------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6-pine-h64.dts b/arch/arm64/boot/dts/allwinner/sun50i-h6-pine-h64.dts
+index 30102daf83cc..a69145d29ed5 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-h6-pine-h64.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-h6-pine-h64.dts
+@@ -63,6 +63,10 @@
+ 	};
+ };
+ 
++&de {
++	status = "okay";
++};
++
+ &emac {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&ext_rgmii_pins>;
+@@ -74,14 +78,11 @@
+ 	status = "okay";
+ };
+ 
+-&mdio {
+-	ext_rgmii_phy: ethernet-phy@1 {
+-		compatible = "ethernet-phy-ieee802.3-c22";
+-		reg = <1>;
+-	};
++&ehci0 {
++	status = "okay";
+ };
+ 
+-&de {
++&ehci3 {
+ 	status = "okay";
+ };
+ 
+@@ -95,12 +96,11 @@
+ 	};
+ };
+ 
+-&ehci0 {
+-	status = "okay";
+-};
+-
+-&ehci3 {
+-	status = "okay";
++&mdio {
++	ext_rgmii_phy: ethernet-phy@1 {
++		compatible = "ethernet-phy-ieee802.3-c22";
++		reg = <1>;
++	};
+ };
+ 
+ &mmc0 {
+-- 
+2.24.1
+

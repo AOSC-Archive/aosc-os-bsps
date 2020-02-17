@@ -1,0 +1,43 @@
+From 717235ffc94f2318e0fa6415c8ba8b07ad896e4f Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Wed, 7 Aug 2019 21:15:51 +0800
+Subject: [PATCH 106/136] Input: axp20x-pek - resume device on all AXP variants
+
+On all AXP-based devices, the power key of AXP is expected as a resume
+source.
+
+Remove the restriction of registering wake up source now, and let power
+key on all AXPs (if present) to be able to wake up the device.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ drivers/input/misc/axp20x-pek.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
+
+diff --git a/drivers/input/misc/axp20x-pek.c b/drivers/input/misc/axp20x-pek.c
+index 17c1cca74498..900062b27b8d 100644
+--- a/drivers/input/misc/axp20x-pek.c
++++ b/drivers/input/misc/axp20x-pek.c
+@@ -279,8 +279,7 @@ static int axp20x_pek_probe_input_device(struct axp20x_pek *axp20x_pek,
+ 		return error;
+ 	}
+ 
+-	if (axp20x_pek->axp20x->variant == AXP288_ID)
+-		enable_irq_wake(axp20x_pek->irq_dbr);
++	enable_irq_wake(axp20x_pek->irq_dbr);
+ 
+ 	return 0;
+ }
+@@ -356,9 +355,6 @@ static int __maybe_unused axp20x_pek_resume_noirq(struct device *dev)
+ {
+ 	struct axp20x_pek *axp20x_pek = dev_get_drvdata(dev);
+ 
+-	if (axp20x_pek->axp20x->variant != AXP288_ID)
+-		return 0;
+-
+ 	/*
+ 	 * Clear interrupts from button presses during suspend, to avoid
+ 	 * a wakeup power-button press getting reported to userspace.
+-- 
+2.24.1
+

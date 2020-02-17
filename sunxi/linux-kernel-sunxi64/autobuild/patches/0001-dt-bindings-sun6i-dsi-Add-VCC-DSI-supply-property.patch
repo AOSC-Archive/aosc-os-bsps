@@ -1,7 +1,7 @@
-From 81bec48aeae0fb2dd84a690fd37dcedaf3db262c Mon Sep 17 00:00:00 2001
+From 6ed9886b1958124f44b7cf978e51a169533386a3 Mon Sep 17 00:00:00 2001
 From: Jagan Teki <jagan@amarulasolutions.com>
 Date: Thu, 3 Oct 2019 12:15:24 +0530
-Subject: [PATCH 001/126] dt-bindings: sun6i-dsi: Add VCC-DSI supply property
+Subject: [PATCH 001/136] dt-bindings: sun6i-dsi: Add VCC-DSI supply property
 
 Allwinner MIPI DSI controllers are supplied with SoC DSI
 power rails via VCC-DSI pin.
@@ -50,5 +50,5 @@ index 47950fced28d..dafc0980c4fa 100644
          #size-cells = <0>;
  
 -- 
-2.23.0
+2.24.1
 
