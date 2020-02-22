@@ -1,0 +1,11 @@
+[Compositing]
+Backend=OpenGL
+GLCore=false
+GLPreferBufferSwap=e
+GLTextureFilter=0
+HiddenPreviews=5
+WindowsBlockCompositing=true
+
+[Plugins]
+blurEnabled=false
+contrastEnabled=false

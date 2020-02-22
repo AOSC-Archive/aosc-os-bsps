@@ -1,0 +1,4 @@
+PKGNAME=kwinrc-lima
+PKGDES="KDE KWin configuration file for tweaking it to run on Lima"
+PKGSEC=kde
+PKGDEP="kwin"
