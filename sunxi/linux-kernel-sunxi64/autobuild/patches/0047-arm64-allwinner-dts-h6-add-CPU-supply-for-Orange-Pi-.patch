@@ -1,7 +1,7 @@
-From e4b409ca5fd57e5ec928dfda7a7622bb1886ee8c Mon Sep 17 00:00:00 2001
+From 399db1daedf5c52350ca40c7c621374c7cfce2db Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 29 Jul 2019 01:21:43 +0800
-Subject: [PATCH 047/136] arm64: allwinner: dts: h6: add CPU supply for Orange
+Subject: [PATCH 047/141] arm64: allwinner: dts: h6: add CPU supply for Orange
  Pi One Plus/Lite 2
 
 The Orange Pi One Plus/Lite 2 boards, follows the reference design on

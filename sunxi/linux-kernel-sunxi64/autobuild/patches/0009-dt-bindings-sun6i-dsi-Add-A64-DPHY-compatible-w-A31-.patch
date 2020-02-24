@@ -1,7 +1,7 @@
-From 2cbda31b4ace7a8419c4a7d157202e3f9327c748 Mon Sep 17 00:00:00 2001
+From 679f249499a45cfb3a7ab5ed1cdcea88d625e3c9 Mon Sep 17 00:00:00 2001
 From: Jagan Teki <jagan@amarulasolutions.com>
 Date: Sat, 5 Oct 2019 19:49:09 +0530
-Subject: [PATCH 009/136] dt-bindings: sun6i-dsi: Add A64 DPHY compatible (w/
+Subject: [PATCH 009/141] dt-bindings: sun6i-dsi: Add A64 DPHY compatible (w/
  A31 fallback)
 
 The MIPI DSI PHY controller on Allwinner A64 is similar

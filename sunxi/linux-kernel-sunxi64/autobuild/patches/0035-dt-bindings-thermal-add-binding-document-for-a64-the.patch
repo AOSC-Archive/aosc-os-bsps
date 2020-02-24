@@ -1,7 +1,7 @@
-From 3bd808cd7e98d6ce6c9706a5b341cf59cb419255 Mon Sep 17 00:00:00 2001
+From 44c8da7621cf491fd29e38890967f2b0efa1b45e Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 29 Jul 2019 00:21:21 +0800
-Subject: [PATCH 035/136] dt-bindings: thermal: add binding document for a64
+Subject: [PATCH 035/141] dt-bindings: thermal: add binding document for a64
  thermal controller
 
 This patch adds binding document for Allwinner A64 thermal controller.

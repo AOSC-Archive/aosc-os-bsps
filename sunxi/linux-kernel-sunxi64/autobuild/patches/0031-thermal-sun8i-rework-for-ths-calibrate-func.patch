@@ -1,7 +1,7 @@
-From 06f5ac4445421de9530733f84d2287456f0d75a7 Mon Sep 17 00:00:00 2001
+From 0d81253889e5ad9af8b0b9f933b039add16f6bfe Mon Sep 17 00:00:00 2001
 From: Yangtao Li <tiny.windzz@gmail.com>
 Date: Sun, 16 Jun 2019 19:23:23 +0800
-Subject: [PATCH 031/136] thermal: sun8i: rework for ths calibrate func
+Subject: [PATCH 031/141] thermal: sun8i: rework for ths calibrate func
 
 Here, we do something to prepare for the subsequent
 support of multiple platforms.

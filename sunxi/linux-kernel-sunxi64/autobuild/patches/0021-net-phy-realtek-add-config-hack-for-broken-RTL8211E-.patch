@@ -1,7 +1,7 @@
-From fe428424cd7ae7ea939b1e7f0614a2fa6597a353 Mon Sep 17 00:00:00 2001
+From 109ed8c52a9acf358834719e0f850d2cd90b14cd Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 29 Jul 2019 17:27:26 +0800
-Subject: [PATCH 021/136] net: phy: realtek: add config hack for broken
+Subject: [PATCH 021/141] net: phy: realtek: add config hack for broken
  RTL8211E on Pine64+ boards
 
 Some RTL8211E chips have broken GbE function, which needs a hack to
@@ -22,7 +22,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 15 insertions(+)
 
 diff --git a/drivers/net/phy/realtek.c b/drivers/net/phy/realtek.c
-index 677c45985338..adeaaf0aadad 100644
+index c76df51dd3c5..56dfff9d0906 100644
 --- a/drivers/net/phy/realtek.c
 +++ b/drivers/net/phy/realtek.c
 @@ -9,6 +9,7 @@
@@ -47,7 +47,7 @@ index 677c45985338..adeaaf0aadad 100644
  
  #define RTL8201F_ISR				0x1e
  #define RTL8201F_IER				0x13
-@@ -196,6 +204,7 @@ static int rtl8211e_config_init(struct phy_device *phydev)
+@@ -213,6 +221,7 @@ static int rtl8211e_config_init(struct phy_device *phydev)
  {
  	int ret = 0, oldpage;
  	u16 val;
@@ -55,7 +55,7 @@ index 677c45985338..adeaaf0aadad 100644
  
  	/* enable TX/RX delay for rgmii-* modes, and disable them for rgmii. */
  	switch (phydev->interface) {
-@@ -234,6 +243,12 @@ static int rtl8211e_config_init(struct phy_device *phydev)
+@@ -251,6 +260,12 @@ static int rtl8211e_config_init(struct phy_device *phydev)
  	ret = __phy_modify(phydev, 0x1c, RTL8211E_TX_DELAY | RTL8211E_RX_DELAY,
  			   val);
  

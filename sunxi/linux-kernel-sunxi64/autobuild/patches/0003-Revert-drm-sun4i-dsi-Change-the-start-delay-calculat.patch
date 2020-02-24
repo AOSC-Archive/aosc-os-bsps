@@ -1,7 +1,7 @@
-From 4b16c7ba8e7f80e58f62c291bc573e29e7e896ee Mon Sep 17 00:00:00 2001
+From ed05fb7380dbd804c8cba47feee3d7e0a1c56fe8 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 1 Oct 2019 16:02:51 +0800
-Subject: [PATCH 003/136] Revert "drm/sun4i: dsi: Change the start delay
+Subject: [PATCH 003/141] Revert "drm/sun4i: dsi: Change the start delay
  calculation"
 
 This reverts commit da676c6aa6413d59ab0a80c97bbc273025e640b2.

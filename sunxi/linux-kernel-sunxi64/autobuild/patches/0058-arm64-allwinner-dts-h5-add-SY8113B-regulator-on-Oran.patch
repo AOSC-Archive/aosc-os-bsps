@@ -1,7 +1,7 @@
-From 6e9ac009fc9dcbc5cf954ab3001f532e3dba3ab3 Mon Sep 17 00:00:00 2001
+From 760d44893abe613056ebe2158ecfd43779799f74 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 15 Aug 2018 20:33:05 +0800
-Subject: [PATCH 058/136] arm64: allwinner: dts: h5: add SY8113B regulator on
+Subject: [PATCH 058/141] arm64: allwinner: dts: h5: add SY8113B regulator on
  Orange Pi Zero Plus/Plus2
 
 The Orange Pi Zero Plus/Plus2 boards use a SY8113B regulator with

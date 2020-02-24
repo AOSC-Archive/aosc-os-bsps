@@ -1,7 +1,7 @@
-From 22b7433ef140d2571450b6368703353f0e06182b Mon Sep 17 00:00:00 2001
+From bf522a24f17f62ad32d25e3ee1a646d759ea2cd3 Mon Sep 17 00:00:00 2001
 From: Maxime Ripard <maxime.ripard@free-electrons.com>
 Date: Mon, 7 Dec 2015 09:33:28 +0100
-Subject: [PATCH 014/136] drm: gem: cma: Export with handle allocator
+Subject: [PATCH 014/141] drm: gem: cma: Export with handle allocator
 
 Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
 ---

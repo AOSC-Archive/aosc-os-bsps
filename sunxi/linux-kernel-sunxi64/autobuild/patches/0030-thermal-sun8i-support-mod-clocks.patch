@@ -1,7 +1,7 @@
-From 110e963802a51f6efad144f5a791fc578389c6ac Mon Sep 17 00:00:00 2001
+From f5c48769f91bebe6ac2d7b100dec6ff326b6b60b Mon Sep 17 00:00:00 2001
 From: Yangtao Li <tiny.windzz@gmail.com>
 Date: Sun, 16 Jun 2019 18:58:31 +0800
-Subject: [PATCH 030/136] thermal: sun8i: support mod clocks
+Subject: [PATCH 030/141] thermal: sun8i: support mod clocks
 
 H3 has extra clock, so introduce something in ths_thermal_chip/ths_device
 and adds the process of the clock.

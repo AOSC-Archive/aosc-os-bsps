@@ -1,7 +1,7 @@
-From 24fd4c8778a3026b2a7335d80959e36bf1443349 Mon Sep 17 00:00:00 2001
+From 72ea337e523f740e7adca66f953d121ee255e203 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 29 Jul 2019 01:06:21 +0800
-Subject: [PATCH 043/136] arm64: allwinner: h6: add basic thermal zones
+Subject: [PATCH 043/141] arm64: allwinner: h6: add basic thermal zones
 
 The Allwinner H6 SoC has two thermal zones -- one for CPU and one for
 GPU.
@@ -15,7 +15,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 17 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-h6.dtsi
-index dbe73cbfe97b..cec74948e2c8 100644
+index 035d1092d11c..c9940c992b0c 100644
 --- a/arch/arm64/boot/dts/allwinner/sun50i-h6.dtsi
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-h6.dtsi
 @@ -11,6 +11,7 @@
@@ -26,7 +26,7 @@ index dbe73cbfe97b..cec74948e2c8 100644
  
  / {
  	interrupt-parent = <&gic>;
-@@ -811,4 +812,20 @@
+@@ -821,4 +822,20 @@
  			#size-cells = <0>;
  		};
  	};

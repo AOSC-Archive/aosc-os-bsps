@@ -1,7 +1,7 @@
-From 9545d5144b2bbbadb9f00e5a979946df0c39b10a Mon Sep 17 00:00:00 2001
+From a04fcf0c7d5f1e6678757f161d91a25285787cef Mon Sep 17 00:00:00 2001
 From: Maxime Ripard <maxime.ripard@free-electrons.com>
 Date: Mon, 7 Dec 2015 09:47:34 +0100
-Subject: [PATCH 015/136] drm/sun4i: Add GEM allocator
+Subject: [PATCH 015/141] drm/sun4i: Add GEM allocator
 
 Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
 ---
@@ -11,7 +11,7 @@ Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
  create mode 100644 include/uapi/drm/sun4i_drm.h
 
 diff --git a/drivers/gpu/drm/sun4i/sun4i_drv.c b/drivers/gpu/drm/sun4i/sun4i_drv.c
-index a5757b11b730..27b1418d5a7a 100644
+index 5b54eff12cc0..2a7f807e433d 100644
 --- a/drivers/gpu/drm/sun4i/sun4i_drv.c
 +++ b/drivers/gpu/drm/sun4i/sun4i_drv.c
 @@ -22,6 +22,8 @@

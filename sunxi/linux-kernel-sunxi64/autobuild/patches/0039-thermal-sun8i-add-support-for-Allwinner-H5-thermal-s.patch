@@ -1,7 +1,7 @@
-From 5e85986f87a45cca359cb99dec3620cd9c203712 Mon Sep 17 00:00:00 2001
+From 6c6f737dd74624f9f4f4a0815b7af0fa0887a8aa Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 29 Jul 2019 00:44:11 +0800
-Subject: [PATCH 039/136] thermal: sun8i: add support for Allwinner H5 thermal
+Subject: [PATCH 039/141] thermal: sun8i: add support for Allwinner H5 thermal
  sensor
 
 The thermal sensor in Allwinner H5 has 2 sensors, and they have a

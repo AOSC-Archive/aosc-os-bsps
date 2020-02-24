@@ -1,7 +1,7 @@
-From 1830c6ef41bbd71e62b2437afd3ac7def84bbc7b Mon Sep 17 00:00:00 2001
+From 834ae63c53eaeb68e88bc58f6d36d784355f68ae Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 29 Jul 2019 01:04:19 +0800
-Subject: [PATCH 042/136] arm64: allwinner: h6: add thermal sensor device node
+Subject: [PATCH 042/141] arm64: allwinner: h6: add thermal sensor device node
 
 The Allwinner H6 SoC has a thermal sensor that can monitor the
 temperature of the CPU and GPU. It also have some calibration data
@@ -16,10 +16,10 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 18 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-h6.dtsi
-index 0d5ea19336a1..dbe73cbfe97b 100644
+index d19253891672..035d1092d11c 100644
 --- a/arch/arm64/boot/dts/allwinner/sun50i-h6.dtsi
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-h6.dtsi
-@@ -210,6 +210,12 @@
+@@ -220,6 +220,12 @@
  		sid: efuse@3006000 {
  			compatible = "allwinner,sun50i-h6-sid";
  			reg = <0x03006000 0x400>;
@@ -32,7 +32,7 @@ index 0d5ea19336a1..dbe73cbfe97b 100644
  		};
  
  		watchdog: watchdog@30090a0 {
-@@ -466,6 +472,18 @@
+@@ -476,6 +482,18 @@
  			};
  		};
  

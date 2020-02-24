@@ -1,7 +1,7 @@
-From 7b42a30ce760e2ff6aa83f6ad5e89fdd818bc85b Mon Sep 17 00:00:00 2001
+From 35d65ab48c6ce02bf10d497aba511ab46caca4aa Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 22 Sep 2017 22:15:08 +0800
-Subject: [PATCH 063/136] clk: sunxi-ng: export CPUX clock on A64 CCU
+Subject: [PATCH 063/141] clk: sunxi-ng: export CPUX clock on A64 CCU
 
 The CPUX clock of A64 is used as the clock of the main ARM cores, and
 it's used for dynamic voltage & frequency scaling (DVFS).
