@@ -1,0 +1,94 @@
+From ef19723bd3d4e78e39acb0b6b7682bd295990139 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Wed, 15 Aug 2018 20:29:29 +0800
+Subject: [PATCH 057/141] arm64: allwinner: dts: h5: add SY8106A regulator on
+ Orange Pi PC2/Prime
+
+The Orange Pi PC2/Prime boards use a SY8106A regulator as the CPUX
+regulator.
+
+Add the regulator and link it to the CPU device tree node.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ .../dts/allwinner/sun50i-h5-orangepi-pc2.dts  | 19 +++++++++++++++++++
+ .../allwinner/sun50i-h5-orangepi-prime.dts    | 19 +++++++++++++++++++
+ 2 files changed, 38 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h5-orangepi-pc2.dts b/arch/arm64/boot/dts/allwinner/sun50i-h5-orangepi-pc2.dts
+index e126c1c9f05c..1043f152e047 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-h5-orangepi-pc2.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-h5-orangepi-pc2.dts
+@@ -132,6 +132,10 @@
+ 	status = "okay";
+ };
+ 
++&cpu0 {
++	cpu-supply = <&reg_vdd_cpux>;
++};
++
+ &de {
+ 	status = "okay";
+ };
+@@ -207,6 +211,21 @@
+ 	status = "okay";
+ };
+ 
++&r_i2c {
++	status = "okay";
++
++	reg_vdd_cpux: regulator@65 {
++		compatible = "silergy,sy8106a";
++		reg = <0x65>;
++		regulator-name = "vdd-cpux";
++		silergy,fixed-microvolt = <1100000>;
++		regulator-min-microvolt = <1100000>;
++		regulator-max-microvolt = <1300000>;
++		regulator-boot-on;
++		regulator-always-on;
++	};
++};
++
+ &spi0  {
+ 	status = "okay";
+ 
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h5-orangepi-prime.dts b/arch/arm64/boot/dts/allwinner/sun50i-h5-orangepi-prime.dts
+index d9b3ed257088..66a98a3fe9af 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-h5-orangepi-prime.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-h5-orangepi-prime.dts
+@@ -139,6 +139,10 @@
+ 	status = "okay";
+ };
+ 
++&cpu0 {
++	cpu-supply = <&reg_vdd_cpux>;
++};
++
+ &de {
+ 	status = "okay";
+ };
+@@ -222,6 +226,21 @@
+ 	status = "okay";
+ };
+ 
++&r_i2c {
++	status = "okay";
++
++	reg_vdd_cpux: regulator@65 {
++		compatible = "silergy,sy8106a";
++		reg = <0x65>;
++		regulator-name = "vdd-cpux";
++		silergy,fixed-microvolt = <1100000>;
++		regulator-min-microvolt = <1100000>;
++		regulator-max-microvolt = <1300000>;
++		regulator-boot-on;
++		regulator-always-on;
++	};
++};
++
+ &uart0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&uart0_pa_pins>;
+-- 
+2.24.1
+

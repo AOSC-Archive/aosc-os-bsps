@@ -1,0 +1,78 @@
+From 0558bc7eb049525d780b8208efb6a61ba2f6d241 Mon Sep 17 00:00:00 2001
+From: Jagan Teki <jagan@amarulasolutions.com>
+Date: Sat, 5 Oct 2019 19:49:12 +0530
+Subject: [PATCH 012/141] arm64: dts: allwinner: a64: Add MIPI DSI pipeline
+
+Add MIPI DSI pipeline for Allwinner A64.
+
+- dsi node, with A64 compatible since it doesn't support
+  DSI_SCLK gating unlike A33
+- dphy node, with A64 compatible with A33 fallback since
+  DPHY on A64 and A33 is similar
+- finally, attach the dsi_in to tcon0 for complete MIPI DSI
+
+Signed-off-by: Jagan Teki <jagan@amarulasolutions.com>
+Tested-by: Merlijn Wajer <merlijn@wizzup.org>
+---
+ arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi | 38 +++++++++++++++++++
+ 1 file changed, 38 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
+index ba41c1b85887..2c50bba6733e 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
+@@ -382,6 +382,12 @@
+ 					#address-cells = <1>;
+ 					#size-cells = <0>;
+ 					reg = <1>;
++
++					tcon0_out_dsi: endpoint@1 {
++						reg = <1>;
++						remote-endpoint = <&dsi_in_tcon0>;
++						allwinner,tcon-channel = <1>;
++					};
+ 				};
+ 			};
+ 		};
+@@ -1005,6 +1011,38 @@
+ 			status = "disabled";
+ 		};
+ 
++		dsi: dsi@1ca0000 {
++			compatible = "allwinner,sun50i-a64-mipi-dsi";
++			reg = <0x01ca0000 0x1000>;
++			interrupts = <GIC_SPI 89 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&ccu CLK_BUS_MIPI_DSI>;
++			clock-names = "bus";
++			resets = <&ccu RST_BUS_MIPI_DSI>;
++			phys = <&dphy>;
++			phy-names = "dphy";
++			status = "disabled";
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			port {
++				dsi_in_tcon0: endpoint {
++					remote-endpoint = <&tcon0_out_dsi>;
++				};
++			};
++		};
++
++		dphy: d-phy@1ca1000 {
++			compatible = "allwinner,sun50i-a64-mipi-dphy",
++				     "allwinner,sun6i-a31-mipi-dphy";
++			reg = <0x01ca1000 0x1000>;
++			clocks = <&ccu CLK_BUS_MIPI_DSI>,
++				 <&ccu CLK_DSI_DPHY>;
++			clock-names = "bus", "mod";
++			resets = <&ccu RST_BUS_MIPI_DSI>;
++			status = "disabled";
++			#phy-cells = <0>;
++		};
++
+ 		hdmi: hdmi@1ee0000 {
+ 			compatible = "allwinner,sun50i-a64-dw-hdmi",
+ 				     "allwinner,sun8i-a83t-dw-hdmi";
+-- 
+2.24.1
+

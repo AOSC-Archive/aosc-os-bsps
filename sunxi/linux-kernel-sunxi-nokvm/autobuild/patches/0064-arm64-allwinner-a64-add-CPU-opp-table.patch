@@ -1,0 +1,82 @@
+From 709e30cd28745208a860f5da1b12ed30c6b4b72c Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Fri, 22 Sep 2017 23:46:39 +0800
+Subject: [PATCH 064/141] arm64: allwinner: a64: add CPU opp table
+
+Add the operating table for the CPU (ARM cores) on Allwinner A64 SoC.
+
+OPPs higher to 816MHz is temporarily dropped, to prevent overheat on
+boards with AXP803 support and undervoltage on boards without AXP803
+support.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi | 24 +++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
+index 63c483686fba..c1c5481282cd 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
+@@ -80,6 +80,23 @@
+ 		};
+ 	};
+ 
++	cpu0_opp_table: opp_table0 {
++		compatible = "operating-points-v2";
++		opp-shared;
++
++		opp-648000000 {
++			opp-hz = /bits/ 64 <648000000>;
++			opp-microvolt = <1040000>;
++			clock-latency-ns = <244144>; /* 8 32k periods */
++		};
++
++		opp-816000000 {
++			opp-hz = /bits/ 64 <816000000>;
++			opp-microvolt = <1100000>;
++			clock-latency-ns = <244144>; /* 8 32k periods */
++		};
++	};
++
+ 	cpus {
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+@@ -90,6 +107,10 @@
+ 			reg = <0>;
+ 			enable-method = "psci";
+ 			next-level-cache = <&L2>;
++			clocks = <&ccu CLK_CPUX>;
++			clock-names = "cpu";
++			operating-points-v2 = <&cpu0_opp_table>;
++			#cooling-cells = <2>;
+ 		};
+ 
+ 		cpu1: cpu@1 {
+@@ -98,6 +119,7 @@
+ 			reg = <1>;
+ 			enable-method = "psci";
+ 			next-level-cache = <&L2>;
++			operating-points-v2 = <&cpu0_opp_table>;
+ 		};
+ 
+ 		cpu2: cpu@2 {
+@@ -106,6 +128,7 @@
+ 			reg = <2>;
+ 			enable-method = "psci";
+ 			next-level-cache = <&L2>;
++			operating-points-v2 = <&cpu0_opp_table>;
+ 		};
+ 
+ 		cpu3: cpu@3 {
+@@ -114,6 +137,7 @@
+ 			reg = <3>;
+ 			enable-method = "psci";
+ 			next-level-cache = <&L2>;
++			operating-points-v2 = <&cpu0_opp_table>;
+ 		};
+ 
+ 		L2: l2-cache {
+-- 
+2.24.1
+
