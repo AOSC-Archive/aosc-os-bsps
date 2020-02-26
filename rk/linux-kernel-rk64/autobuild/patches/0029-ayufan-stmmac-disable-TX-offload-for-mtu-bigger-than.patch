@@ -1,0 +1,82 @@
+From 6b400aaeb67912c2238697204c4934ecc7ac3ad3 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Kamil=20Trzci=C5=84ski?= <ayufan@ayufan.eu>
+Date: Fri, 8 Mar 2019 23:13:52 +0100
+Subject: [PATCH 84/84] ayufan: stmmac: disable TX offload for mtu bigger than
+ 1498
+
+---
+ arch/arm64/boot/dts/rockchip/rk3328-rock64.dts        | 2 +-
+ arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dts     | 1 +
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c     | 4 ++++
+ drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c | 2 ++
+ include/linux/stmmac.h                                | 1 +
+ 5 files changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3328-rock64.dts b/arch/arm64/boot/dts/rockchip/rk3328-rock64.dts
+index 62936b432f9a..5d5491c4ef01 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3328-rock64.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3328-rock64.dts
+@@ -149,7 +149,7 @@
+ 	phy-mode = "rgmii";
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&rgmiim1_pins>;
+-	snps,force_thresh_dma_mode;
++	rockchip,bugged_tx_coe;
+ 	snps,reset-gpio = <&gpio1 RK_PC2 GPIO_ACTIVE_LOW>;
+ 	snps,reset-active-low;
+ 	snps,reset-delays-us = <0 10000 50000>;
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dts b/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dts
+index 9319f1abbbe2..622e85300644 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dts
+@@ -220,6 +220,7 @@
+ 	phy-mode = "rgmii";
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&rgmii_pins>;
++	rockchip,bugged_tx_coe;
+ 	snps,reset-gpio = <&gpio3 RK_PB7 GPIO_ACTIVE_LOW>;
+ 	snps,reset-active-low;
+ 	snps,reset-delays-us = <0 10000 50000>;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 582176d869c3..910091066c35 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -3794,6 +3794,10 @@ static netdev_features_t stmmac_fix_features(struct net_device *dev,
+ 	if (priv->plat->bugged_jumbo && (dev->mtu > ETH_DATA_LEN))
+ 		features &= ~NETIF_F_CSUM_MASK;
+ 
++	/* Including very small MTUs of 1498 for Rockchip devices */
++	if (priv->plat->bugged_tx_coe && (dev->mtu > ETH_DATA_LEN - 2))
++		features &= ~NETIF_F_CSUM_MASK;
++
+ 	/* Disable tso if asked by ethtool */
+ 	if ((priv->plat->tso_en) && (priv->dma_cap.tsoen)) {
+ 		if (features & NETIF_F_TSO)
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+index 5150551c28be..bc18dd2af47d 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+@@ -553,6 +553,8 @@ stmmac_probe_config_dt(struct platform_device *pdev, const char **mac)
+ 			 "force_sf_dma_mode is ignored if force_thresh_dma_mode is set.\n");
+ 	}
+ 
++	plat->bugged_tx_coe = of_property_read_bool(np, "rockchip,bugged_tx_coe");
++
+ 	of_property_read_u32(np, "snps,ps-speed", &plat->mac_port_sel_speed);
+ 
+ 	plat->axi = stmmac_axi_setup(pdev);
+diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
+index dc60d03c4b60..97b73c74f2a0 100644
+--- a/include/linux/stmmac.h
++++ b/include/linux/stmmac.h
+@@ -146,6 +146,7 @@ struct plat_stmmacenet_data {
+ 	int pmt;
+ 	int force_sf_dma_mode;
+ 	int force_thresh_dma_mode;
++	int bugged_tx_coe;
+ 	int riwt_off;
+ 	int max_speed;
+ 	int maxmtu;
+-- 
+2.24.1
+
