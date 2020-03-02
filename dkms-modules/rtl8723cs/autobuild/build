@@ -1,5 +1,5 @@
-DATE=20190826
-REV=d7db077004f1497800faabb0e6da77539139371
+DATE=20200227
+REV=700d05d54f72f3232c17ea1e76c4f4c4649ff8ba
 
 mkdir -p "$PKGDIR"/usr/src/
 git clone https://github.com/Icenowy/rtl8723cs "$PKGDIR"/usr/src/rtl8723cs-$DATE
