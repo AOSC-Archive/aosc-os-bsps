@@ -6,6 +6,7 @@ git clone https://github.com/Icenowy/rtl8723cs "$PKGDIR"/usr/src/rtl8723cs-$DATE
 pushd "$PKGDIR"/usr/src/rtl8723cs-$DATE
 git checkout $REV
 rm -rf .git
+sed -i 's/CONFIG_POWER_SAVING = n/CONFIG_POWER_SAVING = y/g' Makefile
 sed -i 's/obj-$(CONFIG_RTL8723CS)/obj-m/g' Makefile
 
 cat > dkms.conf << EOF
