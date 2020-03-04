@@ -1,8 +1,8 @@
 PKGNAME=mesa
 PKGDES="MesaLib - a OpenGL implementation, bleeding edge version"
 PKGDEP="x11-lib libdrm expat systemd elfutils libvdpau nettle \
-        libva wayland s2tc lm-sensors libglvnd"
-BUILDDEP="x11-proto mako systemd valgrind glslang"
+        libva wayland s2tc lm-sensors libglvnd llvm-runtime"
+BUILDDEP="x11-proto mako systemd valgrind glslang llvm"
 PKGSEC=libs
 
 MESON_AFTER="-Ddri-drivers-path=/usr/lib/xorg/modules/dri \
@@ -22,7 +22,7 @@ MESON_AFTER="-Ddri-drivers-path=/usr/lib/xorg/modules/dri \
              -Dgles2=true \
              -Dglvnd=true \
              -Dglx=dri \
-             -Dllvm=false \
+             -Dllvm=true \
              -Dlmsensors=true \
              -Dosmesa=gallium \
              -Dshared-glapi=true \
