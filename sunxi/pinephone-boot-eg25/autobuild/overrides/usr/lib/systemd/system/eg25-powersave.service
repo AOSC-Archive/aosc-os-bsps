@@ -1,0 +1,12 @@
+[Unit]
+Description=Enable EG25 modem power saving
+After=boot-eg25.service
+Requires=boot-eg25.service
+
+[Service]
+Type=simple
+RemainAfterExit=yes
+ExecStart=/usr/bin/eg25_powersave
+
+[Install]
+WantedBy=network.target
