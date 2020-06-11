@@ -1,0 +1,43 @@
+From 0d313eebc2dbd3e0fd1fb4b6c4e30005876a944f Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Wed, 7 Feb 2018 19:24:50 +0800
+Subject: [PATCH 14/15] sunxi: add Kconfig option for the maximum accessible
+ DRAM
+
+Allwinner 64-bit SoCs can use 4GiB DRAM chip, however their memory map
+has only allocated 3GiB for DRAM, so only 3GiB of the DRAM is
+accessible.
+
+Add a Kconfig option for the maximum accessible DRAM.
+
+For A80 it should be a much higher value (8GiB), but as I have no A80
+device to test and originally U-Boot only supports 2GiB DRAM on A80, it
+currently still falls under the 2GiB situation.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm/mach-sunxi/Kconfig | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/arch/arm/mach-sunxi/Kconfig b/arch/arm/mach-sunxi/Kconfig
+index c0d580215d..bc274c85bf 100644
+--- a/arch/arm/mach-sunxi/Kconfig
++++ b/arch/arm/mach-sunxi/Kconfig
+@@ -140,6 +140,14 @@ config MACH_SUNXI_H3_H5
+ 	select SUNXI_GEN_SUN6I
+ 	select SUPPORT_SPL
+ 
++# TODO: try out A80's 8GiB DRAM space
++config SUNXI_DRAM_MAX_SIZE
++	hex
++	default 0xC0000000 if MACH_SUN50I
++	default 0xC0000000 if MACH_SUN50I_H5
++	default 0xC0000000 if MACH_SUN50I_H6
++	default 0x80000000
++
+ choice
+ 	prompt "Sunxi SoC Variant"
+ 	optional
+-- 
+2.18.1
+

@@ -1,0 +1,50 @@
+From bbfb40350c61140124a803e61b9c16915c6e2bea Mon Sep 17 00:00:00 2001
+From: Vasily Khoruzhick <anarsoul@gmail.com>
+Date: Thu, 26 Oct 2017 21:29:27 -0700
+Subject: [PATCH 7/9] gpio: sunxi: Don't use simple_strtol
+
+We're pretty close to SPL size limit on 64-bit sunxi, so
+save some memory but not using simple_strtol which is 152 bytes
+
+Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
+---
+ drivers/gpio/sunxi_gpio.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/gpio/sunxi_gpio.c b/drivers/gpio/sunxi_gpio.c
+index 719efc2cef..33dfee945c 100644
+--- a/drivers/gpio/sunxi_gpio.c
++++ b/drivers/gpio/sunxi_gpio.c
+@@ -98,8 +98,7 @@ int sunxi_name_to_gpio(const char *name)
+ {
+ 	int group = 0;
+ 	int groupsize = 9 * 32;
+-	long pin;
+-	char *eptr;
++	long pin = 0;
+ 
+ 	if (*name == 'P' || *name == 'p')
+ 		name++;
+@@ -109,9 +108,16 @@ int sunxi_name_to_gpio(const char *name)
+ 		name++;
+ 	}
+ 
+-	pin = simple_strtol(name, &eptr, 10);
+-	if (!*name || *eptr)
+-		return -1;
++	for (;;) {
++		if (*name == 0)
++			break;
++		if (*name < '0' || *name > '9')
++			return -1;
++		pin *= 10;
++		pin += *name - '0';
++		name++;
++	}
++
+ 	if (pin < 0 || pin > groupsize || group >= 9)
+ 		return -1;
+ 	return group * 32 + pin;
+-- 
+2.18.1
+

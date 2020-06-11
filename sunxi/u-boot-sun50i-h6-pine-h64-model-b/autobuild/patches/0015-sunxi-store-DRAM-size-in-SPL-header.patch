@@ -1,0 +1,111 @@
+From 90cb6bc01ce71bcee7e18b7803954473582ce1d6 Mon Sep 17 00:00:00 2001
+From: Andre Przywara <andre.przywara@arm.com>
+Date: Thu, 17 May 2018 09:17:01 +0100
+Subject: [PATCH 15/15] sunxi: store DRAM size in SPL header
+
+At the moment we rely on the infamous get_ram_size() function to learn
+the actual DRAM size in U-Boot proper. This function has two issues:
+1) It only works if the DRAM size is a power of two. We start to see
+boards which have 3GB of (usable) DRAM, so this does not fit anymore.
+2) As U-Boot has no notion of reserved memory so far, it will happily
+ride through the DRAM, possibly stepping on secure-only memory. This
+could be a region of DRAM reserved for OP-TEE or some other secure
+payload, for instance. It will most likely crash in that case.
+
+As the SPL DRAM init routine has very accurate knowledge of the actual
+DRAM size, lets propagate this wisdom to U-Boot proper.
+We re-purpose a currently reserved word in our SPL header for that.
+The SPL itself stores the detected DRAM size there, and bumps the SPL
+header version number in that case. U-Boot proper checks for a valid
+SPL header and a high enough version number, then uses the DRAM size
+from there. If the SPL header field is not sufficient, we fall back to
+the old DRAM scanning routine.
+
+Part of the DRAM might be present and probed by SPL, but not accessible
+by the CPU. They're restricted in the main U-Boot binary, when accessing
+the DRAM size from SPL header.
+
+Signed-off-by: Andre Przywara <andre.przywara@arm.com>
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm/include/asm/arch-sunxi/spl.h |  3 ++-
+ board/sunxi/board.c                   | 28 ++++++++++++++++++++++++++-
+ 2 files changed, 29 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/include/asm/arch-sunxi/spl.h b/arch/arm/include/asm/arch-sunxi/spl.h
+index 014184b638..4baba38b00 100644
+--- a/arch/arm/include/asm/arch-sunxi/spl.h
++++ b/arch/arm/include/asm/arch-sunxi/spl.h
+@@ -19,6 +19,7 @@
+ 
+ #define SPL_ENV_HEADER_VERSION	SPL_VERSION(0, 1)
+ #define SPL_DT_HEADER_VERSION	SPL_VERSION(0, 2)
++#define SPL_DRAM_HEADER_VERSION	SPL_VERSION(0, 3)
+ 
+ #define SPL_ADDR		CONFIG_SUNXI_SRAM_ADDRESS
+ 
+@@ -70,7 +71,7 @@ struct boot_file_head {
+ 	 * to the users.
+ 	 */
+ 	uint32_t dt_name_offset;	/* since v0.2, set by mksunxiboot */
+-	uint32_t reserved1;
++	uint32_t dram_size;		/* in MiB, since v0.3, set by SPL */
+ 	uint32_t boot_media;		/* written here by the boot ROM */
+ 	/* A padding area (may be used for storing text strings) */
+ 	uint32_t string_pool[13];	/* since v0.2, filled by mksunxiboot */
+diff --git a/board/sunxi/board.c b/board/sunxi/board.c
+index ac374ccbdd..9a038bb995 100644
+--- a/board/sunxi/board.c
++++ b/board/sunxi/board.c
+@@ -286,7 +286,16 @@ static struct boot_file_head * get_spl_header(uint8_t req_version)
+ 
+ int dram_init(void)
+ {
+-	gd->ram_size = get_ram_size((long *)PHYS_SDRAM_0, PHYS_SDRAM_0_SIZE);
++	struct boot_file_head *spl = get_spl_header(SPL_DRAM_HEADER_VERSION);
++
++	if (spl == INVALID_SPL_HEADER)
++		gd->ram_size = get_ram_size((long *)PHYS_SDRAM_0,
++					    PHYS_SDRAM_0_SIZE);
++	else
++		gd->ram_size = (phys_addr_t)spl->dram_size << 20;
++
++	if (gd->ram_size > CONFIG_SUNXI_DRAM_MAX_SIZE)
++		gd->ram_size = CONFIG_SUNXI_DRAM_MAX_SIZE;
+ 
+ 	return 0;
+ }
+@@ -550,6 +559,21 @@ int board_mmc_init(bd_t *bis)
+ #endif
+ 
+ #ifdef CONFIG_SPL_BUILD
++
++static void sunxi_spl_store_dram_size(phys_addr_t dram_size)
++{
++	struct boot_file_head *spl = get_spl_header(SPL_DT_HEADER_VERSION);
++
++	if (spl == INVALID_SPL_HEADER)
++		return;
++
++	/* Promote the header version for U-Boot proper, if needed. */
++	if (spl->spl_signature[3] < SPL_DRAM_HEADER_VERSION)
++		spl->spl_signature[3] = SPL_DRAM_HEADER_VERSION;
++
++	spl->dram_size = dram_size >> 20;
++}
++
+ void sunxi_board_init(void)
+ {
+ 	int power_failed = 0;
+@@ -618,6 +642,8 @@ void sunxi_board_init(void)
+ 	if (!gd->ram_size)
+ 		hang();
+ 
++	sunxi_spl_store_dram_size(gd->ram_size);
++
+ 	/*
+ 	 * Only clock up the CPU to full speed if we are reasonably
+ 	 * assured it's being powered with suitable core voltage
+-- 
+2.18.1
+

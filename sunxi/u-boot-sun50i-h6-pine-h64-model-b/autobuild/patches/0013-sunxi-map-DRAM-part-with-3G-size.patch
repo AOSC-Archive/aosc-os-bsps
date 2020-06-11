@@ -1,0 +1,32 @@
+From 1661b503f2ef8b4dc4b684c4d99fbbb5075d88c5 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Wed, 7 Feb 2018 20:20:31 +0800
+Subject: [PATCH 13/15] sunxi: map DRAM part with 3G size
+
+All Allwinner 64-bit SoCs now are known to be able to access 3GiB of
+external DRAM, however the size of DRAM part in the MMU translation
+table is still 2GiB.
+
+Change the size of DRAM part in MMU table to 3GiB.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm/mach-sunxi/board.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/mach-sunxi/board.c b/arch/arm/mach-sunxi/board.c
+index d22a84ea6b..b74eaf2a0e 100644
+--- a/arch/arm/mach-sunxi/board.c
++++ b/arch/arm/mach-sunxi/board.c
+@@ -52,7 +52,7 @@ static struct mm_region sunxi_mem_map[] = {
+ 		/* RAM */
+ 		.virt = 0x40000000UL,
+ 		.phys = 0x40000000UL,
+-		.size = 0x80000000UL,
++		.size = 0xC0000000UL,
+ 		.attrs = PTE_BLOCK_MEMTYPE(MT_NORMAL) |
+ 			 PTE_BLOCK_INNER_SHARE
+ 	}, {
+-- 
+2.18.1
+

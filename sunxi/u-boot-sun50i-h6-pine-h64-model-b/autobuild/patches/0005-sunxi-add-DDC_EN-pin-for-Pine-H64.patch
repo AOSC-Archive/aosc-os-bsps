@@ -1,0 +1,30 @@
+From 4dde69315799b9c83b8f788d24e40144a3e48fb4 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Wed, 1 Aug 2018 11:33:30 +0800
+Subject: [PATCH 5/9] sunxi: add DDC_EN pin for Pine H64
+
+Some versions of Pine H64 has a DDC_EN pin which gates the I/O of the
+HDMI DDC pins.
+
+Add the pin in config for Pine H64.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ configs/pine_h64_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/configs/pine_h64_defconfig b/configs/pine_h64_defconfig
+index e34f4fd1e4..07f6f715dd 100644
+--- a/configs/pine_h64_defconfig
++++ b/configs/pine_h64_defconfig
+@@ -3,6 +3,7 @@ CONFIG_ARCH_SUNXI=y
+ CONFIG_SPL=y
+ CONFIG_MACH_SUN50I_H6=y
+ CONFIG_MMC0_CD_PIN="PF6"
++CONFIG_HDMI_DDC_EN="PH2"
+ CONFIG_MMC_SUNXI_SLOT_EXTRA=2
+ # CONFIG_PSCI_RESET is not set
+ CONFIG_NR_DRAM_BANKS=1
+-- 
+2.18.1
+

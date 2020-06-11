@@ -1,0 +1,37 @@
+From 67208e0a30b8e8f3b288c9c634d24e56006d3ddc Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Mon, 26 Aug 2019 23:09:17 +0800
+Subject: [PATCH 17/17] gpio: sunxi: fix empty string process for legacy
+ sunxi_name_to_gpio
+
+The legacy version of sunxi_name_to_gpio function (which is used for
+SPL) currently doesn't deal with empty string well, and a empty
+string passed to it will return PA0 instead.
+
+This makes eMMC booting fail on H6 when rebooting, which is because the
+eMMC card detect pin is considered as PA0.
+
+Fix this function by check empty string and then return -1.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ drivers/gpio/sunxi_gpio.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/gpio/sunxi_gpio.c b/drivers/gpio/sunxi_gpio.c
+index 33dfee945c..8732e635a0 100644
+--- a/drivers/gpio/sunxi_gpio.c
++++ b/drivers/gpio/sunxi_gpio.c
+@@ -100,6 +100,9 @@ int sunxi_name_to_gpio(const char *name)
+ 	int groupsize = 9 * 32;
+ 	long pin = 0;
+ 
++	if (*name == 0)
++		return -1;
++
+ 	if (*name == 'P' || *name == 'p')
+ 		name++;
+ 	if (*name >= 'A') {
+-- 
+2.21.0
+
