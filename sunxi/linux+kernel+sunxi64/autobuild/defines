@@ -1,6 +1,6 @@
 PKGNAME=linux+kernel+sunxi64
 PKGSEC=kernel
-PKGDEP="linux-kernel-sunxi64-5.4.22"
+PKGDEP="linux-kernel-sunxi64-5.7.1"
 PKGDES="The Linux Kernel optimized for Allwinner/sunXi SoCs with 64-bit ARMv8 cores"
 
 ABSTRIP=no

@@ -1,0 +1,38 @@
+From 9385c2e4aa8ad95dc692cc12fe5f91513b723e9d Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Sun, 25 Aug 2019 18:06:23 +0800
+Subject: [PATCH 42/77] iio: light: stk3310: add chip id for STK3311-X variant
+
+The STK3311 chip has a variant called STK3311-X, which has a different
+chip id of 0x12.
+
+Add the chip id to the driver.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ drivers/iio/light/stk3310.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/iio/light/stk3310.c b/drivers/iio/light/stk3310.c
+index 185c24a75ae6f..1a8401d198a4b 100644
+--- a/drivers/iio/light/stk3310.c
++++ b/drivers/iio/light/stk3310.c
+@@ -37,6 +37,7 @@
+ 
+ #define STK3310_CHIP_ID_VAL			0x13
+ #define STK3311_CHIP_ID_VAL			0x1D
++#define STK3311X_CHIP_ID_VAL			0x12
+ #define STK3335_CHIP_ID_VAL			0x51
+ #define STK3310_PSINT_EN			0x01
+ #define STK3310_PS_MAX_VAL			0xFFFF
+@@ -453,6 +454,7 @@ static int stk3310_init(struct iio_dev *indio_dev)
+ 
+ 	if (chipid != STK3310_CHIP_ID_VAL &&
+ 	    chipid != STK3311_CHIP_ID_VAL &&
++	    chipid != STK3311X_CHIP_ID_VAL &&
+ 	    chipid != STK3335_CHIP_ID_VAL) {
+ 		dev_err(&client->dev, "invalid chip id: 0x%x\n", chipid);
+ 		return -ENODEV;
+-- 
+2.26.2
+

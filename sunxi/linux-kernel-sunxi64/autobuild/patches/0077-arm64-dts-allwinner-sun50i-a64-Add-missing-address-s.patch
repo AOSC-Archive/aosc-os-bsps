@@ -1,0 +1,41 @@
+From b4e00ab7e52f64c8dff76d4df9137873f9918fb9 Mon Sep 17 00:00:00 2001
+From: Ondrej Jirman <megous@megous.com>
+Date: Mon, 20 Apr 2020 12:31:13 +0200
+Subject: [PATCH 77/77] arm64: dts: allwinner: sun50i-a64: Add missing
+ address/size-cells
+
+The binding specifies #address-cells and #size-cells should be present.
+Without them present, dtc issues a warning because default for
+#address-cells seems to be <2>:
+
+arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi:1108.4-52:
+  Warning (dma_ranges_format):
+    /soc/dram-controller@1c62000:dma-ranges:
+    "dma-ranges" property has invalid length (12 bytes)
+    (parent #address-cells == 1, child #address-cells == 2,
+    #size-cells == 1)
+
+mbus #address-cells should be 1.
+
+Signed-off-by: Ondrej Jirman <megous@megous.com>
+Signed-off-by: Maxime Ripard <maxime@cerno.tech>
+---
+ arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
+index cae2880e759ff..b18bd0f604b82 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
+@@ -1068,6 +1068,8 @@ mbus: dram-controller@1c62000 {
+ 			compatible = "allwinner,sun50i-a64-mbus";
+ 			reg = <0x01c62000 0x1000>;
+ 			clocks = <&ccu 112>;
++			#address-cells = <1>;
++			#size-cells = <1>;
+ 			dma-ranges = <0x00000000 0x40000000 0xc0000000>;
+ 			#interconnect-cells = <1>;
+ 		};
+-- 
+2.26.2
+

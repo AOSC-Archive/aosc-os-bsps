@@ -1,0 +1,35 @@
+From 4a9a1942579907cbb9f47463fb41ac33057f63e1 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Mon, 29 Jul 2019 01:21:43 +0800
+Subject: [PATCH 09/77] arm64: allwinner: dts: h6: add CPU supply for Orange Pi
+ One Plus/Lite 2
+
+The Orange Pi One Plus/Lite 2 boards, follows the reference design on
+the AXP805 DCDC assignment, connects DCDCA (polyphased with DCDCB) to
+the ARM cores' power supply.
+
+Add this to the device tree, to enable voltage scaling.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi.dtsi | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi.dtsi
+index 9287976c4a50a..cfe9b9eff809c 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi.dtsi
++++ b/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi.dtsi
+@@ -68,6 +68,10 @@ &de {
+ 	status = "okay";
+ };
+ 
++&cpu0 {
++	cpu-supply = <&reg_dcdca>;
++};
++
+ &ehci0 {
+ 	status = "okay";
+ };
+-- 
+2.26.2
+

@@ -1,0 +1,41 @@
+From 78f36c4af5d6c206d31e60bd1a018d74789e5b5d Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Mon, 16 Mar 2020 22:23:23 +0800
+Subject: [PATCH 66/77] arm64: allwinner: dts: a64: enable modem power rail on
+ PinePhone
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ .../arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
+index e6774fd20e53b..800ad0fd4b330 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
+@@ -95,6 +95,15 @@ reg_3v3_wifi: regulator-3v3-wifi {
+ 		regulator-max-microvolt = <3300000>;
+ 	};
+ 
++	reg_vbat_4g: regulator-vbat-4g{
++		compatible = "regulator-fixed";
++		regulator-name = "vbat-4g";
++		regulator-min-microvolt = <3700000>;
++		regulator-max-microvolt = <3700000>;
++		gpio = <&r_pio 0 7 GPIO_ACTIVE_HIGH>; /* PL7 */
++		enable-active-high;
++	};
++
+ 	speaker_amp: audio-amplifier {
+ 		compatible = "simple-audio-amplifier";
+ 		enable-gpios = <&pio 2 7 GPIO_ACTIVE_HIGH>; /* PC7 */
+@@ -546,5 +555,6 @@ &usb_power_supply {
+ };
+ 
+ &usbphy {
++	usb1_vbus-supply = <&reg_vbat_4g>;
+ 	status = "okay";
+ };
+-- 
+2.26.2
+

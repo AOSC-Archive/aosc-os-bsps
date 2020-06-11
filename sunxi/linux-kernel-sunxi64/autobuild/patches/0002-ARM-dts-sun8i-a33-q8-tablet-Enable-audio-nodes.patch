@@ -1,0 +1,38 @@
+From eb7e85878989deeadc03c76ff1dea2011365826a Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.xyz>
+Date: Fri, 18 Nov 2016 08:05:46 +0800
+Subject: [PATCH 02/77] ARM: dts: sun8i: a33-q8-tablet: Enable audio nodes
+
+Enable the audio codec and the audio dai for A33 Q8 tablets.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.xyz>
+---
+ arch/arm/boot/dts/sun8i-a33-q8-tablet.dts | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/arch/arm/boot/dts/sun8i-a33-q8-tablet.dts b/arch/arm/boot/dts/sun8i-a33-q8-tablet.dts
+index 9c5750c25613f..80b513aa02ec0 100644
+--- a/arch/arm/boot/dts/sun8i-a33-q8-tablet.dts
++++ b/arch/arm/boot/dts/sun8i-a33-q8-tablet.dts
+@@ -49,6 +49,18 @@ / {
+ 	compatible = "allwinner,q8-a33", "allwinner,sun8i-a33";
+ };
+ 
++&codec {
++	status = "okay";
++};
++
++&dai {
++	status = "okay";
++};
++
++&sound {
++	status = "okay";
++};
++
+ &tcon0_out {
+ 	tcon0_out_lcd: endpoint@0 {
+ 		reg = <0>;
+-- 
+2.26.2
+

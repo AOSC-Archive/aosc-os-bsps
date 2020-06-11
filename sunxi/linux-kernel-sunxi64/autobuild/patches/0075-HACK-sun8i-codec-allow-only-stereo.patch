@@ -1,0 +1,35 @@
+From 555387b022452c02f14951d880a10da3acfbf174 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Fri, 29 Nov 2019 21:47:32 +0800
+Subject: [PATCH 75/77] HACK: sun8i-codec: allow only stereo
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ sound/soc/sunxi/sun8i-codec.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/sound/soc/sunxi/sun8i-codec.c b/sound/soc/sunxi/sun8i-codec.c
+index ca51af1144198..fa79cdafa8df1 100644
+--- a/sound/soc/sunxi/sun8i-codec.c
++++ b/sound/soc/sunxi/sun8i-codec.c
+@@ -493,7 +493,7 @@ static struct snd_soc_dai_driver sun8i_codec_dai = {
+ 	/* playback capabilities */
+ 	.playback = {
+ 		.stream_name = "Playback",
+-		.channels_min = 1,
++		.channels_min = 2,
+ 		.channels_max = 2,
+ 		.rates = SNDRV_PCM_RATE_8000_192000,
+ 		.formats = SNDRV_PCM_FMTBIT_S16_LE,
+@@ -501,7 +501,7 @@ static struct snd_soc_dai_driver sun8i_codec_dai = {
+ 	/* capture capabilities */
+ 	.capture = {
+ 		.stream_name = "Capture",
+-		.channels_min = 1,
++		.channels_min = 2,
+ 		.channels_max = 2,
+ 		.rates = SNDRV_PCM_RATE_8000_192000,
+ 		.formats = SNDRV_PCM_FMTBIT_S16_LE,
+-- 
+2.26.2
+

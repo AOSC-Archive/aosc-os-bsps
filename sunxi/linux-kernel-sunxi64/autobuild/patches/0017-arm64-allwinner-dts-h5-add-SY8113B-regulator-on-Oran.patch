@@ -1,0 +1,84 @@
+From 89ec6785aa4e8d79a5846cc39d39225ff0d8c039 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Wed, 15 Aug 2018 20:33:05 +0800
+Subject: [PATCH 17/77] arm64: allwinner: dts: h5: add SY8113B regulator on
+ Orange Pi Zero Plus/Plus2
+
+The Orange Pi Zero Plus/Plus2 boards use a SY8113B regulator with
+adjustable resistor via GPIO to adjust the CPUX voltage.
+
+Add the regulator in the device tree and set it as the CPU supply.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ .../sun50i-h5-orangepi-zero-plus.dts          | 21 +++++++++++++++++++
+ .../sun50i-h5-orangepi-zero-plus2.dts         | 21 +++++++++++++++++++
+ 2 files changed, 42 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h5-orangepi-zero-plus.dts b/arch/arm64/boot/dts/allwinner/sun50i-h5-orangepi-zero-plus.dts
+index ef5ca64442203..3e7b3cfe57918 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-h5-orangepi-zero-plus.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-h5-orangepi-zero-plus.dts
+@@ -54,6 +54,27 @@ reg_gmac_3v3: gmac-3v3 {
+ 		enable-active-high;
+ 		gpio = <&pio 3 6 GPIO_ACTIVE_HIGH>; /* PD6 */
+ 	};
++
++	reg_vdd_cpux: gpio-regulator {
++		compatible = "regulator-gpio";
++		regulator-name = "vdd-cpux";
++		regulator-type = "voltage";
++		regulator-boot-on;
++		regulator-always-on;
++		regulator-min-microvolt = <1100000>;
++		regulator-max-microvolt = <1300000>;
++		regulator-ramp-delay = <50>; /* 4ms */
++
++		gpios = <&r_pio 0 6 GPIO_ACTIVE_HIGH>; /* PL6 */
++		enable-active-high;
++		gpios-states = <0x1>;
++		states = <1100000 0x0
++			  1300000 0x1>;
++	};
++};
++
++&cpu0 {
++	cpu-supply = <&reg_vdd_cpux>;
+ };
+ 
+ &ehci0 {
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h5-orangepi-zero-plus2.dts b/arch/arm64/boot/dts/allwinner/sun50i-h5-orangepi-zero-plus2.dts
+index c95a68541309c..092ac4b0b0771 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-h5-orangepi-zero-plus2.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-h5-orangepi-zero-plus2.dts
+@@ -42,6 +42,27 @@ wifi_pwrseq: wifi_pwrseq {
+ 		reset-gpios = <&pio 0 9 GPIO_ACTIVE_LOW>; /* PA9 */
+ 		post-power-on-delay-ms = <200>;
+ 	};
++
++	reg_vdd_cpux: gpio-regulator {
++		compatible = "regulator-gpio";
++		regulator-name = "vdd-cpux";
++		regulator-type = "voltage";
++		regulator-boot-on;
++		regulator-always-on;
++		regulator-min-microvolt = <1100000>;
++		regulator-max-microvolt = <1300000>;
++		regulator-ramp-delay = <50>; /* 4ms */
++
++		gpios = <&r_pio 0 6 GPIO_ACTIVE_HIGH>; /* PL6 */
++		enable-active-high;
++		gpios-states = <0x1>;
++		states = <1100000 0x0
++			  1300000 0x1>;
++	};
++};
++
++&cpu0 {
++	cpu-supply = <&reg_vdd_cpux>;
+ };
+ 
+ &de {
+-- 
+2.26.2
+

@@ -1,0 +1,34 @@
+From 99643902df958b6d62adc95a6fa7d347b0da4b6e Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Mon, 29 Jul 2019 23:14:19 +0800
+Subject: [PATCH 38/77] ARM: dts: sun8i: v40: enable USB power supply on BPi M2
+ Berry
+
+The Banana Pi M2 Berry board has only one possible power input, via the
+USB OTG port.
+
+Enable its power supply node to allow to monitor it.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm/boot/dts/sun8i-v40-bananapi-m2-berry.dts | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/arm/boot/dts/sun8i-v40-bananapi-m2-berry.dts b/arch/arm/boot/dts/sun8i-v40-bananapi-m2-berry.dts
+index 15c22b06fc4b6..5b49d30c09f53 100644
+--- a/arch/arm/boot/dts/sun8i-v40-bananapi-m2-berry.dts
++++ b/arch/arm/boot/dts/sun8i-v40-bananapi-m2-berry.dts
+@@ -299,6 +299,10 @@ bluetooth {
+ 	};
+ };
+ 
++&usb_power_supply {
++	status = "okay";
++};
++
+ &usbphy {
+ 	usb1_vbus-supply = <&reg_vcc5v0>;
+ 	status = "okay";
+-- 
+2.26.2
+

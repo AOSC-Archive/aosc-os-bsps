@@ -1,4 +1,4 @@
-KERNVER=5.4.22
+KERNVER=5.7.1
 
 mkdir -p "$PKGDIR"/usr/lib/aosc-os-arm64-sunxi-boot/
 mkdir -p "$PKGDIR"/usr/lib/aosc-os-arm64-sunxi-boot/linux-kernel-${KERNVER}-aosc-sunxi64/modules
@@ -17,7 +17,8 @@ for i in \
 	sun50i-h5-nanopi-neo2 \
 	sun50i-h5-orangepi-prime \
 	sun50i-h5-orangepi-pc2 \
-	sun50i-h6-pine-h64
+	sun50i-h6-pine-h64 \
+	sun50i-h6-pine-h64-model-b
 do
 	mkdir -p "$PKGDIR"/usr/lib/aosc-os-arm64-sunxi-boot/dtb-$i
 	ln -sfv ../dtbs-kernel-${KERNVER}-aosc-sunxi64/$i.dtb "$PKGDIR"/usr/lib/aosc-os-arm64-sunxi-boot/dtb-$i/dtb.dtb
