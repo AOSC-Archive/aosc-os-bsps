@@ -1,0 +1,18 @@
+UBOOT_BOARD=pinephone
+LINUX_BOARD=sun50i-a64-pinephone-1.1
+
+unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
+
+ln -sv /usr/bin/ld.bfd ld
+export PATH="$PWD:$PATH"
+
+. autobuild/build-common/build-atf
+
+make ${UBOOT_BOARD}_defconfig
+make
+dd if=spl/sunxi-spl.bin of=u-boot-sunxi-with-spl.bin bs=1024
+dd if=u-boot.itb of=u-boot-sunxi-with-spl.bin bs=1024 seek=32 conv=notrunc
+mkdir -p "$PKGDIR"/usr/lib/u-boot-${LINUX_BOARD}
+cp u-boot u-boot.bin u-boot.img u-boot-sunxi-with-spl.bin spl/sunxi-spl.bin u-boot.itb "$PKGDIR"/usr/lib/u-boot-${LINUX_BOARD}
+mkdir -p "$PKGDIR"/usr/lib/aosc-os-arm64-sunxi-boot/
+ln -sfv ../u-boot-${LINUX_BOARD} "$PKGDIR"/usr/lib/aosc-os-arm64-sunxi-boot/
