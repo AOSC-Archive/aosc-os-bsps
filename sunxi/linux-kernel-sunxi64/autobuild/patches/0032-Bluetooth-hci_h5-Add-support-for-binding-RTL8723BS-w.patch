@@ -1,7 +1,7 @@
 From 89a9d27306b267743d3f5917d9bd823387009f07 Mon Sep 17 00:00:00 2001
 From: Vasily Khoruzhick <anarsoul@gmail.com>
 Date: Wed, 31 Oct 2018 20:07:41 -0700
-Subject: [PATCH 32/77] Bluetooth: hci_h5: Add support for binding RTL8723BS
+Subject: [PATCH 32/92] Bluetooth: hci_h5: Add support for binding RTL8723BS
  with device tree
 
 RTL8723BS is often used in ARM boards, so add ability to bind it

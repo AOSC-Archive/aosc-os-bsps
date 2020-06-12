@@ -1,7 +1,7 @@
 From da8e9e3005bbc1d917b2bfc9d2fd5890dfc32a9e Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 25 Dec 2017 12:10:59 +0800
-Subject: [PATCH 23/77] arm64: allwinner: dts: h6: enable USB3 port on Pine H64
+Subject: [PATCH 23/92] arm64: allwinner: dts: h6: enable USB3 port on Pine H64
 
 Pine H64 board have a USB3 port, which is connected to the USB3 pins of
 the H6 SoC, and the 5V power supply is controlled via GPIO (shared with

@@ -1,0 +1,31 @@
+From a58d1d5bacdc045fc69d3837411b2d537226a058 Mon Sep 17 00:00:00 2001
+From: Ondrej Jirman <megous@megous.com>
+Date: Tue, 12 May 2020 23:59:49 +0200
+Subject: [PATCH 50/92] dt-bindings: arm: sunxi: Add PinePhone 1.2 bindings
+
+Document board compatible names for Pine64 PinePhone 1.2.
+
+Signed-off-by: Ondrej Jirman <megous@megous.com>
+---
+ Documentation/devicetree/bindings/arm/sunxi.yaml | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/arm/sunxi.yaml b/Documentation/devicetree/bindings/arm/sunxi.yaml
+index abf2d97fb7ae3..6768dba7afdb5 100644
+--- a/Documentation/devicetree/bindings/arm/sunxi.yaml
++++ b/Documentation/devicetree/bindings/arm/sunxi.yaml
+@@ -652,6 +652,11 @@ properties:
+           - const: pine64,pinephone-1.1
+           - const: allwinner,sun50i-a64
+ 
++      - description: Pine64 PinePhone (1.2)
++        items:
++          - const: pine64,pinephone-1.2
++          - const: allwinner,sun50i-a64
++
+       - description: Pine64 PineTab
+         items:
+           - const: pine64,pinetab
+-- 
+2.26.2
+

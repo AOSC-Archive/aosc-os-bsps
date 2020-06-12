@@ -1,7 +1,7 @@
 From 9385c2e4aa8ad95dc692cc12fe5f91513b723e9d Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 25 Aug 2019 18:06:23 +0800
-Subject: [PATCH 42/77] iio: light: stk3310: add chip id for STK3311-X variant
+Subject: [PATCH 42/92] iio: light: stk3310: add chip id for STK3311-X variant
 
 The STK3311 chip has a variant called STK3311-X, which has a different
 chip id of 0x12.

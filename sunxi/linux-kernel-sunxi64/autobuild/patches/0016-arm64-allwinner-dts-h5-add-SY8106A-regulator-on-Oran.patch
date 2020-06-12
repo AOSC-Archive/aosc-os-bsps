@@ -1,7 +1,7 @@
 From 14555fd98d7c641c26ed1fb855784e405fc6622c Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 15 Aug 2018 20:29:29 +0800
-Subject: [PATCH 16/77] arm64: allwinner: dts: h5: add SY8106A regulator on
+Subject: [PATCH 16/92] arm64: allwinner: dts: h5: add SY8106A regulator on
  Orange Pi Prime
 
 The Orange Pi Prime boards use a SY8106A regulator as the CPUX

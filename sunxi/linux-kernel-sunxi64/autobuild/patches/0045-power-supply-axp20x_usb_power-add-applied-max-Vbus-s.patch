@@ -1,7 +1,7 @@
 From 48f16ea14931f1cb5336a6b1f87702f10f158c3c Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 13 Sep 2019 01:46:03 +0800
-Subject: [PATCH 45/77] power: supply: axp20x_usb_power: add applied max Vbus
+Subject: [PATCH 45/92] power: supply: axp20x_usb_power: add applied max Vbus
  support for AXP813
 
 AXP813 PMIC has two Vbus maximum value settings -- one is the default

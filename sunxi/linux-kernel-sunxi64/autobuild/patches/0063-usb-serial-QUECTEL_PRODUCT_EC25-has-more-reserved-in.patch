@@ -1,0 +1,27 @@
+From 732d0e7066fef90eb65c9da1baa176919dfc572d Mon Sep 17 00:00:00 2001
+From: Ondrej Jirman <megous@megous.com>
+Date: Sat, 18 Jan 2020 03:51:26 +0100
+Subject: [PATCH 63/92] usb: serial: QUECTEL_PRODUCT_EC25 has more reserved
+ interfaces
+
+Signed-off-by: Ondrej Jirman <megous@megous.com>
+---
+ drivers/usb/serial/option.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/usb/serial/option.c b/drivers/usb/serial/option.c
+index 8bfffca3e4ae4..105f879db91b5 100644
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1096,7 +1096,7 @@ static const struct usb_device_id option_ids[] = {
+ 	{ USB_DEVICE(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC21),
+ 	  .driver_info = RSVD(4) },
+ 	{ USB_DEVICE(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC25),
+-	  .driver_info = RSVD(4) },
++	  .driver_info = RSVD(4) | RSVD(5) | RSVD(6) | RSVD(7) },
+ 	{ USB_DEVICE(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_BG96),
+ 	  .driver_info = RSVD(4) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EP06, 0xff, 0xff, 0xff),
+-- 
+2.26.2
+

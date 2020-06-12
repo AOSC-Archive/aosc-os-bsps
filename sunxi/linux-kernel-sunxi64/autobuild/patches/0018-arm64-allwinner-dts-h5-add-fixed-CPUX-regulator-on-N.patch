@@ -1,7 +1,7 @@
 From d004e38fede16335811e835e570e2312bb8dd27a Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 15 Aug 2018 20:26:44 +0800
-Subject: [PATCH 18/77] arm64: allwinner: dts: h5: add fixed CPUX regulator on
+Subject: [PATCH 18/92] arm64: allwinner: dts: h5: add fixed CPUX regulator on
  NanoPi NEO2
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>

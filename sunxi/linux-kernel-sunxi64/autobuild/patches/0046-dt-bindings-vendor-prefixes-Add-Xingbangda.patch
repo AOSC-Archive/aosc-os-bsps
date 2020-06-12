@@ -1,7 +1,7 @@
 From 2ba7a0a2fee4a611ecd846773ace65cecc309918 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 11 Mar 2020 23:24:28 +0800
-Subject: [PATCH 46/77] dt-bindings: vendor-prefixes: Add Xingbangda
+Subject: [PATCH 46/92] dt-bindings: vendor-prefixes: Add Xingbangda
 
 Shenzhen Xingbangda Display Technology Co., Ltd is a company which
 produces LCD modules. It supplies the LCD panels of the PinePhone series

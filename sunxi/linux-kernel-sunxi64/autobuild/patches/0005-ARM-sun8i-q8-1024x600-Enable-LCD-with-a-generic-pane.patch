@@ -1,7 +1,7 @@
 From 682d905e462fc68d155869b74f0061e7a53b168c Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 19 Aug 2017 12:30:07 +0800
-Subject: [PATCH 05/77] ARM: sun8i: q8-1024x600: Enable LCD with a generic
+Subject: [PATCH 05/92] ARM: sun8i: q8-1024x600: Enable LCD with a generic
  panel
 
 Enable the LCD on 1024x600 Q8 tablets with a generic panel compatible.

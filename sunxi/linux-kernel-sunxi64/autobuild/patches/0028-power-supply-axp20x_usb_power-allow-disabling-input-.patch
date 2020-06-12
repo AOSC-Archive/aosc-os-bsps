@@ -1,7 +1,7 @@
 From 63831bb372d245c17e913cc0857a55144029bbed Mon Sep 17 00:00:00 2001
 From: Chen-Yu Tsai <wens@csie.org>
 Date: Thu, 21 Mar 2019 16:48:44 +0800
-Subject: [PATCH 28/77] power: supply: axp20x_usb_power: allow disabling input
+Subject: [PATCH 28/92] power: supply: axp20x_usb_power: allow disabling input
  current limiting
 
 The AXP PMICs allow the user to disable current limiting on the VBUS

@@ -1,7 +1,7 @@
 From a6b5f868bb0d7c7f47d05af2839db1dfa77d7761 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 27 Jul 2018 19:19:28 +0800
-Subject: [PATCH 08/77] arm64: allwinner: dts: h6: add CPU supply for Pine H64
+Subject: [PATCH 08/92] arm64: allwinner: dts: h6: add CPU supply for Pine H64
 
 The Pine H64, follows the reference design on the AXP805 DCDC
 assignment, connects DCDCA (polyphased with DCDCB) to the ARM
