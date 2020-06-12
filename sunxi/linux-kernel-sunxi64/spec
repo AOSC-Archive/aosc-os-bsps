@@ -1,4 +1,4 @@
 VER=5.7.1
 REL=1
 SRCTBL="https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.7.1.tar.xz"
-CHKSUM="sha256::40d318add8cefe3fdb26f19dac7386f5e7b63854ae021e593466902856ce9de"
+CHKSUM="sha256::40d318add8cefe3fdb26f19dac7386f5e7b63854ae021e593466902856ce9ded"
