@@ -1,0 +1,54 @@
+From 7385e5145406e1ceb6219f4138cc792ce1103066 Mon Sep 17 00:00:00 2001
+From: Ondrej Jirman <megous@megous.com>
+Date: Thu, 11 Jun 2020 23:02:11 +0200
+Subject: [PATCH 90/90] arm64: dts: sun50i-a64-pinephone: Enable HDMI output
+
+Signed-off-by: Ondrej Jirman <megous@megous.com>
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ .../dts/allwinner/sun50i-a64-pinephone.dtsi   | 22 +++++++++++++++++++
+ 1 file changed, 22 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
+index 11df9f8d974b5..82584a9157717 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
+@@ -85,6 +85,17 @@ red {
+ 		};
+ 	};
+ 
++	hdmi-connector {
++		compatible = "hdmi-connector";
++		type = "a"; /* Left as a placeholder */
++
++		port {
++			hdmi_con_in: endpoint {
++				remote-endpoint = <&hdmi_out_con>;
++			};
++		};
++	};
++
+ 	/* A virtual regulator inside the Wi-Fi chip itself */
+ 	reg_3v3_wifi: regulator-3v3-wifi {
+ 		compatible = "regulator-fixed";
+@@ -225,6 +236,17 @@ &ehci1 {
+ 	status = "okay";
+ };
+ 
++&hdmi {
++	hvcc-supply = <&reg_dldo1>;
++	status = "okay";
++};
++
++&hdmi_out {
++	hdmi_out_con: endpoint {
++		remote-endpoint = <&hdmi_con_in>;
++	};
++};
++
+ &i2c0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&i2c0_pins>;
+-- 
+2.26.2
+

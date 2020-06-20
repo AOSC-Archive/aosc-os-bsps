@@ -1,7 +1,7 @@
-From e0149acaafffcf0327d781e7e3f44d2c99783a79 Mon Sep 17 00:00:00 2001
+From f8f3c0e0cf627a467ce38ae6465f908661f1f24b Mon Sep 17 00:00:00 2001
 From: Ondrej Jirman <megous@megous.com>
 Date: Tue, 9 Jun 2020 22:00:36 +0200
-Subject: [PATCH 84/92] regulator: axp20x: Turn N_VBUSEN to input on
+Subject: [PATCH 82/90] regulator: axp20x: Turn N_VBUSEN to input on
  x-powers,sense-vbus-en
 
 When x-powers,sense-vbus-en is present on the PMIC DT node, force

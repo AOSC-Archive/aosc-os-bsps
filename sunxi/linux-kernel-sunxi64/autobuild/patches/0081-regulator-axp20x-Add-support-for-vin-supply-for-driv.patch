@@ -1,7 +1,7 @@
-From 74a8f77d9c0c007645c0b4a21adf3e2e0f06da0d Mon Sep 17 00:00:00 2001
+From e147c6afc7f56db6a4e193486d1a0904e4b4af36 Mon Sep 17 00:00:00 2001
 From: Ondrej Jirman <megous@megous.com>
 Date: Mon, 8 Jun 2020 00:15:04 +0200
-Subject: [PATCH 82/92] regulator: axp20x: Add support for vin-supply for
+Subject: [PATCH 81/90] regulator: axp20x: Add support for vin-supply for
  drivevbus
 
 When drivevbus is used to control some regulator via the N_VBUSEN

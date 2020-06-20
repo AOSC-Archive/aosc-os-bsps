@@ -1,8 +1,8 @@
-From c0da43422cff8465eb0666479f4e1f3d7a599b37 Mon Sep 17 00:00:00 2001
+From 5f0d39d412bd319f4ad50c2fc274d82403068fd4 Mon Sep 17 00:00:00 2001
 From: Ondrej Jirman <megous@megous.com>
-Date: Tue, 19 May 2020 23:26:53 +0200
-Subject: [PATCH 83/92] usb: typec: anx7688: Add support for USB-C data/power
- role switching
+Date: Thu, 13 Feb 2020 15:37:25 +0100
+Subject: [PATCH 83/90] usb: typec: anx7688: Add driver for ANX7688 USB-C HDMI
+ bridge
 
 The driver is now ready for some testing with more USB-C devices.
 It supports data and power role switching properly on all PinePhone
@@ -34,53 +34,107 @@ Todo:
 - add support for manual data/power role setting for devices
   without the HW mod
 
+Signed-off-by: Martijn Braam <martijn@brixit.nl>
+Signed-off-by: Samuel Holland <samuel@sholland.org>
 Signed-off-by: Ondrej Jirman <megous@megous.com>
 ---
- drivers/usb/typec/anx7688.c | 1575 +++++++++++++++++++++++++++++------
- 1 file changed, 1313 insertions(+), 262 deletions(-)
+ drivers/usb/typec/Kconfig   |   11 +
+ drivers/usb/typec/Makefile  |    1 +
+ drivers/usb/typec/anx7688.c | 1547 +++++++++++++++++++++++++++++++++++
+ 3 files changed, 1559 insertions(+)
+ create mode 100644 drivers/usb/typec/anx7688.c
 
+diff --git a/drivers/usb/typec/Kconfig b/drivers/usb/typec/Kconfig
+index b4f2aac7ae8a9..caa3a89e2a211 100644
+--- a/drivers/usb/typec/Kconfig
++++ b/drivers/usb/typec/Kconfig
+@@ -50,6 +50,17 @@ source "drivers/usb/typec/tcpm/Kconfig"
+ 
+ source "drivers/usb/typec/ucsi/Kconfig"
+ 
++config TYPEC_ANX7688
++	tristate "Analogix ANX7688 Type-C DRP Port controller and mux driver"
++	depends on I2C
++	depends on USB_ROLE_SWITCH
++	help
++	  Say Y or M here if your system has Analogix ANX7688 Type-C Bridge
++	  controller driver.
++
++	  If you choose to build this driver as a dynamically linked module, the
++	  module will be called anx7688.ko.
++
+ config TYPEC_HD3SS3220
+ 	tristate "TI HD3SS3220 Type-C DRP Port controller driver"
+ 	depends on I2C
+diff --git a/drivers/usb/typec/Makefile b/drivers/usb/typec/Makefile
+index 7753a5c3cd462..8544a1804879b 100644
+--- a/drivers/usb/typec/Makefile
++++ b/drivers/usb/typec/Makefile
+@@ -4,6 +4,7 @@ typec-y				:= class.o mux.o bus.o
+ obj-$(CONFIG_TYPEC)		+= altmodes/
+ obj-$(CONFIG_TYPEC_TCPM)	+= tcpm/
+ obj-$(CONFIG_TYPEC_UCSI)	+= ucsi/
++obj-$(CONFIG_TYPEC_ANX7688)	+= anx7688.o
+ obj-$(CONFIG_TYPEC_HD3SS3220)	+= hd3ss3220.o
+ obj-$(CONFIG_TYPEC_TPS6598X)	+= tps6598x.o
+ obj-$(CONFIG_TYPEC)		+= mux/
 diff --git a/drivers/usb/typec/anx7688.c b/drivers/usb/typec/anx7688.c
-index bd6244c771cfa..0da14c29c3264 100644
---- a/drivers/usb/typec/anx7688.c
+new file mode 100644
+index 0000000000000..e12ced0538996
+--- /dev/null
 +++ b/drivers/usb/typec/anx7688.c
-@@ -1,386 +1,1437 @@
--#include <linux/module.h>
--#include <linux/kernel.h>
--#include <linux/i2c.h>
+@@ -0,0 +1,1547 @@
++/*
++ * ANX7688 USB-C HDMI bridge/PD driver
++ *
++ * How this works:
++ * - this driver allows to program firmware into ANX7688 EEPROM, and
++ *   initialize it
++ * - it then communicates with the firmware running on the OCM (on-chip
++ *   microcontroller)
++ * - it detects whether there is cable plugged in or not and powers
++ *   up or down the ANX7688 based on that
++ * - when the cable is connected the firmware on the OCM will handle
++ *   the detection of the nature of the device on the other end
++ *   of the USB-C cable
++ * - this driver then communicates with the USB phy to let it swap
++ *   data roles accordingly
++ * - it also enables VBUS and VCONN regulators as appropriate
++ * - when the firmware detects SRC.1.5A or SRC.3.0A via CC pins
++ *   or something else via PD, it notifies this driver via software
++ *   interrupt and this driver notifies the PMIC that the input
++ *   current limit can be increased
++ * - USB phy driver (Allwinner) needs to know whether to switch to
++ *   device or host mode, or whether to turn off
++ */
 +#define DEBUG
 +
 +#include <linux/debugfs.h>
 +#include <linux/delay.h>
 +#include <linux/firmware.h>
- #include <linux/gpio/consumer.h>
++#include <linux/gpio/consumer.h>
 +#include <linux/i2c.h>
- #include <linux/interrupt.h>
- #include <linux/irqreturn.h>
--#include <linux/delay.h>
++#include <linux/interrupt.h>
++#include <linux/irqreturn.h>
 +#include <linux/kernel.h>
 +#include <linux/module.h>
- #include <linux/of_irq.h>
++#include <linux/of_irq.h>
 +#include <linux/regulator/consumer.h>
- #include <linux/usb/typec.h>
++#include <linux/usb/pd.h>
 +#include <linux/usb/role.h>
++#include <linux/usb/typec.h>
 +
 +#define DISABLE_OCM 0
 +
 +/* firmware regs */
- 
--#define ANX7688_REG_FUNCTION_OPTION	0x27
--#define ANX7688_REG_IRQ_SOURCE_0	0x54
--#define ANX7688_REG_IRQ_SOURCE_1	0x55
--#define ANX7688_REG_IRQ_SOURCE_2	0x56
++
 +#define ANX7688_REG_VBUS_OFF_DELAY_TIME 0x22
 +#define ANX7688_REG_FEATURE_CTRL        0x27
 +#define ANX7688_REG_EEPROM_LOAD_STATUS1 0x11
 +#define ANX7688_REG_EEPROM_LOAD_STATUS0 0x12
 +#define ANX7688_REG_FW_VERSION1         0x15
 +#define ANX7688_REG_FW_VERSION0         0x16
- 
--#define ANX7688_TCPC_REG_VENDOR_ID_0	0x00
--#define ANX7688_TCPC_REG_VENDOR_ID_1	0x01
++
 +#define ANX7688_EEPROM_FW_LOADED	0x01
 +
 +#define ANX7688_REG_STATUS_INT_MASK     0x17
@@ -117,11 +171,9 @@ index bd6244c771cfa..0da14c29c3264 100644
 +#define ANX7688_TCPC_REG_ALERT1         0x11
 +#define ANX7688_TCPC_REG_ALERT_MASK0    0x12
 +#define ANX7688_TCPC_REG_ALERT_MASK1    0x13
- #define ANX7688_TCPC_REG_INTERFACE_SEND 0x30
- #define ANX7688_TCPC_REG_INTERFACE_RECV 0x51
- 
--#define ANX7688_TYPE_PWR_SRC_CAP  	0x00
--#define ANX7688_TYPE_PWR_SNK_CAP  	0x01
++#define ANX7688_TCPC_REG_INTERFACE_SEND 0x30
++#define ANX7688_TCPC_REG_INTERFACE_RECV 0x51
++
 +/* hw regs */
 +
 +#define ANX7688_REG_IRQ_EXT_SOURCE0     0x3e
@@ -139,16 +191,14 @@ index bd6244c771cfa..0da14c29c3264 100644
 +
 +#define ANX7688_IRQ2_SOFT_INT           BIT(2)
 +
++#define ANX7688_REG_USBC_RESET_CTRL		0x05
++#define ANX7688_USBC_RESET_CTRL_OCM_RESET	BIT(4)
++
 +//#define ANX7688_IRQ2_USB_PLUGIN         BIT(4)
 +//#define ANX7688_REG_IRQ_STATUS          0x53
 +
 +/* ocm messages */
- 
--#define ANX7688_PDO_FIXED_DUAL_ROLE	(1 << 29)
--#define ANX7688_PDO_FIXED_SUSPEND	(1 << 28)
--#define ANX7688_PDO_FIXED_EXTERNAL	(1 << 27)
--#define ANX7688_PDO_FIXED_COMM_CAP	(1 << 26)
--#define ANX7688_PDO_FIXED_DATA_SWAP	(1 << 25)
++
 +#define ANX7688_OCM_MSG_PWR_SRC_CAP     0x00
 +#define ANX7688_OCM_MSG_PWR_SNK_CAP     0x01
 +#define ANX7688_OCM_MSG_DP_SNK_IDENTITY 0x02
@@ -171,42 +221,6 @@ index bd6244c771cfa..0da14c29c3264 100644
 +#define ANX7688_OCM_MSG_HARD_RST        0xf2
 +#define ANX7688_OCM_MSG_RESTART         0xf3
 +
-+#define ANX7688_REG_USBC_RESET_CTRL		0x05
-+#define ANX7688_USBC_RESET_CTRL_OCM_RESET	BIT(4)
-+
-+/* pdo */
-+
-+#define PDO_TYPE_FIXED		0
-+#define PDO_TYPE_BATTERY	(1u << 30)
-+#define PDO_TYPE_VARIABLE	(2u << 30)
-+#define PDO_TYPE_MASK		(3u << 30)
-+
-+#define PDO_FIXED_DUAL_ROLE	(1u << 29) /* Dual role device */
-+#define PDO_FIXED_SUSPEND	(1u << 28) /* USB Suspend supported */
-+#define PDO_FIXED_EXTERNAL	(1u << 27) /* Externally powered */
-+#define PDO_FIXED_COMM_CAP	(1u << 26) /* USB Communications Capable */
-+#define PDO_FIXED_DATA_SWAP	(1u << 25) /* Data role swap command */
-+#define PDO_FIXED_PEAK_CURR(v)	(((v) & 3) << 20) /* [21..20] Peak current */
-+#define PDO_FIXED_VOLT(mv)	(((u32)(mv) / 50) << 10)
-+#define PDO_FIXED_CURR(ma)	((u32)(ma) / 10)
-+
-+#define PDO_FIXED(mv, ma, flags) \
-+	(PDO_FIXED_VOLT(mv) | PDO_FIXED_CURR(ma) | (flags))
-+
-+#define PDO_GET_TYPE(pdo)		((pdo) & PDO_TYPE_MASK)
-+#define PDO_IS_FIXED_DUAL_ROLE(pdo)	((pdo) & PDO_FIXED_DUAL_ROLE)
-+#define PDO_IS_FIXED_SUSPEND(pdo)	((pdo) & PDO_FIXED_SUSPEND)
-+#define PDO_IS_FIXED_EXTERNAL(pdo)	((pdo) & PDO_FIXED_EXTERNAL)
-+#define PDO_IS_FIXED_COMM_CAP(pdo)	((pdo) & PDO_FIXED_COMM_CAP)
-+#define PDO_IS_FIXED_DATA_SWAP(pdo)	((pdo) & PDO_FIXED_DATA_SWAP)
-+#define PDO_GET_FIXED_PEAK_CURR(pdo)	(((pdo) >> 20) & 3)
-+
-+#define PDO_GET_FIXED_VOLT(pdo)		((((pdo) >> 10) & 0x3ff) * 50)
-+#define PDO_GET_FIXED_CURR(pdo)		(((pdo) & 0x3ff) * 10)
-+#define PDO_GET_VAR_MAX_VOLT(pdo)	((((pdo) >> 20) & 0x3ff) * 50)
-+#define PDO_GET_VAR_MIN_VOLT(pdo)	((((pdo) >> 10) & 0x3ff) * 50)
-+#define PDO_GET_VAR_MAX_CURR(pdo)	(((pdo) & 0x3ff) * 10)
-+
 +static const char * const anx7688_supply_names[] = {
 +        "avdd33",
 +        "avdd18",
@@ -227,22 +241,10 @@ index bd6244c771cfa..0da14c29c3264 100644
 +enum {
 +	ANX7688_F_POWERED,
 +	ANX7688_F_CONNECTED,
++	ANX7688_F_FW_FAILED,
 +};
- 
- struct anx7688 {
--	struct device *dev;
--	struct i2c_client *client;
--	struct i2c_client *client_tcpc;
--	struct gpio_desc *gpio_poweron;
--	struct gpio_desc *gpio_reset;
--	struct gpio_desc *gpio_irq;
--	struct gpio_desc *gpio_cabledet;
--	int irq_plug;
--	int irq_status;
--	
--	struct typec_port *port;
--	struct typec_partner *partner;
--	struct usb_pd_identity partner_identity;
++
++struct anx7688 {
 +        struct device *dev;
 +        struct i2c_client *client;
 +        struct i2c_client *client_tcpc;
@@ -254,6 +256,8 @@ index bd6244c771cfa..0da14c29c3264 100644
 +	unsigned long flags[1];
 +
 +        struct delayed_work work;
++	struct timer_list work_timer;
++
 +        struct mutex lock;
 +        bool vbus_on, vconn_on;
 +
@@ -263,16 +267,15 @@ index bd6244c771cfa..0da14c29c3264 100644
 +	struct usb_role_switch *role_sw;
 +
 +        struct dentry *debug_root;
- };
- 
- static int anx7688_reg_read(struct anx7688 *anx7688, u8 reg_addr)
- {
--	int ret;
--	ret = i2c_smbus_read_byte_data(anx7688->client, reg_addr);
--	if (ret < 0)
--		dev_printk(KERN_ERR, anx7688->dev, "i2c read failed addr 0x%x reg 0x%x, error %d\n",
--				anx7688->client->addr, reg_addr, ret);
--	return ret;
++
++	/* for debug */
++	int last_status;
++	int last_cc_status;
++	int last_dp_state;
++};
++
++static int anx7688_reg_read(struct anx7688 *anx7688, u8 reg_addr)
++{
 +        int ret;
 +
 +        ret = i2c_smbus_read_byte_data(anx7688->client, reg_addr);
@@ -281,17 +284,10 @@ index bd6244c771cfa..0da14c29c3264 100644
 +                        reg_addr, ret);
 +
 +        return ret;
- }
- 
--static int anx7688_tcpc_reg_read(struct anx7688 *anx7688, u8 reg_addr)
++}
++
 +static int anx7688_reg_write(struct anx7688 *anx7688, u8 reg_addr, u8 value)
- {
--	int ret;
--	ret = i2c_smbus_read_byte_data(anx7688->client_tcpc, reg_addr);
--	if (ret < 0)
--		dev_printk(KERN_ERR, anx7688->dev, "i2c read failed addr 0x%x reg 0x%x, error %d\n",
--				anx7688->client_tcpc->addr, reg_addr, ret);
--	return ret;
++{
 +        int ret;
 +
 +        ret = i2c_smbus_write_byte_data(anx7688->client, reg_addr, value);
@@ -300,18 +296,11 @@ index bd6244c771cfa..0da14c29c3264 100644
 +                        reg_addr, ret);
 +
 +        return ret;
- }
- 
--static int anx7688_reg_write(struct anx7688 *anx7688, u8 reg_addr, u8 value)
++}
++
 +static int anx7688_reg_update_bits(struct anx7688 *anx7688, u8 reg_addr,
 +                                   u8 mask, u8 value)
- {
--	int ret;
--	ret = i2c_smbus_write_byte_data(anx7688->client, reg_addr, value);
--	if (ret < 0)
--		dev_printk(KERN_ERR, anx7688->dev, "i2c write failed addr 0x%x reg 0x%x, error %d\n",
--				anx7688->client->addr, reg_addr, ret);
--	return ret;
++{
 +        int ret;
 +
 +        ret = anx7688_reg_read(anx7688, reg_addr);
@@ -334,16 +323,10 @@ index bd6244c771cfa..0da14c29c3264 100644
 +                        reg_addr, ret);
 +
 +        return ret;
- }
- 
- static int anx7688_tcpc_reg_write(struct anx7688 *anx7688, u8 reg_addr, u8 value)
- {
--	int ret;
--	ret = i2c_smbus_write_byte_data(anx7688->client_tcpc, reg_addr, value);
--	if (ret < 0)
--		dev_printk(KERN_ERR, anx7688->dev, "i2c write failed addr 0x%x reg 0x%x, error %d\n",
--				anx7688->client_tcpc->addr, reg_addr, ret);
--	return ret;
++}
++
++static int anx7688_tcpc_reg_write(struct anx7688 *anx7688, u8 reg_addr, u8 value)
++{
 +        int ret;
 +
 +        ret = i2c_smbus_write_byte_data(anx7688->client_tcpc, reg_addr, value);
@@ -352,17 +335,10 @@ index bd6244c771cfa..0da14c29c3264 100644
 +                        reg_addr, ret);
 +
 +        return ret;
- }
- 
--static int anx7688_power_enable(struct anx7688 *anx7688)
++}
++
 +static void anx7688_power_enable(struct anx7688 *anx7688)
- {
--	dev_printk(KERN_INFO, anx7688->dev, "ANX7688 power enable\n");
--	gpiod_set_value(anx7688->gpio_poweron, 1);
--	usleep_range(10000, 11000);
--	gpiod_set_value(anx7688->gpio_reset, 1);
--	usleep_range(12000, 13000);
--	return 0;
++{
 +        gpiod_set_value(anx7688->gpio_reset, 1);
 +        gpiod_set_value(anx7688->gpio_enable, 1);
 +
@@ -374,17 +350,10 @@ index bd6244c771cfa..0da14c29c3264 100644
 +        dev_dbg(anx7688->dev, "power enabled\n");
 +
 +	set_bit(ANX7688_F_POWERED, anx7688->flags);
- }
- 
--static int anx7688_power_disable(struct anx7688 *anx7688)
++}
++
 +static void anx7688_power_disable(struct anx7688 *anx7688)
- {
--	dev_printk(KERN_INFO, anx7688->dev, "ANX7688 power disable\n");
--	gpiod_set_value(anx7688->gpio_reset, 0);
--	usleep_range(1000, 1100);
--	gpiod_set_value(anx7688->gpio_poweron, 0);
--	usleep_range(1000, 1100);
--	return 0;
++{
 +        gpiod_set_value(anx7688->gpio_reset, 1);
 +        msleep(5);
 +        gpiod_set_value(anx7688->gpio_enable, 0);
@@ -392,32 +361,21 @@ index bd6244c771cfa..0da14c29c3264 100644
 +        dev_dbg(anx7688->dev, "power disabled\n");
 +
 +	clear_bit(ANX7688_F_POWERED, anx7688->flags);
- }
- 
--static int anx7688_send_buffer(struct anx7688 *anx7688, u8 len, u8 cmd, const char *buf)
++}
++
 +static int anx7688_send_ocm_message(struct anx7688 *anx7688, int cmd,
 +                                    const u8 *data, int data_len)
- {
--	int status;
--	int ret = 0;
--	int i;
--	u8 pdo[32];
--	u8 checksum;
++{
 +        int ret = 0, i;
 +        u8 pdo[32];
- 
--	pdo[0] = len + 1;
--	pdo[1] = cmd;
--	memcpy(pdo+2, buf, len);
++
 +        if (data_len > sizeof(pdo) - 3 || data_len < 1) {
 +                dev_dbg(anx7688->dev,
 +                        "invalid ocm message length cmd=%d len=%d\n",
 +                        cmd, data_len);
 +                return -EINVAL;
 +        }
- 
--	for (i = 0; i < len; i++)
--		checksum += buf[i];
++
 +        // prepare pd packet
 +        pdo[0] = data_len + 1;
 +        pdo[1] = cmd;
@@ -425,21 +383,10 @@ index bd6244c771cfa..0da14c29c3264 100644
 +        pdo[2 + data_len] = 0;
 +        for (i = 0; i < data_len + 2; i++)
 +                pdo[data_len + 2] -= pdo[i];
- 
--	pdo[len+2] = (u8) (0 - checksum);
++
 +        dev_dbg(anx7688->dev, "send pd packet cmd=%d %*ph\n",
 +                cmd, data_len + 3, pdo);
- 
--	dev_printk(KERN_INFO, anx7688->dev, "send pd packet\n");
--	status = anx7688_tcpc_reg_read(anx7688, ANX7688_TCPC_REG_INTERFACE_SEND);
--	if (status == 0) {
--		ret = i2c_smbus_write_i2c_block_data(anx7688->client,
--				ANX7688_TCPC_REG_INTERFACE_SEND, len + 3, pdo);
--		if (ret < 0)
--			dev_printk(KERN_ERR, anx7688->dev, "i2c buffer write error, addr %x, len %d, ret %d\n",
--					anx7688->client_tcpc->addr, len, ret);
--	}
--	return ret;
++
 +        ret = anx7688_tcpc_reg_read(anx7688, ANX7688_TCPC_REG_INTERFACE_SEND);
 +        if (ret) {
 +                dev_err(anx7688->dev,
@@ -465,16 +412,10 @@ index bd6244c771cfa..0da14c29c3264 100644
 +
 +        dev_err(anx7688->dev, "timeout waiting for the message queue flush\n");
 +        return -ETIMEDOUT;
- }
- 
--static int anx7688_make_pdo(int mv, int ma, int flags)
++}
++
 +static int anx7688_connect(struct anx7688 *anx7688)
- {
--	int ret = 0;
--	ret |= ma / 10; // current in mA
--	ret |= (mv / 50) << 10; // current in mV
--	ret |= flags;
--	return ret;
++{
 +#if DISABLE_OCM
 +        int ret;
 +
@@ -513,6 +454,10 @@ index bd6244c771cfa..0da14c29c3264 100644
 +
 +        dev_dbg(anx7688->dev, "cable inserted\n");
 +
++	anx7688->last_status = -1;
++	anx7688->last_cc_status = -1;
++	anx7688->last_dp_state = -1;
++
 +        msleep(10);
 +        anx7688_power_enable(anx7688);
 +
@@ -521,6 +466,7 @@ index bd6244c771cfa..0da14c29c3264 100644
 +                dev_err(anx7688->dev, "failed to enable vconn\n");
 +                goto err_poweroff;
 +        }
++	anx7688->vconn_on = true;
 +
 +        /* wait till the firmware is loaded (typically ~30ms) */
 +        for (i = 0; i < 100; i++) {
@@ -535,7 +481,8 @@ index bd6244c771cfa..0da14c29c3264 100644
 +                msleep(5);
 +        }
 +
-+        dev_err(anx7688->dev, "boot firmware load failed\n");
++	set_bit(ANX7688_F_FW_FAILED, anx7688->flags);
++        dev_err(anx7688->dev, "boot firmware load failed (you may need to flash FW to anx7688 first)\n");
 +        ret = -ETIMEDOUT;
 +        goto err_vconoff;
 +
@@ -605,7 +552,7 @@ index bd6244c771cfa..0da14c29c3264 100644
 +
 +	pdo = cpu_to_le32(PDO_FIXED(5000, 500,
 +				    PDO_FIXED_DATA_SWAP |
-+				    PDO_FIXED_COMM_CAP |
++				    PDO_FIXED_USB_COMM |
 +				    PDO_FIXED_DUAL_ROLE));
 +	ret = anx7688_send_ocm_message(anx7688, ANX7688_OCM_MSG_PWR_SRC_CAP,
 +				       (u8*)&pdo, sizeof pdo);
@@ -615,13 +562,34 @@ index bd6244c771cfa..0da14c29c3264 100644
 +
 +	pdo = cpu_to_le32(PDO_FIXED(5000, 3000,
 +				    PDO_FIXED_DATA_SWAP |
-+				    PDO_FIXED_COMM_CAP |
++				    PDO_FIXED_USB_COMM |
 +				    PDO_FIXED_DUAL_ROLE));
 +	ret = anx7688_send_ocm_message(anx7688, ANX7688_OCM_MSG_PWR_SNK_CAP,
 +				       (u8*)&pdo, sizeof pdo);
 +	if (ret)
 +		goto err_vconoff;
 +
++	const u8 dp_snk_identity[16] = {
++		0x00, 0x00, 0x00, 0xec,	/* snk_id_hdr */
++		0x00, 0x00, 0x00, 0x00,	/* snk_cert */
++		0x00, 0x00, 0x00, 0x00,	/* snk_prd */
++		0x39, 0x00, 0x00, 0x51	/* snk_ama */
++	};
++
++	/* Send DP SNK identity */
++	ret = anx7688_send_ocm_message(anx7688, ANX7688_OCM_MSG_DP_SNK_IDENTITY,
++				       dp_snk_identity, sizeof dp_snk_identity);
++	if (ret)
++		goto err_vconoff;
++
++	const u8 svid[4] = {
++		0x00, 0x00, 0x01, 0xff,
++	};
++
++	ret = anx7688_send_ocm_message(anx7688, ANX7688_OCM_MSG_SVID,
++				       svid, sizeof svid);
++	if (ret)
++		goto err_vconoff;
 +
 +        dev_dbg(anx7688->dev, "OCM configuration completed\n");
 +
@@ -640,34 +608,22 @@ index bd6244c771cfa..0da14c29c3264 100644
 +
 +err_vconoff:
 +        regulator_disable(anx7688->supplies[ANX7688_VCONN_INDEX].consumer);
++	anx7688->vconn_on = false;
 +err_poweroff:
 +        anx7688_power_disable(anx7688);
 +        return ret;
 +#endif
- }
- 
--static int anx7688_config(struct anx7688 *anx7688)
++}
++
 +static void anx7688_disconnect(struct anx7688 *anx7688)
- {
--	static int source_caps[1];
--	static int sink_caps[1];
--	source_caps[0] = anx7688_make_pdo(5000, 1500, ANX7688_PDO_FIXED_DUAL_ROLE | ANX7688_PDO_FIXED_COMM_CAP | ANX7688_PDO_FIXED_DATA_SWAP);
--	sink_caps[0] = anx7688_make_pdo(5000, 3000, ANX7688_PDO_FIXED_DUAL_ROLE | ANX7688_PDO_FIXED_COMM_CAP | ANX7688_PDO_FIXED_DATA_SWAP);
++{
 +        dev_dbg(anx7688->dev, "cable removed\n");
- 
--	// Reset interrupts
--	anx7688_reg_write(anx7688, ANX7688_REG_IRQ_SOURCE_0, 0);
--	anx7688_reg_write(anx7688, ANX7688_REG_IRQ_SOURCE_1, 0);
--	anx7688_reg_write(anx7688, ANX7688_REG_IRQ_SOURCE_2, 0);
++
 +	if (anx7688->vconn_on) {
 +		regulator_disable(anx7688->supplies[ANX7688_VCONN_INDEX].consumer);
 +		anx7688->vconn_on = false;
 +	}
- 
--	// Send source and sink capabilities
--	anx7688_send_buffer(anx7688, sizeof(source_caps), ANX7688_TYPE_PWR_SRC_CAP, (const char *)source_caps);
--	anx7688_send_buffer(anx7688, sizeof(sink_caps), ANX7688_TYPE_PWR_SNK_CAP, (const char *)sink_caps);
--	return 0;
++
 +	if (anx7688->vbus_on) {
 +		regulator_disable(anx7688->supplies[ANX7688_VBUS_INDEX].consumer);
 +		anx7688->vbus_on = false;
@@ -683,95 +639,82 @@ index bd6244c771cfa..0da14c29c3264 100644
 +        typec_set_vconn_role(anx7688->port, TYPEC_SINK);
 +        typec_set_data_role(anx7688->port, TYPEC_DEVICE);
 +
++	usb_role_switch_set_role(anx7688->role_sw, USB_ROLE_NONE);
++
 +	clear_bit(ANX7688_F_CONNECTED, anx7688->flags);
- }
- 
--static int anx7688_connect(struct anx7688 *anx7688)
++}
++
 +static void anx7688_handle_cable_change(struct anx7688* anx7688)
- {
--	struct typec_partner_desc desc;
++{
 +        int cabledet;
 +	bool connected;
- 
--	dev_printk(KERN_INFO, anx7688->dev, "Cable inserted\n");
--	anx7688_power_enable(anx7688);
--	anx7688_config(anx7688);
++
 +        mutex_lock(&anx7688->lock);
- 
--	desc.usb_pd = false;
--	desc.accessory = TYPEC_ACCESSORY_NONE;
--	desc.identity = NULL;
-+        dev_dbg(anx7688->dev, "processing cabledet change (cd=%d)\n",
-+                gpiod_get_value(anx7688->gpio_cabledet));
- 
--	if (!IS_ERR(anx7688->partner))
--		typec_unregister_partner(anx7688->partner);
++
 +	connected = test_bit(ANX7688_F_CONNECTED, anx7688->flags);
- 
--	anx7688->partner = typec_register_partner(anx7688->port, &desc);
--	if (IS_ERR(anx7688->partner))
--		return PTR_ERR(anx7688->partner);
 +        cabledet = gpiod_get_value(anx7688->gpio_cabledet);
++
 +        if (cabledet && !connected)
 +                anx7688_connect(anx7688);
 +        else if (!cabledet && connected)
 +                anx7688_disconnect(anx7688);
- 
--	if (desc.identity)
--		typec_partner_set_identity(anx7688->partner);
++
 +        mutex_unlock(&anx7688->lock);
 +}
- 
--	return 0;
-+static void anx7688_work(struct work_struct *work)
-+{
-+        struct anx7688 *anx7688 = container_of(work, struct anx7688, work.work);
 +
-+        anx7688_handle_cable_change(anx7688);
- }
- 
--static int anx7688_disconnect(struct anx7688 *anx7688)
 +static irqreturn_t anx7688_irq_plug_handler(int irq, void *data)
- {
--	dev_printk(KERN_INFO, anx7688->dev, "Cable removed\n");
++{
 +        struct anx7688 *anx7688 = data;
- 
--	if (!IS_ERR(anx7688->partner))
--		typec_unregister_partner(anx7688->partner);
++
 +        dev_dbg(anx7688->dev, "plug irq (cd=%d)\n",
 +                gpiod_get_value(anx7688->gpio_cabledet));
- 
--	anx7688->partner = NULL;
--	
--	typec_set_pwr_opmode(anx7688->port, TYPEC_PWR_MODE_USB);
--	typec_set_pwr_role(anx7688->port, TYPEC_SINK);
--	typec_set_data_role(anx7688->port, TYPEC_DEVICE);
--	anx7688_power_disable(anx7688);
++
 +        /*
 +         * After each cabledet change the scheduled work timer is reset
 +         * to fire in ~10ms. So the work is done only after the cabledet
 +         * is stable for ~10ms.
 +         */
 +        schedule_delayed_work(&anx7688->work, msecs_to_jiffies(10));
- 
--	return 0;
++
 +        return IRQ_HANDLED;
- }
- 
--static irqreturn_t anx7688_irq_plug_handler(int irq, void *data)
++}
++
++static int anx7688_handle_pd_message(struct anx7688* anx7688,
++				     u8 cmd, u8* msg, unsigned len)
++{
++	switch (cmd) {
++	case ANX7688_OCM_MSG_PWR_SRC_CAP:
++	case ANX7688_OCM_MSG_PWR_SNK_CAP:
++	case ANX7688_OCM_MSG_DP_SNK_IDENTITY:
++	case ANX7688_OCM_MSG_SVID:
++	case ANX7688_OCM_MSG_GET_DP_SNK_CAP:
++	case ANX7688_OCM_MSG_ACCEPT:
++	case ANX7688_OCM_MSG_REJECT:
++	case ANX7688_OCM_MSG_PSWAP_REQ:
++	case ANX7688_OCM_MSG_DSWAP_REQ:
++	case ANX7688_OCM_MSG_GOTO_MIN_REQ:
++	case ANX7688_OCM_MSG_VCONN_SWAP_REQ:
++	case ANX7688_OCM_MSG_VDM:
++	case ANX7688_OCM_MSG_DP_SNK_CFG:
++	case ANX7688_OCM_MSG_PWR_OBJ_REQ:
++	case ANX7688_OCM_MSG_PD_STATUS_REQ:
++	case ANX7688_OCM_MSG_DP_ALT_ENTER:
++	case ANX7688_OCM_MSG_DP_ALT_EXIT:
++	case ANX7688_OCM_MSG_RESPONSE_TO_REQ:
++	case ANX7688_OCM_MSG_SOFT_RST:
++	case ANX7688_OCM_MSG_HARD_RST:
++	case ANX7688_OCM_MSG_RESTART:
++		break;
++	}
++
++	return 0;
++}
++
 +static int anx7688_receive_msg(struct anx7688* anx7688)
- {
--	struct i2c_client *client = to_i2c_client(data);
--	struct anx7688 *anx7688 = i2c_get_clientdata(client);
--	int value;
++{
 +        u8 pdo[32], checksum = 0;
 +        int i, ret;
- 
--	value = gpiod_get_value(anx7688->gpio_cabledet);
--	if(value){
--		anx7688_connect(anx7688);
--	}else{
--		anx7688_disconnect(anx7688);
++
 +        ret = i2c_smbus_read_i2c_block_data(anx7688->client_tcpc,
 +                                            ANX7688_TCPC_REG_INTERFACE_RECV,
 +                                            32, pdo);
@@ -790,18 +733,18 @@ index bd6244c771cfa..0da14c29c3264 100644
 +                return -EINVAL;
 +        }
 +
-+        dev_dbg(anx7688->dev, "recv pd packet cmd=%d %*ph\n",
++        dev_dbg(anx7688->dev, "recv ocm message cmd=%d %*ph\n",
 +                pdo[1], pdo[0] + 2, pdo);
 +
 +        for (i = 0; i < pdo[0] + 2; i++)
 +                checksum += pdo[i];
 +
 +        if (checksum != 0) {
-+                dev_err(anx7688->dev, "bad checksum on received pd msg\n");
++                dev_err(anx7688->dev, "bad checksum on received message\n");
 +                return -EINVAL;
 +        }
 +
-+        //anx7688_handle_pd(pdo[1], pdo + 2, pdo[0] - 1);
++        anx7688_handle_pd_message(anx7688, pdo[1], pdo + 2, pdo[0] - 1);
 +        return 0;
 +}
 +
@@ -815,10 +758,9 @@ index bd6244c771cfa..0da14c29c3264 100644
 +	case 8: return "SNK.Power1.5";
 +	case 12: return "SNK.Power3.0";
 +	default: return "UNK";
- 	}
++	}
 +}
- 
--	return IRQ_HANDLED;
++
 +static int anx7688_cc_status(unsigned v)
 +{
 +	switch (v) {
@@ -835,21 +777,42 @@ index bd6244c771cfa..0da14c29c3264 100644
 +static int anx7688_update_status(struct anx7688 *anx7688)
 +{
 +        struct device *dev = anx7688->dev;
-+	bool vbus_on, vconn_on, dr_ufp;
-+	int status, cc_status, ret;
++	bool vbus_on, vconn_on, dr_dfp;
++	int status, cc_status, dp_state, ret;
 +	int cc1, cc2;
 +
 +	status = anx7688_reg_read(anx7688, ANX7688_REG_STATUS);
-+	cc_status = anx7688_reg_read(anx7688, ANX7688_REG_CC_STATUS);
++	if (status < 0)
++		return status;
 +
-+	dev_dbg(dev, "Update status (0x%02x)\n", status);
-+	dev_dbg(dev, "  CC1 = %s CC2 = %s\n",
-+		anx7688_cc_status_string(cc_status & 0xf),
-+		anx7688_cc_status_string((cc_status >> 4) & 0xf));
++	cc_status = anx7688_reg_read(anx7688, ANX7688_REG_CC_STATUS);
++	if (cc_status < 0)
++		return cc_status;
++
++	dp_state = anx7688_tcpc_reg_read(anx7688, 0x87);
++	if (dp_state < 0)
++		return dp_state;
++
++	if (anx7688->last_status == -1 || anx7688->last_status != status) {
++		anx7688->last_status = status;
++		dev_dbg(dev, "status changed to 0x%02x\n", status);
++	}
++
++	if (anx7688->last_cc_status == -1 || anx7688->last_cc_status != cc_status) {
++		anx7688->last_cc_status = cc_status;
++		dev_dbg(dev, "cc_status changed to CC1 = %s CC2 = %s\n",
++			anx7688_cc_status_string(cc_status & 0xf),
++			anx7688_cc_status_string((cc_status >> 4) & 0xf));
++	}
++
++	if (anx7688->last_dp_state == -1 || anx7688->last_dp_state != dp_state) {
++		anx7688->last_dp_state = dp_state;
++		dev_dbg(dev, "dp state changed to 0x%02x\n", dp_state);
++	}
 +
 +	vbus_on = !!(status & ANX7688_VBUS_STATUS);
 +	vconn_on = !!(status & ANX7688_VCONN_STATUS);
-+	dr_ufp = !(status & ANX7688_DATA_ROLE_STATUS);
++	dr_dfp = !!(status & ANX7688_DATA_ROLE_STATUS);
 +
 +	cc1 = anx7688_cc_status(cc_status & 0xf);
 +	cc2 = anx7688_cc_status((cc_status >> 4) & 0xf);
@@ -878,7 +841,7 @@ index bd6244c771cfa..0da14c29c3264 100644
 +	}
 +
 +	if (anx7688->vconn_on != vconn_on) {
-+		if (vbus_on) {
++		if (vconn_on) {
 +			ret = regulator_enable(anx7688->supplies[ANX7688_VCONN_INDEX].consumer);
 +			if (ret) {
 +				dev_err(anx7688->dev, "failed to enable vconn\n");
@@ -896,25 +859,24 @@ index bd6244c771cfa..0da14c29c3264 100644
 +		anx7688->vconn_on = vconn_on;
 +	}
 +
-+	dev_dbg(anx7688->dev, "data role = %s\n", dr_ufp ? "ufp" : "dfp");
++	typec_set_data_role(anx7688->port, dr_dfp ? TYPEC_HOST : TYPEC_DEVICE);
 +
-+	typec_set_data_role(anx7688->port, dr_ufp ? TYPEC_DEVICE : TYPEC_HOST);
++	if (usb_role_switch_get_role(anx7688->role_sw) !=
++	    (dr_dfp ? USB_ROLE_HOST : USB_ROLE_DEVICE)) {
++		dev_dbg(anx7688->dev, "data role change requested to %s\n",
++			dr_dfp ? "dfp" : "ufp");
 +
-+	ret = usb_role_switch_set_role(anx7688->role_sw,
-+				       dr_ufp ? USB_ROLE_DEVICE : USB_ROLE_HOST);
-+	if (ret)
-+		return ret;
++		ret = usb_role_switch_set_role(anx7688->role_sw,
++					       dr_dfp ? USB_ROLE_HOST : USB_ROLE_DEVICE);
++		if (ret)
++			return ret;
++	}
 +
 +	return 0;
- }
- 
- static irqreturn_t anx7688_irq_status_handler(int irq, void *data)
- {
--	struct i2c_client *client = to_i2c_client(data);
--	struct anx7688 *anx7688 = i2c_get_clientdata(client);
--	int source0;
--	int source1;
--	int source2;
++}
++
++static irqreturn_t anx7688_irq_status_handler(int irq, void *data)
++{
 +#if DISABLE_OCM
 +        struct anx7688 *anx7688 = data;
 +        struct device *dev = anx7688->dev;
@@ -945,26 +907,16 @@ index bd6244c771cfa..0da14c29c3264 100644
 +        struct anx7688 *anx7688 = data;
 +        struct device *dev = anx7688->dev;
 +        int tcpc_status, ext2_status, soft_status;
- 
--	dev_printk(KERN_INFO, anx7688->dev, "status interrupt received\n");
--	source0 = anx7688_reg_read(anx7688, ANX7688_REG_IRQ_SOURCE_0);
--	source1 = anx7688_reg_read(anx7688, ANX7688_REG_IRQ_SOURCE_1);
--	source2 = anx7688_reg_read(anx7688, ANX7688_REG_IRQ_SOURCE_2);
--	dev_printk(KERN_INFO, anx7688->dev, "source is %d %d %d\n", source0, source1, source2);
++
 +        mutex_lock(&anx7688->lock);
- 
--	// Clear IRQ bits
--	anx7688_reg_write(anx7688, ANX7688_REG_IRQ_SOURCE_0, 0);
--	anx7688_reg_write(anx7688, ANX7688_REG_IRQ_SOURCE_1, 0);
--	anx7688_reg_write(anx7688, ANX7688_REG_IRQ_SOURCE_2, 0);
++
 +        if (!test_bit(ANX7688_F_CONNECTED, anx7688->flags)) {
 +                dev_dbg(dev, "spurious status irq\n");
 +                /* anx chip should be disabled and power off, nothing
 +                 * more to do */
 +                goto out_unlock;
 +        }
- 
--	return IRQ_HANDLED;
++
 +        dev_dbg(dev, "status irq\n");
 +
 +        // clear tcpc interrupt
@@ -979,16 +931,13 @@ index bd6244c771cfa..0da14c29c3264 100644
 +                soft_status = anx7688_reg_read(anx7688, ANX7688_REG_STATUS_INT);
 +                anx7688_reg_write(anx7688, ANX7688_REG_STATUS_INT, 0);
 +
-+		dev_dbg(dev, "  ext2 = 0x%02x\n", ext2_status);
 +                dev_dbg(dev, "  soft = 0x%02x\n", soft_status);
 +
 +		if (soft_status > 0) {
 +			soft_status &= ANX7688_SOFT_INT_MASK;
 +
-+			if (soft_status & ANX7688_IRQS_RECEIVED_MSG) {
-+				dev_dbg(dev, "  pd msg rcv\n");
++			if (soft_status & ANX7688_IRQS_RECEIVED_MSG)
 +				anx7688_receive_msg(anx7688);
-+			}
 +
 +			if (soft_status & (ANX7688_IRQS_CC_STATUS_CHANGE |
 +					   ANX7688_IRQS_VBUS_CHANGE |
@@ -1006,23 +955,19 @@ index bd6244c771cfa..0da14c29c3264 100644
 +
 +        return IRQ_HANDLED;
 +#endif
- }
- 
- static int anx7688_dr_set(struct typec_port *port, enum typec_data_role role)
- {
--	printk(KERN_WARNING "data role set\n");
--	return 0;
++}
++
++static int anx7688_dr_set(struct typec_port *port, enum typec_data_role role)
++{
 +        struct anx7688 *anx7688 = typec_get_drvdata(port);
 +
 +        dev_info(anx7688->dev, "data role set %d\n", role);
 +
 +        return -ENOTSUPP;
- }
- 
- static int anx7688_pr_set(struct typec_port *port, enum typec_role role)
- {
--	printk(KERN_WARNING "power role set\n");
--	return 0;
++}
++
++static int anx7688_pr_set(struct typec_port *port, enum typec_role role)
++{
 +        struct anx7688 *anx7688 = typec_get_drvdata(port);
 +
 +        dev_info(anx7688->dev, "power role set %d\n", role);
@@ -1222,6 +1167,8 @@ index bd6244c771cfa..0da14c29c3264 100644
 +                        goto err_unlock;
 +        }
 +
++	clear_bit(ANX7688_F_FW_FAILED, anx7688->flags);
++
 +err_unlock:
 +	anx7688_power_disable(anx7688);
 +	schedule_delayed_work(&anx7688->work, msecs_to_jiffies(20));
@@ -1230,52 +1177,13 @@ index bd6244c771cfa..0da14c29c3264 100644
 +err_release:
 +        release_firmware(fw);
 +        return ret;
- }
- 
- static const struct typec_operations anx7688_typec_ops = {
--	.dr_set = anx7688_dr_set,
--	.pr_set = anx7688_pr_set,
++}
++
++static const struct typec_operations anx7688_typec_ops = {
 +        .dr_set = anx7688_dr_set,
 +        .pr_set = anx7688_pr_set,
- };
- 
--static int anx7688_i2c_probe(struct i2c_client *client,
--			     const struct i2c_device_id *id)
--{
--	struct anx7688 *anx7688;
--	struct device *dev = &client->dev;
--	struct typec_capability typec_cap = { };
--	int typec_revision;
--	int vid;
--	int ret = 0;
--	
--	anx7688 = devm_kzalloc(&client->dev, sizeof(struct anx7688), GFP_KERNEL);
--	if (!anx7688)
--		return -ENOMEM;
--
--	i2c_set_clientdata(client, anx7688);
--	anx7688->client = client;
--	anx7688->dev = &client->dev;
--
--	// Register the TCPC i2c interface as second interface (0x58)
--	anx7688->client_tcpc = i2c_new_dummy_device(client->adapter, 0x2c);
--
--	dev_printk(KERN_INFO, dev, "=== ANX7688 i2c probe ===\n");
--
--	anx7688->gpio_poweron = devm_gpiod_get(&client->dev, "enable", GPIOD_OUT_LOW);
--	if(IS_ERR(anx7688->gpio_poweron)) {
--		dev_printk(KERN_ERR, dev, "Could not get poweron gpio\n");
--		return PTR_ERR(anx7688->gpio_poweron);
--	}
--	anx7688->gpio_reset = devm_gpiod_get(&client->dev, "reset", GPIOD_OUT_LOW);
--	if(IS_ERR(anx7688->gpio_reset)) {
--		dev_printk(KERN_ERR, dev, "Could not get reset gpio\n");
--		return PTR_ERR(anx7688->gpio_reset);
--	}
--	anx7688->gpio_cabledet = devm_gpiod_get(&client->dev, "cabledet", GPIOD_IN);
--	if(IS_ERR(anx7688->gpio_cabledet)) {
--		dev_printk(KERN_ERR, dev, "Could not get cabledet gpio\n");
--		return PTR_ERR(anx7688->gpio_cabledet);
++};
++
 +static ssize_t flash_eeprom_show(struct device *dev,
 +                           struct device_attribute *attr, char *buf)
 +{
@@ -1325,8 +1233,8 @@ index bd6244c771cfa..0da14c29c3264 100644
 +	if (!test_bit(ANX7688_F_POWERED, anx7688->flags)) {
 +		ret = -ENODEV;
 +		goto out_unlock;
- 	}
- 
++	}
++
 +	if (devaddr == 0x50)
 +		ret = anx7688_reg_write(anx7688, addr, val);
 +	else if (devaddr == 0x58)
@@ -1389,11 +1297,7 @@ index bd6244c771cfa..0da14c29c3264 100644
 +
 +	msleep(20);
 +
- 	anx7688_power_enable(anx7688);
--	vid = anx7688_tcpc_reg_read(anx7688, ANX7688_TCPC_REG_VENDOR_ID_0);
--	vid |= anx7688_tcpc_reg_read(anx7688, ANX7688_TCPC_REG_VENDOR_ID_1) << 8;
--	dev_printk(KERN_INFO, dev, "Chip vendor id is 0x%x\n", vid);
--	typec_revision = anx7688_reg_read(anx7688, 0x06);
++	anx7688_power_enable(anx7688);
 +
 +	ret = anx7688_reg_update_bits(anx7688, ANX7688_REG_USBC_RESET_CTRL,
 +				      ANX7688_USBC_RESET_CTRL_OCM_RESET,
@@ -1417,44 +1321,21 @@ index bd6244c771cfa..0da14c29c3264 100644
 +        }
 +
 +out_powerdown:
- 	anx7688_power_disable(anx7688);
++	anx7688_power_disable(anx7688);
 +        schedule_delayed_work(&anx7688->work, 0);
 +        mutex_unlock(&anx7688->lock);
- 
--	typec_cap.revision = USB_TYPEC_REV_1_2;
--	typec_cap.pd_revision = 0x200;
--	typec_cap.prefer_role = TYPEC_NO_PREFERRED_ROLE;
--	typec_cap.ops = &anx7688_typec_ops;
--	typec_cap.type = TYPEC_PORT_DRP;
--	typec_cap.data = TYPEC_PORT_DRD;
--	
--	anx7688->port = typec_register_port(&client->dev, &typec_cap);
--	if (IS_ERR(anx7688->port)) {
--		dev_err(dev, "Could not register type-c port\n");
--		return PTR_ERR(anx7688->port);
--	}
++
 +        return ret;
 +}
 +DEFINE_SHOW_ATTRIBUTE(anx7688_firmware);
- 
--	anx7688->irq_plug = of_irq_get(dev->of_node, 0);
--	anx7688->irq_status = of_irq_get(dev->of_node, 1);
++
 +static int anx7688_regs_show(struct seq_file *s, void *data)
 +{
 +        struct anx7688 *anx7688 = s->private;
 +        u8 buf[16];
 +        unsigned i, addr;
 +        int ret = -ENODEV;
- 
--	ret = devm_request_threaded_irq(&client->dev, anx7688->irq_plug, NULL, anx7688_irq_plug_handler, IRQF_ONESHOT, "anx7688plug", &client->dev);
--	if (ret < 0) {
--		dev_err(dev, "Could not register cable detection irq: %d\n", ret);
--		goto error;
--	}
--	ret = devm_request_threaded_irq(&client->dev, anx7688->irq_status, NULL, anx7688_irq_status_handler, IRQF_ONESHOT, "anx7688status", &client->dev);
--	if (ret < 0) {
--		dev_err(dev, "Could not register status update irq: %d\n", ret);
--		goto error;
++
 +        mutex_lock(&anx7688->lock);
 +
 +	if (!test_bit(ANX7688_F_POWERED, anx7688->flags))
@@ -1496,7 +1377,6 @@ index bd6244c771cfa..0da14c29c3264 100644
 +static int anx7688_status_show(struct seq_file *s, void *data)
 +{
 +        struct anx7688 *anx7688 = s->private;
-+        //int ret;
 +
 +        mutex_lock(&anx7688->lock);
 +
@@ -1507,6 +1387,34 @@ index bd6244c771cfa..0da14c29c3264 100644
 +        return 0;
 +}
 +DEFINE_SHOW_ATTRIBUTE(anx7688_status);
++
++static void anx7688_work(struct work_struct *work)
++{
++        struct anx7688 *anx7688 = container_of(work, struct anx7688, work.work);
++
++	if (test_bit(ANX7688_F_FW_FAILED, anx7688->flags))
++		return;
++
++        anx7688_handle_cable_change(anx7688);
++
++	if (test_bit(ANX7688_F_CONNECTED, anx7688->flags)) {
++		/*
++		 * We check status periodically outside of interrupt, just to
++		 * be sure we didn't miss any status interrupts
++		 */
++		mutex_lock(&anx7688->lock);
++		anx7688_update_status(anx7688);
++		mutex_unlock(&anx7688->lock);
++	}
++}
++
++static void anx7688_cabledet_timer_fn(struct timer_list *t)
++{
++	struct anx7688 *anx7688 = from_timer(anx7688, t, work_timer);
++
++	schedule_delayed_work(&anx7688->work, 0);
++	mod_timer(t, jiffies + msecs_to_jiffies(1000));
++}
 +
 +static int anx7688_i2c_probe(struct i2c_client *client,
 +                             const struct i2c_device_id *id)
@@ -1589,11 +1497,8 @@ index bd6244c771cfa..0da14c29c3264 100644
 +	if (vid_l < 0 || vid_h < 0) {
 +		anx7688_power_disable(anx7688);
 +		goto err_disable_reg;
- 	}
- 
--error:
--	if (ret) {
--		typec_unregister_port(anx7688->port);
++	}
++
 +        dev_info(dev, "Vendor id 0x%04x\n", vid_l | vid_h << 8);
 +
 +        anx7688_power_disable(anx7688);
@@ -1603,9 +1508,8 @@ index bd6244c771cfa..0da14c29c3264 100644
 +                dev_err(dev, "Could not get role switch\n");
 +		ret = PTR_ERR(anx7688->role_sw);
 +		goto err_disable_reg;
- 	}
- 
--	return ret;
++	}
++
 +	// setup a typec port device
 +        typec_cap.revision = USB_TYPEC_REV_1_2;
 +        typec_cap.pd_revision = 0x200;
@@ -1621,6 +1525,11 @@ index bd6244c771cfa..0da14c29c3264 100644
 +                ret = PTR_ERR(anx7688->port);
 +                goto err_role_sw;
 +        }
++
++        typec_set_pwr_opmode(anx7688->port, TYPEC_PWR_MODE_USB);
++        typec_set_pwr_role(anx7688->port, TYPEC_SINK);
++        typec_set_vconn_role(anx7688->port, TYPEC_SINK);
++        typec_set_data_role(anx7688->port, TYPEC_DEVICE);
 +
 +        ret = devm_request_irq(dev, irq_cabledet, anx7688_irq_plug_handler,
 +                               IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING,
@@ -1648,6 +1557,9 @@ index bd6244c771cfa..0da14c29c3264 100644
 +
 +        schedule_delayed_work(&anx7688->work, msecs_to_jiffies(10));
 +
++	timer_setup(&anx7688->work_timer, anx7688_cabledet_timer_fn, 0);
++	mod_timer(&anx7688->work_timer, jiffies + msecs_to_jiffies(1000));
++
 +        return 0;
 +
 +err_cport:
@@ -1659,90 +1571,66 @@ index bd6244c771cfa..0da14c29c3264 100644
 +err_dummy_dev:
 +        i2c_unregister_device(anx7688->client_tcpc);
 +        return ret;
- }
- 
- static int anx7688_i2c_remove(struct i2c_client *client)
- {
--	struct anx7688 *anx7688;
--	printk(KERN_INFO "ANX7688 i2c remove\n");
--	anx7688 = i2c_get_clientdata(client);
++}
++
++static int anx7688_i2c_remove(struct i2c_client *client)
++{
 +        struct anx7688 *anx7688 = i2c_get_clientdata(client);
- 
++
++	mutex_lock(&anx7688->lock);
++
++	del_timer_sync(&anx7688->work_timer);
 +        cancel_delayed_work_sync(&anx7688->work);
- 
--	anx7688_power_disable(anx7688);
--	devm_free_irq(anx7688->dev, anx7688->irq_plug, anx7688->dev);
--	devm_free_irq(anx7688->dev, anx7688->irq_status, anx7688->dev);
--	i2c_unregister_device(anx7688->client_tcpc);
--	return 0;
++
++	if (test_bit(ANX7688_F_CONNECTED, anx7688->flags))
++		anx7688_disconnect(anx7688);
++
 +	typec_unregister_partner(anx7688->partner);
 +        typec_unregister_port(anx7688->port);
 +	usb_role_switch_put(anx7688->role_sw);
-+
-+	if (anx7688->vbus_on)
-+		regulator_disable(anx7688->supplies[ANX7688_VBUS_INDEX].consumer);
-+	if (anx7688->vconn_on)
-+		regulator_disable(anx7688->supplies[ANX7688_VCONN_INDEX].consumer);
-+
-+        anx7688_power_disable(anx7688);
 +
 +        regulator_bulk_disable(ANX7688_NUM_ALWAYS_ON_SUPPLIES, anx7688->supplies);
 +        i2c_unregister_device(anx7688->client_tcpc);
 +
 +        debugfs_remove(anx7688->debug_root);
 +
++	mutex_unlock(&anx7688->lock);
++
 +        return 0;
- }
- 
--static const struct i2c_device_id anx7688_id[] = {
--	{"anx7688", 0},
--	{}
++}
++
 +static const struct i2c_device_id anx7688_ids[] = {
 +        { "anx7688", 0 },
 +        { }
- };
--
--MODULE_DEVICE_TABLE(i2c, anx7688_id);
++};
 +MODULE_DEVICE_TABLE(i2c, anx7688_ids);
- 
- #ifdef CONFIG_OF
--static struct of_device_id anx_match_table[] = {
--	{.compatible = "analogix,anx7688",},
--	{},
++
++#ifdef CONFIG_OF
 +static struct of_device_id anx7688_of_match_table[] = {
 +        { .compatible = "analogix,anx7688" },
 +        { },
- };
++};
 +MODULE_DEVICE_TABLE(of, anx7688_of_match_table);
- #endif
- 
- static struct i2c_driver anx7688_driver = {
--	.driver = {
--		.name = "anx7688",
++#endif
++
++static struct i2c_driver anx7688_driver = {
 +        .driver = {
 +                .name = "anx7688",
- #ifdef CONFIG_OF
--		.of_match_table = anx_match_table,
++#ifdef CONFIG_OF
 +                .of_match_table = anx7688_of_match_table,
- #endif
--	},
--	.probe = anx7688_i2c_probe,
--	.remove = anx7688_i2c_remove,
--	.id_table = anx7688_id,
++#endif
 +        },
 +        .probe = anx7688_i2c_probe,
 +        .remove = anx7688_i2c_remove,
 +        .id_table = anx7688_ids,
- };
- 
- module_i2c_driver(anx7688_driver);
- 
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("Martijn Braam <martijn@brixit.nl>");
++};
++
++module_i2c_driver(anx7688_driver);
++
++MODULE_LICENSE("GPL");
++MODULE_AUTHOR("Martijn Braam <martijn@brixit.nl>");
 +MODULE_AUTHOR("Ondrej Jirman <megous@megous.com>");
- MODULE_DESCRIPTION("Analogix ANX7688 USB-C DisplayPort bridge");
--MODULE_VERSION("0.01");
--
++MODULE_DESCRIPTION("Analogix ANX7688 USB-C DisplayPort bridge");
 -- 
 2.26.2
 

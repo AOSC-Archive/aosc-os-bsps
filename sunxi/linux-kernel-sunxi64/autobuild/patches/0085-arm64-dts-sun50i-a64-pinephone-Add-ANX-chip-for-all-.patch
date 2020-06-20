@@ -1,7 +1,7 @@
-From 988119c96c1c86ed7f16d3ee9e7659038b462d68 Mon Sep 17 00:00:00 2001
+From 7c0416cb88e3b159d812e0b82448c8eb4df39dc1 Mon Sep 17 00:00:00 2001
 From: Ondrej Jirman <megous@megous.com>
 Date: Mon, 18 May 2020 22:38:09 +0200
-Subject: [PATCH 87/92] arm64: dts: sun50i-a64-pinephone: Add ANX chip for all
+Subject: [PATCH 85/90] arm64: dts: sun50i-a64-pinephone: Add ANX chip for all
  PP variants 1.0-1.2
 
 There are differences in GPIO and how VBUS is handled. Describe them
