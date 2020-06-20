@@ -1,6 +1,6 @@
 #
 # Automatically generated file; DO NOT EDIT.
-# Linux/arm64 5.7.1 Kernel Configuration
+# Linux/arm64 5.7.4 Kernel Configuration
 #
 
 #
@@ -5598,7 +5598,30 @@ CONFIG_USB_G_WEBCAM=m
 CONFIG_USB_RAW_GADGET=m
 # end of USB Gadget precomposed configurations
 
-# CONFIG_TYPEC is not set
+CONFIG_TYPEC=y
+CONFIG_TYPEC_TCPM=y
+CONFIG_TYPEC_TCPCI=m
+CONFIG_TYPEC_RT1711H=m
+CONFIG_TYPEC_FUSB302=m
+CONFIG_TYPEC_UCSI=m
+CONFIG_UCSI_CCG=m
+CONFIG_TYPEC_ANX7688=m
+# CONFIG_TYPEC_HD3SS3220 is not set
+# CONFIG_TYPEC_TPS6598X is not set
+
+#
+# USB Type-C Multiplexer/DeMultiplexer Switch support
+#
+# CONFIG_TYPEC_MUX_PI3USB30532 is not set
+# end of USB Type-C Multiplexer/DeMultiplexer Switch support
+
+#
+# USB Type-C Alternate Mode drivers
+#
+CONFIG_TYPEC_DP_ALTMODE=m
+# CONFIG_TYPEC_NVIDIA_ALTMODE is not set
+# end of USB Type-C Alternate Mode drivers
+
 CONFIG_USB_ROLE_SWITCH=y
 CONFIG_MMC=y
 CONFIG_PWRSEQ_EMMC=y
