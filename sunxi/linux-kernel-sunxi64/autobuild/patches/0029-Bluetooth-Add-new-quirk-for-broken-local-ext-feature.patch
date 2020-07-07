@@ -1,8 +1,8 @@
-From 804c3d1bebd564c5153e2bcec4a28e8fd648de7c Mon Sep 17 00:00:00 2001
+From 563719c5ed7d5300bc6ce98ef2ef19e932547c45 Mon Sep 17 00:00:00 2001
 From: Vasily Khoruzhick <anarsoul@gmail.com>
 Date: Wed, 31 Oct 2018 19:40:18 -0700
-Subject: [PATCH 29/92] Bluetooth: Add new quirk for broken local ext features
- max_page
+Subject: [PATCH 029/104] Bluetooth: Add new quirk for broken local ext
+ features max_page
 
 Some adapters (e.g. RTL8723CS) advertise that they have more than
 2 pages for local ext features, but they don't support any features
@@ -17,13 +17,13 @@ Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
  2 files changed, 10 insertions(+), 1 deletion(-)
 
 diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
-index 5f60e135aeb6d..b2cdd4ddde4e2 100644
+index 25c2e5ee81dc5..f73503f12226e 100644
 --- a/include/net/bluetooth/hci.h
 +++ b/include/net/bluetooth/hci.h
-@@ -214,6 +214,13 @@ enum {
- 	 * This quirk must be set before hci_register_dev is called.
+@@ -223,6 +223,13 @@ enum {
+ 	 * supported.
  	 */
- 	HCI_QUIRK_WIDEBAND_SPEECH_SUPPORTED,
+ 	HCI_QUIRK_VALID_LE_STATES,
 +
 +	/* When this quirk is set, max_page for local extended features
 +	 * is set to 1, even if controller reports higher number. Some
@@ -35,7 +35,7 @@ index 5f60e135aeb6d..b2cdd4ddde4e2 100644
  
  /* HCI device flags */
 diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 0a591be8b0ae2..595f9af3dfe60 100644
+index b11f8d391ad82..8037b81e212bb 100644
 --- a/net/bluetooth/hci_event.c
 +++ b/net/bluetooth/hci_event.c
 @@ -684,7 +684,9 @@ static void hci_cc_read_local_ext_features(struct hci_dev *hdev,
