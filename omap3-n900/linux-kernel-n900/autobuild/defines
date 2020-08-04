@@ -1,9 +1,0 @@
-PKGNAME=linux-kernel-4.6-rc1-n900
-PKGSEC=kernel
-PKGDEP=""
-BUILDDEP="bc git"
-PKGDES="Linux Kernel version 4.6-rc1 for Nokia N900 (RX-51)"
-
-ABSTRIP=no
-ABELFDEP=no
-ABRPMAUTOPROVONLY=yes

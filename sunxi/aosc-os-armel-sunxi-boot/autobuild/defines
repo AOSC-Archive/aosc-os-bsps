@@ -1,5 +1,0 @@
-PKGNAME=aosc-os-armel-sunxi-boot
-PKGSEC=kernel
-PKGDES="Transition package"
-PKGEPOCH=1
-

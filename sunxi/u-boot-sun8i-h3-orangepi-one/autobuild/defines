@@ -1,8 +1,0 @@
-PKGNAME=u-boot-sun8i-h3-orangepi-one
-PKGDES="U-Boot for Xunlong Orange Pi One"
-PKGSEC=embedded
-BUILDDEP="dtc swig"
-
-ABSTRIP=no
-ABELFDEP=no
-ABRPMAUTOPROVONLY=yes

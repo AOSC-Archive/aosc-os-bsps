@@ -1,4 +1,0 @@
-mkdir -p "$PKGDIR"/boot "$PKGDIR"/lib/modules "$PKGDIR"/usr/share/doc/$PKGNAME
-cp boot/kernel7.img boot/bcm2709-rpi-2-b.dtb boot/bcm2710-rpi-3-b.dtb "$PKGDIR"/boot/
-cp boot/COPYING.linux "$PKGDIR"/usr/share/doc/$PKGNAME/
-cp -r modules/*v7+ "$PKGDIR"/lib/modules/

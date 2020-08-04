@@ -1,3 +1,0 @@
-VER=20.1~devel+git20200304
-GITSRC="https://gitlab.freedesktop.org/mesa/mesa.git"
-GITCO="0ac731b1ff96de46998948aa06081efa5140d50e"

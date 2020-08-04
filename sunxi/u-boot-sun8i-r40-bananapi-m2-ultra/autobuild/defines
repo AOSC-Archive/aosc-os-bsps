@@ -1,8 +1,0 @@
-PKGNAME=u-boot-sun8i-r40-bananapi-m2-ultra
-PKGDES="U-Boot for Banana Pi M2 Ultra"
-PKGSEC=embedded
-BUILDDEP="dtc swig"
-
-ABSTRIP=no
-ABELFDEP=no
-ABRPMAUTOPROVONLY=yes

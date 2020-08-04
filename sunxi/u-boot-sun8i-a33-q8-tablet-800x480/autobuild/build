@@ -1,9 +1,0 @@
-UBOOT_BOARD=q8_a33_tablet_800x480
-LINUX_BOARD=sun8i-a33-q8-tablet-800x480
-
-make ${UBOOT_BOARD}_defconfig
-make
-mkdir -p "$PKGDIR"/usr/lib/u-boot-${LINUX_BOARD}
-cp u-boot u-boot.bin u-boot.img u-boot-sunxi-with-spl.bin spl/sunxi-spl.bin "$PKGDIR"/usr/lib/u-boot-${LINUX_BOARD}
-mkdir -p "$PKGDIR"/usr/lib/aosc-os-armel-sunxi-boot/
-ln -sfv ../u-boot-${LINUX_BOARD} "$PKGDIR"/usr/lib/aosc-os-armel-sunxi-boot/

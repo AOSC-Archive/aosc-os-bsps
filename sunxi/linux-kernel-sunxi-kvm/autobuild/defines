@@ -1,9 +1,0 @@
-PKGNAME=linux-kernel-sunxi-kvm-5.4.22
-PKGSEC=kernel
-PKGDEP=""
-BUILDDEP="bc dracut git"
-PKGDES="Linux Kernel version 5.4.22 optimized for Allwinner/sunXi SoCs, for CPUs with ARMv7 Virtualization Extension"
-
-ABSTRIP=no
-ABELFDEP=no
-ABRPMAUTOPROVONLY=yes

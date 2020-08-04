@@ -1,5 +1,0 @@
-mkdir -p "$PKGDIR"/boot/overlays
-mkdir -p "$PKGDIR"/usr/share/doc/$PKGNAME
-cp boot/*.bin boot/*.elf boot/*.dat "$PKGDIR"/boot/
-cp -r boot/overlays/*.dtbo "$PKGDIR"/boot/overlays/
-cp boot/LICENCE.broadcom "$PKGDIR"/usr/share/doc/$PKGNAME/

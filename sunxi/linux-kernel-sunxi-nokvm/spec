@@ -1,3 +1,0 @@
-VER=5.4.22
-SRCTBL="https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.4.22.tar.xz"
-CHKSUM="sha256::661bcb8d7e390dcc28e53795485e648f2bdc9b697b731459cc2bcc9ceb4a7d1a"

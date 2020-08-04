@@ -1,3 +1,0 @@
-PKGNAME="enable-n900-modem"
-PKGDES="Enable the 3G Modem of Nokia N900"
-PKGSEC=admin
