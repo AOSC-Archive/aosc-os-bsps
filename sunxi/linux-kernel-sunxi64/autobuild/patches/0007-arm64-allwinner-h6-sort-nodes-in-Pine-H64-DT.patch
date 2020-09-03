@@ -1,7 +1,7 @@
-From 41656cd063b9cabb926b8435ccbc094abb279a79 Mon Sep 17 00:00:00 2001
+From aa765d679099822a0414baf64d1c30e9824bf20a Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 29 Jul 2019 01:20:01 +0800
-Subject: [PATCH 07/92] arm64: allwinner: h6: sort nodes in Pine H64 DT
+Subject: [PATCH 007/105] arm64: allwinner: h6: sort nodes in Pine H64 DT
 
 Currently the sequence of nodes in Pine H64 device tree file is messed
 up.
@@ -14,7 +14,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 12 insertions(+), 12 deletions(-)
 
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6-pine-h64.dts b/arch/arm64/boot/dts/allwinner/sun50i-h6-pine-h64.dts
-index b0642d8419335..2f8c8a43552fe 100644
+index b0642d841933..2f8c8a43552f 100644
 --- a/arch/arm64/boot/dts/allwinner/sun50i-h6-pine-h64.dts
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-h6-pine-h64.dts
 @@ -80,6 +80,10 @@ reg_usb_vbus: vbus {
@@ -65,5 +65,5 @@ index b0642d8419335..2f8c8a43552fe 100644
  
  &mmc0 {
 -- 
-2.26.2
+2.27.0
 

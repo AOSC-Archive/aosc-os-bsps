@@ -1,7 +1,8 @@
-From 0834faa0e24f23b1708d03a748af93f781d4e28f Mon Sep 17 00:00:00 2001
+From 7c6f3726d3d523b38c00d144271fcab3c6c09f8e Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 10 Sep 2019 12:03:32 +0800
-Subject: [PATCH 44/92] iio: adc: axp20x_adc: allow to set TS pin to GPADC mode
+Subject: [PATCH 044/105] iio: adc: axp20x_adc: allow to set TS pin to GPADC
+ mode
 
 The TS pin of AXP PMICs can be set to GPADC mode. In this situation, it
 doesn't affect battery charging.
@@ -14,7 +15,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 6 insertions(+)
 
 diff --git a/drivers/iio/adc/axp20x_adc.c b/drivers/iio/adc/axp20x_adc.c
-index 88059480da17c..ed547ebd22624 100644
+index 88059480da17..ed547ebd2262 100644
 --- a/drivers/iio/adc/axp20x_adc.c
 +++ b/drivers/iio/adc/axp20x_adc.c
 @@ -39,6 +39,7 @@
@@ -38,5 +39,5 @@ index 88059480da17c..ed547ebd22624 100644
  	info->data->adc_rate(info, 100);
  
 -- 
-2.26.2
+2.27.0
 

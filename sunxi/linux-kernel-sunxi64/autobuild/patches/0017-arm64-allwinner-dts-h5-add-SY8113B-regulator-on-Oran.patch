@@ -1,7 +1,7 @@
-From 89ec6785aa4e8d79a5846cc39d39225ff0d8c039 Mon Sep 17 00:00:00 2001
+From 3748e998ffc1108811886d331855be7ac04b20ab Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 15 Aug 2018 20:33:05 +0800
-Subject: [PATCH 17/92] arm64: allwinner: dts: h5: add SY8113B regulator on
+Subject: [PATCH 017/105] arm64: allwinner: dts: h5: add SY8113B regulator on
  Orange Pi Zero Plus/Plus2
 
 The Orange Pi Zero Plus/Plus2 boards use a SY8113B regulator with
@@ -16,7 +16,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  2 files changed, 42 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h5-orangepi-zero-plus.dts b/arch/arm64/boot/dts/allwinner/sun50i-h5-orangepi-zero-plus.dts
-index ef5ca64442203..3e7b3cfe57918 100644
+index ef5ca6444220..3e7b3cfe5791 100644
 --- a/arch/arm64/boot/dts/allwinner/sun50i-h5-orangepi-zero-plus.dts
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-h5-orangepi-zero-plus.dts
 @@ -54,6 +54,27 @@ reg_gmac_3v3: gmac-3v3 {
@@ -48,7 +48,7 @@ index ef5ca64442203..3e7b3cfe57918 100644
  
  &ehci0 {
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h5-orangepi-zero-plus2.dts b/arch/arm64/boot/dts/allwinner/sun50i-h5-orangepi-zero-plus2.dts
-index c95a68541309c..092ac4b0b0771 100644
+index c95a68541309..092ac4b0b077 100644
 --- a/arch/arm64/boot/dts/allwinner/sun50i-h5-orangepi-zero-plus2.dts
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-h5-orangepi-zero-plus2.dts
 @@ -42,6 +42,27 @@ wifi_pwrseq: wifi_pwrseq {
@@ -80,5 +80,5 @@ index c95a68541309c..092ac4b0b0771 100644
  
  &de {
 -- 
-2.26.2
+2.27.0
 

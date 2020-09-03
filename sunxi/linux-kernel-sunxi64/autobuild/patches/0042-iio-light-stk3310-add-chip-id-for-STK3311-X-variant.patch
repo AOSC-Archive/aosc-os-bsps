@@ -1,7 +1,8 @@
-From 9385c2e4aa8ad95dc692cc12fe5f91513b723e9d Mon Sep 17 00:00:00 2001
+From c1b527a3092e9d085e0ad364ae06c5e51ba5b332 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 25 Aug 2019 18:06:23 +0800
-Subject: [PATCH 42/92] iio: light: stk3310: add chip id for STK3311-X variant
+Subject: [PATCH 042/105] iio: light: stk3310: add chip id for STK3311-X
+ variant
 
 The STK3311 chip has a variant called STK3311-X, which has a different
 chip id of 0x12.
@@ -14,7 +15,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 2 insertions(+)
 
 diff --git a/drivers/iio/light/stk3310.c b/drivers/iio/light/stk3310.c
-index 185c24a75ae6f..1a8401d198a4b 100644
+index 185c24a75ae6..1a8401d198a4 100644
 --- a/drivers/iio/light/stk3310.c
 +++ b/drivers/iio/light/stk3310.c
 @@ -37,6 +37,7 @@
@@ -34,5 +35,5 @@ index 185c24a75ae6f..1a8401d198a4b 100644
  		dev_err(&client->dev, "invalid chip id: 0x%x\n", chipid);
  		return -ENODEV;
 -- 
-2.26.2
+2.27.0
 

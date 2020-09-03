@@ -1,7 +1,7 @@
-From 14555fd98d7c641c26ed1fb855784e405fc6622c Mon Sep 17 00:00:00 2001
+From 7a909261ee1a51f0c915a3453f67b316c5e2b1f7 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 15 Aug 2018 20:29:29 +0800
-Subject: [PATCH 16/92] arm64: allwinner: dts: h5: add SY8106A regulator on
+Subject: [PATCH 016/105] arm64: allwinner: dts: h5: add SY8106A regulator on
  Orange Pi Prime
 
 The Orange Pi Prime boards use a SY8106A regulator as the CPUX
@@ -15,7 +15,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 19 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h5-orangepi-prime.dts b/arch/arm64/boot/dts/allwinner/sun50i-h5-orangepi-prime.dts
-index cb44bfa5981fd..8b3947934474f 100644
+index cb44bfa5981f..8b3947934474 100644
 --- a/arch/arm64/boot/dts/allwinner/sun50i-h5-orangepi-prime.dts
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-h5-orangepi-prime.dts
 @@ -99,6 +99,10 @@ &codec {
@@ -52,5 +52,5 @@ index cb44bfa5981fd..8b3947934474f 100644
  	pinctrl-names = "default";
  	pinctrl-0 = <&uart0_pa_pins>;
 -- 
-2.26.2
+2.27.0
 

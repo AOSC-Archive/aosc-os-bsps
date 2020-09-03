@@ -1,8 +1,8 @@
-From 0b35c7e83179c3e844a2384002c9bf11bab1b8b0 Mon Sep 17 00:00:00 2001
+From 4e8a2be414252f742d325eb0e4301c28e11751ff Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 16 Mar 2020 22:19:37 +0800
-Subject: [PATCH 57/92] arm64: allwinner: dts: a64: disable AC power supply on
- PinePhone
+Subject: [PATCH 057/105] arm64: allwinner: dts: a64: disable AC power supply
+ on PinePhone
 
 PinePhone has its ACIN and VBUS pins on the PMIC shorted. In this
 situation, both power supplies will have the same status at the same
@@ -16,7 +16,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 4 deletions(-)
 
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
-index 2f84617b354ad..248c4015b82b4 100644
+index 745fa4e78274..9ae8372c3a7a 100644
 --- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
 @@ -356,10 +356,6 @@ axp803: pmic@3a3 {
@@ -31,5 +31,5 @@ index 2f84617b354ad..248c4015b82b4 100644
  	status = "okay";
  };
 -- 
-2.26.2
+2.27.0
 

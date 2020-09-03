@@ -1,8 +1,8 @@
-From 63831bb372d245c17e913cc0857a55144029bbed Mon Sep 17 00:00:00 2001
+From 2f73094700db1eeae47cd0d820e41df473e130a4 Mon Sep 17 00:00:00 2001
 From: Chen-Yu Tsai <wens@csie.org>
 Date: Thu, 21 Mar 2019 16:48:44 +0800
-Subject: [PATCH 28/92] power: supply: axp20x_usb_power: allow disabling input
- current limiting
+Subject: [PATCH 028/105] power: supply: axp20x_usb_power: allow disabling
+ input current limiting
 
 The AXP PMICs allow the user to disable current limiting on the VBUS
 input. While read-out of this setting was already supported by the
@@ -18,7 +18,7 @@ Acked-by: Maxime Ripard <maxime.ripard@bootlin.com>
  1 file changed, 5 insertions(+)
 
 diff --git a/drivers/power/supply/axp20x_usb_power.c b/drivers/power/supply/axp20x_usb_power.c
-index 4fde24b5f35a1..bf307b15e010a 100644
+index 4fde24b5f35a..bf307b15e010 100644
 --- a/drivers/power/supply/axp20x_usb_power.c
 +++ b/drivers/power/supply/axp20x_usb_power.c
 @@ -333,6 +333,11 @@ static int axp813_usb_power_set_current_max(struct axp20x_usb_power *power,
@@ -34,5 +34,5 @@ index 4fde24b5f35a1..bf307b15e010a 100644
  		return -EINVAL;
  	}
 -- 
-2.26.2
+2.27.0
 

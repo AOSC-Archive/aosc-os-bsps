@@ -1,7 +1,7 @@
-From e8a1fea397addf85d1d2aedbf24a81bf52cc70b5 Mon Sep 17 00:00:00 2001
+From 233aacecce320410f4137ae622dbcccd3fd2e164 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Fri, 5 Jan 2018 19:37:14 +0800
-Subject: [PATCH 06/92] arm64: allwinner: h6: add basical DVFS support
+Subject: [PATCH 006/105] arm64: allwinner: h6: add basical DVFS support
 
 Add basical DVFS support for Allwinner H6 SoC.
 
@@ -14,7 +14,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 39 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-h6.dtsi
-index b9ab7d8fa8af8..08cac955082d9 100644
+index b9ab7d8fa8af..08cac955082d 100644
 --- a/arch/arm64/boot/dts/allwinner/sun50i-h6.dtsi
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-h6.dtsi
 @@ -16,6 +16,21 @@ / {
@@ -99,5 +99,5 @@ index b9ab7d8fa8af8..08cac955082d9 100644
  
  		watchdog: watchdog@30090a0 {
 -- 
-2.26.2
+2.27.0
 

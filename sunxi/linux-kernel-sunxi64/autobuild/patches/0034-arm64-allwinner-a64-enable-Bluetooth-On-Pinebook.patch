@@ -1,7 +1,7 @@
-From 17c9e0cafc41ea18759301e4ea9fd66fa1574c36 Mon Sep 17 00:00:00 2001
+From 6ae4acdb7284710d985d11a5151be7b7520a5812 Mon Sep 17 00:00:00 2001
 From: Vasily Khoruzhick <anarsoul@gmail.com>
 Date: Wed, 31 Oct 2018 20:43:26 -0700
-Subject: [PATCH 34/92] arm64: allwinner: a64: enable Bluetooth On Pinebook
+Subject: [PATCH 034/105] arm64: allwinner: a64: enable Bluetooth On Pinebook
 
 Pinebook has an RTL8723CS WiFi + BT chip, BT is connected to UART1
 and uses PL4 as BT reset, PL5 as device wake GPIO, PL6 as host wake GPIO
@@ -15,7 +15,7 @@ Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
  1 file changed, 14 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinebook.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinebook.dts
-index 64b1c54f87c0a..70364ef90b6a5 100644
+index 64b1c54f87c0..70364ef90b6a 100644
 --- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinebook.dts
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinebook.dts
 @@ -408,6 +408,20 @@ &uart0 {
@@ -40,5 +40,5 @@ index 64b1c54f87c0a..70364ef90b6a5 100644
  	dr_mode = "host";
  };
 -- 
-2.26.2
+2.27.0
 

@@ -1,7 +1,7 @@
-From 94f368bc564ce5ceb453b6b5b93f1c7b15e58973 Mon Sep 17 00:00:00 2001
+From 9b3d75ebf3ac23ec1cc9009f269291f5318fabf1 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 24 Aug 2019 23:45:25 +0800
-Subject: [PATCH 48/92] drm: panel: add Xingbangda XBD599 panel
+Subject: [PATCH 048/105] drm: panel: add Xingbangda XBD599 panel
 
 Xingbangda XBD599 is a 5.99" 720x1440 MIPI-DSI IPS LCD panel made by
 Xingbangda, which is used on PinePhone final assembled phones.
@@ -17,7 +17,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  create mode 100644 drivers/gpu/drm/panel/panel-xingbangda-xbd599.c
 
 diff --git a/drivers/gpu/drm/panel/Kconfig b/drivers/gpu/drm/panel/Kconfig
-index a1723c1b5fbf8..cf0c59015a44e 100644
+index a1723c1b5fbf..cf0c59015a44 100644
 --- a/drivers/gpu/drm/panel/Kconfig
 +++ b/drivers/gpu/drm/panel/Kconfig
 @@ -433,6 +433,15 @@ config DRM_PANEL_TRULY_NT35597_WQXGA
@@ -37,7 +37,7 @@ index a1723c1b5fbf8..cf0c59015a44e 100644
  	tristate "Xinpeng XPP055C272 panel driver"
  	depends on OF
 diff --git a/drivers/gpu/drm/panel/Makefile b/drivers/gpu/drm/panel/Makefile
-index 96a883cd66305..c84ed52159846 100644
+index 96a883cd6630..c84ed5215984 100644
 --- a/drivers/gpu/drm/panel/Makefile
 +++ b/drivers/gpu/drm/panel/Makefile
 @@ -46,4 +46,5 @@ obj-$(CONFIG_DRM_PANEL_TPO_TD028TTEC1) += panel-tpo-td028ttec1.o
@@ -48,7 +48,7 @@ index 96a883cd66305..c84ed52159846 100644
  obj-$(CONFIG_DRM_PANEL_XINPENG_XPP055C272) += panel-xinpeng-xpp055c272.o
 diff --git a/drivers/gpu/drm/panel/panel-xingbangda-xbd599.c b/drivers/gpu/drm/panel/panel-xingbangda-xbd599.c
 new file mode 100644
-index 0000000000000..b483f96ee1db0
+index 000000000000..b483f96ee1db
 --- /dev/null
 +++ b/drivers/gpu/drm/panel/panel-xingbangda-xbd599.c
 @@ -0,0 +1,366 @@
@@ -419,5 +419,5 @@ index 0000000000000..b483f96ee1db0
 +MODULE_DESCRIPTION("DRM driver for Xingbangda XBD599 MIPI DSI panel");
 +MODULE_LICENSE("GPL v2");
 -- 
-2.26.2
+2.27.0
 

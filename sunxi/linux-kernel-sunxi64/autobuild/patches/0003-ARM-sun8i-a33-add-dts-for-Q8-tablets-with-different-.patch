@@ -1,8 +1,8 @@
-From 25fdece04bb0a43a5b81dd3e456f88782f140ee8 Mon Sep 17 00:00:00 2001
+From 1537f0081e3e3579150e8a6b6bf4796eb8c34d77 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 17 Aug 2017 15:41:27 +0800
-Subject: [PATCH 03/92] ARM: sun8i: a33: add dts for Q8 tablets with different
- resolution
+Subject: [PATCH 003/105] ARM: sun8i: a33: add dts for Q8 tablets with
+ different resolution
 
 Q8 tablets with Allwinner A33 SoC now come with two kind of LCD, either
 800x480 or 1024x600.
@@ -25,7 +25,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  create mode 100644 arch/arm/boot/dts/sun8i-a33-q8-tablet-800x480.dts
 
 diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
-index e8dd992013973..1fab09c92b01b 100644
+index e8dd99201397..1fab09c92b01 100644
 --- a/arch/arm/boot/dts/Makefile
 +++ b/arch/arm/boot/dts/Makefile
 @@ -1135,6 +1135,8 @@ dtb-$(CONFIG_MACH_SUN8I) += \
@@ -39,7 +39,7 @@ index e8dd992013973..1fab09c92b01b 100644
  	sun8i-a83t-bananapi-m3.dtb \
 diff --git a/arch/arm/boot/dts/sun8i-a33-q8-tablet-1024x600.dts b/arch/arm/boot/dts/sun8i-a33-q8-tablet-1024x600.dts
 new file mode 100644
-index 0000000000000..6f8ebd6c90ee5
+index 000000000000..6f8ebd6c90ee
 --- /dev/null
 +++ b/arch/arm/boot/dts/sun8i-a33-q8-tablet-1024x600.dts
 @@ -0,0 +1,49 @@
@@ -94,7 +94,7 @@ index 0000000000000..6f8ebd6c90ee5
 +};
 diff --git a/arch/arm/boot/dts/sun8i-a33-q8-tablet-800x480.dts b/arch/arm/boot/dts/sun8i-a33-q8-tablet-800x480.dts
 new file mode 100644
-index 0000000000000..ad84b94dee53b
+index 000000000000..ad84b94dee53
 --- /dev/null
 +++ b/arch/arm/boot/dts/sun8i-a33-q8-tablet-800x480.dts
 @@ -0,0 +1,49 @@
@@ -148,5 +148,5 @@ index 0000000000000..ad84b94dee53b
 +		     "allwinner,sun8i-a33";
 +};
 -- 
-2.26.2
+2.27.0
 

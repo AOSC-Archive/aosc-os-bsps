@@ -1,7 +1,7 @@
-From 2ba7a0a2fee4a611ecd846773ace65cecc309918 Mon Sep 17 00:00:00 2001
+From 333138a3e5997777e9085c7ae490707c5d7a8ed7 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 11 Mar 2020 23:24:28 +0800
-Subject: [PATCH 46/92] dt-bindings: vendor-prefixes: Add Xingbangda
+Subject: [PATCH 046/105] dt-bindings: vendor-prefixes: Add Xingbangda
 
 Shenzhen Xingbangda Display Technology Co., Ltd is a company which
 produces LCD modules. It supplies the LCD panels of the PinePhone series
@@ -15,7 +15,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 2 insertions(+)
 
 diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-index d3891386d6710..a558ef87ee5b0 100644
+index d3891386d671..a558ef87ee5b 100644
 --- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
 +++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
 @@ -1121,6 +1121,8 @@ patternProperties:
@@ -28,5 +28,5 @@ index d3891386d6710..a558ef87ee5b0 100644
      description: Shenzhen Xinpeng Technology Co., Ltd
    "^xlnx,.*":
 -- 
-2.26.2
+2.27.0
 

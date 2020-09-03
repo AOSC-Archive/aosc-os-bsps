@@ -1,7 +1,7 @@
-From 2ba7a23485ecc6abc6c6e2c1c096a562a8cdb695 Mon Sep 17 00:00:00 2001
+From cc54f83c5431c7ab78a54494f5a843da76cd0889 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 11 Mar 2020 23:50:14 +0800
-Subject: [PATCH 49/92] arm64: allwinner: dts: a64: add LCD-related device
+Subject: [PATCH 049/105] arm64: allwinner: dts: a64: add LCD-related device
  nodes for PinePhone
 
 PinePhone uses PWM backlight and a XBD599 LCD panel over DSI for
@@ -17,7 +17,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  3 files changed, 60 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.0.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.0.dts
-index 0c42272106afa..077aec72ae92c 100644
+index 0c42272106af..077aec72ae92 100644
 --- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.0.dts
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.0.dts
 @@ -9,3 +9,9 @@ / {
@@ -31,7 +31,7 @@ index 0c42272106afa..077aec72ae92c 100644
 +	power-supply = <&reg_ldo_io0>;
 +};
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.1.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.1.dts
-index 06a775c41664b..3e99a87e9ce52 100644
+index 06a775c41664..3e99a87e9ce5 100644
 --- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.1.dts
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.1.dts
 @@ -9,3 +9,22 @@ / {
@@ -58,7 +58,7 @@ index 06a775c41664b..3e99a87e9ce52 100644
 +	default-brightness-level = <400>;
 +};
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
-index cefda145c3c9d..85a7aa5efd326 100644
+index 342733a20c33..1a69dd44f498 100644
 --- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
 @@ -16,6 +16,13 @@ aliases {
@@ -118,5 +118,5 @@ index cefda145c3c9d..85a7aa5efd326 100644
  	status = "okay";
  
 -- 
-2.26.2
+2.27.0
 

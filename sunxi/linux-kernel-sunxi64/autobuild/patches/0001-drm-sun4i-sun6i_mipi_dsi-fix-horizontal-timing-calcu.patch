@@ -1,7 +1,7 @@
-From 38d61a4e87df56a891db0b2616e0fd91e6336218 Mon Sep 17 00:00:00 2001
+From 5664da5d4699088fc3335428224c5d40567f6e7b Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 27 Nov 2019 20:30:05 +0800
-Subject: [PATCH 01/92] drm/sun4i: sun6i_mipi_dsi: fix horizontal timing
+Subject: [PATCH 001/105] drm/sun4i: sun6i_mipi_dsi: fix horizontal timing
  calculation
 
 The max() function call in horizontal timing calculation shouldn't pad a
@@ -14,7 +14,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c b/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c
-index 3eb89f1eb0e1a..4e415793d1555 100644
+index 3eb89f1eb0e1..4e415793d155 100644
 --- a/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c
 +++ b/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c
 @@ -555,7 +555,7 @@ static void sun6i_dsi_setup_timings(struct sun6i_dsi *dsi,
@@ -56,5 +56,5 @@ index 3eb89f1eb0e1a..4e415793d1555 100644
  		/*
  		 * And I'm not entirely sure what vblk is about. The driver in
 -- 
-2.26.2
+2.27.0
 

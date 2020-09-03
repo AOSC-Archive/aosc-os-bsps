@@ -1,7 +1,7 @@
-From 5432447b17624568818cb9c4d0124d88771087cd Mon Sep 17 00:00:00 2001
+From 3dba0457c3ded44da1cd607e12fa1c5e2ef58038 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 21 Apr 2019 21:43:14 +0800
-Subject: [PATCH 35/92] arm64: allwinner: a64: enable Bluetooth On Olimex
+Subject: [PATCH 035/105] arm64: allwinner: a64: enable Bluetooth On Olimex
  TERES-I
 
 Olimex TERES-I has an RTL8723BS WiFi + BT module, BT is connected to
@@ -16,7 +16,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 14 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-teres-i.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-teres-i.dts
-index d0ac36eab6734..4633d8e9df020 100644
+index d0ac36eab673..4633d8e9df02 100644
 --- a/arch/arm64/boot/dts/allwinner/sun50i-a64-teres-i.dts
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-teres-i.dts
 @@ -378,6 +378,20 @@ &uart0 {
@@ -41,5 +41,5 @@ index d0ac36eab6734..4633d8e9df020 100644
  	usb1_vbus-supply = <&reg_usb1_vbus>;
  	status = "okay";
 -- 
-2.26.2
+2.27.0
 

@@ -1,0 +1,50 @@
+From 6a3767e5176eb80386f6ea6430de2359ac4e5e23 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Thu, 3 Sep 2020 16:49:33 +0800
+Subject: [PATCH 104/105] clocksource/drivers/arch_timer: further fix for
+ Allwinner UNKNOWN1
+
+From Armbian. Sounds useful.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ drivers/clocksource/arm_arch_timer.c | 23 ++++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/clocksource/arm_arch_timer.c b/drivers/clocksource/arm_arch_timer.c
+index 3cf4b402cdac..34a707267292 100644
+--- a/drivers/clocksource/arm_arch_timer.c
++++ b/drivers/clocksource/arm_arch_timer.c
+@@ -345,17 +345,18 @@ static u64 notrace arm64_858921_read_cntvct_el0(void)
+  * with all ones or all zeros in the low bits. Bound the loop by the maximum
+  * number of CPU cycles in 3 consecutive 24 MHz counter periods.
+  */
+-#define __sun50i_a64_read_reg(reg) ({					\
+-	u64 _val;							\
+-	int _retries = 150;						\
+-									\
+-	do {								\
+-		_val = read_sysreg(reg);				\
+-		_retries--;						\
+-	} while (((_val + 1) & GENMASK(9, 0)) <= 1 && _retries);	\
+-									\
+-	WARN_ON_ONCE(!_retries);					\
+-	_val;								\
++#define __sun50i_a64_read_reg(reg) ({							\
++	u64 _old, _new;												\
++	int _retries = 200;											\
++																\
++	do {														\
++		_old = read_sysreg(reg);								\
++		_new = read_sysreg(reg);								\
++		_retries--;												\
++	} while (unlikely(_old != _new) && _retries);				\
++																\
++	WARN_ON_ONCE(!_retries);									\
++	_new;														\
+ })
+ 
+ static u64 notrace sun50i_a64_read_cntpct_el0(void)
+-- 
+2.27.0
+

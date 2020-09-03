@@ -1,0 +1,50 @@
+From 4775067b3a4bfcceee7a648147b3ce6d92d1f1a5 Mon Sep 17 00:00:00 2001
+From: Maxime Ripard <maxime.ripard@free-electrons.com>
+Date: Mon, 7 Dec 2015 09:33:28 +0100
+Subject: [PATCH 069/105] drm: gem: cma: Export with handle allocator
+
+Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
+---
+ drivers/gpu/drm/drm_gem_cma_helper.c | 3 ++-
+ include/drm/drm_gem_cma_helper.h     | 4 ++++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/drm_gem_cma_helper.c b/drivers/gpu/drm/drm_gem_cma_helper.c
+index 12e98fb28229..1ad85bd37416 100644
+--- a/drivers/gpu/drm/drm_gem_cma_helper.c
++++ b/drivers/gpu/drm/drm_gem_cma_helper.c
+@@ -135,7 +135,7 @@ EXPORT_SYMBOL_GPL(drm_gem_cma_create);
+  * A struct drm_gem_cma_object * on success or an ERR_PTR()-encoded negative
+  * error code on failure.
+  */
+-static struct drm_gem_cma_object *
++struct drm_gem_cma_object *
+ drm_gem_cma_create_with_handle(struct drm_file *file_priv,
+ 			       struct drm_device *drm, size_t size,
+ 			       uint32_t *handle)
+@@ -162,6 +162,7 @@ drm_gem_cma_create_with_handle(struct drm_file *file_priv,
+ 
+ 	return cma_obj;
+ }
++EXPORT_SYMBOL_GPL(drm_gem_cma_create_with_handle);
+ 
+ /**
+  * drm_gem_cma_free_object - free resources associated with a CMA GEM object
+diff --git a/include/drm/drm_gem_cma_helper.h b/include/drm/drm_gem_cma_helper.h
+index 947ac95eb24a..2f71bce0bb1e 100644
+--- a/include/drm/drm_gem_cma_helper.h
++++ b/include/drm/drm_gem_cma_helper.h
+@@ -82,6 +82,10 @@ int drm_gem_cma_mmap(struct file *filp, struct vm_area_struct *vma);
+ /* allocate physical memory */
+ struct drm_gem_cma_object *drm_gem_cma_create(struct drm_device *drm,
+ 					      size_t size);
++struct drm_gem_cma_object *
++drm_gem_cma_create_with_handle(struct drm_file *file_priv,
++			       struct drm_device *drm, size_t size,
++			       uint32_t *handle);
+ 
+ extern const struct vm_operations_struct drm_gem_cma_vm_ops;
+ 
+-- 
+2.27.0
+

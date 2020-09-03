@@ -1,0 +1,43 @@
+From 657c3ba4f0e61c28d53052052174d37fe0b2a48e Mon Sep 17 00:00:00 2001
+From: Marcus Cooper <codekipper@gmail.com>
+Date: Sun, 26 Apr 2020 14:04:36 +0200
+Subject: [PATCH 091/105] arm: dts: sunxi: h3/h5: Add DAI node for HDMI
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Add the new DAI block for I2S2 which is used for HDMI audio.
+
+Signed-off-by: Marcus Cooper <codekipper@gmail.com>
+Signed-off-by: Clément Péron <peron.clem@gmail.com>
+---
+ arch/arm/boot/dts/sunxi-h3-h5.dtsi | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+diff --git a/arch/arm/boot/dts/sunxi-h3-h5.dtsi b/arch/arm/boot/dts/sunxi-h3-h5.dtsi
+index 01a5df9aa71b..8607641db91a 100644
+--- a/arch/arm/boot/dts/sunxi-h3-h5.dtsi
++++ b/arch/arm/boot/dts/sunxi-h3-h5.dtsi
+@@ -652,6 +652,19 @@ i2s1: i2s@1c22400 {
+ 			status = "disabled";
+ 		};
+ 
++		i2s2: i2s@1c22800 {
++			#sound-dai-cells = <0>;
++			compatible = "allwinner,sun8i-h3-i2s";
++			reg = <0x01c22800 0x400>;
++			interrupts = <GIC_SPI 15 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&ccu CLK_BUS_I2S2>, <&ccu CLK_I2S2>;
++			clock-names = "apb", "mod";
++			dmas = <&dma 27>;
++			resets = <&ccu RST_BUS_I2S2>;
++			dma-names = "tx";
++			status = "disabled";
++		};
++
+ 		codec: codec@1c22c00 {
+ 			#sound-dai-cells = <0>;
+ 			compatible = "allwinner,sun8i-h3-codec";
+-- 
+2.27.0
+

@@ -1,7 +1,7 @@
-From 011a54662938c7e5a1ca7635e2c9e8c29011e36d Mon Sep 17 00:00:00 2001
+From 4f38ae285045b84c27dd027089a660cbee2336f1 Mon Sep 17 00:00:00 2001
 From: Ondrej Jirman <megous@megous.com>
 Date: Tue, 12 May 2020 23:57:46 +0200
-Subject: [PATCH 51/92] arm64: dts: allwinner: Add support for PinePhone
+Subject: [PATCH 051/105] arm64: dts: allwinner: Add support for PinePhone
  revision 1.2
 
 Revision 1.2 should be the final production version of the PinePhone.
@@ -16,7 +16,7 @@ Signed-off-by: Ondrej Jirman <megous@megous.com>
  create mode 100644 arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.2.dts
 
 diff --git a/arch/arm64/boot/dts/allwinner/Makefile b/arch/arm64/boot/dts/allwinner/Makefile
-index e4d3cd0ac5bb7..916d10d5b87c0 100644
+index e4d3cd0ac5bb..916d10d5b87c 100644
 --- a/arch/arm64/boot/dts/allwinner/Makefile
 +++ b/arch/arm64/boot/dts/allwinner/Makefile
 @@ -11,6 +11,7 @@ dtb-$(CONFIG_ARCH_SUNXI) += sun50i-a64-pine64-plus.dtb sun50i-a64-pine64.dtb
@@ -29,7 +29,7 @@ index e4d3cd0ac5bb7..916d10d5b87c0 100644
  dtb-$(CONFIG_ARCH_SUNXI) += sun50i-a64-teres-i.dtb
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.2.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.2.dts
 new file mode 100644
-index 0000000000000..a9f5b670c9b82
+index 000000000000..a9f5b670c9b8
 --- /dev/null
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.2.dts
 @@ -0,0 +1,40 @@
@@ -74,7 +74,7 @@ index 0000000000000..a9f5b670c9b82
 +	interrupts = <1 1 IRQ_TYPE_EDGE_RISING>; /* PB1 */
 +};
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
-index 85a7aa5efd326..564dba78adf23 100644
+index 1a69dd44f498..58dc59e6cfed 100644
 --- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
 @@ -127,7 +127,7 @@ &i2c1 {
@@ -87,5 +87,5 @@ index 85a7aa5efd326..564dba78adf23 100644
  		reg = <0x1e>;
  		vdd-supply = <&reg_dldo1>;
 -- 
-2.26.2
+2.27.0
 

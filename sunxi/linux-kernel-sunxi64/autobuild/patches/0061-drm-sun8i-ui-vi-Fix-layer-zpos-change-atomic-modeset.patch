@@ -1,7 +1,7 @@
-From 93f6f31f240a794d8f2bf4ba9df3ceb15985bc5d Mon Sep 17 00:00:00 2001
+From 528be262063d76659cc4c1ec7c270114bd21ceb0 Mon Sep 17 00:00:00 2001
 From: Ondrej Jirman <megous@megous.com>
 Date: Sun, 8 Sep 2019 11:42:29 +0200
-Subject: [PATCH 61/92] drm: sun8i-ui/vi: Fix layer zpos change/atomic
+Subject: [PATCH 061/105] drm: sun8i-ui/vi: Fix layer zpos change/atomic
  modesetting
 
 A problem was found where identical configuration of planes leads
@@ -67,7 +67,7 @@ Signed-off-by: Ondrej Jirman <megous@megous.com>
  2 files changed, 142 insertions(+), 82 deletions(-)
 
 diff --git a/drivers/gpu/drm/sun4i/sun8i_ui_layer.c b/drivers/gpu/drm/sun4i/sun8i_ui_layer.c
-index 716861cc52fa6..8d0cc627e9db5 100644
+index 716861cc52fa..8d0cc627e9db 100644
 --- a/drivers/gpu/drm/sun4i/sun8i_ui_layer.c
 +++ b/drivers/gpu/drm/sun4i/sun8i_ui_layer.c
 @@ -24,10 +24,11 @@
@@ -243,7 +243,7 @@ index 716861cc52fa6..8d0cc627e9db5 100644
  };
  
 diff --git a/drivers/gpu/drm/sun4i/sun8i_vi_layer.c b/drivers/gpu/drm/sun4i/sun8i_vi_layer.c
-index b8398ca18b0fd..2c8dc08a847f6 100644
+index b8398ca18b0f..2c8dc08a847f 100644
 --- a/drivers/gpu/drm/sun4i/sun8i_vi_layer.c
 +++ b/drivers/gpu/drm/sun4i/sun8i_vi_layer.c
 @@ -17,10 +17,11 @@
@@ -419,5 +419,5 @@ index b8398ca18b0fd..2c8dc08a847f6 100644
  };
  
 -- 
-2.26.2
+2.27.0
 

@@ -1,7 +1,7 @@
-From a9d8e447f9d01d742f176ebfc8cb08fea5e6a6d3 Mon Sep 17 00:00:00 2001
+From 9de5f54d252ab0c9bd7d39019ba44710935b3ee3 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 11 Mar 2020 23:33:26 +0800
-Subject: [PATCH 47/92] dt-bindings: panel: add binding for Xingbangda XBD599
+Subject: [PATCH 047/105] dt-bindings: panel: add binding for Xingbangda XBD599
  panel
 
 Xingbangda XBD599 is a 5.99" 720x1440 MIPI-DSI LCD panel.
@@ -16,7 +16,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 
 diff --git a/Documentation/devicetree/bindings/display/panel/xingbangda,xbd599.yaml b/Documentation/devicetree/bindings/display/panel/xingbangda,xbd599.yaml
 new file mode 100644
-index 0000000000000..b27bcf11198f2
+index 000000000000..b27bcf11198f
 --- /dev/null
 +++ b/Documentation/devicetree/bindings/display/panel/xingbangda,xbd599.yaml
 @@ -0,0 +1,50 @@
@@ -71,5 +71,5 @@ index 0000000000000..b27bcf11198f2
 +
 +...
 -- 
-2.26.2
+2.27.0
 
