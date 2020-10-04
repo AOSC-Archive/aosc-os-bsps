@@ -1,4 +1,4 @@
-UBOOT_BOARD=pinebook_pro-rk3399
+UBOOT_BOARD=pinebook-pro-rk3399
 LINUX_BOARD=rk3399-pinebook-pro
 
 unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
@@ -6,12 +6,11 @@ unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
 ln -sv /usr/bin/ld.bfd ld
 export PATH="$PWD:$PATH"
 
+. autobuild/build-common/build-atf
+
 make ${UBOOT_BOARD}_defconfig
-make BL31=rk3399bl31.elf
-make BL31=rk3399bl31.elf u-boot.itb
-./tools/mkimage  -n rk3399 -T rksd -d rk3399ddr.bin idbloader.img
-cat spl/u-boot-spl.bin >> idbloader.img
+make
 mkdir -p "$PKGDIR"/usr/lib/u-boot-${LINUX_BOARD}
-cp u-boot.img u-boot.itb spl/u-boot-spl.bin idbloader.img "$PKGDIR"/usr/lib/u-boot-${LINUX_BOARD}
+cp u-boot.img u-boot.itb spl/u-boot-spl.bin tpl/u-boot-tpl.bin tpl/u-boot-tpl.img idbloader.img "$PKGDIR"/usr/lib/u-boot-${LINUX_BOARD}
 mkdir -p "$PKGDIR"/usr/lib/aosc-os-arm64-rockchip-boot/
 ln -sfv ../u-boot-${LINUX_BOARD} "$PKGDIR"/usr/lib/aosc-os-arm64-rockchip-boot/
