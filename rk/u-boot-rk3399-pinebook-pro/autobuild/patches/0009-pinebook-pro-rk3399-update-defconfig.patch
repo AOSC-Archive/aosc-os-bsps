@@ -5,22 +5,14 @@ Subject: [PATCH 9/9] pinebook-pro-rk3399: update defconfig
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---
- configs/pinebook-pro-rk3399_defconfig | 3 +++
- 1 file changed, 3 insertions(+)
+ configs/pinebook-pro-rk3399_defconfig | 3 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/configs/pinebook-pro-rk3399_defconfig b/configs/pinebook-pro-rk3399_defconfig
 index ec1506afee..de3272f301 100644
 --- a/configs/pinebook-pro-rk3399_defconfig
 +++ b/configs/pinebook-pro-rk3399_defconfig
-@@ -13,6 +13,7 @@ CONFIG_DEFAULT_DEVICE_TREE="rk3399-pinebook-pro"
- CONFIG_DEBUG_UART=y
- CONFIG_BOOTDELAY=3
- CONFIG_USE_PREBOOT=y
-+CONFIG_PREBOOT="usb start"
- CONFIG_DEFAULT_FDT_FILE="rockchip/rk3399-pinebook-pro.dtb"
- CONFIG_MISC_INIT_R=y
- CONFIG_DISPLAY_BOARDINFO_LATE=y
-@@ -55,6 +56,8 @@ CONFIG_SPI_FLASH_WINBOND=y
+@@ -55,6 +55,8 @@ CONFIG_SPI_FLASH_WINBOND=y
  CONFIG_DM_ETH=y
  CONFIG_NVME=y
  CONFIG_PCI=y

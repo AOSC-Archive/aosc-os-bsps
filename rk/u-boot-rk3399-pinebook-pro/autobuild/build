@@ -9,8 +9,8 @@ export PATH="$PWD:$PATH"
 . autobuild/build-common/build-atf
 
 make ${UBOOT_BOARD}_defconfig
-make
+make idbloader.img u-boot.itb ${ABMK}
 mkdir -p "$PKGDIR"/usr/lib/u-boot-${LINUX_BOARD}
-cp u-boot.img u-boot.itb spl/u-boot-spl.bin tpl/u-boot-tpl.bin idbloader.img "$PKGDIR"/usr/lib/u-boot-${LINUX_BOARD}
+cp u-boot.itb idbloader.img "$PKGDIR"/usr/lib/u-boot-${LINUX_BOARD}
 mkdir -p "$PKGDIR"/usr/lib/aosc-os-arm64-rockchip-boot/
 ln -sfv ../u-boot-${LINUX_BOARD} "$PKGDIR"/usr/lib/aosc-os-arm64-rockchip-boot/
