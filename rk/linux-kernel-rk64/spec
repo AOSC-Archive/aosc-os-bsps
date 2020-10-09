@@ -1,4 +1,4 @@
 VER=5.4.70
-REL=1
+REL=2
 SRCTBL="https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.4.70.tar.xz"
 CHKSUM="sha256::c0b3d8085c5ba235df38b00b740e053659709e8a5ca21957a239f6bc22c45007"
