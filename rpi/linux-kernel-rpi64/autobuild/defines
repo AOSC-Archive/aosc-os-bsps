@@ -1,0 +1,12 @@
+PKGNAME="linux-kernel-rpi64"
+PKGSEC=kernel
+PKGDEP=""
+BUILDDEP="bc dracut git"
+PKGDES="Raspberry Pi downstream kernel"
+
+ABSTRIP=0
+ABELFDEP=0
+
+PKGEPOCH=1
+
+PKGBREAK="zfs"
