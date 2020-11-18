@@ -1,0 +1,14 @@
+/usr/include/EGL/egl.h /usr/include/vc/EGL/egl.h 99
+/usr/include/EGL/eglext.h /usr/include/vc/EGL/eglext.h 99
+/usr/include/EGL/eglext_android.h /usr/include/vc/EGL/eglext_android.h 99
+/usr/include/EGL/eglext_brcm.h /usr/include/vc/EGL/eglext_brcm.h 99
+/usr/include/EGL/eglext_nvidia.h /usr/include/vc/EGL/eglext_nvidia.h 99
+/usr/include/EGL/eglplatform.h /usr/include/vc/EGL/eglplatform.h 99
+/usr/include/GLES/gl.h /usr/include/vc/GLES/gl.h 99
+/usr/include/GLES/glext.h /usr/include/vc/GLES/glext.h 99
+/usr/include/GLES/glplatform.h /usr/include/vc/GLES/glplatform.h 99
+/usr/include/GLES2/gl2.h /usr/include/vc/GLES2/gl2.h 99
+/usr/include/GLES2/gl2ext.h /usr/include/vc/GLES2/gl2ext.h 99
+/usr/include/GLES2/gl2platform.h /usr/include/vc/GLES2/gl2platform.h 99
+/usr/include/KHR/khrplatform.h /usr/include/vc/KHR/khrplatform.h 99
+

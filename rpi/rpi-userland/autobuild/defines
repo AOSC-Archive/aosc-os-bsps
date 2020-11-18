@@ -1,0 +1,11 @@
+PKGNAME="rpi-userland"
+PKGDES="ARM side applications and libraries for interfacing to Raspberry Pi GPU"
+PKGSEC="libs"
+
+# PKGDEP="linux-kernel-rpi64"
+FAIL_ARCH="!(arm64)"
+
+ABTYPE="cmake"
+CMAKE_AFTER="-DARM64=ON \
+	-DCMAKE_BUILD_TYPE=Release"
+

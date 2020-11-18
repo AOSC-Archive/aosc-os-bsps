@@ -1,0 +1,7 @@
+abinfo "Moving RPI's GL libs..."
+
+mkdir -pv "$PKGDIR/usr/include/vc"
+mv -v "$PKGDIR"/usr/include/GLES{,2}  "$PKGDIR/usr/include/vc"
+mv -v "$PKGDIR/usr/include/EGL" "$PKGDIR/usr/include/vc"
+mv -v "$PKGDIR/usr/include/KHR" "$PKGDIR/usr/include/vc"
+
