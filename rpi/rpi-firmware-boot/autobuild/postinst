@@ -46,7 +46,7 @@ disable_overscan=1
 # framebuffer_height=720
 
 # uncomment if hdmi display is not detected and composite is being output
-hdmi_force_hotplug=1
+# hdmi_force_hotplug=1
 
 # uncomment to force a specific HDMI mode (this will force VGA)
 # hdmi_group=2
@@ -96,7 +96,7 @@ max_framebuffers=2
 # dtparam=krnbt=on
 
 [all]
-#dtoverlay=vc4-fkms-v3d
+dtoverlay=vc4-fkms-v3d
 include distcfg.txt
 EOF
 
