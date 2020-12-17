@@ -1,4 +1,3 @@
-VER=5.4.70
-REL=2
-SRCTBL="https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.4.70.tar.xz"
-CHKSUM="sha256::c0b3d8085c5ba235df38b00b740e053659709e8a5ca21957a239f6bc22c45007"
+VER=5.10.1
+SRCS="tbl::https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${VER}.tar.xz"
+CHKSUMS="sha256::ed1661128c9bd3e8c9f55e345f715b90fefcf6b127c77e0286773242e7a14e5c"
