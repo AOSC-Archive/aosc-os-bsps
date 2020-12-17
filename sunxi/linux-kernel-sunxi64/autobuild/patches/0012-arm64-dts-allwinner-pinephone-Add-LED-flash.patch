@@ -1,0 +1,83 @@
+From c640778cf45c96f67ddc363a45753b9c403ab819 Mon Sep 17 00:00:00 2001
+From: Luca Weiss <luca@z3ntu.xyz>
+Date: Wed, 4 Nov 2020 23:41:32 -0600
+Subject: [PATCH 012/199] arm64: dts: allwinner: pinephone: Add LED flash
+
+All revisions of the PinePhone have an SGM3140 LED flash. The gpios were
+swapped on v1.0 of the board, but this was fixed in later revisions.
+
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+Signed-off-by: Samuel Holland <samuel@sholland.org>
+Signed-off-by: Maxime Ripard <maxime@cerno.tech>
+Link: https://lore.kernel.org/r/20201105054135.24860-4-samuel@sholland.org
+---
+ .../boot/dts/allwinner/sun50i-a64-pinephone-1.0.dts   |  5 +++++
+ .../boot/dts/allwinner/sun50i-a64-pinephone-1.1.dts   |  5 +++++
+ .../boot/dts/allwinner/sun50i-a64-pinephone-1.2.dts   |  5 +++++
+ .../boot/dts/allwinner/sun50i-a64-pinephone.dtsi      | 11 +++++++++++
+ 4 files changed, 26 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.0.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.0.dts
+index 0c42272106af..3d5a2ae9aa39 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.0.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.0.dts
+@@ -9,3 +9,8 @@ / {
+ 	model = "Pine64 PinePhone Developer Batch (1.0)";
+ 	compatible = "pine64,pinephone-1.0", "allwinner,sun50i-a64";
+ };
++
++&sgm3140 {
++	enable-gpios = <&pio 2 3 GPIO_ACTIVE_HIGH>; /* PC3 */
++	flash-gpios = <&pio 3 24 GPIO_ACTIVE_HIGH>; /* PD24 */
++};
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.1.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.1.dts
+index 3e99a87e9ce5..c9b9f6e9ee8c 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.1.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.1.dts
+@@ -28,3 +28,8 @@ &backlight {
+ 	num-interpolated-steps = <50>;
+ 	default-brightness-level = <400>;
+ };
++
++&sgm3140 {
++	enable-gpios = <&pio 3 24 GPIO_ACTIVE_HIGH>; /* PD24 */
++	flash-gpios = <&pio 2 3 GPIO_ACTIVE_HIGH>; /* PC3 */
++};
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.2.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.2.dts
+index a9f5b670c9b8..94e4f11e0215 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.2.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.2.dts
+@@ -38,3 +38,8 @@ &lis3mdl {
+ 	interrupt-parent = <&pio>;
+ 	interrupts = <1 1 IRQ_TYPE_EDGE_RISING>; /* PB1 */
+ };
++
++&sgm3140 {
++	enable-gpios = <&pio 3 24 GPIO_ACTIVE_HIGH>; /* PD24 */
++	flash-gpios = <&pio 2 3 GPIO_ACTIVE_HIGH>; /* PC3 */
++};
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
+index 555837722be2..8285391a0265 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
+@@ -49,6 +49,17 @@ red {
+ 		};
+ 	};
+ 
++	sgm3140: led-controller {
++		compatible = "sgmicro,sgm3140";
++		vin-supply = <&reg_dcdc1>;
++
++		sgm3140_flash: led {
++			function = LED_FUNCTION_FLASH;
++			color = <LED_COLOR_ID_WHITE>;
++			flash-max-timeout-us = <250000>;
++		};
++	};
++
+ 	speaker_amp: audio-amplifier {
+ 		compatible = "simple-audio-amplifier";
+ 		enable-gpios = <&pio 2 7 GPIO_ACTIVE_HIGH>; /* PC7 */
+-- 
+2.28.0
+

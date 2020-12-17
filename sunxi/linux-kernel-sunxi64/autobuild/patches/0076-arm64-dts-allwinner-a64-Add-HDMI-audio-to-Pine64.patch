@@ -1,0 +1,45 @@
+From 8fccbf493e3d5a86c0efb413091c27e116cd44aa Mon Sep 17 00:00:00 2001
+From: Marcus Cooper <codekipper@gmail.com>
+Date: Sun, 26 Apr 2020 14:04:42 +0200
+Subject: [PATCH 076/199] arm64: dts: allwinner: a64: Add HDMI audio to Pine64
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Enable HDMI audio on Pine64.
+
+Signed-off-by: Marcus Cooper <codekipper@gmail.com>
+Signed-off-by: Clément Péron <peron.clem@gmail.com>
+---
+ arch/arm64/boot/dts/allwinner/sun50i-a64-pine64.dts | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pine64.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-pine64.dts
+index 9f4e1cf5c077..68f1b5d5afb1 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pine64.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pine64.dts
+@@ -104,6 +104,10 @@ hdmi_out_con: endpoint {
+ 	};
+ };
+ 
++&hdmi_sound {
++	status = "okay";
++};
++
+ &i2c1 {
+ 	status = "okay";
+ };
+@@ -112,6 +116,10 @@ &i2c1_pins {
+ 	bias-pull-up;
+ };
+ 
++&i2s2 {
++	status = "okay";
++};
++
+ &mdio {
+ 	ext_rmii_phy1: ethernet-phy@1 {
+ 		compatible = "ethernet-phy-ieee802.3-c22";
+-- 
+2.28.0
+

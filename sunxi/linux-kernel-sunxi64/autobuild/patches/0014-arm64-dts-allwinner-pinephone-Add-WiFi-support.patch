@@ -1,0 +1,97 @@
+From f81cf121ecff8a70fadacf080f7a3a42743700e6 Mon Sep 17 00:00:00 2001
+From: Ondrej Jirman <megous@megous.com>
+Date: Wed, 4 Nov 2020 23:41:34 -0600
+Subject: [PATCH 014/199] arm64: dts: allwinner: pinephone: Add WiFi support
+
+The PinePhone has a Realtek rtl8723cs WiFi module.
+
+On mainboard revisions 1.0 and 1.1, the reset input is always pulled
+high, so no power sequence is needed. On mainboard revision 1.2, the
+reset input is connected to PL2.
+
+Signed-off-by: Ondrej Jirman <megous@megous.com>
+Signed-off-by: Samuel Holland <samuel@sholland.org>
+Signed-off-by: Maxime Ripard <maxime@cerno.tech>
+Link: https://lore.kernel.org/r/20201105054135.24860-6-samuel@sholland.org
+---
+ .../allwinner/sun50i-a64-pinephone-1.2.dts    |  9 ++++++++
+ .../dts/allwinner/sun50i-a64-pinephone.dtsi   | 22 +++++++++++++++++++
+ 2 files changed, 31 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.2.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.2.dts
+index 94e4f11e0215..acc0ab53b9c1 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.2.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.2.dts
+@@ -8,6 +8,11 @@
+ / {
+ 	model = "Pine64 PinePhone (1.2)";
+ 	compatible = "pine64,pinephone-1.2", "allwinner,sun50i-a64";
++
++	wifi_pwrseq: wifi-pwrseq {
++		compatible = "mmc-pwrseq-simple";
++		reset-gpios = <&r_pio 0 2 GPIO_ACTIVE_LOW>; /* PL2 */
++	};
+ };
+ 
+ &backlight {
+@@ -39,6 +44,10 @@ &lis3mdl {
+ 	interrupts = <1 1 IRQ_TYPE_EDGE_RISING>; /* PB1 */
+ };
+ 
++&mmc1 {
++	mmc-pwrseq = <&wifi_pwrseq>;
++};
++
+ &sgm3140 {
+ 	enable-gpios = <&pio 3 24 GPIO_ACTIVE_HIGH>; /* PD24 */
+ 	flash-gpios = <&pio 2 3 GPIO_ACTIVE_HIGH>; /* PC3 */
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
+index 8617b79d33e6..07f66f4cefac 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
+@@ -13,6 +13,7 @@
+ 
+ / {
+ 	aliases {
++		ethernet0 = &rtl8723cs;
+ 		serial0 = &uart0;
+ 	};
+ 
+@@ -49,6 +50,13 @@ red {
+ 		};
+ 	};
+ 
++	reg_vbat_wifi: vbat-wifi {
++		compatible = "regulator-fixed";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		regulator-name = "vbat-wifi";
++	};
++
+ 	sgm3140: led-controller {
+ 		compatible = "sgmicro,sgm3140";
+ 		vin-supply = <&reg_dcdc1>;
+@@ -216,6 +224,20 @@ &mmc0 {
+ 	status = "okay";
+ };
+ 
++&mmc1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&mmc1_pins>;
++	vmmc-supply = <&reg_vbat_wifi>;
++	vqmmc-supply = <&reg_dldo4>;
++	bus-width = <4>;
++	non-removable;
++	status = "okay";
++
++	rtl8723cs: wifi@1 {
++		reg = <1>;
++	};
++};
++
+ &mmc2 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&mmc2_pins>;
+-- 
+2.28.0
+

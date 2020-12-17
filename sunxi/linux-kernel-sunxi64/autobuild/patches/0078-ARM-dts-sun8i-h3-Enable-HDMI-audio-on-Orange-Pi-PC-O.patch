@@ -1,0 +1,53 @@
+From 419e50f0c18d6cf1c29a0d2e3ca9e2801c681485 Mon Sep 17 00:00:00 2001
+From: Ondrej Jirman <megous@megous.com>
+Date: Sun, 26 Apr 2020 23:33:57 +0200
+Subject: [PATCH 078/199] ARM: dts: sun8i-h3: Enable HDMI audio on Orange Pi
+ PC/One
+
+Signed-off-by: Ondrej Jirman <megous@megous.com>
+---
+ arch/arm/boot/dts/sun8i-h3-orangepi-one.dts | 8 ++++++++
+ arch/arm/boot/dts/sun8i-h3-orangepi-pc.dts  | 8 ++++++++
+ 2 files changed, 16 insertions(+)
+
+diff --git a/arch/arm/boot/dts/sun8i-h3-orangepi-one.dts b/arch/arm/boot/dts/sun8i-h3-orangepi-one.dts
+index 4759ba3f2986..a5b45655fcf6 100644
+--- a/arch/arm/boot/dts/sun8i-h3-orangepi-one.dts
++++ b/arch/arm/boot/dts/sun8i-h3-orangepi-one.dts
+@@ -146,6 +146,14 @@ hdmi_out_con: endpoint {
+ 	};
+ };
+ 
++&hdmi_sound {
++	status = "okay";
++};
++
++&i2s2 {
++	status = "okay";
++};
++
+ &mmc0 {
+ 	vmmc-supply = <&reg_vcc3v3>;
+ 	bus-width = <4>;
+diff --git a/arch/arm/boot/dts/sun8i-h3-orangepi-pc.dts b/arch/arm/boot/dts/sun8i-h3-orangepi-pc.dts
+index 5aff8ecc66cb..ebb12a6f3a9f 100644
+--- a/arch/arm/boot/dts/sun8i-h3-orangepi-pc.dts
++++ b/arch/arm/boot/dts/sun8i-h3-orangepi-pc.dts
+@@ -146,6 +146,14 @@ hdmi_out_con: endpoint {
+ 	};
+ };
+ 
++&hdmi_sound {
++	status = "okay";
++};
++
++&i2s2 {
++	status = "okay";
++};
++
+ &ir {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&r_ir_rx_pin>;
+-- 
+2.28.0
+

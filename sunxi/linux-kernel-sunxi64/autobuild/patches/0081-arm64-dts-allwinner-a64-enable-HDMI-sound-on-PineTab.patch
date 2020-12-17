@@ -1,0 +1,40 @@
+From 94a66eb3cc6dabab004c1991988644c7ea06d769 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Tue, 7 Jul 2020 22:22:23 +0800
+Subject: [PATCH 081/199] arm64: dts: allwinner: a64: enable HDMI sound on
+ PineTab
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm64/boot/dts/allwinner/sun50i-a64-pinetab.dts | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinetab.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinetab.dts
+index eaee18b61a18..abe72655abf5 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinetab.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinetab.dts
+@@ -188,6 +188,10 @@ hdmi_out_con: endpoint {
+ 	};
+ };
+ 
++&hdmi_sound {
++	status = "okay";
++};
++
+ &i2c0 {
+ 	status = "okay";
+ 
+@@ -220,6 +224,10 @@ bma223@18 {
+ 	};
+ };
+ 
++&i2s2 {
++	status = "okay";
++};
++
+ &lradc {
+ 	vref-supply = <&reg_aldo3>;
+ 	status = "okay";
+-- 
+2.28.0
+

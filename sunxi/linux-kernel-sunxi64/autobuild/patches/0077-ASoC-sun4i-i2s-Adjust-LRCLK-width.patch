@@ -1,0 +1,36 @@
+From 1913f59f319a90ad1c232aa459273a8356c5a3bf Mon Sep 17 00:00:00 2001
+From: Marcus Cooper <codekipper@gmail.com>
+Date: Sun, 26 Apr 2020 12:41:09 +0200
+Subject: [PATCH 077/199] ASoC: sun4i-i2s: Adjust LRCLK width
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Some codecs such as i2s based HDMI audio and the Pine64 DAC require
+a different amount of bit clocks per frame than what is calculated
+by the sample width. Use the values obtained by the tdm slot bindings
+to adjust the LRCLK width accordingly.
+
+Signed-off-by: Marcus Cooper <codekipper@gmail.com>
+Signed-off-by: Clément Péron <peron.clem@gmail.com>
+---
+ sound/soc/sunxi/sun4i-i2s.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/sound/soc/sunxi/sun4i-i2s.c b/sound/soc/sunxi/sun4i-i2s.c
+index f23ff29e7c1d..01366f9f1351 100644
+--- a/sound/soc/sunxi/sun4i-i2s.c
++++ b/sound/soc/sunxi/sun4i-i2s.c
+@@ -463,6 +463,9 @@ static int sun8i_i2s_set_chan_cfg(const struct sun4i_i2s *i2s,
+ 		return -EINVAL;
+ 	}
+ 
++	if (i2s->slot_width)
++		lrck_period = i2s->slot_width;
++
+ 	regmap_update_bits(i2s->regmap, SUN4I_I2S_FMT0_REG,
+ 			   SUN8I_I2S_FMT0_LRCK_PERIOD_MASK,
+ 			   SUN8I_I2S_FMT0_LRCK_PERIOD(lrck_period));
+-- 
+2.28.0
+

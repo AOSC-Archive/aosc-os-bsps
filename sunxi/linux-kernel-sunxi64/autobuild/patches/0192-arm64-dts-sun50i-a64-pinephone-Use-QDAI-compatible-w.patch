@@ -1,0 +1,55 @@
+From dca7db947e157f9954d7541741a09abe3325a04b Mon Sep 17 00:00:00 2001
+From: Ondrej Jirman <megous@megous.com>
+Date: Mon, 28 Sep 2020 04:48:56 +0200
+Subject: [PATCH 192/199] arm64: dts: sun50i-a64-pinephone: Use QDAI compatible
+ with new audio patches
+
+Signed-off-by: Ondrej Jirman <megous@megous.com>
+---
+ arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.0.dts | 2 +-
+ arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.1.dts | 2 +-
+ arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.2.dts | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.0.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.0.dts
+index e68985a9ec61..c7ff4b7c193b 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.0.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.0.dts
+@@ -104,7 +104,7 @@ modem {
+ 		dtr-gpios = <&r_pio 0 6 GPIO_ACTIVE_HIGH>; /* PL6-DTR */
+ 		rts-gpios = <&pio 3 4 GPIO_ACTIVE_HIGH>; /* PD4-RTS */
+ 
+-		quectel,qdai = "1,0,0,2,0,1,1,1";
++		quectel,qdai = "1,1,0,1,0,0,1,1";
+ 	};
+ };
+ 
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.1.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.1.dts
+index 7c61f35bcb73..85b50a2a4d4f 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.1.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.1.dts
+@@ -133,7 +133,7 @@ modem {
+ 		cts-gpios = <&pio 3 5 GPIO_ACTIVE_HIGH>; /* PD5-CTS */
+ 		rts-gpios = <&pio 3 4 GPIO_ACTIVE_HIGH>; /* PD4-RTS */
+ 
+-		quectel,qdai = "1,0,0,2,0,1,1,1";
++		quectel,qdai = "1,1,0,1,0,0,1,1";
+ 	};
+ };
+ 
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.2.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.2.dts
+index 0b2a75c048c5..859a75e1c7ab 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.2.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.2.dts
+@@ -126,7 +126,7 @@ modem {
+ 		cts-gpios = <&pio 3 5 GPIO_ACTIVE_HIGH>; /* PD5-CTS */
+ 		rts-gpios = <&pio 3 4 GPIO_ACTIVE_HIGH>; /* PD4-RTS */
+ 
+-		quectel,qdai = "1,0,0,2,0,1,1,1";
++		quectel,qdai = "1,1,0,1,0,0,1,1";
+ 	};
+ };
+ 
+-- 
+2.28.0
+

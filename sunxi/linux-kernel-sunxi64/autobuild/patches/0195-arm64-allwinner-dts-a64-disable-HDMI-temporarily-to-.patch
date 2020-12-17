@@ -1,0 +1,27 @@
+From f79deb2ad673322c0e5993b6bb54619547d78f6a Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Sat, 7 Nov 2020 12:31:09 +0800
+Subject: [PATCH 195/199] arm64: allwinner: dts: a64: disable HDMI temporarily
+ to hack ANX7688
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
+index e3809a950002..4990fd876266 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
+@@ -240,7 +240,7 @@ &ehci1 {
+ 
+ &hdmi {
+ 	hvcc-supply = <&reg_dldo1>;
+-	status = "okay";
++	status = "disabled";
+ };
+ 
+ &hdmi_out {
+-- 
+2.28.0
+

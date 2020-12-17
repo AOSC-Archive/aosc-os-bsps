@@ -1,0 +1,66 @@
+From b4f4164d9fedfac239f4b5cdeacf028e5788a4bf Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Sat, 7 Nov 2020 20:37:30 +0800
+Subject: [PATCH 035/199] arm64: allwinner: dts: a64: add DT for PineTab
+ developer sample
+
+Some developers received PineTab samples that used an old LCD panel.
+
+Add device tree for these samples.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm64/boot/dts/allwinner/Makefile        |  1 +
+ .../dts/allwinner/sun50i-a64-pinetab-dev.dts  | 28 +++++++++++++++++++
+ 2 files changed, 29 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/allwinner/sun50i-a64-pinetab-dev.dts
+
+diff --git a/arch/arm64/boot/dts/allwinner/Makefile b/arch/arm64/boot/dts/allwinner/Makefile
+index 211d1e9d4701..a221dcebfad4 100644
+--- a/arch/arm64/boot/dts/allwinner/Makefile
++++ b/arch/arm64/boot/dts/allwinner/Makefile
+@@ -13,6 +13,7 @@ dtb-$(CONFIG_ARCH_SUNXI) += sun50i-a64-pinephone-1.0.dtb
+ dtb-$(CONFIG_ARCH_SUNXI) += sun50i-a64-pinephone-1.1.dtb
+ dtb-$(CONFIG_ARCH_SUNXI) += sun50i-a64-pinephone-1.2.dtb
+ dtb-$(CONFIG_ARCH_SUNXI) += sun50i-a64-pinetab.dtb
++dtb-$(CONFIG_ARCH_SUNXI) += sun50i-a64-pinetab-dev.dtb
+ dtb-$(CONFIG_ARCH_SUNXI) += sun50i-a64-sopine-baseboard.dtb
+ dtb-$(CONFIG_ARCH_SUNXI) += sun50i-a64-teres-i.dtb
+ dtb-$(CONFIG_ARCH_SUNXI) += sun50i-a100-allwinner-perf1.dtb
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinetab-dev.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinetab-dev.dts
+new file mode 100644
+index 000000000000..3a4153890f3e
+--- /dev/null
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinetab-dev.dts
+@@ -0,0 +1,28 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Copyright (C) 2020 Icenowy Zheng <icenowy@aosc.io>
++ *
++ */
++
++/dts-v1/;
++
++#include "sun50i-a64-pinetab.dts"
++
++/ {
++	model = "PineTab Developer Sample";
++	compatible = "pine64,pinetab-dev", "allwinner,sun50i-a64";
++};
++
++&dsi {
++	/delete-node/ panel@0;
++
++	panel@0 {
++		compatible = "feixin,k101-im2ba02";
++		reg = <0>;
++		avdd-supply = <&reg_dc1sw>;
++		dvdd-supply = <&reg_dc1sw>;
++		cvdd-supply = <&reg_ldo_io1>;
++		reset-gpios = <&pio 3 24 GPIO_ACTIVE_HIGH>; /* PD24 */
++		backlight = <&backlight>;
++	};
++};
+-- 
+2.28.0
+

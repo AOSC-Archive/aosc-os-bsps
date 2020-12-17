@@ -1,0 +1,34 @@
+From f7b93ffa524610c316dfc102658c97b28e3411cf Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Sat, 7 Nov 2020 12:43:41 +0800
+Subject: [PATCH 189/199] arm64: dts: allwinner: a64: add regulator for
+ baseband on PinePhone
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
+index 208ae760fe6c..e3809a950002 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
+@@ -97,6 +97,15 @@ reg_usb_5v: usb-5v {
+ 		enable-active-high;
+ 	};
+ 
++	reg_vbat_bb: vbat-bb {
++		compatible = "regulator-fixed";
++		regulator-name = "vbat-bb";
++		regulator-min-microvolt = <3700000>;
++		regulator-max-microvolt = <3700000>;
++		gpio = <&r_pio 0 7 GPIO_ACTIVE_HIGH>; /* PL7 */
++		enable-active-high;
++	};
++
+ 	reg_vbat_wifi: vbat-wifi {
+ 		compatible = "regulator-fixed";
+ 		regulator-min-microvolt = <3300000>;
+-- 
+2.28.0
+

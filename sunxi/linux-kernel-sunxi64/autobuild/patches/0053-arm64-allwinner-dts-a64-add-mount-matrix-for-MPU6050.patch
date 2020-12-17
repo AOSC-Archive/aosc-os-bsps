@@ -1,7 +1,7 @@
-From f17cd7e753b69b9343c9b8661c0ac04d37e2740e Mon Sep 17 00:00:00 2001
+From b85cd80dafe33dd2fc022565f3b012fe5bd20ac4 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 24 Feb 2020 22:17:10 +0800
-Subject: [PATCH 053/105] arm64: allwinner: dts: a64: add mount-matrix for
+Subject: [PATCH 053/199] arm64: allwinner: dts: a64: add mount-matrix for
  MPU6050 on PinePhone
 
 The MPU6050 chip on the PinePhone is installed at an orientation that
@@ -15,10 +15,10 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 3 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
-index bedf7ce22eea..eae7bfc8e258 100644
+index 2da69450eec1..03e98f9cd14d 100644
 --- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
-@@ -164,6 +164,9 @@ mpu6050@68 {
+@@ -186,6 +186,9 @@ mpu6050@68 {
  		interrupts = <7 5 IRQ_TYPE_EDGE_RISING>; /* PH5 */
  		vdd-supply = <&reg_dldo1>;
  		vddio-supply = <&reg_dldo1>;
@@ -29,5 +29,5 @@ index bedf7ce22eea..eae7bfc8e258 100644
  };
  
 -- 
-2.27.0
+2.28.0
 

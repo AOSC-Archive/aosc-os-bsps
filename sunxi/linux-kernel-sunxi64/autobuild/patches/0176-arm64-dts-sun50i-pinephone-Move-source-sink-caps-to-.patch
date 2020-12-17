@@ -1,0 +1,88 @@
+From a998f81c73a7cf6470d440b9fa00b92325630868 Mon Sep 17 00:00:00 2001
+From: Ondrej Jirman <megous@megous.com>
+Date: Mon, 30 Nov 2020 01:53:38 +0100
+Subject: [PATCH 176/199] arm64: dts: sun50i-pinephone: Move source/sink-caps
+ to DT
+
+This is device specific information and doesn't belong to the driver.
+
+Signed-off-by: Ondrej Jirman <megous@megous.com>
+---
+ .../arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.0.dts | 8 ++++++++
+ .../arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.1.dts | 8 ++++++++
+ .../arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.2.dts | 8 ++++++++
+ arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi   | 1 +
+ 4 files changed, 25 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.0.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.0.dts
+index 442a9f85d627..5797e4939c46 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.0.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.0.dts
+@@ -46,6 +46,14 @@ hdmi-bridge@28 {
+ 		vconn-supply = <&reg_vconn5v0>;
+ 		hdmi_vt-supply = <&reg_dldo1>;
+ 
++		source-caps = <
++			PDO_FIXED(5000, 500, PDO_FIXED_DATA_SWAP | PDO_FIXED_USB_COMM | PDO_FIXED_DUAL_ROLE)
++		>;
++
++		sink-caps = <
++			PDO_FIXED(5000, 3000, PDO_FIXED_DATA_SWAP | PDO_FIXED_USB_COMM | PDO_FIXED_DUAL_ROLE)
++		>;
++
+ 		/*
+ 		 * ANX7688 can't enable/disable USB-5V <-> DCIN switch by
+ 		 * itself, and PMIC's N_VBUSEN is not connected anywhere either,
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.1.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.1.dts
+index 45fd9af7667a..e66ca7d92c67 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.1.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.1.dts
+@@ -69,6 +69,14 @@ hdmi-bridge@28 {
+ 		vconn-supply = <&reg_vconn5v0>;
+ 		hdmi_vt-supply = <&reg_dldo1>;
+ 
++		source-caps = <
++			PDO_FIXED(5000, 500, PDO_FIXED_DATA_SWAP | PDO_FIXED_USB_COMM | PDO_FIXED_DUAL_ROLE)
++		>;
++
++		sink-caps = <
++			PDO_FIXED(5000, 3000, PDO_FIXED_DATA_SWAP | PDO_FIXED_USB_COMM | PDO_FIXED_DUAL_ROLE)
++		>;
++
+ 		/*
+ 		 * ANX7688 can't enable/disable USB-5V <-> DCIN switch by
+ 		 * itself, and PMIC's N_VBUSEN is not connected anywhere either,
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.2.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.2.dts
+index a09c2e58e3aa..25dbc91ccdaa 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.2.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone-1.2.dts
+@@ -69,6 +69,14 @@ hdmi-bridge@28 {
+ 		vconn-supply = <&reg_vconn5v0>;
+ 		hdmi_vt-supply = <&reg_dldo1>;
+ 
++		source-caps = <
++			PDO_FIXED(5000, 500, PDO_FIXED_DATA_SWAP | PDO_FIXED_USB_COMM | PDO_FIXED_DUAL_ROLE)
++		>;
++
++		sink-caps = <
++			PDO_FIXED(5000, 3000, PDO_FIXED_DATA_SWAP | PDO_FIXED_USB_COMM | PDO_FIXED_DUAL_ROLE)
++		>;
++
+ 		/*
+ 		 * ANX7688 will enable/disable USB-5V <-> DCIN switch by itself
+ 		 * via VBUS_CTRL pin. The driver just has to enable the USB-5V
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
+index d1829febbfc7..d2d4b1fab16a 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
+@@ -10,6 +10,7 @@
+ #include <dt-bindings/input/input.h>
+ #include <dt-bindings/leds/common.h>
+ #include <dt-bindings/pwm/pwm.h>
++#include <dt-bindings/usb/pd.h>
+ 
+ / {
+ 	aliases {
+-- 
+2.28.0
+
