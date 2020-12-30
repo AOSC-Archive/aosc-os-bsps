@@ -1,4 +1,4 @@
-KERNVER=5.10.1
+KERNVER=5.10.2
 
 mkdir -p "$PKGDIR"/usr/lib/aosc-os-arm64-rockchip-boot/
 mkdir -p "$PKGDIR"/usr/lib/aosc-os-arm64-rockchip-boot/linux-kernel-${KERNVER}-aosc-rockchip64/modules
@@ -6,6 +6,7 @@ ln -sfv linux-kernel-${KERNVER}-aosc-rk64 "$PKGDIR"/usr/lib/aosc-os-arm64-rockch
 for i in \
 	rk3328-rock64 \
 	rk3399-rockpro64 \
+	rk3399-rockpro64-v2 \
 	rk3399-pinebook-pro
 do
 	mkdir -p "$PKGDIR"/usr/lib/aosc-os-arm64-rockchip-boot/dtb-$i
