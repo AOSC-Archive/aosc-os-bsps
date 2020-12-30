@@ -1,0 +1,3 @@
+VER=2019.04
+SRCTBL="ftp://ftp.denx.de/pub/u-boot/u-boot-2019.04.tar.bz2"
+CHKSUM="sha256::76b7772d156b3ddd7644c8a1736081e55b78828537ff714065d21dbade229bef"

@@ -1,0 +1,8 @@
+PKGNAME=u-boot-sun50i-a64-pinetab-early-adopter
+PKGDES="U-Boot for PineTab Early Adopter batch(currently a hack)"
+PKGSEC=embedded
+BUILDDEP="dtc swig"
+
+ABSTRIP=no
+ABELFDEP=no
+ABRPMAUTOPROVONLY=yes
