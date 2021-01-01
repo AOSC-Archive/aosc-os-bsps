@@ -1,0 +1,64 @@
+From 96df1e0205bf1ec030bebf33bb2ae76bcdb13c1d Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Sat, 2 Jan 2021 04:05:18 +0800
+Subject: [PATCH] ovl: use a dedicated semaphore for dir upperfile caching
+
+The function ovl_dir_real_file() currently uses the semaphore of the
+inode to synchronize write to the upperfile cache field.
+
+However, this function will get called by ovl_ioctl_set_flags(), which
+utilizes the inode semaphore too. In this case ovl_dir_real_file() will
+try to claim a lock that is owned by a function in its call stack, which
+won't get released before ovl_dir_real_file() returns.
+
+Define a dedicated semaphore for the upperfile cache, so that the
+deadlock won't happen.
+
+Fixes: 61536bed2149 ("ovl: support [S|G]ETFLAGS and FS[S|G]ETXATTR ioctls for directories")
+Cc: stable@vger.kernel.org # v5.10
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ fs/overlayfs/readdir.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/fs/overlayfs/readdir.c b/fs/overlayfs/readdir.c
+index 01620ebae1bd..f10701aabb71 100644
+--- a/fs/overlayfs/readdir.c
++++ b/fs/overlayfs/readdir.c
+@@ -56,6 +56,7 @@ struct ovl_dir_file {
+ 	struct list_head *cursor;
+ 	struct file *realfile;
+ 	struct file *upperfile;
++	struct semaphore upperfile_sem;
+ };
+ 
+ static struct ovl_cache_entry *ovl_cache_entry_from_node(struct rb_node *n)
+@@ -883,7 +884,7 @@ struct file *ovl_dir_real_file(const struct file *file, bool want_upper)
+ 			ovl_path_upper(dentry, &upperpath);
+ 			realfile = ovl_dir_open_realfile(file, &upperpath);
+ 
+-			inode_lock(inode);
++			down(&od->upperfile_sem);
+ 			if (!od->upperfile) {
+ 				if (IS_ERR(realfile)) {
+ 					inode_unlock(inode);
+@@ -896,7 +897,7 @@ struct file *ovl_dir_real_file(const struct file *file, bool want_upper)
+ 					fput(realfile);
+ 				realfile = od->upperfile;
+ 			}
+-			inode_unlock(inode);
++			up(&od->upperfile_sem);
+ 		}
+ 	}
+ 
+@@ -959,6 +960,7 @@ static int ovl_dir_open(struct inode *inode, struct file *file)
+ 	od->realfile = realfile;
+ 	od->is_real = ovl_dir_is_real(file->f_path.dentry);
+ 	od->is_upper = OVL_TYPE_UPPER(type);
++	sema_init(&od->upperfile_sem, 1);
+ 	file->private_data = od;
+ 
+ 	return 0;
+-- 
+2.28.0
+
