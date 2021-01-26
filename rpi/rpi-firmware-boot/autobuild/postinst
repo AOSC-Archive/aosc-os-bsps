@@ -1,9 +1,4 @@
 #!/bin/bash
-if [ -e /boot/rpi/bootcode.bin ]; then
-  echo "Backing up old startup files..."
-  mkdir -p /boot/firmware-backup
-  cp /boot/rpi/*.{elf,bin,dat} /boot/firmware-backup/
-fi
 
 if [ ! -e /boot/rpi ]; then
   echo "/boot/rpi does not exist. You need to update files manually, which is installed to /usr/lib/rpi64-boot."
@@ -111,5 +106,10 @@ kernel=kernel8.img
 # You should copy your initrd to boot partition before enabling initrd
 # initramfs initrd.img followkernel
 EOF
+fi
+if [ ! -e /boot/rpi/cmdline.txt ]; then
+  PARTUUID="$(lsblk -x MOUNTPOINT -o MOUNTPOINT,PARTUUID | egrep '^/\s' | awk '{print $2}')"
+  echo "Generating new cmdline.txt..."
+  echo -n "root=PARTUUID=${PARTUUID} rootfstype=ext4 rw elevator=deadline fsck.repair=yes rootwait" > /boot/rpi/cmdline.txt
 fi
 
