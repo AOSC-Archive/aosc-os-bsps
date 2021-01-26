@@ -17,17 +17,22 @@ if [ -x /etc/kernel/postinst.d/apt-auto-removal ]; then
   /etc/kernel/postinst.d/apt-auto-removal
 fi
 
-if [ -e /boot/rpi/bootcode.bin ]; then
+if [ -e /boot/rpi -a -z "$(ls -A /boot/rpi)" ]; then
   echo "Backing up old boot files and replacing the new one..."
   if [ -e /boot/rpi-backup ]; then
     echo "Removing old backup files..."
-    rm -rfv /boot/rpi-backup
+    rm -rf /boot/rpi-backup
+    echo "Backing up..."
   fi
   mkdir -p /boot/rpi-backup
-  cp -rv /boot/rpi/* /boot/rpi-backup/
-  cp -rv /usr/lib/rpi64-boot/* /boot/rpi/
+  cp -r /boot/rpi/* /boot/rpi-backup/
+  cp -r /usr/lib/rpi64-boot/* /boot/rpi/
+elif [ -z "$(grep "/boot/rpi" /etc/fstab)" ]; then
+  echo "Installing kernel for the first time..."
+  cp -r /usr/lib/rpi64-boot/* /boot/rpi/
 else
-  echo "No kernel and device tree files found under /boot/rpi. You should manually replace your kernel to your boot partition, which is installed to /usr/lib/rpi64-boot."
+  echo "We can't find the mountpoint /boot/rpi. You should manually replace your kernel to your boot partition, which is installed to /usr/lib/rpi64-boot."
 fi
 
 echo "Done installing kernel."
+
