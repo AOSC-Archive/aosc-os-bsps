@@ -28,7 +28,7 @@ if [ ! -z "$(ls -A /boot/rpi &>/dev/null)" ]; then
   cp -r /boot/rpi/* /boot/rpi-backup/
   echo "Installing kernel..."
   cp -r /usr/lib/rpi64-boot/* /boot/rpi/
-elif [ ! -z "$(grep "/boot/rpi" /etc/fstab)" -a ]; then
+elif [ ! -z "$(grep "/boot/rpi" /etc/fstab)" ]; then
   echo "Installing kernel for the first time..."
   mount -a &>/dev/null
   cp -r /usr/lib/rpi64-boot/* /boot/rpi/
