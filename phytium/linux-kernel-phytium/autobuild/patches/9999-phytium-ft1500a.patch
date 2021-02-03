@@ -569,6 +569,15 @@ diff -rNu linux-4.19.1/drivers/gpio/gpio-dwapb.c ft1500a-linux-4.19.1/drivers/gp
  	/* Only port A support debounce */
  	if (pp->idx == 0)
  		port->gc.set_config = dwapb_gpio_set_config;
+@@ -530,7 +537,8 @@
+ 	unsigned int m;
+ 
+ 	for (m = 0; m < gpio->nr_ports; ++m) {
++		kfree(gpio->ports[m].gc.label);
+ 		struct dwapb_gpio_port *port = &gpio->ports[m];
+ 
+ 		if (!port->is_registered)
+ 			continue;
 @@ -604,7 +616,7 @@
  		}
  
