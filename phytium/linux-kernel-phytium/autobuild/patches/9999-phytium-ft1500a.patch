@@ -526,7 +526,7 @@ diff -rNu linux-4.19.1/arch/arm64/kernel/phytium/phytium_1500a_gpio.c ft1500a-li
 diff -rNu linux-4.19.1/arch/arm64/Makefile ft1500a-linux-4.19.1/arch/arm64/Makefile
 --- linux-4.19.1/arch/arm64/Makefile	2018-11-04 21:50:54.000000000 +0800
 +++ ft1500a-linux-4.19.1/arch/arm64/Makefile	2019-06-06 09:34:31.291206660 +0800
-@@ -152,16 +152,19drivers/power/reset/Makefile @@
+@@ -152,16 +152,19 @@
  libs-$(CONFIG_EFI_STUB) += $(objtree)/drivers/firmware/efi/libstub/lib.a
  
  # Default target when executing plain make
