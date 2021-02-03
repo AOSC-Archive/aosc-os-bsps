@@ -1,8 +1,7 @@
-PKGNAME=linux-kernel-5.9.13
+PKGNAME=linux-kernel-phytium-5.9.13
 PKGSEC=kernel
 PKGDEP=""
-BUILDDEP="bc dracut git systemd-boot-friend"
-BUILDDEP__AMD64="${BUILDDEP} grub"
+BUILDDEP="bc dracut git systemd-boot-friend uboot-tools"
 PKGDES="Generic Linux Kernel v5.9.13 for AOSC OS (Mainline)"
 
 ABSTRIP=0
