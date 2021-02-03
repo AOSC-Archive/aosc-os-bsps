@@ -479,7 +479,7 @@ diff -rNu linux-4.19.1/arch/arm64/kernel/phytium/phytium_1500a_gpio.c ft1500a-li
 +/*add by xieming*/
 +int ft1500a_gpio_function(void)
 +{
-+    void __iomem *gpio_base = ioremap_nocache((unsigned long)GPIO_MULTIPLEX0_BASE, (unsigned long)GPIO_MULTIPLEX_SIZE);
++    void __iomem *gpio_base = ioremap_cache((unsigned long)GPIO_MULTIPLEX0_BASE, (unsigned long)GPIO_MULTIPLEX_SIZE);
 +
 +    if (IS_ERR(gpio_base)) {
 +        pr_err("gpio multiplex base remap failed\n");
