@@ -1,0 +1,856 @@
+diff -rNu linux-4.19.1/arch/arm64/boot/dts/Makefile ft1500a-linux-4.19.1/arch/arm64/boot/dts/Makefile
+--- linux-4.19.1/arch/arm64/boot/dts/Makefile	2018-11-04 21:50:54.000000000 +0800
++++ ft1500a-linux-4.19.1/arch/arm64/boot/dts/Makefile	2019-06-06 09:34:31.291206660 +0800
+@@ -26,3 +26,4 @@
+ subdir-y += ti
+ subdir-y += xilinx
+ subdir-y += zte
++subdir-y += phytium
+diff -rNu linux-4.19.1/arch/arm64/boot/dts/phytium/ft1500a.dts ft1500a-linux-4.19.1/arch/arm64/boot/dts/phytium/ft1500a.dts
+--- linux-4.19.1/arch/arm64/boot/dts/phytium/ft1500a.dts	1970-01-01 08:00:00.000000000 +0800
++++ ft1500a-linux-4.19.1/arch/arm64/boot/dts/phytium/ft1500a.dts	2019-06-06 11:00:26.531206660 +0800
+@@ -0,0 +1,337 @@
++/dts-v1/;
++
++/memreserve/	0x0000000080000000 0x0000000000100000;
++/ {
++	compatible = "phytium,ft-1500a";
++	interrupt-parent = <0x1>;
++	#address-cells = <0x2>;
++	#size-cells = <0x2>;
++	model = "Phytium ft1500a generic board";
++
++	aliases {
++		ethernet0 = "/soc/ethernet@28c00000";
++		ethernet1 = "/soc/ethernet@28c02000";
++		serial0 = "/soc/serial@28001000";
++	};
++
++	cpus {
++		#address-cells = <0x2>;
++		#size-cells = <0x0>;
++
++		cpu@0 {
++			device_type = "cpu";
++			compatible = "arm,armv8";
++			reg = <0x0 0x0>;
++			enable-method = "spin-table";
++			cpu-release-addr = <0x0 0x8007fff0>;
++		};
++
++		cpu@1 {
++			device_type = "cpu";
++			compatible = "arm,armv8";
++			reg = <0x0 0x1>;
++			enable-method = "spin-table";
++			cpu-release-addr = <0x0 0x8007fff0>;
++		};
++
++		cpu@2 {
++			device_type = "cpu";
++			compatible = "arm,armv8";
++			reg = <0x0 0x2>;
++			enable-method = "spin-table";
++			cpu-release-addr = <0x0 0x8007fff0>;
++		};
++
++		cpu@3 {
++			device_type = "cpu";
++			compatible = "arm,armv8";
++			reg = <0x0 0x3>;
++			enable-method = "spin-table";
++			cpu-release-addr = <0x0 0x8007fff0>;
++		};
++/*
++		cpu@100 {
++			device_type = "cpu";
++			compatible = "arm,armv8";
++			reg = <0x0 0x100>;
++			enable-method = "spin-table";
++			cpu-release-addr = <0x0 0x8007fff0>;
++		};
++
++		cpu@101 {
++			device_type = "cpu";
++			compatible = "arm,armv8";
++			reg = <0x0 0x101>;
++			enable-method = "spin-table";
++			cpu-release-addr = <0x0 0x8007fff0>;
++		};
++
++		cpu@102 {
++			device_type = "cpu";
++			compatible = "arm,armv8";
++			reg = <0x0 0x102>;
++			enable-method = "spin-table";
++			cpu-release-addr = <0x0 0x8007fff0>;
++		};
++
++		cpu@103 {
++			device_type = "cpu";
++			compatible = "arm,armv8";
++			reg = <0x0 0x103>;
++			enable-method = "spin-table";
++			cpu-release-addr = <0x0 0x8007fff0>;
++		};
++
++		cpu@200 {
++			device_type = "cpu";
++			compatible = "arm,armv8";
++			reg = <0x0 0x200>;
++			enable-method = "spin-table";
++			cpu-release-addr = <0x0 0x8007fff0>;
++		};
++
++		cpu@201 {
++			device_type = "cpu";
++			compatible = "arm,armv8";
++			reg = <0x0 0x201>;
++			enable-method = "spin-table";
++			cpu-release-addr = <0x0 0x8007fff0>;
++		};
++
++		cpu@202 {
++			device_type = "cpu";
++			compatible = "arm,armv8";
++			reg = <0x0 0x202>;
++			enable-method = "spin-table";
++			cpu-release-addr = <0x0 0x8007fff0>;
++		};
++
++		cpu@203 {
++			device_type = "cpu";
++			compatible = "arm,armv8";
++			reg = <0x0 0x203>;
++			enable-method = "spin-table";
++			cpu-release-addr = <0x0 0x8007fff0>;
++		};
++
++		cpu@300 {
++			device_type = "cpu";
++			compatible = "arm,armv8";
++			reg = <0x0 0x300>;
++			enable-method = "spin-table";
++			cpu-release-addr = <0x0 0x8007fff0>;
++		};
++
++		cpu@301 {
++			device_type = "cpu";
++			compatible = "arm,armv8";
++			reg = <0x0 0x301>;
++			enable-method = "spin-table";
++			cpu-release-addr = <0x0 0x8007fff0>;
++		};
++
++		cpu@302 {
++			device_type = "cpu";
++			compatible = "arm,armv8";
++			reg = <0x0 0x302>;
++			enable-method = "spin-table";
++			cpu-release-addr = <0x0 0x8007fff0>;
++		};
++
++		cpu@303 {
++			device_type = "cpu";
++			compatible = "arm,armv8";
++			reg = <0x0 0x303>;
++			enable-method = "spin-table";
++			cpu-release-addr = <0x0 0x8007fff0>;
++		};    
++*/
++	}; 
++
++	reserved-memory {
++		#address-cells = <0x2>;
++		#size-cells = <0x2>;
++		ranges;
++
++		phytium-reserved {
++			compatible = "shared-dma-pool";
++			reg = <0x0 0x0 0x0 0x0>;
++			memory-region = <0x2>;
++			linux,phandle = <0x2>;
++			phandle = <0x2>;
++		};
++	};
++
++	interrupt-controller@29800000 {
++		compatible = "arm,gic-v3";
++		#interrupt-cells = <0x3>;
++		#address-cells = <0x2>;
++		#size-cells = <0x2>;
++		ranges;
++		interrupt-controller;
++		reg = <0x0 0x29800000 0x0 0x10000 0x0 0x29a00000 0x0 0x200000 0x0 0x29c00000 0x0 0x10000 0x0 0x29c10000 0x0 0x10000 0x0 0x29c20000 0x0 0x10000>;
++		interrupts = <0x1 0x9 0x4>;
++		linux,phandle = <0x1>;
++		phandle = <0x1>;
++
++		gic-its@29820000 {
++			compatible = "arm,gic-v3-its";
++			msi-controller;
++			reg = <0x0 0x29820000 0x0 0x20000>;
++			linux,phandle = <0x5>;
++			phandle = <0x5>;
++		};
++	};
++
++	timer {
++		compatible = "arm,armv8-timer";
++		interrupts = <0x1 0xd 0x8 0x1 0xe 0x8 0x1 0xb 0x8 0x1 0xa 0x8>;
++	    clock-frequency = <0x2faf080>;
++	};
++
++	soc {
++		compatible = "simple-bus";
++		#address-cells = <0x2>;
++		#size-cells = <0x2>;
++		dma-coherent;
++		ranges;
++
++		clk250mhz {
++			compatible = "fixed-clock";
++			#clock-cells = <0x0>;
++			clock-frequency = <0xee6b280>;
++			linux,phandle = <0x4>;
++			phandle = <0x4>;
++		};
++
++		clk50mhz {
++			compatible = "fixed-clock";
++			#clock-cells = <0x0>;
++			clock-frequency = <0x2faf080>;
++			linux,phandle = <0x3>;
++			phandle = <0x3>;
++		};
++
++		lpc@20000000 {
++			#address-cells = <0x1>;
++			#size-cells = <0x0>;
++			compatible = "phytium,lpc", "simple-bus";
++			reg = <0x0 0x20000000 0x0 0x100>;
++			interrupts = <0x0 0x21 0x4>;
++			status = "disabled";
++			phytium,lpc-gpio;
++		};
++
++		i2c@28002000 {
++			#address-cells = <0x1>;
++			#size-cells = <0x0>;
++			compatible = "snps,designware-i2c";
++			reg = <0x0 0x28002000 0x0 0x1000>;
++			interrupts = <0x0 0x24 0x4>;
++			clock-frequency = <0x186a0>;
++			clocks = <0x3>;
++
++			rtc@68 {
++				compatible = "dallas,ds1339";
++				reg = <0x68>;
++			};
++		};
++
++		i2c@28003000 {
++			#address-cells = <0x1>;
++			#size-cells = <0x0>;
++			compatible = "snps,designware-i2c";
++			reg = <0x0 0x28003000 0x0 0x1000>;
++			interrupts = <0x0 0x25 0x4>;
++			clock-frequency = <0x186a0>;
++			clocks = <0x3>;
++		};
++
++		serial@28001000 {
++			compatible = "snps,dw-apb-uart";
++			reg = <0x0 0x28001000 0x0 0x1000>;
++			clock-frequency = <0x2faf080>;
++			interrupts = <0x0 0x23 0x4>;
++			reg-shift = <0x2>;
++			reg-io-width = <0x4>;
++			status = "ok";
++		};
++
++		serial@28000000 {
++			compatible = "snps,dw-apb-uart";
++			reg = <0x0 0x28000000 0x0 0x1000>;
++			clock-frequency = <0x2faf080>;
++			interrupts = <0x0 0x22 0x4>;
++			reg-shift = <0x2>;
++			reg-io-width = <0x4>;
++			status = "ok";
++		};
++
++		gpio@28006000 {
++			compatible = "snps,dw-apb-gpio";
++			reg = <0x0 0x28006000 0x0 0x1000>;
++			#address-cells = <0x1>;
++			#size-cells = <0x0>;
++            status = "ok";
++
++			gpio-controller@0 {
++				compatible = "snps,dw-apb-gpio-port";
++				gpio-controller;
++				#gpio-cells = <0x2>;
++				snps,nr-gpios = <0x8>;
++				reg = <0x0>;
++			};
++
++			gpio-controller@1 {
++				compatible = "snps,dw-apb-gpio-port";
++				gpio-controller;
++				#gpio-cells = <0x2>;
++				snps,nr-gpios = <0x8>;
++				reg = <0x1>;
++			};
++
++			gpio-controller@2 {
++				compatible = "snps,dw-apb-gpio-port";
++				gpio-controller;
++				#gpio-cells = <0x2>;
++				snps,nr-gpios = <0x8>;
++				reg = <0x2>;
++			};
++
++			gpio-controller@3 {
++				compatible = "snps,dw-apb-gpio-port";
++				gpio-controller;
++				#gpio-cells = <0x2>;
++				snps,nr-gpios = <0x8>;
++				reg = <0x3>;
++			};
++		};
++
++
++		pci {
++			compatible = "pci-host-ecam-generic";
++			device_type = "pci";
++			#address-cells = <0x3>;
++			#size-cells = <0x2>;
++			#interrupt-cells = <0x1>;
++			reg = <0x0 0x40000000 0x0 0x10000000>;
++			dma-coherent;
++			msi-parent = <0x5>;
++			interrupt-map-mask = <0x0 0x0 0x0 0x7>;
++			interrupt-map = <0x0 0x0 0x0 0x1 0x1 0x0 0x0 0x0 0x33 0x4 0x0 0x0 0x0 0x2 0x1 0x0 0x0 0x0 0x34 0x4 0x0 0x0 0x0 0x3 0x1 0x0 0x0 0x0 0x35 0x4 0x0 0x0 0x0 0x4 0x1 0x0 0x0 0x0 0x36 0x4>;
++			ranges = <0x1000000 0x0 0x0 0x0 0x50000000 0x0 0x1000000 
++                      0x2000000 0x0 0x60100000 0x0 0x60100000 0x0 0x1ff00000 
++                      0x3000000 0x1 0x0 0x1 0x0 0x1 0x0>;
++		};
++	};
++
++	chosen {
++		linux,pci-probe-only = <0x0>;
++		stdout-path = "serial0:115200n8";
++	};
++
++	memory {
++		device_type = "memory";
++		reg = <0x0 0x80000000 0x0 0x80000000>;
++	};
++};
+diff -rNu linux-4.19.1/arch/arm64/boot/dts/phytium/Makefile ft1500a-linux-4.19.1/arch/arm64/boot/dts/phytium/Makefile
+--- linux-4.19.1/arch/arm64/boot/dts/phytium/Makefile	1970-01-01 08:00:00.000000000 +0800
++++ ft1500a-linux-4.19.1/arch/arm64/boot/dts/phytium/Makefile	2019-05-20 06:00:14.330000000 +0800
+@@ -0,0 +1,5 @@
++dtb-$(CONFIG_ARCH_PHYTIUM_FT1500A) += ft1500a.dtb
++
++always		:= $(dtb-y)
++subdir-y	:= $(dts-dirs)
++clean-files	:= *.dtb
+diff -rNu linux-4.19.1/arch/arm64/boot/Makefile ft1500a-linux-4.19.1/arch/arm64/boot/Makefile
+--- linux-4.19.1/arch/arm64/boot/Makefile	2018-11-04 21:50:54.000000000 +0800
++++ ft1500a-linux-4.19.1/arch/arm64/boot/Makefile	2019-06-06 09:34:31.291206660 +0800
+@@ -16,7 +16,18 @@
+ 
+ OBJCOPYFLAGS_Image :=-O binary -R .note -R .note.gnu.build-id -R .comment -S
+ 
+-targets := Image Image.bz2 Image.gz Image.lz4 Image.lzma Image.lzo
++
++UIMAGE_LOADADDR=0x80080000
++
++check_for_multiple_loadaddr = \
++if [ $(words $(UIMAGE_LOADADDR)) -ne 1 ]; then \
++	echo 'multiple (or no) load addresses: $(UIMAGE_LOADADDR)'; \
++	echo 'This is incompatible with uImages'; \
++	echo 'Specify LOADADDR on the commandline to build an uImage'; \
++	false; \
++fi
++
++targets := Image Image.bz2 Image.gz Image.lz4 Image.lzma Image.lzo
+ 
+ $(obj)/Image: vmlinux FORCE
+ 	$(call if_changed,objcopy)
+@@ -36,6 +47,10 @@
+ $(obj)/Image.lzo: $(obj)/Image FORCE
+ 	$(call if_changed,lzo)
+ 
++$(obj)/uImage: $(obj)/Image FORCE
++	@$(check_for_multiple_loadaddr)
++	$(call if_changed,uimage)
++
+ install:
+ 	$(CONFIG_SHELL) $(srctree)/$(src)/install.sh $(KERNELRELEASE) \
+ 	$(obj)/Image System.map "$(INSTALL_PATH)"
+diff -rNu linux-4.19.1/arch/arm64/include/asm/fb.h ft1500a-linux-4.19.1/arch/arm64/include/asm/fb.h
+--- linux-4.19.1/arch/arm64/include/asm/fb.h	2018-11-04 21:50:54.000000000 +0800
++++ ft1500a-linux-4.19.1/arch/arm64/include/asm/fb.h	2019-06-06 09:34:31.301206660 +0800
+@@ -23,7 +23,11 @@
+ static inline void fb_pgprotect(struct file *file, struct vm_area_struct *vma,
+ 				unsigned long off)
+ {
++#ifdef CONFIG_ARCH_PHYTIUM_FT1500A
++	vma->vm_page_prot = pgprot_device(vma->vm_page_prot);
++#else
+ 	vma->vm_page_prot = pgprot_writecombine(vma->vm_page_prot);
++#endif
+ }
+ 
+ static inline int fb_is_primary_device(struct fb_info *info)
+diff -rNu linux-4.19.1/arch/arm64/Kconfig.platforms ft1500a-linux-4.19.1/arch/arm64/Kconfig.platforms
+--- linux-4.19.1/arch/arm64/Kconfig.platforms	2018-11-04 21:50:54.000000000 +0800
++++ ft1500a-linux-4.19.1/arch/arm64/Kconfig.platforms	2019-06-06 09:34:31.291206660 +0800
+@@ -304,4 +304,24 @@
+ 	help
+ 	  This enables support for Xilinx ZynqMP Family
+ 
++config ARCH_PHYTIUM
++	bool "Phytium CPU Family"
++	
++choice
++	prompt "Phytium CPU Family"
++	depends on ARCH_PHYTIUM
++	help
++	  This enables support for Phytium CPU Family
++
++config ARCH_PHYTIUM_FT1500A
++	bool "Phytium FT1500A CPU"
++	help
++	  This enables support for FT1500A
++
++config ARCH_PHYTIUM_FT2000PLUS
++	bool "Phytium FT2000PLUS CPU"
++	help
++	  This enables support for FT2000PLUS
++endchoice
++
+ endmenu
+diff -rNu linux-4.19.1/arch/arm64/kernel/Makefile ft1500a-linux-4.19.1/arch/arm64/kernel/Makefile
+--- linux-4.19.1/arch/arm64/kernel/Makefile	2018-11-04 21:50:54.000000000 +0800
++++ ft1500a-linux-4.19.1/arch/arm64/kernel/Makefile	2019-06-06 09:34:31.301206660 +0800
+@@ -63,7 +63,7 @@
+ obj-$(CONFIG_ARM64_PTR_AUTH)		+= pointer_auth.o
+ obj-$(CONFIG_SHADOW_CALL_STACK)		+= scs.o
+ 
+-obj-y					+= vdso/ probes/
++obj-y					+= vdso/ probes/ phytium/
+ obj-$(CONFIG_COMPAT_VDSO)		+= vdso32/
+ head-y					:= head.o
+ extra-y					+= $(head-y) vmlinux.ldsarch/arm64/kernel/Makefile
+diff -rNu linux-4.19.1/arch/arm64/kernel/phytium/Makefile ft1500a-linux-4.19.1/arch/arm64/kernel/phytium/Makefile
+--- linux-4.19.1/arch/arm64/kernel/phytium/Makefile	1970-01-01 08:00:00.000000000 +0800
++++ ft1500a-linux-4.19.1/arch/arm64/kernel/phytium/Makefile	2019-06-06 09:34:31.301206660 +0800
+@@ -0,0 +1 @@
++obj-$(CONFIG_ARCH_PHYTIUM_FT1500A)		+= phytium_1500a_gpio.o  
+diff -rNu linux-4.19.1/arch/arm64/kernel/phytium/phytium_1500a_gpio.c ft1500a-linux-4.19.1/arch/arm64/kernel/phytium/phytium_1500a_gpio.c
+--- linux-4.19.1/arch/arm64/kernel/phytium/phytium_1500a_gpio.c	1970-01-01 08:00:00.000000000 +0800
++++ ft1500a-linux-4.19.1/arch/arm64/kernel/phytium/phytium_1500a_gpio.c	2019-06-06 09:57:48.231206660 +0800
+@@ -0,0 +1,69 @@
++#include <linux/io.h>
++#include <linux/gpio/machine.h>
++#include <linux/kernel.h>
++#include <linux/init.h>
++#include <linux/platform_device.h>
++#include <linux/of_platform.h>
++
++
++#define GPIO_MULTIPLEX0_BASE 0x28100C00
++#define GPIO_MULTIPLEX_SIZE  0x1000
++#define GPIO_FUNC_0          0x0
++
++
++/* system reset  gpio pin*/
++static struct gpiod_lookup_table gpio_system_reset_table = {
++	.dev_id = "system-reset",
++	.table = {
++		GPIO_LOOKUP("28006000.gpio.1", 5, "power_gpio_a", GPIO_ACTIVE_HIGH),
++		GPIO_LOOKUP("28006000.gpio.1", 6, "power_gpio_b", GPIO_ACTIVE_HIGH),
++	},
++};
++
++/*add by xieming*/
++int ft1500a_gpio_function(void)
++{
++    void __iomem *gpio_base = ioremap_nocache((unsigned long)GPIO_MULTIPLEX0_BASE, (unsigned long)GPIO_MULTIPLEX_SIZE);
++
++    if (IS_ERR(gpio_base)) {
++        pr_err("gpio multiplex base remap failed\n");
++		return PTR_ERR(gpio_base);
++    }
++    
++    /*set all gpio as gpio function mode, add by xieming*/
++
++    writel(GPIO_FUNC_0, gpio_base);
++   
++    iounmap(gpio_base);
++
++    return 0;    
++}
++static int __init ft1500a_gpio_init(void)
++{
++    struct platform_device *pdev;
++    int ret;
++        
++    ft1500a_gpio_function();
++    gpiod_add_lookup_table(&gpio_system_reset_table);
++       
++    pdev = platform_device_alloc("system-reset",-1);
++    if(!pdev) {
++        ret = -ENOMEM;
++        goto fail0;
++    }
++    
++    ret = platform_device_add(pdev);
++    if(ret){
++        ret = -EBUSY;
++        goto fail1;
++    }
++    return 0;
++fail1:
++    platform_device_put(pdev); 
++fail0:
++    pr_err("gpio init failed\n"); 
++    return ret;
++
++}
++
++device_initcall(ft1500a_gpio_init);
+diff -rNu linux-4.19.1/arch/arm64/Makefile ft1500a-linux-4.19.1/arch/arm64/Makefile
+--- linux-4.19.1/arch/arm64/Makefile	2018-11-04 21:50:54.000000000 +0800
++++ ft1500a-linux-4.19.1/arch/arm64/Makefile	2019-06-06 09:34:31.291206660 +0800
+@@ -152,16 +152,19drivers/power/reset/Makefile @@
+ libs-$(CONFIG_EFI_STUB) += $(objtree)/drivers/firmware/efi/libstub/lib.a
+ 
+ # Default target when executing plain make
+-boot		:= arch/arm64/boot
+-KBUILD_IMAGE	:= $(boot)/Image.gz
++KBUILD_IMAGE	:= Image.gz uImage
+ 
+-all:	Image.gz
++all:	$(KBUILD_IMAGE)
+ 
++boot		:= arch/arm64/boot
+ 
+ Image: vmlinux
+ 	$(Q)$(MAKE) $(build)=$(boot) $(boot)/$@
+ 
+-Image.%: Image
++Image.%: vmlinux
++	$(Q)$(MAKE) $(build)=$(boot) $(boot)/$@
++
++uImage: Image
+ 	$(Q)$(MAKE) $(build)=$(boot) $(boot)/$@
+ 
+ zinstall install:
+diff -rNu linux-4.19.1/drivers/gpio/gpio-dwapb.c ft1500a-linux-4.19.1/drivers/gpio/gpio-dwapb.c
+--- linux-4.19.1/drivers/gpio/gpio-dwapb.c	2018-11-04 21:50:54.000000000 +0800
++++ ft1500a-linux-4.19.1/drivers/gpio/gpio-dwapb.c	2019-06-06 09:42:10.301206660 +0800
+@@ -527,6 +527,15 @@
+ 	port->gc.ngpio = pp->ngpio;
+ 	port->gc.base = pp->gpio_base;
+ 
++	/*add by xieming*/
++
++	port->gc.label = kzalloc( sizeof(*(dev_name(gpio->dev))) + sizeof(int), GFP_KERNEL);
++	if(!(port->gc.label)) 
++		return -ENOMEM;
++
++	sprintf(port->gc.label, "%s.%d", dev_name(gpio->dev), pp->idx);
++
++
+ 	/* Only port A support debounce */
+ 	if (pp->idx == 0)
+ 		port->gc.set_config = dwapb_gpio_set_config;
+@@ -604,7 +616,7 @@
+ 		}
+ 
+ 		pp->irq_shared	= false;
+-		pp->gpio_base	= -1;
++		pp->gpio_base	= pp->idx*pp->ngpio;//modifed by xieming
+ 
+ 		/*
+ 		 * Only port A can provide interrupts in all configurations of
+@@ -716,6 +728,7 @@
+ 		}
+ 	}
+ 
++
+ 	for (i = 0; i < gpio->nr_ports; i++) {
+ 		err = dwapb_gpio_add_port(gpio, &pdata->properties[i], i);
+ 		if (err)
+@@ -723,6 +736,7 @@
+ 	}
+ 	platform_set_drvdata(pdev, gpio);
+ 
++
+ 	return 0;
+ 
+ out_unregister:
+diff -rNu linux-4.19.1/drivers/gpu/drm/radeon/radeon_uvd.c ft1500a-linux-4.19.1/drivers/gpu/drm/radeon/radeon_uvd.c
+--- linux-4.19.1/drivers/gpu/drm/radeon/radeon_uvd.c	2018-11-04 21:50:54.000000000 +0800
++++ ft1500a-linux-4.19.1/drivers/gpu/drm/radeon/radeon_uvd.c	2019-06-06 09:34:31.301206660 +0800
+@@ -285,17 +285,14 @@
+ 
+ 	if (rdev->uvd.vcpu_bo == NULL)
+ 		return -EINVAL;
+-
+-	memcpy(rdev->uvd.cpu_addr, rdev->uvd_fw->data, rdev->uvd_fw->size);
+-
++	memcpy_toio(rdev->uvd.cpu_addr, rdev->uvd_fw->data, rdev->uvd_fw->size);
+ 	size = radeon_bo_size(rdev->uvd.vcpu_bo);
+ 	size -= rdev->uvd_fw->size;
+ 
+ 	ptr = rdev->uvd.cpu_addr;
+ 	ptr += rdev->uvd_fw->size;
+ 
+-	memset(ptr, 0, size);
+-
++	memset_io(ptr, 0, size);
+ 	return 0;
+ }
+ 
+@@ -784,26 +781,21 @@
+ 	uint32_t *msg = rdev->uvd.cpu_addr + offs;
+ 	uint64_t addr = rdev->uvd.gpu_addr + offs;
+ 
+-	int r, i;
++	int r;
+ 
+ 	r = radeon_bo_reserve(rdev->uvd.vcpu_bo, true);
+ 	if (r)
+ 		return r;
+ 
+ 	/* stitch together an UVD create msg */
++	memset_io(msg, 0, 1024*sizeof(uint32_t));
+ 	msg[0] = cpu_to_le32(0x00000de4);
+-	msg[1] = cpu_to_le32(0x00000000);
+ 	msg[2] = cpu_to_le32(handle);
+-	msg[3] = cpu_to_le32(0x00000000);
+-	msg[4] = cpu_to_le32(0x00000000);
+-	msg[5] = cpu_to_le32(0x00000000);
+-	msg[6] = cpu_to_le32(0x00000000);
++	barrier();
+ 	msg[7] = cpu_to_le32(0x00000780);
++	barrier();
+ 	msg[8] = cpu_to_le32(0x00000440);
+-	msg[9] = cpu_to_le32(0x00000000);
+ 	msg[10] = cpu_to_le32(0x01b37000);
+-	for (i = 11; i < 1024; ++i)
+-		msg[i] = cpu_to_le32(0x0);
+ 
+ 	r = radeon_uvd_send_msg(rdev, ring, addr, fence);
+ 	radeon_bo_unreserve(rdev->uvd.vcpu_bo);
+@@ -820,25 +812,24 @@
+ 	uint32_t *msg = rdev->uvd.cpu_addr + offs;
+ 	uint64_t addr = rdev->uvd.gpu_addr + offs;
+ 
+-	int r, i;
++	int r;
+ 
+ 	r = radeon_bo_reserve(rdev->uvd.vcpu_bo, true);
+ 	if (r)
+ 		return r;
+ 
+ 	/* stitch together an UVD destroy msg */
++	memset_io(msg, 0, 1024*sizeof(uint32_t));
+ 	msg[0] = cpu_to_le32(0x00000de4);
+ 	msg[1] = cpu_to_le32(0x00000002);
+ 	msg[2] = cpu_to_le32(handle);
+-	msg[3] = cpu_to_le32(0x00000000);
+-	for (i = 4; i < 1024; ++i)
+-		msg[i] = cpu_to_le32(0x0);
+ 
+ 	r = radeon_uvd_send_msg(rdev, ring, addr, fence);
+ 	radeon_bo_unreserve(rdev->uvd.vcpu_bo);
+ 	return r;
+ }
+ 
++
+ /**
+  * radeon_uvd_count_handles - count number of open streams
+  *
+diff -rNu linux-4.19.1/drivers/gpu/drm/radeon/radeon_vce.c ft1500a-linux-4.19.1/drivers/gpu/drm/radeon/radeon_vce.c
+--- linux-4.19.1/drivers/gpu/drm/radeon/radeon_vce.c	2018-11-04 21:50:54.000000000 +0800
++++ ft1500a-linux-4.19.1/drivers/gpu/drm/radeon/radeon_vce.c	2019-06-06 09:34:31.301206660 +0800
+@@ -238,12 +238,11 @@
+ 		dev_err(rdev->dev, "(%d) VCE map failed\n", r);
+ 		return r;
+ 	}
+-
+-	memset(cpu_addr, 0, radeon_bo_size(rdev->vce.vcpu_bo));
++	memset_io(cpu_addr, 0, radeon_bo_size(rdev->vce.vcpu_bo));
+ 	if (rdev->family < CHIP_BONAIRE)
+ 		r = vce_v1_0_load_fw(rdev, cpu_addr);
+ 	else
+-		memcpy(cpu_addr, rdev->vce_fw->data, rdev->vce_fw->size);
++		memcpy_toio(cpu_addr, rdev->vce_fw->data, rdev->vce_fw->size);
+ 
+ 	radeon_bo_kunmap(rdev->vce.vcpu_bo);
+ 
+diff -rNu linux-4.19.1/drivers/gpu/drm/ttm/ttm_bo.c ft1500a-linux-4.19.1/drivers/gpu/drm/ttm/ttm_bo.c
+--- linux-4.19.1/drivers/gpu/drm/ttm/ttm_bo.c	2018-11-04 21:50:54.000000000 +0800
++++ ft1500a-linux-4.19.1/drivers/gpu/drm/ttm/ttm_bo.c	2019-06-06 09:34:31.301206660 +0800
+@@ -1420,6 +1420,14 @@
+ 	ret = bdev->driver->init_mem_type(bdev, type, man);
+ 	if (ret)
+ 		return ret;
++
++#ifdef CONFIG_ARCH_PHYTIUM_FT1500A
++	if(type == TTM_PL_VRAM) {
++		man->available_caching = TTM_PL_FLAG_UNCACHED;
++		man->default_caching = TTM_PL_FLAG_UNCACHED;
++	}
++#endif
++
+ 	man->bdev = bdev;
+ 
+ 	if (type != TTM_PL_SYSTEM) {
+diff -rNu linux-4.19.1/drivers/power/reset/Kconfig ft1500a-linux-4.19.1/drivers/power/reset/Kconfig
+--- linux-4.19.1/drivers/power/reset/Kconfig	2018-11-04 21:50:54.000000000 +0800
++++ ft1500a-linux-4.19.1/drivers/power/reset/Kconfig	2019-06-06 09:34:31.301206660 +0800
+@@ -8,6 +8,10 @@
+ 
+ if POWER_RESET
+ 
++config POWER_RESET_PHYTIUM_FT1500A
++	bool "phytium power-off driver"
++	depends on OF_GPIO && ARCH_PHYTIUM_FT1500A
++
+ config POWER_RESET_AS3722
+ 	bool "ams AS3722 power-off driver"
+ 	depends on MFD_AS3722
+diff -rNu linux-4.19.1/drivers/power/reset/Makefile ft1500a-linux-4.19.1/drivers/power/reset/Makefile
+--- linux-4.19.1/drivers/power/reset/Makefile	2018-11-04 21:50:54.000000000 +0800
++++ ft1500a-linux-4.19.1/drivers/power/reset/Makefile	2019-06-06 09:34:31.841206660 +0800
+@@ -33,3 +33,4 @@
+ obj-$(CONFIG_SYSCON_REBOOT_MODE) += syscon-reboot-mode.o
+ obj-$(CONFIG_POWER_RESET_SC27XX) += sc27xx-poweroff.o
+-obj-$(CONFIG_NVMEM_REBOOT_MODE) += nvmem-reboot-mode.o
++obj-$(CONFIG_POWER_RESET_PHYTIUM_FT1500A) += phytium_poweroff.o
++obj-$(CONFIG_NVMEM_REBOOT_MODE) += nvmem-reboot-mode.o
+diff -rNu linux-4.19.1/drivers/power/reset/phytium_poweroff.c ft1500a-linux-4.19.1/drivers/power/reset/phytium_poweroff.c
+--- linux-4.19.1/drivers/power/reset/phytium_poweroff.c	1970-01-01 08:00:00.000000000 +0800
++++ ft1500a-linux-4.19.1/drivers/power/reset/phytium_poweroff.c	2019-06-06 10:13:52.281206660 +0800
+@@ -0,0 +1,114 @@
++#include <linux/reboot.h>
++#include <linux/kernel.h>
++#include <linux/init.h>
++#include <linux/delay.h>
++#include <linux/platform_device.h>
++#include <linux/gpio/consumer.h>
++#include <linux/of_platform.h>
++#include <linux/module.h>
++
++
++
++/*
++ * Hold configuration here, cannot be more than one instance of the driver
++ * since pm_power_off itself is global.
++ */
++static struct notifier_block restart_handler;
++static struct gpio_desc *power_gpio_A;
++static struct gpio_desc *power_gpio_B;
++
++
++static void gpio_poweroff_do_poweroff(void)
++{
++
++	gpiod_direction_output(power_gpio_A,1);
++	gpiod_direction_output(power_gpio_B,1);
++	mdelay(100);
++
++	/* drive inactive, also active->inactive edge */
++	gpiod_set_value(power_gpio_A, 1);
++	gpiod_set_value(power_gpio_B, 0);
++	mdelay(100);
++
++	/* drive it active, also inactive->active edge */
++	gpiod_set_value(power_gpio_A, 1);
++	gpiod_set_value(power_gpio_B, 1);
++
++	/*give it some time*/
++	mdelay(3000);
++
++	WARN_ON(1);
++}
++
++static int ft1500a_restart_notify(struct notifier_block *this,
++				unsigned long mode,void *cmd)
++{
++
++	gpiod_direction_output(power_gpio_A,1);
++	gpiod_direction_output(power_gpio_B,1);
++	mdelay(100); 
++	gpiod_set_value(power_gpio_A, 0);
++	gpiod_set_value(power_gpio_B, 1);
++	mdelay(100);
++
++	gpiod_set_value(power_gpio_A, 1);
++	gpiod_set_value(power_gpio_B, 1);
++	mdelay(3000);
++
++	
++	WARN_ON(1);
++
++	return NOTIFY_DONE;
++}
++
++
++
++
++static int gpio_poweroff_probe(struct platform_device *pdev)
++{
++	int ret;
++
++	restart_handler.notifier_call = ft1500a_restart_notify;
++
++	ret = register_restart_handler(&restart_handler);
++	if(ret){
++		ret = -ENODEV;
++		goto fail1;
++	}
++
++	power_gpio_A = devm_gpiod_get(&pdev->dev,"power_gpio_a", GPIOD_OUT_LOW);
++	power_gpio_B = devm_gpiod_get(&pdev->dev,"power_gpio_b", GPIOD_OUT_LOW);
++
++	if(!power_gpio_A || !power_gpio_B) {
++		ret = -ENODEV;
++		goto fail1;
++	}
++
++	/* If a pm_power_off function has already been added, leave it alone */
++	if (pm_power_off == NULL) 
++		pm_power_off = gpio_poweroff_do_poweroff;
++
++	return 0;
++
++fail1:
++	dev_err(&pdev->dev,"%s failed: %d\n", __func__,ret);
++	return ret;
++}
++
++
++static struct platform_driver ft1500a_poweroff_driver = {
++	.probe = gpio_poweroff_probe,
++	.remove = NULL,
++	.driver = {
++		.name = "system-reset",
++	},
++};
++
++
++module_platform_driver(ft1500a_poweroff_driver);
++
++
++MODULE_AUTHOR("yuanke <yuanke@phytium.com.cn>");
++MODULE_DESCRIPTION("GPIO poweroff driver");
++MODULE_LICENSE("GPL v2");
++MODULE_ALIAS("platform:poweroff-gpio");
