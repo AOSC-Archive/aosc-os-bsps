@@ -17,11 +17,11 @@ if [ -x /etc/kernel/postinst.d/apt-auto-removal ]; then
   /etc/kernel/postinst.d/apt-auto-removal
 fi
 
-if [ ! -z "$(ls -A /boot/rpi &>/dev/null)" ]; then
+if [ ! -z "$(ls -A /boot/rpi 2>/dev/null)" ]; then
   echo "Backing up old boot files and replacing the new one..."
   if [ -e /boot/rpi-backup ]; then
     echo "Removing old backup files..."
-    rm -rf /boot/rpi-backup
+    rm -r /boot/rpi-backup
     echo "Backing up..."
   fi
   mkdir -p /boot/rpi-backup
