@@ -13,10 +13,3 @@ if [ -x /usr/bin/dkms ]; then
 	done
 fi
 
-if [ -e /boot/rpi-backup -a -z "$(ls -A /boot/rpi-backup)"]; then
-  echo "Restoring old boot files..."
-  cp -r /boot/rpi-backup/* /boot/rpi/
-else
-  echo "No old kernel found at /boot/rpi-backup. Hoping you have some old boot files..."
-fi
-
