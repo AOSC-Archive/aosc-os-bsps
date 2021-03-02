@@ -1,3 +1,3 @@
-VER=0+git20191123
-GITSRC="https://github.com/AOSC-Dev/u-boot-aosc-utils"
-GITCO="c4d0b0317d5391419441f1835f47a33060fe9f03"
+VER=0+git20200302
+SRCS="git::commit=f484faa1a95f64041d3b819f178e82ea0ad93974::https://github.com/AOSC-Dev/u-boot-aosc-utils.git"\
+CHKSUMS="SKIP"
