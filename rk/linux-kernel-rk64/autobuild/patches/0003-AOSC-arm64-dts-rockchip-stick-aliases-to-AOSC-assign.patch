@@ -1,4 +1,4 @@
-From d3d4b18d75b215d55c6224c0c460e96f37d09327 Mon Sep 17 00:00:00 2001
+From 19435a842dafc9bc69ca0999d0f1fc44c831b4b9 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 30 Nov 2020 22:05:28 +0800
 Subject: [PATCH 3/6] AOSC: arm64: dts: rockchip: stick aliases to AOSC
@@ -11,7 +11,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  2 files changed, 6 insertions(+), 3 deletions(-)
 
 diff --git a/arch/arm64/boot/dts/rockchip/rk3328.dtsi b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
-index bbdb19a3e85d..2b9c9da1feea 100644
+index 93c734d8a46c..0ae11f7b3fc2 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3328.dtsi
 +++ b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
 @@ -29,6 +29,9 @@ aliases {
@@ -25,7 +25,7 @@ index bbdb19a3e85d..2b9c9da1feea 100644
  
  	cpus {
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399.dtsi b/arch/arm64/boot/dts/rockchip/rk3399.dtsi
-index 7a9a7aca86c6..6a7469855974 100644
+index 7e69603fb41c..8d834b8e9cbd 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3399.dtsi
 +++ b/arch/arm64/boot/dts/rockchip/rk3399.dtsi
 @@ -29,9 +29,9 @@ aliases {
@@ -42,5 +42,5 @@ index 7a9a7aca86c6..6a7469855974 100644
  		serial1 = &uart1;
  		serial2 = &uart2;
 -- 
-2.28.0
+2.30.0
 

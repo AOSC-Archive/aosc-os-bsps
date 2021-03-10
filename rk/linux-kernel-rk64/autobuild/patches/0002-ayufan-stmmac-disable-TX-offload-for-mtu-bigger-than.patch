@@ -1,4 +1,4 @@
-From fa6aec6aa9ff7f492f9d2c6c8a4de7a9e9990b47 Mon Sep 17 00:00:00 2001
+From 24e80fe32e096fa3fc546890b19fe9c92dd81417 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Kamil=20Trzci=C5=84ski?= <ayufan@ayufan.eu>
 Date: Fri, 8 Mar 2019 23:13:52 +0100
 Subject: [PATCH 2/6] ayufan: stmmac: disable TX offload for mtu bigger than
@@ -38,10 +38,10 @@ index 5ccf04f2d66c..635750adc1b9 100644
  	snps,reset-active-low;
  	snps,reset-delays-us = <0 10000 50000>;
 diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index c33db79cdd0a..e5e1a4e955ed 100644
+index b3d6d8e3f4de..3bb5dafdba87 100644
 --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
 +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -4039,6 +4039,10 @@ static netdev_features_t stmmac_fix_features(struct net_device *dev,
+@@ -4040,6 +4040,10 @@ static netdev_features_t stmmac_fix_features(struct net_device *dev,
  	if (priv->plat->bugged_jumbo && (dev->mtu > ETH_DATA_LEN))
  		features &= ~NETIF_F_CSUM_MASK;
  
@@ -78,5 +78,5 @@ index 15ca6b4167cc..76dcc81898d7 100644
  	int max_speed;
  	int maxmtu;
 -- 
-2.28.0
+2.30.0
 
