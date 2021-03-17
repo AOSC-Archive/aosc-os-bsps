@@ -1,4 +1,4 @@
-KERNVER=5.10.20
+KERNVER=${PKGVER}
 
 mkdir -p "$PKGDIR"/usr/lib/aosc-os-arm64-rockchip-boot/
 mkdir -p "$PKGDIR"/usr/lib/aosc-os-arm64-rockchip-boot/linux-kernel-${KERNVER}-aosc-rockchip64/modules
