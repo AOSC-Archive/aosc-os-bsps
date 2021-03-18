@@ -2,6 +2,7 @@ PKGNAME=linux+kernel+rk64
 PKGSEC=kernel
 PKGDEP="linux-kernel-rk64-5.10.22"
 PKGDES="The Linux Kernel optimized for Rockchip SoCs with 64-bit ARMv8 cores"
+PKGEPOCH=1
 
 ABSTRIP=no
 ABELFDEP=no
