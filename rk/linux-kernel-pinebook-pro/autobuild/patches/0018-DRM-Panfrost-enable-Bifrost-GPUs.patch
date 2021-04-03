@@ -1,0 +1,126 @@
+From e875a70df24d67d68fe3f7cf1cbd7aafbf26f1f5 Mon Sep 17 00:00:00 2001
+From: Dan Johansen <strit@manjaro.org>
+Date: Sun, 26 Jul 2020 16:41:55 +0200
+Subject: [PATCH] DRM: Panfrost: enable Bifrost GPUs
+
+---
+ drivers/gpu/drm/panfrost/panfrost_drv.c     |  1 +
+ drivers/gpu/drm/panfrost/panfrost_gpu.c     | 27 ++++++++++++++++++---
+ drivers/gpu/drm/panfrost/panfrost_job.c     |  4 +--
+ drivers/gpu/drm/panfrost/panfrost_perfcnt.c | 10 +++++---
+ drivers/gpu/drm/panfrost/panfrost_regs.h    |  4 +++
+ 5 files changed, 38 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/gpu/drm/panfrost/panfrost_drv.c b/drivers/gpu/drm/panfrost/panfrost_drv.c
+index 882fecc33fdb..8ff8e140f91e 100644
+--- a/drivers/gpu/drm/panfrost/panfrost_drv.c
++++ b/drivers/gpu/drm/panfrost/panfrost_drv.c
+@@ -677,6 +677,7 @@ static const struct of_device_id dt_match[] = {
+ 	{ .compatible = "arm,mali-t830", .data = &default_data, },
+ 	{ .compatible = "arm,mali-t860", .data = &default_data, },
+ 	{ .compatible = "arm,mali-t880", .data = &default_data, },
++	{ .compatible = "arm,mali-bifrost", .data = &default_data, },
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(of, dt_match);
+diff --git a/drivers/gpu/drm/panfrost/panfrost_gpu.c b/drivers/gpu/drm/panfrost/panfrost_gpu.c
+index f2c1ddc41a9b..cb7b6fdc4004 100644
+--- a/drivers/gpu/drm/panfrost/panfrost_gpu.c
++++ b/drivers/gpu/drm/panfrost/panfrost_gpu.c
+@@ -8,8 +8,11 @@
+ #include <linux/dma-mapping.h>
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
++#include <linux/of.h>
+ #include <linux/iopoll.h>
+ #include <linux/platform_device.h>
++#include <linux/pm_runtime.h>
++#include <linux/reset.h>
+ 
+ #include "panfrost_device.h"
+ #include "panfrost_features.h"
+@@ -59,7 +62,16 @@ int panfrost_gpu_soft_reset(struct panfrost_device *pfdev)
+ 
+ 	gpu_write(pfdev, GPU_INT_MASK, 0);
+ 	gpu_write(pfdev, GPU_INT_CLEAR, GPU_IRQ_RESET_COMPLETED);
+-	gpu_write(pfdev, GPU_CMD, GPU_CMD_SOFT_RESET);
++
++	if (of_device_is_compatible(pfdev->dev->of_node, "amlogic,meson-g12a-mali")) {
++		reset_control_assert(pfdev->rstc);
++		udelay(10);
++		reset_control_deassert(pfdev->rstc);
++
++		gpu_write(pfdev, GPU_PWR_KEY, 0x2968A819);
++		gpu_write(pfdev, GPU_PWR_OVERRIDE1, 0xfff | (0x20 << 16));
++	} else
++		gpu_write(pfdev, GPU_CMD, GPU_CMD_SOFT_RESET);
+ 
+ 	ret = readl_relaxed_poll_timeout(pfdev->iomem + GPU_INT_RAWSTAT,
+ 		val, val & GPU_IRQ_RESET_COMPLETED, 100, 10000);
+@@ -368,7 +380,16 @@ void panfrost_gpu_fini(struct panfrost_device *pfdev)
+ 
+ u32 panfrost_gpu_get_latest_flush_id(struct panfrost_device *pfdev)
+ {
+-	if (panfrost_has_hw_feature(pfdev, HW_FEATURE_FLUSH_REDUCTION))
+-		return gpu_read(pfdev, GPU_LATEST_FLUSH_ID);
++	u32 flush_id;
++
++	if (panfrost_has_hw_feature(pfdev, HW_FEATURE_FLUSH_REDUCTION)) {
++		/* Flush reduction only makes sense when the GPU is kept powered on between jobs */
++		if (pm_runtime_get_if_in_use(pfdev->dev)) {
++			flush_id = gpu_read(pfdev, GPU_LATEST_FLUSH_ID);
++			pm_runtime_put(pfdev->dev);
++			return flush_id;
++		}
++	}
++
+ 	return 0;
+ }
+diff --git a/drivers/gpu/drm/panfrost/panfrost_perfcnt.c b/drivers/gpu/drm/panfrost/panfrost_perfcnt.c
+index 6913578d5aa7..d99bd2f0503a 100644
+--- a/drivers/gpu/drm/panfrost/panfrost_perfcnt.c
++++ b/drivers/gpu/drm/panfrost/panfrost_perfcnt.c
+@@ -83,11 +83,13 @@ static int panfrost_perfcnt_enable_locked(struct panfrost_device *pfdev,
+ 
+ 	ret = pm_runtime_get_sync(pfdev->dev);
+ 	if (ret < 0)
+-		return ret;
++		goto err_pm_get;
+ 
+ 	bo = drm_gem_shmem_create(pfdev->ddev, perfcnt->bosize);
+-	if (IS_ERR(bo))
+-		return PTR_ERR(bo);
++	if (IS_ERR(bo)) {
++		ret = PTR_ERR(bo);
++		goto err_pm_get;
++	}
+ 
+ 	/* Map the perfcnt buf in the address space attached to file_priv. */
+ 	ret = panfrost_gem_open(&bo->base, file_priv);
+@@ -168,6 +170,8 @@ static int panfrost_perfcnt_enable_locked(struct panfrost_device *pfdev,
+ 	panfrost_gem_close(&bo->base, file_priv);
+ err_put_bo:
+ 	drm_gem_object_put_unlocked(&bo->base);
++err_pm_get:
++	pm_runtime_put_noidle(pfdev->dev);
+ 	return ret;
+ }
+ 
+diff --git a/drivers/gpu/drm/panfrost/panfrost_regs.h b/drivers/gpu/drm/panfrost/panfrost_regs.h
+index ea38ac60581c..4f4ed17d0262 100644
+--- a/drivers/gpu/drm/panfrost/panfrost_regs.h
++++ b/drivers/gpu/drm/panfrost/panfrost_regs.h
+@@ -51,6 +51,10 @@
+ #define GPU_STATUS			0x34
+ #define   GPU_STATUS_PRFCNT_ACTIVE	BIT(2)
+ #define GPU_LATEST_FLUSH_ID		0x38
++#define GPU_PWR_KEY			0x050	/* (WO) Power manager key register */
++#define GPU_PWR_OVERRIDE0		0x054	/* (RW) Power manager override settings */
++#define GPU_PWR_OVERRIDE1		0x058	/* (RW) Power manager override settings */
++
+ #define GPU_FAULT_STATUS		0x3C
+ #define GPU_FAULT_ADDRESS_LO		0x40
+ #define GPU_FAULT_ADDRESS_HI		0x44
+-- 
+2.27.0
+

@@ -1,0 +1,12 @@
+diff --git a/Documentation/devicetree/bindings/arm/amlogic.yaml b/Documentation/devicetree/bindings/arm/amlogic.yaml
+index f74aba48cec1..11908b151e0a 100644
+--- a/Documentation/devicetree/bindings/arm/amlogic.yaml
++++ b/Documentation/devicetree/bindings/arm/amlogic.yaml
+@@ -159,6 +159,7 @@ properties:
+           - enum:
+               - seirobotics,sei610
+               - khadas,vim3l
++              - hardkernel,odroid-c4
+           - const: amlogic,sm1
+ 
+       - description: Boards with the Amlogic Meson A1 A113L SoC
