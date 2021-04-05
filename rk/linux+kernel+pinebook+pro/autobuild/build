@@ -2,54 +2,8 @@ KERNVER=${PKGVER}
 
 mkdir -p "$PKGDIR"/usr/lib/aosc-os-arm64-rockchip-boot/
 mkdir -p "$PKGDIR"/usr/lib/aosc-os-arm64-rockchip-boot/linux-kernel-${KERNVER}-aosc-rockchip64/modules
-ln -sfv linux-kernel-${KERNVER}-aosc-rk64 "$PKGDIR"/usr/lib/aosc-os-arm64-rockchip-boot/linux-kernel-rk64
-for i in \
-	px30-evb \
-	rk3308-evb \
-	rk3308-roc-cc \
-	rk3318-a95x-z2 \
-	rk3326-odroid-go2 \
-	rk3328-a1 \
-	rk3328-evb \
-	rk3328-nanopi-r2s \
-	rk3328-roc-cc \
-	rk3328-rock64 \
-	rk3368-evb-act8846 \
-	rk3368-geekbox \
-	rk3368-lion-haikou \
-	rk3368-orion-r68-meta \
-	rk3368-px5-evb \
-	rk3368-r88 \
-	rk3399-evb \
-	rk3399-ficus \
-	rk3399-firefly \
-	rk3399-gru-bob \
-	rk3399-gru-kevin \
-	rk3399-gru-scarlet-inx \
-	rk3399-gru-scarlet-kd \
-	rk3399-hugsun-x99 \
-	rk3399-khadas-edge-captain \
-	rk3399-khadas-edge \
-	rk3399-khadas-edge-v \
-	rk3399-leez-p710 \
-	rk3399-nanopc-t4 \
-	rk3399-nanopi-m4 \
-	rk3399-nanopi-neo4 \
-	rk3399-orangepi \
-	rk3399-pinebook-pro \
-	rk3399pro-rock-pi-n10 \
-	rk3399-puma-haikou \
-	rk3399-rock960 \
-	rk3399-rock-pi-4a \
-	rk3399-rock-pi-4b \
-	rk3399-rock-pi-4c \
-	rk3399-rockpro64 \
-	rk3399-rockpro64-v2 \
-	rk3399-roc-pc \
-	rk3399-roc-pc-mezzanine \
-	rk3399-sapphire \
-	rk3399-sapphire-excavator
-do
-	mkdir -p "$PKGDIR"/usr/lib/aosc-os-arm64-rockchip-boot/dtb-$i
-	ln -sfv ../dtbs-kernel-${KERNVER}-aosc-rk64/$i.dtb "$PKGDIR"/usr/lib/aosc-os-arm64-rockchip-boot/dtb-$i/dtb.dtb
-done
+ln -sfv linux-kernel-${KERNVER}-aosc-rk64 \
+	"$PKGDIR"/usr/lib/aosc-os-arm64-rockchip-boot/linux-kernel-rk64
+mkdir -p "$PKGDIR"/usr/lib/aosc-os-arm64-rockchip-boot/dtb-rk3399-pinebook-pro
+ln -sfv ../dtbs-kernel-${KERNVER}-aosc-rk64/rk3399-pinebook-pro.dtb \
+	"$PKGDIR"/usr/lib/aosc-os-arm64-rockchip-boot/dtb-rk3399-pinebook-pro/dtb.dtb
