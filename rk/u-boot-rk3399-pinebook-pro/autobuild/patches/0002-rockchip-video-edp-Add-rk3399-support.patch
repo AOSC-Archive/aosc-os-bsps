@@ -1,7 +1,7 @@
-From 19bc9455b16f9f57631fd96af8b14ebcf0785dfe Mon Sep 17 00:00:00 2001
+From 63582a0019c66402db24c0dd3502aab6e9f34a5d Mon Sep 17 00:00:00 2001
 From: "Arnaud Patard (Rtp)" <arnaud.patard@rtp-net.org>
-Date: Fri, 25 Sep 2020 20:36:56 +0200
-Subject: [PATCH 2/9] RFC: drivers/video/rockchip/rk_edp.c: Add rk3399 support
+Date: Fri, 5 Mar 2021 11:27:47 +0100
+Subject: [PATCH 02/10] rockchip: video: edp: Add rk3399 support
 
 According to linux commit "drm/rockchip: analogix_dp: add rk3399 eDP
 support" (82872e42bb1501dd9e60ca430f4bae45a469aa64), rk3288 and rk3399
@@ -14,13 +14,14 @@ on rk3399, so don't try changing the clock at index 1 to rate 0 on
 rk3399.
 
 Signed-off-by: Arnaud Patard <arnaud.patard@rtp-net.org>
+Tested-by: Peter Robinson <pbrobinson@gmail.com>
 ---
  .../include/asm/arch-rockchip/edp_rk3288.h    |  5 +-
  drivers/video/rockchip/rk_edp.c               | 85 ++++++++++++++-----
  2 files changed, 68 insertions(+), 22 deletions(-)
 
 diff --git a/arch/arm/include/asm/arch-rockchip/edp_rk3288.h b/arch/arm/include/asm/arch-rockchip/edp_rk3288.h
-index 105a335dab..c861f0eab1 100644
+index 94e5bb674f..26ab9b7225 100644
 --- a/arch/arm/include/asm/arch-rockchip/edp_rk3288.h
 +++ b/arch/arm/include/asm/arch-rockchip/edp_rk3288.h
 @@ -232,8 +232,9 @@ check_member(rk3288_edp, pll_reg_5, 0xa00);
@@ -36,7 +37,7 @@ index 105a335dab..c861f0eab1 100644
  /* line_map */
  #define LANE3_MAP_LOGIC_LANE_0			(0x0 << 6)
 diff --git a/drivers/video/rockchip/rk_edp.c b/drivers/video/rockchip/rk_edp.c
-index 000bd48140..1b2f5f706d 100644
+index 0be60e169e..6baee7b890 100644
 --- a/drivers/video/rockchip/rk_edp.c
 +++ b/drivers/video/rockchip/rk_edp.c
 @@ -17,11 +17,10 @@
@@ -99,8 +100,8 @@ index 000bd48140..1b2f5f706d 100644
  
  	writel(LDO_OUTPUT_V_SEL_145 | KVCO_DEFALUT | CHG_PUMP_CUR_SEL_5US |
  	       V2L_CUR_SEL_1MA, &regs->pll_reg_2);
-@@ -1023,6 +1046,8 @@ static int rk_edp_probe(struct udevice *dev)
- 	struct display_plat *uc_plat = dev_get_uclass_platdata(dev);
+@@ -1029,6 +1052,8 @@ static int rk_edp_probe(struct udevice *dev)
+ 	struct display_plat *uc_plat = dev_get_uclass_plat(dev);
  	struct rk_edp_priv *priv = dev_get_priv(dev);
  	struct rk3288_edp *regs = priv->regs;
 +	struct rockchip_dp_data *edp_data = (struct rockchip_dp_data *)dev_get_driver_data(dev);
@@ -108,7 +109,7 @@ index 000bd48140..1b2f5f706d 100644
  	struct clk clk;
  	int ret;
  
-@@ -1037,16 +1062,17 @@ static int rk_edp_probe(struct udevice *dev)
+@@ -1043,16 +1068,17 @@ static int rk_edp_probe(struct udevice *dev)
  	int vop_id = uc_plat->source_id;
  	debug("%s, uc_plat=%p, vop_id=%u\n", __func__, uc_plat, vop_id);
  
@@ -135,7 +136,7 @@ index 000bd48140..1b2f5f706d 100644
  	ret = clk_get_by_index(uc_plat->src_dev, 0, &clk);
  	if (ret >= 0) {
  		ret = clk_set_rate(&clk, 192000000);
-@@ -1059,15 +1085,17 @@ static int rk_edp_probe(struct udevice *dev)
+@@ -1065,15 +1091,17 @@ static int rk_edp_probe(struct udevice *dev)
  	}
  
  	/* grf_edp_ref_clk_sel: from internal 24MHz or 27MHz clock */
@@ -157,7 +158,7 @@ index 000bd48140..1b2f5f706d 100644
  	rk_edp_init_interrupt(regs);
  	rk_edp_enable_sw_function(regs);
  	ret = rk_edp_init_analog_func(regs);
-@@ -1083,8 +1111,25 @@ static const struct dm_display_ops dp_rockchip_ops = {
+@@ -1089,8 +1117,25 @@ static const struct dm_display_ops dp_rockchip_ops = {
  	.enable = rk_edp_enable,
  };
  
@@ -185,5 +186,5 @@ index 000bd48140..1b2f5f706d 100644
  };
  
 -- 
-2.28.0
+2.30.2
 

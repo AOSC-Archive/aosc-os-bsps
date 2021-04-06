@@ -1,0 +1,34 @@
+From f699dfdf368d78bb7fd0b6bc18dd426acacdcfcf Mon Sep 17 00:00:00 2001
+From: "Arnaud Patard (Rtp)" <arnaud.patard@rtp-net.org>
+Date: Fri, 5 Mar 2021 11:27:48 +0100
+Subject: [PATCH 03/10] Rockchip: video: edp: Change interrupt polarity
+ configuration
+
+The linux code is setting polarity configuration to 3 but
+uboot code is setting it to 1. Change the configuration to match the
+linux configuration
+
+Signed-off-by: Arnaud Patard <arnaud.patard@rtp-net.org>
+Tested-by: Peter Robinson <pbrobinson@gmail.com>
+---
+ arch/arm/include/asm/arch-rockchip/edp_rk3288.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/include/asm/arch-rockchip/edp_rk3288.h b/arch/arm/include/asm/arch-rockchip/edp_rk3288.h
+index 26ab9b7225..9559813e52 100644
+--- a/arch/arm/include/asm/arch-rockchip/edp_rk3288.h
++++ b/arch/arm/include/asm/arch-rockchip/edp_rk3288.h
+@@ -297,7 +297,9 @@ check_member(rk3288_edp, pll_reg_5, 0xa00);
+ 
+ /* int_ctl */
+ #define SOFT_INT_CTRL				(0x1 << 2)
+-#define INT_POL					(0x1 << 0)
++#define INT_POL1				(0x1 << 1)
++#define INT_POL0				(0x1 << 0)
++#define INT_POL					(INT_POL0 | INT_POL1)
+ 
+ /* sys_ctl_1 */
+ #define DET_STA					(0x1 << 2)
+-- 
+2.30.2
+

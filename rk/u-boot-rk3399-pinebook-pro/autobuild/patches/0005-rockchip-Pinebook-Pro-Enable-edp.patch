@@ -1,28 +1,32 @@
-From bc06129455c72be5eb0df9ad3943c45019e13f10 Mon Sep 17 00:00:00 2001
+From 52224b3359ac655ddb8ee6c8b90ecf46d0b34e31 Mon Sep 17 00:00:00 2001
 From: "Arnaud Patard (Rtp)" <arnaud.patard@rtp-net.org>
-Date: Fri, 25 Sep 2020 20:37:00 +0200
-Subject: [PATCH 6/9] RFC: rk3399-pinebook-pro-u-boot.dtsi: Enable edp
+Date: Fri, 5 Mar 2021 11:27:50 +0100
+Subject: [PATCH 05/10] rockchip: Pinebook Pro: Enable edp
 
 - uboot rockchip edp code is looking for a rockchip,panel property
   for the edp dts node, so add it.
 
 Signed-off-by: Arnaud Patard <arnaud.patard@rtp-net.org>
+Tested-by: Peter Robinson <pbrobinson@gmail.com>
 ---
  arch/arm/dts/rk3399-pinebook-pro-u-boot.dtsi | 4 ++++
  1 file changed, 4 insertions(+)
 
 diff --git a/arch/arm/dts/rk3399-pinebook-pro-u-boot.dtsi b/arch/arm/dts/rk3399-pinebook-pro-u-boot.dtsi
-index ded7db0aef..7005870d4f 100644
+index 1eafb40ce3..2d87bea933 100644
 --- a/arch/arm/dts/rk3399-pinebook-pro-u-boot.dtsi
 +++ b/arch/arm/dts/rk3399-pinebook-pro-u-boot.dtsi
-@@ -49,3 +49,7 @@
- &vdd_log {
- 	regulator-init-microvolt = <950000>;
+@@ -16,6 +16,10 @@
+ 	};
  };
-+
+ 
 +&edp {
 +	rockchip,panel = <&edp_panel>;
 +};
++
+ &i2c0 {
+ 	u-boot,dm-pre-reloc;
+ };
 -- 
-2.28.0
+2.30.2
 

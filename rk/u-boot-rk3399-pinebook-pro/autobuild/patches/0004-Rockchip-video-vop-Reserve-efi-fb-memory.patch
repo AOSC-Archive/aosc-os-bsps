@@ -1,23 +1,23 @@
-From 4863a91c3c839587463fadb60193022a3515bd3c Mon Sep 17 00:00:00 2001
+From 23172c5861ad91b8062ebdbc5ccbe79268098787 Mon Sep 17 00:00:00 2001
 From: "Arnaud Patard (Rtp)" <arnaud.patard@rtp-net.org>
-Date: Fri, 25 Sep 2020 20:36:59 +0200
-Subject: [PATCH 5/9] RFC: drivers/video/rockchip/rk_vop.c: Reserve efi fb
- memory
+Date: Fri, 5 Mar 2021 11:27:49 +0100
+Subject: [PATCH 04/10] Rockchip: video: vop: Reserve efi fb memory
 
 When booting with EFI and graphics, the memory used for framebuffer
 has to be reserved, otherwise it may leads to kernel memory
 overwrite.
 
 Signed-off-by: Arnaud Patard <arnaud.patard@rtp-net.org>
+Tested-by: Peter Robinson <pbrobinson@gmail.com>
 ---
- drivers/video/rockchip/rk_vop.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/video/rockchip/rk_vop.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
 diff --git a/drivers/video/rockchip/rk_vop.c b/drivers/video/rockchip/rk_vop.c
-index 6cd4ccc97a..98d33a3cec 100644
+index 145a34084c..3eb5e8c25c 100644
 --- a/drivers/video/rockchip/rk_vop.c
 +++ b/drivers/video/rockchip/rk_vop.c
-@@ -20,6 +20,8 @@
+@@ -21,6 +21,8 @@
  #include <asm/arch-rockchip/vop_rk3288.h>
  #include <dm/device-internal.h>
  #include <dm/uclass-internal.h>
@@ -26,12 +26,10 @@ index 6cd4ccc97a..98d33a3cec 100644
  #include <linux/bitops.h>
  #include <linux/err.h>
  #include <power/regulator.h>
-@@ -394,6 +396,13 @@ int rk_vop_probe(struct udevice *dev)
+@@ -395,6 +397,11 @@ int rk_vop_probe(struct udevice *dev)
  	if (!(gd->flags & GD_FLG_RELOC))
  		return 0;
  
-+	plat->base = gd->bd->bi_dram[0].start + gd->bd->bi_dram[0].size - plat->size;
-+
 +#if defined(CONFIG_EFI_LOADER)
 +	debug("Adding to EFI map %d @ %lx\n", plat->size, plat->base);
 +	efi_add_memory_map(plat->base, plat->size, EFI_RESERVED_MEMORY_TYPE);
@@ -41,5 +39,5 @@ index 6cd4ccc97a..98d33a3cec 100644
  
  	/*
 -- 
-2.28.0
+2.30.2
 

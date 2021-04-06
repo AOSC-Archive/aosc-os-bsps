@@ -1,8 +1,8 @@
-From 8abb4f6166f2519ba839afc2526ec77165e1bb47 Mon Sep 17 00:00:00 2001
+From cfdf3e8f0b4e7ed34a7d2d2b81be5041ff874b16 Mon Sep 17 00:00:00 2001
 From: "Arnaud Patard (Rtp)" <arnaud.patard@rtp-net.org>
-Date: Fri, 25 Sep 2020 20:36:55 +0200
-Subject: [PATCH 1/9] RFC: drivers/video/rockchip/rk_vop.c: Use endpoint
- compatible string to find VOP mode
+Date: Fri, 5 Mar 2021 11:27:46 +0100
+Subject: [PATCH 01/10] rockchip: video: vop: Use endpoint compatible string to
+ find VOP mode
 
 The current code is using an hard coded enum and the of node reg value of
 endpoint to find out if the endpoint is mipi/hdmi/lvds/edp/dp. The order
@@ -15,13 +15,14 @@ to find the kind of endpoint by comparing the endpoint compatible value.
 This patch is implementing the more flexible second solution.
 
 Signed-off-by: Arnaud Patard <arnaud.patard@rtp-net.org>
+Tested-by: Peter Robinson <pbrobinson@gmail.com>
 ---
  .../include/asm/arch-rockchip/vop_rk3288.h    | 15 +----------
  drivers/video/rockchip/rk_vop.c               | 25 +++++++++++++++++--
  2 files changed, 24 insertions(+), 16 deletions(-)
 
 diff --git a/arch/arm/include/asm/arch-rockchip/vop_rk3288.h b/arch/arm/include/asm/arch-rockchip/vop_rk3288.h
-index 872a158b71..bf19e05997 100644
+index 52446e97c6..49a7141437 100644
 --- a/arch/arm/include/asm/arch-rockchip/vop_rk3288.h
 +++ b/arch/arm/include/asm/arch-rockchip/vop_rk3288.h
 @@ -85,26 +85,13 @@ enum {
@@ -53,10 +54,10 @@ index 872a158b71..bf19e05997 100644
  /* VOP_VERSION_INFO */
  #define M_FPGA_VERSION (0xffff << 16)
 diff --git a/drivers/video/rockchip/rk_vop.c b/drivers/video/rockchip/rk_vop.c
-index 9032eb430e..6cd4ccc97a 100644
+index 145c333020..145a34084c 100644
 --- a/drivers/video/rockchip/rk_vop.c
 +++ b/drivers/video/rockchip/rk_vop.c
-@@ -235,12 +235,11 @@ static int rk_display_init(struct udevice *dev, ulong fbbase, ofnode ep_node)
+@@ -236,12 +236,11 @@ static int rk_display_init(struct udevice *dev, ulong fbbase, ofnode ep_node)
  	struct clk clk;
  	enum video_log2_bpp l2bpp;
  	ofnode remote;
@@ -70,7 +71,7 @@ index 9032eb430e..6cd4ccc97a 100644
  	ret = ofnode_read_u32(ep_node, "remote-endpoint", &remote_phandle);
  	if (ret)
  		return ret;
-@@ -282,6 +281,28 @@ static int rk_display_init(struct udevice *dev, ulong fbbase, ofnode ep_node)
+@@ -283,6 +282,28 @@ static int rk_display_init(struct udevice *dev, ulong fbbase, ofnode ep_node)
  		if (disp)
  			break;
  	};
@@ -97,8 +98,8 @@ index 9032eb430e..6cd4ccc97a 100644
 +	}
 +	debug("vop_id=%d\n", vop_id);
  
- 	disp_uc_plat = dev_get_uclass_platdata(disp);
+ 	disp_uc_plat = dev_get_uclass_plat(disp);
  	debug("Found device '%s', disp_uc_priv=%p\n", disp->name, disp_uc_plat);
 -- 
-2.28.0
+2.30.2
 
