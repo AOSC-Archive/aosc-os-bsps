@@ -1,4 +1,4 @@
-VER=0+git20201027
-SRCS="git::commit=9f3f9054a692e53b60fca54221a402414e030335::https://github.com/raspberrypi/userland.git"
+VER=0+git20210416
+SRCS="git::commit=3fd8527eefd8790b4e8393458efc5f94eb21a615::https://github.com/raspberrypi/userland.git"
 CHKSUMS="SKIP"
 
