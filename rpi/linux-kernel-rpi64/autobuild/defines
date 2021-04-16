@@ -1,12 +1,13 @@
-PKGNAME="linux-kernel-rpi64"
+PKGNAME="linux-kernel-rpi64-5.11.11"
 PKGSEC=kernel
 PKGDEP=""
-BUILDDEP="bc dracut git pahole"
-PKGDES="Raspberry Pi downstream kernel"
+BUILDDEP="bc dracut git"
+PKGDES="Raspberry Pi downstream kernel (Mainline branch)"
 
+FAIL_ARCH="!(arm64)"
 ABSTRIP=0
 ABELFDEP=0
-
+ABSPLITDBG=0
 PKGEPOCH=1
 
-PKGBREAK="zfs"
+PKGBREAK="zfs<=2.0.0"
