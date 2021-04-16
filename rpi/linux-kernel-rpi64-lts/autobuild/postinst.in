@@ -1,0 +1,63 @@
+#!/bin/bash
+LOCAL_VER=@LOCAL_VER@
+VER=@VER@
+KERNEL=${VER}${LOCAL_VER}
+
+if [ -x /usr/bin/depmod ]; then
+  depmod ${KERNEL}
+else
+  echo "Kmod is not installed, please install package 'kmod'."
+fi
+
+if [ -x /usr/bin/dkms ]; then
+  dkms autoinstall --kernelver ${KERNEL}
+fi
+
+if [ -x /etc/kernel/postinst.d/apt-auto-removal ]; then
+  /etc/kernel/postinst.d/apt-auto-removal
+fi
+
+if [ ! -z "$(ls -A /boot/rpi 2>/dev/null)" ]; then
+  echo "Backing up old boot files and replacing the new one..."
+  if [ -e /boot/rpi-backup ]; then
+    echo "Removing old backup files..."
+    rm -r /boot/rpi-backup
+    echo "Backing up..."
+  fi
+  mkdir -p /boot/rpi-backup
+  cp -r /boot/rpi/* /boot/rpi-backup/
+  echo "Installing kernel..."
+  cp -r /usr/lib/rpi64-boot/* /boot/rpi/
+elif [ ! -z "$(grep "/boot/rpi" /etc/fstab)" ]; then
+  echo "Installing kernel for the first time..."
+  mkdir -p /boot/rpi
+  mount -a &>/dev/null
+  cp -r /usr/lib/rpi64-boot/* /boot/rpi/
+else
+  echo "We can't find the mountpoint /boot/rpi. You should manually replace your kernel to your boot partition, which is installed to /usr/lib/rpi64-boot."
+fi
+if [ -e /usr/bin/update-initramfs ]; then
+  patch -p1 << 'EOF'
+--- a/usr/bin/update-initramfs	2021-04-11 21:02:56.037077508 +0800
++++ b/usr/bin/update-initramfs	2021-04-11 21:18:51.238738851 +0800
+@@ -11,6 +11,17 @@
+ 	if [ -f "/usr/lib/modules/${i}/modules.dep" ] && [ -f "/usr/lib/modules/${i}/modules.order" ] && [ -f "/usr/lib/modules/${i}/modules.builtin" ]; then
+ 	        echo -e "\033[36m**\033[0m\tGenerating initrd (Initialization RAM Disk) for kernel version $i ..."
+ 		dracut -q --force "/boot/initramfs-$i.img" "$i"
++		if [ -e "/boot/rpi" ]; then
++			echo -e "\033[36m**\033[0m\tCopying initrd to the boot partition and activating it..."
++			cp "/boot/initramfs-$i.img" /boot/rpi/initrd.img
++			cat > /boot/rpi/distcfg.txt << EOF
++# This file is auto generated during initramfs generation
++# DO NOT EDIT
++arm_64bit=1
++kernel=kernel8.img
++initramfs initrd.img followkernel
++EOF
++		fi
+ 	else
+ 		echo -e "\033[33m**\033[0m\tSkipping incomplete kernel modules tree $i ..."
+ 	fi
+EOF
+fi
+echo "Done installing kernel."
