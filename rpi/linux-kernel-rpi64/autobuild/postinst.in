@@ -36,28 +36,6 @@ elif [ ! -z "$(grep "/boot/rpi" /etc/fstab)" ]; then
 else
   echo "We can't find the mountpoint /boot/rpi. You should manually replace your kernel to your boot partition, which is installed to /usr/lib/rpi64-boot."
 fi
-if [ -e /usr/bin/update-initramfs ]; then
-  patch -p1 << 'EOF'
---- a/usr/bin/update-initramfs	2021-04-11 21:02:56.037077508 +0800
-+++ b/usr/bin/update-initramfs	2021-04-11 21:18:51.238738851 +0800
-@@ -11,6 +11,17 @@
- 	if [ -f "/usr/lib/modules/${i}/modules.dep" ] && [ -f "/usr/lib/modules/${i}/modules.order" ] && [ -f "/usr/lib/modules/${i}/modules.builtin" ]; then
- 	        echo -e "\033[36m**\033[0m\tGenerating initrd (Initialization RAM Disk) for kernel version $i ..."
- 		dracut -q --force "/boot/initramfs-$i.img" "$i"
-+		if [ -e "/boot/rpi" ]; then
-+			echo -e "\033[36m**\033[0m\tCopying initrd to the boot partition and activating it..."
-+			cp "/boot/initramfs-$i.img" /boot/rpi/initrd.img
-+			cat > /boot/rpi/distcfg.txt << EOF
-+# This file is auto generated during initramfs generation
-+# DO NOT EDIT
-+arm_64bit=1
-+kernel=kernel8.img
-+initramfs initrd.img followkernel
-+EOF
-+		fi
- 	else
- 		echo -e "\033[33m**\033[0m\tSkipping incomplete kernel modules tree $i ..."
- 	fi
-EOF
-fi
+
 echo "Done installing kernel."
+

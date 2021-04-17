@@ -12,3 +12,4 @@ if [ -x /usr/bin/dkms ]; then
 		dkms remove ${NAMES[i]}/${VERSIONS[i]} -k $VER$LOCAL_VER
 	done
 fi
+
