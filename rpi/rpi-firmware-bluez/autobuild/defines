@@ -3,7 +3,7 @@ PKGDES="BlueZ firmware for Raspberry Pi"
 PKGSEC="libs"
 PKGDEP="bluez"
 
-CMAKE_AFTER="--libdir=/lib"
+CMAKE_AFTER="--libdir=/usr/lib"
 
 ABHOST=noarch
 
