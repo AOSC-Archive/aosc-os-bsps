@@ -1,4 +1,3 @@
-VER=5.11.11
-SRCTBL="https://github.com/raspberrypi/linux/archive/42498e202032b40765d184c1b9cb296dbe7fa614.tar.gz"
-CHKSUM="sha256::84539a956d28f66bd45a4c8e2354d66e06cf788a85353726f815ff60c8d05a7c"
-
+VER=5.12.6
+SRCTBL="https://github.com/raspberrypi/linux/archive/8b85410e9cc2ef9cd30187815ae4f766997848a6.tar.gz"
+CHKSUM="sha256::0483593bffd0b5cddaa9f07a31a66a265b265de54b5c49480480c43770bf8e2c"
