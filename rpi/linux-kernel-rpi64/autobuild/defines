@@ -1,7 +1,7 @@
 PKGNAME="linux-kernel-rpi64-5.12.6"
 PKGSEC=kernel
 PKGDEP="dracut"
-BUILDDEP="bc dracut git"
+BUILDDEP="bc dracut git pahole"
 PKGDES="Raspberry Pi downstream kernel (Mainline branch)"
 
 FAIL_ARCH="!(arm64)"

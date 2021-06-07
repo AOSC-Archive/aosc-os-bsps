@@ -2,6 +2,20 @@
 # The Raspberry Pi build script
 # Copied from `linux-kernel' build.
 #
+abinfo "Preparing build environment ..."
+OLDARCH="$ARCH"
+unset ARCH
+if [[ "${CROSS:-$ARCH}" = "amd64" ]]; then
+    SRCARCH="x86"
+elif [[ "${CROSS:-$ARCH}" = "arm64" ]]; then
+    SRCARCH="arm64"
+elif [[ "${CROSS:-$ARCH}" = "loongson3" ]]; then
+    SRCARCH="mips"
+elif [[ "${CROSS:-$ARCH}" = "ppc64el" ]]; then
+    SRCARCH="powerpc"    
+fi
+
+abinfo "Copying config and setting up env..."
 
 cp -v autobuild/config "$SRCDIR"/.config
 
@@ -20,7 +34,9 @@ make INSTALL_MOD_PATH="$PKGDIR"/usr modules_install
 abinfo "Copying kernel..."
 # make a local copy of compiled kernel
 mkdir -p "$PKGDIR/usr/lib/aosc-os-arm64-boot/linux-kernel-$version$LOCALNAME/"
-cp arch/arm64/boot/Image "$PKGDIR/usr/lib/aosc-os-arm64-boot/linux-kernel-$version$LOCALNAME/"
+# Do this for dracut
+cp -v arch/arm64/boot/Image "$PKGDIR/boot/vmlinux-$version$LOCALNAME" 
+cp -v arch/arm64/boot/Image "$PKGDIR/usr/lib/aosc-os-arm64-boot/linux-kernel-$version$LOCALNAME/"
 
 abinfo "Copying kernel and dtbs to rpi64-boot..."
 # Make a folder to store new kernel, as dpkg may fall into problems when updating files in vfat filesystem.
