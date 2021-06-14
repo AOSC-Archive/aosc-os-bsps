@@ -1,0 +1,15 @@
+KERNVER=5.10.9
+
+mkdir -p "$PKGDIR"/usr/lib/aosc-os-arm64-sunxi-boot/
+mkdir -p "$PKGDIR"/usr/lib/aosc-os-arm64-sunxi-boot/linux-kernel-${KERNVER}-aosc-pinephone/modules
+ln -sfv linux-kernel-${KERNVER}-aosc-pinephone "$PKGDIR"/usr/lib/aosc-os-arm64-sunxi-boot/linux-kernel-sunxi64
+for i in \
+	sun50i-a64-pinetab \
+	sun50i-a64-pinetab-early-adopter \
+	sun50i-a64-pinephone-1.0 \
+	sun50i-a64-pinephone-1.1 \
+	sun50i-a64-pinephone-1.2
+do
+	mkdir -p "$PKGDIR"/usr/lib/aosc-os-arm64-sunxi-boot/dtb-$i
+	ln -sfv ../dtbs-kernel-${KERNVER}-aosc-pinephone/$i.dtb "$PKGDIR"/usr/lib/aosc-os-arm64-sunxi-boot/dtb-$i/dtb.dtb
+done

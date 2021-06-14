@@ -1,0 +1,10 @@
+PKGNAME=linux+kernel+pinephone
+PKGSEC=kernel
+PKGDEP="linux-kernel-pinephone-5.12.9"
+PKGDES="The Linux Kernel optimized for PinePhone/PineTab"
+
+PKGCONFL=linux+kernel+sunxi64
+
+ABSTRIP=no
+ABELFDEP=no
+ABRPMAUTOPROVONLY=yes
