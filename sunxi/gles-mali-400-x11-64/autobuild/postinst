@@ -1,9 +1,0 @@
-update-alternatives --install /usr/lib/libEGL.so libEGL.so /usr/lib/mali/libEGL.so 60 
-update-alternatives --install /usr/lib/libEGL.so.1 libEGL.so.1 /usr/lib/mali/libEGL.so.1 60 
-update-alternatives --install /usr/lib/libEGL.so.1.0.0 libEGL.so.1.0.0 /usr/lib/mali/libEGL.so.1.0.0 60 
-update-alternatives --install /usr/lib/libGLESv1_CM.so libGLESv1_CM.so /usr/lib/mali/libGLESv1_CM.so 60 
-update-alternatives --install /usr/lib/libGLESv1_CM.so.1 libGLESv1_CM.so.1 /usr/lib/mali/libGLESv1_CM.so.1 60 
-update-alternatives --install /usr/lib/libGLESv1_CM.so.1.1.0 libGLESv1_CM.so.1.1.0 /usr/lib/mali/libGLESv1_CM.so.1.1.0 60 
-update-alternatives --install /usr/lib/libGLESv2.so libGLESv2.so /usr/lib/mali/libGLESv2.so 60 
-update-alternatives --install /usr/lib/libGLESv2.so.2 libGLESv2.so.2 /usr/lib/mali/libGLESv2.so.2 60 
-update-alternatives --install /usr/lib/libGLESv2.so.2.0.0 libGLESv2.so.2.0.0 /usr/lib/mali/libGLESv2.so.2.0.0 60 
