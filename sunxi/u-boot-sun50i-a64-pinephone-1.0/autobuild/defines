@@ -1,8 +1,0 @@
-PKGNAME=u-boot-sun50i-a64-pinephone-1.0
-PKGDES="U-Boot for PinePhone v1.0 (internal developers' unit) (currently a hack)"
-PKGSEC=embedded
-BUILDDEP="dtc swig"
-
-ABSTRIP=no
-ABELFDEP=no
-ABRPMAUTOPROVONLY=yes

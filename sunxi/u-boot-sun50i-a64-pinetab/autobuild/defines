@@ -1,8 +1,0 @@
-PKGNAME=u-boot-sun50i-a64-pinetab
-PKGDES="U-Boot for PineTab (currently a hack)"
-PKGSEC=embedded
-BUILDDEP="dtc swig"
-
-ABSTRIP=no
-ABELFDEP=no
-ABRPMAUTOPROVONLY=yes
