@@ -1,0 +1,80 @@
+From 5592c8504a803f4673865b25c48d5472144827cc Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Wed, 16 Jun 2021 02:07:07 +0800
+Subject: [PATCH 4/8] arm: dts: rockchip: misc fixes to Pinebook Pro DT
+
+This is from patches from AOSC OS.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm/dts/rk3399-pinebook-pro.dts | 28 ++++++++++++++++++++--------
+ 1 file changed, 20 insertions(+), 8 deletions(-)
+
+diff --git a/arch/arm/dts/rk3399-pinebook-pro.dts b/arch/arm/dts/rk3399-pinebook-pro.dts
+index 219b7507a1..50f9339640 100644
+--- a/arch/arm/dts/rk3399-pinebook-pro.dts
++++ b/arch/arm/dts/rk3399-pinebook-pro.dts
+@@ -379,10 +379,6 @@
+ 	};
+ };
+ 
+-&cdn_dp {
+-	status = "okay";
+-};
+-
+ &cpu_b0 {
+ 	cpu-supply = <&vdd_cpu_b>;
+ };
+@@ -705,15 +701,15 @@
+ 
+ 		connector {
+ 			compatible = "usb-c-connector";
+-			data-role = "host";
++			data-role = "dual";
+ 			label = "USB-C";
+ 			op-sink-microwatt = <1000000>;
+ 			power-role = "dual";
+ 			sink-pdos =
+-				<PDO_FIXED(5000, 2500, PDO_FIXED_USB_COMM)>;
++				<PDO_FIXED(5000, 2500, PDO_FIXED_DUAL_ROLE | PDO_FIXED_DATA_SWAP | PDO_FIXED_USB_COMM)>;
+ 			source-pdos =
+-				<PDO_FIXED(5000, 1400, PDO_FIXED_USB_COMM)>;
+-			try-power-role = "sink";
++				<PDO_FIXED(5000, 1400, PDO_FIXED_DUAL_ROLE | PDO_FIXED_DATA_SWAP | PDO_FIXED_USB_COMM)>;
++			try-power-role = "source";
+ 
+ 			ports {
+ 				#address-cells = <1>;
+@@ -913,6 +909,10 @@
+ 		bt_reset_pin: bt-reset-pin {
+ 			rockchip,pins = <0 RK_PB1 RK_FUNC_GPIO &pcfg_pull_none>;
+ 		};
++
++		wifi_int_l_pin: wifi-int-l {
++			rockchip,pins = <0 RK_PA3 RK_FUNC_GPIO &pcfg_pull_up>;
++		};
+ 	};
+ };
+ 
+@@ -959,6 +959,18 @@
+ 	pinctrl-0 = <&sdio0_bus4 &sdio0_cmd &sdio0_clk>;
+ 	sd-uhs-sdr104;
+ 	status = "okay";
++	#address-cells = <1>;
++	#size-cells = <0>;
++
++	brcm: sdio-wifi@1 {
++		reg = <1>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&wifi_int_l_pin>;
++		compatible = "brcm,bcm4329-fmac";
++		interrupt-parent = <&gpio0>;
++		interrupts = <RK_PA3 IRQ_TYPE_LEVEL_LOW>;
++		interrupt-names = "host-wake";
++	};
+ };
+ 
+ &sdhci {
+-- 
+2.30.2
+

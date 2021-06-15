@@ -1,3 +1,3 @@
-VER=2021.04
-SRCTBL="https://ftp.denx.de/pub/u-boot/u-boot-2021.04.tar.bz2"
-CHKSUM="sha256::0d438b1bb5cceb57a18ea2de4a0d51f7be5b05b98717df05938636e0aadfe11a"
+VER=2021.07~rc4
+SRCS="tbl::https://ftp.denx.de/pub/u-boot/u-boot-2021.07-rc4.tar.bz2"
+CHKSUMS="sha256::176d1d89838059e7aa6694b8b721c2b34c4c0f40ac25586aec122ce11ff7da2e"
