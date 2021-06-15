@@ -1,3 +1,3 @@
-VER=5.10.9
+VER=5.12.9
 SRCS="git::commit=c636c969c53c6b73977cc80f45028e9a622f2b28::git://github.com/megous/linux"
 CHKSUMS="SKIP"
