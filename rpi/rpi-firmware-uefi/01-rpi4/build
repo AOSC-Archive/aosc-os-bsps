@@ -1,0 +1,33 @@
+build_uefi() {
+unset MAKEFLAGS
+source edk2/edksetup.sh
+cp "$SRCDIR/autobuild/config/target.txt" "$SRCDIR/edk2/Conf/target.txt"
+
+# make BaseTools
+make -C edk2/BaseTools
+
+# build the image
+build
+}
+
+# Set up necessary envs
+export WORKSPACE="$SRCDIR"
+export GCC5_AARCH64_PREFIX="/opt/abcross/arm64/bin/aarch64-aosc-linux-gnu-"
+export PACKAGES_PATH="$SRCDIR/edk2:$SRCDIR/edk2-platforms:$SRCDIR/edk2-non-osi"
+
+# Prepare build environment
+cd $SRCDIR
+
+( build_uefi; )
+
+# Prepare package dir
+mkdir -p "$PKGDIR/usr/lib/rpi64/efi"
+
+# Copy the image
+cp "$SRCDIR/Build/RPi4/RELEASE_GCC5/FV/RPI_EFI.fd" "$PKGDIR/usr/lib/rpi64/efi/"
+
+# Copy necessary Raspberry Pi firmware files
+cp -v "$SRCDIR/../firmware-${__FIRMWARE}/boot/"bcm2711*.dtb "$PKGDIR/usr/lib/rpi64/efi/"
+cp -v "$SRCDIR/../firmware-${__FIRMWARE}/boot/"fixup4*.dat "$PKGDIR/usr/lib/rpi64/efi/"
+cp -v "$SRCDIR/../firmware-${__FIRMWARE}/boot/"start4*.elf "$PKGDIR/usr/lib/rpi64/efi/"
+cp -rv "$SRCDIR/../firmware-${__FIRMWARE}/boot/overlays" "$PKGDIR/usr/lib/rpi64/efi/"

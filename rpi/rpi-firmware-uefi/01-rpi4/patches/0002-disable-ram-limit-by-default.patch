@@ -1,0 +1,13 @@
+diff --git a/edk2-platforms/Platform/RaspberryPi/RPi4/RPi4.dsc b/edk2-platforms/Platform/RaspberryPi/RPi4/RPi4.dsc
+index d8c6fdd4bd..854da63ad7 100644
+--- a/edk2-platforms/Platform/RaspberryPi/RPi4/RPi4.dsc
++++ b/edk2-platforms/Platform/RaspberryPi/RPi4/RPi4.dsc
+@@ -508,7 +508,7 @@
+   # Supporting > 3GB of memory.
+   #
+   gRaspberryPiTokenSpaceGuid.PcdRamMoreThan3GB|L"RamMoreThan3GB"|gConfigDxeFormSetGuid|0x0|0
+-  gRaspberryPiTokenSpaceGuid.PcdRamLimitTo3GB|L"RamLimitTo3GB"|gConfigDxeFormSetGuid|0x0|1
++  gRaspberryPiTokenSpaceGuid.PcdRamLimitTo3GB|L"RamLimitTo3GB"|gConfigDxeFormSetGuid|0x0|0
+ 
+   #
+   # Device Tree and ACPI selection.

@@ -1,0 +1,27 @@
+#!/bin/bash
+
+die() {
+	echo "!! $1"
+	exit 1
+}
+
+ANS=n
+if [ "$EUID" != "0" ]; then
+	echo "Please run me as root."
+	exit 1
+fi
+echo "The EFI firmware is going to be replaced with the new one installed in /usr/lib/rpi64/efi."
+echo "ALL CHANGES IN EFI FIRMWARE WILL BE LOST."
+read -p "Are you sure (y/N)? " ANS
+
+case "$ANS" in
+	[Yy]* )
+		cp -r /usr/lib/rpi64/efi/* /boot/rpi/ || die "Error on copying files."
+		unset ANS
+		update-initramfs
+		exit 0;;
+	* )
+		echo "Exiting."
+		unset ANS
+		exit 0;;
+esac

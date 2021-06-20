@@ -1,0 +1,63 @@
+# if /boot/rpi or /boot/efi exists
+#
+try_add_mount_efi() {
+	cp /etc/fstab /tmp/fstab.bak
+	# Trying to figure out where /boot/rpi is
+	# and add the same entry to fstab
+	PART="$(grep "/boot/rpi" "/etc/fstab" | awk '{print $1}')"
+	echo "$PART	/boot/efi	vfat	rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro	0	2" | tee -a /etc/fstab
+	mount /boot/efi 2&>/dev/null
+	if [ "$?" != "0" ]; then
+		cp /tmp/fstab.bak /etc/fstab
+		return
+	fi
+	grub-install 2&>/dev/null || true
+}
+
+if [ -e "/boot/rpi" ]; then
+	if [ -e "/boot/rpi/RPI_EFI.fd" ]; then
+		echo "Warning: replacing the firmware will lost all your NVRAM data."
+		echo "We are not doing this for you."
+		echo "If you are going to replace it with the new one, please run 'update-rpi-efi' manually."
+	fi
+	exit 0
+	cp -r /usr/lib/rpi64/efi/* /boot/rpi/
+	if [ ! -e "/boot/rpi/config.txt" ]; then
+		tee "/boot/rpi/config.txt" << EOF
+# Config.txt for UEFI firmware.
+# The following is necessary!
+# DO NOT EDIT these settings.
+arm_64bit=1
+enable_uart=1
+uart_2ndstage=1
+enable_gic=1
+armstub=RPI_EFI.fd
+disable_commandline_tags=1
+disable_overscan=1
+device_tree_address=0x1f0000
+device_tree_end=0x200000
+
+# Please add your custom btoverlays or btparams here - but it might not work.
+dtoverlay=miniuart-bt
+
+# This should be enabled to get graphics working.
+# But it will make the kernel lose control of efifb.
+dtoverlay=vc4-fkms-v3d
+EOF
+	fi
+	if [ -e "/boot/efi" ]; then
+		if grep -q "/boot/efi" /etc/fstab; then
+			mount -a
+		else
+			try_add_mount_efi
+		fi
+	fi
+	if [ ! -e "/boot/efi" ]; then
+		mkdir -p "/boot/efi"
+		if grep -q "/boot/efi" "/etc/fstab"; then
+			mount -a || echo "Failed to mount /boot/efi."
+		else
+			try_add_mount_efi
+		fi
+	fi
+fi

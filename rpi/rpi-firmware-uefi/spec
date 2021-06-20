@@ -1,0 +1,6 @@
+VER="1.28"
+SRCS="git::commit=bb21fa6703f03c8857b681a63c5eef94115394dd::https://github.com/pftf/RPi4.git tbl::https://github.com/raspberrypi/firmware/archive/f5f0453461982c57ea19e5f025eac8489b99e4e4.tar.gz"
+CHKSUMS="SKIP sha256::83b067112973f5f5b03a59ab8524695ca96e4bd42c9f6f880c08e94bd9541b48"
+SUBDIR="./rpi-firmware-uefi"
+
+__FIRMWARE="f5f0453461982c57ea19e5f025eac8489b99e4e4"
