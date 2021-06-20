@@ -27,15 +27,13 @@ if [ ! -z "$(ls -A /boot/rpi 2>/dev/null)" ]; then
   mkdir -p /boot/rpi-backup
   cp -r /boot/rpi/* /boot/rpi-backup/
   echo "Installing kernel..."
-  cp -r /usr/lib/rpi64-boot/* /boot/rpi/
+  cp -r /usr/lib/rpi64/kernel/* /boot/rpi/
 elif [ ! -z "$(grep "/boot/rpi" /etc/fstab)" ]; then
   echo "Installing kernel for the first time..."
   mkdir -p /boot/rpi
   mount -a &>/dev/null
-  cp -r /usr/lib/rpi64-boot/* /boot/rpi/
+  cp -r /usr/lib/rpi64/kernel/* /boot/rpi/
 else
-  echo "We can't find the mountpoint /boot/rpi. You should manually replace your kernel to your boot partition, which is installed to /usr/lib/rpi64-boot."
+  echo "We can't find the mountpoint /boot/rpi. You should manually replace your kernel to your boot partition, which is installed to /usr/lib/rpi64/boot."
 fi
-
 echo "Done installing kernel."
-
