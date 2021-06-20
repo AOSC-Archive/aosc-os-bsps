@@ -34,7 +34,7 @@ make INSTALL_MOD_PATH="$PKGDIR"/usr modules_install
 abinfo "Copying kernel..."
 # make a local copy of compiled kernel
 mkdir -p "$PKGDIR/usr/lib/aosc-os-arm64-boot/linux-kernel-$version$LOCALNAME/"
-# Do this for dracut
+mkdir -p "$PKGDIR/boot"
 cp -v arch/arm64/boot/Image "$PKGDIR/boot/vmlinux-$version$LOCALNAME" 
 cp -v arch/arm64/boot/Image "$PKGDIR/usr/lib/aosc-os-arm64-boot/linux-kernel-$version$LOCALNAME/"
 
