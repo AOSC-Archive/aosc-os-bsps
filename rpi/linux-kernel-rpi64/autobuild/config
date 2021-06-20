@@ -1,6 +1,6 @@
 #
 # Automatically generated file; DO NOT EDIT.
-# Linux/arm64 5.12.6 Kernel Configuration
+# Linux/arm64 5.12.10 Kernel Configuration
 #
 CONFIG_CC_VERSION_TEXT="gcc (GCC) 10.3.1 20210510 (AOSC OS, Core)"
 CONFIG_CC_IS_GCC=y
@@ -7091,7 +7091,10 @@ CONFIG_RPI_AXIPERF=m
 #
 # Android
 #
-# CONFIG_ANDROID is not set
+CONFIG_ANDROID=y
+CONFIG_ANDROID_BINDER_IPC=y
+CONFIG_ANDROID_BINDERFS=y
+CONFIG_ASHMEM=y
 # end of Android
 
 # CONFIG_LIBNVDIMM is not set

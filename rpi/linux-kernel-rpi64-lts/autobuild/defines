@@ -1,4 +1,4 @@
-PKGNAME="linux-kernel-rpi64-lts-5.10.39"
+PKGNAME="linux-kernel-rpi64-lts-5.10.44"
 PKGSEC=kernel
 PKGDEP="dracut"
 BUILDDEP="bc dracut git pahole"
