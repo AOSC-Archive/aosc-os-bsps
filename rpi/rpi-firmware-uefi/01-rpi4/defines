@@ -1,8 +1,11 @@
 PKGNAME="rpi-firmware-uefi-pi4"
 PKGDES="UEFI firmware for Raspberry Pi 4"
 PKGDEP="grub"
-BUILDDEP="gcc+cross-arm64 gcc edk2 acpica-unix"
+BUILDDEP="gcc edk2 acpica-unix"
 
+BUILDDEP__AMD64="${BUILDDEP} gcc+cross-arm64"
+
+FAIL_ARCH="!(amd64|arm64)"
 PKGCONFL="rpi-firmware-boot"
 
 NOLTO=1

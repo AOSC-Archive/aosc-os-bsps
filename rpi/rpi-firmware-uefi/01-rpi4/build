@@ -12,7 +12,9 @@ build
 
 # Set up necessary envs
 export WORKSPACE="$SRCDIR"
-export GCC5_AARCH64_PREFIX="/opt/abcross/arm64/bin/aarch64-aosc-linux-gnu-"
+if [ "$ARCH" != "arm64" ]; then
+	export GCC5_AARCH64_PREFIX="/opt/abcross/arm64/bin/aarch64-aosc-linux-gnu-"
+fi
 export PACKAGES_PATH="$SRCDIR/edk2:$SRCDIR/edk2-platforms:$SRCDIR/edk2-non-osi"
 
 # Prepare build environment
