@@ -1,0 +1,38 @@
+From a7d5e8dbdd888e9832008ded41e96a3dc52fe022 Mon Sep 17 00:00:00 2001
+From: Peter Geis <pgwipeout@gmail.com>
+Date: Sat, 29 May 2021 07:05:55 -0400
+Subject: [PATCH 02/59] net: phy: fix yt8511 clang uninitialized variable
+ warning
+
+clang doesn't preinitialize variables. If phy_select_page failed and
+returned an error, phy_restore_page would be called with `ret` being
+uninitialized.
+Even though phy_restore_page won't use `ret` in this scenario,
+initialize `ret` to silence the warning.
+
+Fixes: 48e8c6f1612b ("net: phy: add driver for Motorcomm yt8511 phy")
+Reported-by: kernel test robot <lkp@intel.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Peter Geis <pgwipeout@gmail.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
+ drivers/net/phy/motorcomm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
+index 796b68f4b499..68cd19540c67 100644
+--- a/drivers/net/phy/motorcomm.c
++++ b/drivers/net/phy/motorcomm.c
+@@ -50,8 +50,8 @@ static int yt8511_write_page(struct phy_device *phydev, int page)
+ 
+ static int yt8511_config_init(struct phy_device *phydev)
+ {
++	int oldpage, ret = 0;
+ 	unsigned int ge, fe;
+-	int ret, oldpage;
+ 
+ 	/* set clock mode to 125mhz */
+ 	oldpage = phy_select_page(phydev, YT8511_EXT_CLK_GATE);
+-- 
+2.30.2
+

@@ -1,4 +1,3 @@
-VER=5.10.2
-REL=1
+VER=5.12.13
 SRCS="tbl::https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${VER}.tar.xz"
-CHKSUMS="sha256::3b84e13abae26af17ebccc4d7212f5843a991127a73a320848d5c6942ef781a2"
+CHKSUMS="sha256::af485fcde5635981e6713b547cc8904a7f6e74e5ffb784cc08781fa5999dd255"

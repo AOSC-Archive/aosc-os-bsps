@@ -1,0 +1,72 @@
+From 8a392033516d6d549643dc2d4f452730c4898ed9 Mon Sep 17 00:00:00 2001
+From: Peter Geis <pgwipeout@gmail.com>
+Date: Sat, 29 May 2021 07:05:56 -0400
+Subject: [PATCH 03/59] net: phy: abort loading yt8511 driver in unsupported
+ modes
+
+While investigating the clang `ge` uninitialized variable report, it was
+discovered the default switch would have unintended consequences. Due to
+the switch to __phy_modify, the driver would modify the ID values in the
+default scenario.
+
+Fix this by promoting the interface mode switch and aborting when the
+mode is not a supported RGMII mode.
+
+This prevents the `ge` and `fe` variables from ever being used
+uninitialized.
+
+Fixes: 48e8c6f1612b ("net: phy: add driver for Motorcomm yt8511 phy")
+Reported-by: kernel test robot <lkp@intel.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Peter Geis <pgwipeout@gmail.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
+ drivers/net/phy/motorcomm.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
+index 68cd19540c67..7e6ac2c5e27e 100644
+--- a/drivers/net/phy/motorcomm.c
++++ b/drivers/net/phy/motorcomm.c
+@@ -53,15 +53,10 @@ static int yt8511_config_init(struct phy_device *phydev)
+ 	int oldpage, ret = 0;
+ 	unsigned int ge, fe;
+ 
+-	/* set clock mode to 125mhz */
+ 	oldpage = phy_select_page(phydev, YT8511_EXT_CLK_GATE);
+ 	if (oldpage < 0)
+ 		goto err_restore_page;
+ 
+-	ret = __phy_modify(phydev, YT8511_PAGE, 0, YT8511_CLK_125M);
+-	if (ret < 0)
+-		goto err_restore_page;
+-
+ 	/* set rgmii delay mode */
+ 	switch (phydev->interface) {
+ 	case PHY_INTERFACE_MODE_RGMII:
+@@ -80,14 +75,20 @@ static int yt8511_config_init(struct phy_device *phydev)
+ 		ge = YT8511_DELAY_RX | YT8511_DELAY_GE_TX_EN;
+ 		fe = YT8511_DELAY_FE_TX_EN;
+ 		break;
+-	default: /* leave everything alone in other modes */
+-		break;
++	default: /* do not support other modes */
++		ret = -EOPNOTSUPP;
++		goto err_restore_page;
+ 	}
+ 
+ 	ret = __phy_modify(phydev, YT8511_PAGE, (YT8511_DELAY_RX | YT8511_DELAY_GE_TX_EN), ge);
+ 	if (ret < 0)
+ 		goto err_restore_page;
+ 
++	/* set clock mode to 125mhz */
++	ret = __phy_modify(phydev, YT8511_PAGE, 0, YT8511_CLK_125M);
++	if (ret < 0)
++		goto err_restore_page;
++
+ 	/* fast ethernet delay is in a separate page */
+ 	ret = __phy_write(phydev, YT8511_PAGE_SELECT, YT8511_EXT_DELAY_DRIVE);
+ 	if (ret < 0)
+-- 
+2.30.2
+
