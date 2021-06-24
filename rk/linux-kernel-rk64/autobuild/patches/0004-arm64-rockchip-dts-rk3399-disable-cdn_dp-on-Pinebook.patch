@@ -1,7 +1,7 @@
-From 80c0eca0830dc3fbdb3a6460a395ffa22ad761cb Mon Sep 17 00:00:00 2001
+From 852730bd472ec13b936a8da2733ee7b208706a1b Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 30 Nov 2020 22:50:50 +0800
-Subject: [PATCH 4/6] arm64: rockchip: dts: rk3399: disable cdn_dp on Pinebook
+Subject: [PATCH 4/7] arm64: rockchip: dts: rk3399: disable cdn_dp on Pinebook
  Pro
 
 The corresponding extcon support for fusb302 is not yet available, and
@@ -33,5 +33,5 @@ index 219b7507a10f..4297c1db5a41 100644
  	cpu-supply = <&vdd_cpu_b>;
  };
 -- 
-2.30.0
+2.30.2
 

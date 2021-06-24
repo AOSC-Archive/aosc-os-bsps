@@ -1,7 +1,7 @@
-From 2737ae5ea6c2e8aaf21995765cbcc2d3a1a5d834 Mon Sep 17 00:00:00 2001
+From 2dbe1d7fd7aa4a3335f9d430f5521f97b2a3b18a Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 1 Dec 2020 16:19:04 +0800
-Subject: [PATCH 6/6] arm64: rockchip: dts: rk3399: fix PD on Pinebook Pro
+Subject: [PATCH 6/7] arm64: rockchip: dts: rk3399: fix PD on Pinebook Pro
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---
@@ -33,5 +33,5 @@ index 009da0bfdc8b..50f9339640c0 100644
  			ports {
  				#address-cells = <1>;
 -- 
-2.30.0
+2.30.2
 

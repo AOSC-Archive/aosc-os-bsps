@@ -1,31 +1,32 @@
-From 19435a842dafc9bc69ca0999d0f1fc44c831b4b9 Mon Sep 17 00:00:00 2001
+From 0e6dec24805d6d83ec76b0d999702ef2aee83af2 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 30 Nov 2020 22:05:28 +0800
-Subject: [PATCH 3/6] AOSC: arm64: dts: rockchip: stick aliases to AOSC
+Subject: [PATCH 3/7] AOSC: arm64: dts: rockchip: stick aliases to AOSC
  assignment
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---
- arch/arm64/boot/dts/rockchip/rk3328.dtsi | 3 +++
+ arch/arm64/boot/dts/rockchip/rk3328.dtsi | 4 ++--
  arch/arm64/boot/dts/rockchip/rk3399.dtsi | 6 +++---
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/arch/arm64/boot/dts/rockchip/rk3328.dtsi b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
-index 93c734d8a46c..0ae11f7b3fc2 100644
+index 063ed0adbec4..449a58a2ee62 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3328.dtsi
 +++ b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
-@@ -29,6 +29,9 @@ aliases {
+@@ -28,8 +28,8 @@ aliases {
+ 		i2c2 = &i2c2;
  		i2c3 = &i2c3;
- 		ethernet0 = &gmac2io;
- 		ethernet1 = &gmac2phy;
-+		mmc0 = &sdmmc;
+ 		mmc0 = &sdmmc;
+-		mmc1 = &sdio;
+-		mmc2 = &emmc;
 +		mmc1 = &emmc;
 +		mmc2 = &sdio;
+ 		ethernet0 = &gmac2io;
+ 		ethernet1 = &gmac2phy;
  	};
- 
- 	cpus {
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399.dtsi b/arch/arm64/boot/dts/rockchip/rk3399.dtsi
-index 7e69603fb41c..8d834b8e9cbd 100644
+index edbbf35fe19e..f7daa13ea5c2 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3399.dtsi
 +++ b/arch/arm64/boot/dts/rockchip/rk3399.dtsi
 @@ -29,9 +29,9 @@ aliases {
@@ -42,5 +43,5 @@ index 7e69603fb41c..8d834b8e9cbd 100644
  		serial1 = &uart1;
  		serial2 = &uart2;
 -- 
-2.30.0
+2.30.2
 

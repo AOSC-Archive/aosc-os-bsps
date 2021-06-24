@@ -1,7 +1,7 @@
-From 24e80fe32e096fa3fc546890b19fe9c92dd81417 Mon Sep 17 00:00:00 2001
+From 313a7e4a79f0b561731bcaa457368bfe1737a2bf Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Kamil=20Trzci=C5=84ski?= <ayufan@ayufan.eu>
 Date: Fri, 8 Mar 2019 23:13:52 +0100
-Subject: [PATCH 2/6] ayufan: stmmac: disable TX offload for mtu bigger than
+Subject: [PATCH 2/7] ayufan: stmmac: disable TX offload for mtu bigger than
  1498
 
 ---
@@ -13,10 +13,10 @@ Subject: [PATCH 2/6] ayufan: stmmac: disable TX offload for mtu bigger than
  5 files changed, 9 insertions(+), 1 deletion(-)
 
 diff --git a/arch/arm64/boot/dts/rockchip/rk3328-rock64.dts b/arch/arm64/boot/dts/rockchip/rk3328-rock64.dts
-index 86cfb5c50a94..97a323c1e931 100644
+index c984662043da..c1ee4e2dbf20 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3328-rock64.dts
 +++ b/arch/arm64/boot/dts/rockchip/rk3328-rock64.dts
-@@ -150,7 +150,7 @@ &gmac2io {
+@@ -148,7 +148,7 @@ &gmac2io {
  	phy-mode = "rgmii";
  	pinctrl-names = "default";
  	pinctrl-0 = <&rgmiim1_pins>;
@@ -26,10 +26,10 @@ index 86cfb5c50a94..97a323c1e931 100644
  	snps,reset-active-low;
  	snps,reset-delays-us = <0 10000 50000>;
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi
-index 5ccf04f2d66c..635750adc1b9 100644
+index 427036b1357d..db319a4f5a2e 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi
 +++ b/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi
-@@ -227,6 +227,7 @@ &gmac {
+@@ -244,6 +244,7 @@ &gmac {
  	phy-mode = "rgmii";
  	pinctrl-names = "default";
  	pinctrl-0 = <&rgmii_pins>;
@@ -38,10 +38,10 @@ index 5ccf04f2d66c..635750adc1b9 100644
  	snps,reset-active-low;
  	snps,reset-delays-us = <0 10000 50000>;
 diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index b3d6d8e3f4de..3bb5dafdba87 100644
+index 492415790b13..e31d9986d401 100644
 --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
 +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -4040,6 +4040,10 @@ static netdev_features_t stmmac_fix_features(struct net_device *dev,
+@@ -4099,6 +4099,10 @@ static netdev_features_t stmmac_fix_features(struct net_device *dev,
  	if (priv->plat->bugged_jumbo && (dev->mtu > ETH_DATA_LEN))
  		features &= ~NETIF_F_CSUM_MASK;
  
@@ -53,10 +53,10 @@ index b3d6d8e3f4de..3bb5dafdba87 100644
  	if ((priv->plat->tso_en) && (priv->dma_cap.tsoen)) {
  		if (features & NETIF_F_TSO)
 diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-index af34a4cadbb0..586d2e649e31 100644
+index 7e6bead6429c..1234fab64cc0 100644
 --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
 +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-@@ -555,6 +555,8 @@ stmmac_probe_config_dt(struct platform_device *pdev, const char **mac)
+@@ -556,6 +556,8 @@ stmmac_probe_config_dt(struct platform_device *pdev, const char **mac)
  			 "force_sf_dma_mode is ignored if force_thresh_dma_mode is set.\n");
  	}
  
@@ -66,7 +66,7 @@ index af34a4cadbb0..586d2e649e31 100644
  
  	plat->axi = stmmac_axi_setup(pdev);
 diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
-index 15ca6b4167cc..76dcc81898d7 100644
+index a302982de2d7..570d53be256e 100644
 --- a/include/linux/stmmac.h
 +++ b/include/linux/stmmac.h
 @@ -163,6 +163,7 @@ struct plat_stmmacenet_data {
@@ -78,5 +78,5 @@ index 15ca6b4167cc..76dcc81898d7 100644
  	int max_speed;
  	int maxmtu;
 -- 
-2.30.0
+2.30.2
 
