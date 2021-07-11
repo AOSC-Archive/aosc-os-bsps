@@ -1,7 +1,7 @@
-From 5592c8504a803f4673865b25c48d5472144827cc Mon Sep 17 00:00:00 2001
+From 20b8959e3980479d91853a5991c30ac834033eb1 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 16 Jun 2021 02:07:07 +0800
-Subject: [PATCH 4/8] arm: dts: rockchip: misc fixes to Pinebook Pro DT
+Subject: [PATCH 05/11] arm: dts: rockchip: misc fixes to Pinebook Pro DT
 
 This is from patches from AOSC OS.
 

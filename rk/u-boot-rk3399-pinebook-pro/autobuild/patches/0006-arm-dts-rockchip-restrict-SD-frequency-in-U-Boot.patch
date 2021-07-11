@@ -1,7 +1,7 @@
-From 3510ba483858da29e985256c64b68a960071d126 Mon Sep 17 00:00:00 2001
+From 9561472d164c00d78c196f5fc84934d56765296f Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 16 Jun 2021 02:38:56 +0800
-Subject: [PATCH 5/8] arm: dts: rockchip: restrict SD frequency in U-Boot
+Subject: [PATCH 06/11] arm: dts: rockchip: restrict SD frequency in U-Boot
 
 Fixes boot issue from SD.
 

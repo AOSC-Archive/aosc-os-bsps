@@ -1,7 +1,7 @@
-From 029b5455e4f28f3009778674fca21947451854f4 Mon Sep 17 00:00:00 2001
+From f8d9ce2022c19d29a0112aea470a1487657e6f61 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 16 Jun 2021 02:05:29 +0800
-Subject: [PATCH 2/8] arm: dts: rockchip: update Pinebook Pro DT
+Subject: [PATCH 02/11] arm: dts: rockchip: update Pinebook Pro DT
 
 Sync Pinebook DT from Linux 5.12.
 

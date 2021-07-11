@@ -1,7 +1,7 @@
-From b984c6ea10299877aaaad56cc2622171694c3c8b Mon Sep 17 00:00:00 2001
+From 21c37c1cad7d1532033bd9478a618b9c74d96cc3 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 16 Jun 2021 04:19:01 +0800
-Subject: [PATCH 6/8] rockchip: add defconfig for PBP SPI Flash firmware
+Subject: [PATCH 07/11] rockchip: add defconfig for PBP SPI Flash firmware
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---

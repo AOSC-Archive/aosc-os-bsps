@@ -1,7 +1,7 @@
-From 2d5da39a7c60483eecfb8d24182c46d38bbe6558 Mon Sep 17 00:00:00 2001
+From 22b91bfaf15e7b561d72391944222724c00cac6b Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 16 Jun 2021 05:12:51 +0800
-Subject: [PATCH 8/8] rockchip: disable EFI GOP on Pinebook Pro
+Subject: [PATCH 09/11] rockchip: disable EFI GOP on Pinebook Pro
 
 It cannot be utilized by OS well.
 
@@ -12,7 +12,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  2 files changed, 2 insertions(+)
 
 diff --git a/configs/pinebook-pro-rk3399_defconfig b/configs/pinebook-pro-rk3399_defconfig
-index c4bab29a06..9d3765ea6c 100644
+index f97d5e872b..33b959ab47 100644
 --- a/configs/pinebook-pro-rk3399_defconfig
 +++ b/configs/pinebook-pro-rk3399_defconfig
 @@ -91,3 +91,4 @@ CONFIG_VIDEO_ROCKCHIP=y

@@ -1,0 +1,96 @@
+From 70c76d93a76faa9e1b6c0b7fc1572d99eeff3df1 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Mon, 12 Jul 2021 02:30:48 +0800
+Subject: [PATCH 11/11] rk_vop remove
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ drivers/video/rockchip/rk3288_vop.c | 13 -------------
+ drivers/video/rockchip/rk3399_vop.c |  1 +
+ drivers/video/rockchip/rk_vop.c     | 13 +++++++++++++
+ drivers/video/rockchip/rk_vop.h     | 10 ++++++++++
+ 4 files changed, 24 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/video/rockchip/rk3288_vop.c b/drivers/video/rockchip/rk3288_vop.c
+index 44f32bb5fa..2de8314939 100644
+--- a/drivers/video/rockchip/rk3288_vop.c
++++ b/drivers/video/rockchip/rk3288_vop.c
+@@ -71,19 +71,6 @@ static int rk3288_vop_probe(struct udevice *dev)
+ 	return rk_vop_probe(dev);
+ }
+ 
+-static int rk_vop_remove(struct udevice *dev)
+-{
+-	struct rk_vop_priv *priv = dev_get_priv(dev);
+-        struct rk3288_vop *regs = priv->regs;
+-
+-	setbits_le32(&regs->sys_ctrl, V_STANDBY_EN(1));
+-
+-	/* wait frame complete (60Hz) to enter standby */
+-	mdelay(17);
+-
+-	return 0;
+-}
+-
+ struct rkvop_driverdata rk3288_driverdata = {
+ 	.features = VOP_FEATURE_OUTPUT_10BIT,
+ 	.set_pin_polarity = rk3288_set_pin_polarity,
+diff --git a/drivers/video/rockchip/rk3399_vop.c b/drivers/video/rockchip/rk3399_vop.c
+index a34b491058..d61a830184 100644
+--- a/drivers/video/rockchip/rk3399_vop.c
++++ b/drivers/video/rockchip/rk3399_vop.c
+@@ -100,5 +100,6 @@ U_BOOT_DRIVER(rk3399_vop) = {
+ 	.ops	= &rk3399_vop_ops,
+ 	.bind	= rk_vop_bind,
+ 	.probe	= rk3399_vop_probe,
++	.remove	= rk_vop_remove,
+ 	.priv_auto	= sizeof(struct rk_vop_priv),
+ };
+diff --git a/drivers/video/rockchip/rk_vop.c b/drivers/video/rockchip/rk_vop.c
+index fe0574870f..32c1dd03fa 100644
+--- a/drivers/video/rockchip/rk_vop.c
++++ b/drivers/video/rockchip/rk_vop.c
+@@ -477,6 +477,19 @@ int rk_vop_probe(struct udevice *dev)
+ 	return ret;
+ }
+ 
++int rk_vop_remove(struct udevice *dev)
++{
++	struct rk_vop_priv *priv = dev_get_priv(dev);
++	struct rk3288_vop *regs = priv->regs;
++
++	setbits_le32(&regs->sys_ctrl, V_STANDBY_EN(1));
++
++	/* wait frame complete (60Hz) to enter standby */
++	mdelay(17);
++
++	return 0;
++}
++
+ int rk_vop_bind(struct udevice *dev)
+ {
+ 	struct video_uc_plat *plat = dev_get_uclass_plat(dev);
+diff --git a/drivers/video/rockchip/rk_vop.h b/drivers/video/rockchip/rk_vop.h
+index 53a79c04b5..8608f7c63d 100644
+--- a/drivers/video/rockchip/rk_vop.h
++++ b/drivers/video/rockchip/rk_vop.h
+@@ -36,6 +36,16 @@ struct rkvop_driverdata {
+  */
+ int rk_vop_probe(struct udevice *dev);
+ 
++/**
++ * rk_vop_remove() - common remove implementation
++ *
++ * Suspend the VOP's operation.
++ *
++ * @dev:	device
++ * @return 0 if OK, -ve if something went wrong
++ */
++int rk_vop_remove(struct udevice *dev);
++
+ /**
+  * rk_vop_bind() - common bind implementation
+  *
+-- 
+2.30.2
+

@@ -1,7 +1,7 @@
-From d2f6afd690ca632387e031d6ac37ce7416a36930 Mon Sep 17 00:00:00 2001
+From 4ddc15d7c932caeda6b0d08737c1498b67b9b1d8 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 6 Apr 2021 23:03:10 +0800
-Subject: [PATCH 1/8] phy: rockchip: inno-usb2: fix hang when multiple
+Subject: [PATCH 01/11] phy: rockchip: inno-usb2: fix hang when multiple
  controllers exit
 
 The OHCI and EHCI controllers are both bound to the same PHY. They will

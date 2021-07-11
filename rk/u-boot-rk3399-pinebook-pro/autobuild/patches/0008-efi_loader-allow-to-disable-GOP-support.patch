@@ -1,7 +1,7 @@
-From 8d49a76168089a370ba6c9628a7a09fe29310230 Mon Sep 17 00:00:00 2001
+From 19a98eab5a0c04a3c52b84051ce00975fca195d2 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 16 Jun 2021 05:08:09 +0800
-Subject: [PATCH 7/8] efi_loader: allow to disable GOP support
+Subject: [PATCH 08/11] efi_loader: allow to disable GOP support
 
 Sometimes EFI GOP support may be not wanted (e.g. because the operating
 system cannot operate well with it) even if video support in U-Boot is
@@ -17,10 +17,10 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  3 files changed, 15 insertions(+), 7 deletions(-)
 
 diff --git a/lib/efi_loader/Kconfig b/lib/efi_loader/Kconfig
-index 6242caceb7..5ba0ce6a44 100644
+index 156b391521..97b93e5012 100644
 --- a/lib/efi_loader/Kconfig
 +++ b/lib/efi_loader/Kconfig
-@@ -282,6 +282,14 @@ config EFI_HAVE_RUNTIME_RESET
+@@ -291,6 +291,14 @@ config EFI_HAVE_RUNTIME_RESET
  	depends on ARCH_BCM283X || FSL_LAYERSCAPE || PSCI_RESET || \
  		   SANDBOX || SYSRESET_X86
  
@@ -50,12 +50,12 @@ index fd344cea29..826563d9a7 100644
  obj-$(CONFIG_NET) += efi_net.o
  obj-$(CONFIG_GENERATE_ACPI_TABLE) += efi_acpi.o
 diff --git a/lib/efi_loader/efi_setup.c b/lib/efi_loader/efi_setup.c
-index 3c5cf9a435..98deb63777 100644
+index a2338d74af..479948b173 100644
 --- a/lib/efi_loader/efi_setup.c
 +++ b/lib/efi_loader/efi_setup.c
-@@ -254,11 +254,12 @@ efi_status_t efi_init_obj_list(void)
- 	if (ret != EFI_SUCCESS)
- 		goto out;
+@@ -294,11 +294,12 @@ efi_status_t efi_init_obj_list(void)
+ 			goto out;
+ 	}
  
 -#if defined(CONFIG_LCD) || defined(CONFIG_DM_VIDEO)
 -	ret = efi_gop_register();
