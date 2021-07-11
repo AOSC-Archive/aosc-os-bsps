@@ -1,4 +1,4 @@
-From 5ebe2942601639b205af438eaed9c8a70a754b2a Mon Sep 17 00:00:00 2001
+From 6a8f1ffef384e7117a3760148c7d134ec9bfd87c Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 26 May 2021 16:47:18 +0800
 Subject: [PATCH 7/7] drm/rockchip: kick firmware-based framebuffer when

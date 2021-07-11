@@ -1,4 +1,4 @@
-From 0e6dec24805d6d83ec76b0d999702ef2aee83af2 Mon Sep 17 00:00:00 2001
+From 5a3103f5268b1df022b9af2e6f57adef6880123e Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 30 Nov 2020 22:05:28 +0800
 Subject: [PATCH 3/7] AOSC: arm64: dts: rockchip: stick aliases to AOSC
@@ -6,42 +6,610 @@ Subject: [PATCH 3/7] AOSC: arm64: dts: rockchip: stick aliases to AOSC
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---
- arch/arm64/boot/dts/rockchip/rk3328.dtsi | 4 ++--
- arch/arm64/boot/dts/rockchip/rk3399.dtsi | 6 +++---
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ arch/arm64/boot/dts/rockchip/px30-engicam-common.dtsi      | 2 --
+ arch/arm64/boot/dts/rockchip/px30-engicam-px30-core.dtsi   | 1 -
+ arch/arm64/boot/dts/rockchip/px30-evb.dts                  | 3 ---
+ arch/arm64/boot/dts/rockchip/rk3308-roc-cc.dts             | 2 --
+ arch/arm64/boot/dts/rockchip/rk3318-a95x-z2.dts            | 3 ---
+ arch/arm64/boot/dts/rockchip/rk3326-odroid-go2.dts         | 1 -
+ arch/arm64/boot/dts/rockchip/rk3328-a1.dts                 | 2 --
+ arch/arm64/boot/dts/rockchip/rk3328-evb.dts                | 3 ---
+ arch/arm64/boot/dts/rockchip/rk3328-nanopi-r2s.dts         | 1 -
+ arch/arm64/boot/dts/rockchip/rk3328-roc-cc.dts             | 2 --
+ arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts          | 2 --
+ arch/arm64/boot/dts/rockchip/rk3328-rock64.dts             | 2 --
+ arch/arm64/boot/dts/rockchip/rk3328.dtsi                   | 3 +++
+ arch/arm64/boot/dts/rockchip/rk3368-evb.dtsi               | 1 -
+ arch/arm64/boot/dts/rockchip/rk3368-geekbox.dts            | 1 -
+ arch/arm64/boot/dts/rockchip/rk3368-lion-haikou.dts        | 1 -
+ arch/arm64/boot/dts/rockchip/rk3368-lion.dtsi              | 1 -
+ arch/arm64/boot/dts/rockchip/rk3368-orion-r68-meta.dts     | 2 --
+ arch/arm64/boot/dts/rockchip/rk3368-px5-evb.dts            | 2 --
+ arch/arm64/boot/dts/rockchip/rk3368-r88.dts                | 2 --
+ arch/arm64/boot/dts/rockchip/rk3399-evb.dts                | 1 -
+ arch/arm64/boot/dts/rockchip/rk3399-firefly.dts            | 3 ---
+ arch/arm64/boot/dts/rockchip/rk3399-gru.dtsi               | 2 --
+ arch/arm64/boot/dts/rockchip/rk3399-hugsun-x99.dts         | 3 ---
+ arch/arm64/boot/dts/rockchip/rk3399-khadas-edge.dtsi       | 3 ---
+ arch/arm64/boot/dts/rockchip/rk3399-kobol-helios64.dts     | 2 --
+ arch/arm64/boot/dts/rockchip/rk3399-leez-p710.dts          | 3 ---
+ arch/arm64/boot/dts/rockchip/rk3399-nanopi4.dtsi           | 3 ---
+ arch/arm64/boot/dts/rockchip/rk3399-orangepi.dts           | 3 ---
+ arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts       | 3 ---
+ arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts        | 1 -
+ arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi              | 1 -
+ arch/arm64/boot/dts/rockchip/rk3399-roc-pc-mezzanine.dts   | 1 -
+ arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi            | 2 --
+ arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi         | 2 --
+ arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4b.dts         | 1 -
+ arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4c.dts         | 1 -
+ arch/arm64/boot/dts/rockchip/rk3399-rock960.dtsi           | 3 ---
+ arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi         | 3 ---
+ arch/arm64/boot/dts/rockchip/rk3399-sapphire-excavator.dts | 1 -
+ arch/arm64/boot/dts/rockchip/rk3399-sapphire.dtsi          | 2 --
+ arch/arm64/boot/dts/rockchip/rk3399.dtsi                   | 3 +++
+ arch/arm64/boot/dts/rockchip/rk3399pro-vmarc-som.dtsi      | 2 --
+ 43 files changed, 6 insertions(+), 80 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3328.dtsi b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
-index 063ed0adbec4..449a58a2ee62 100644
---- a/arch/arm64/boot/dts/rockchip/rk3328.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
-@@ -28,8 +28,8 @@ aliases {
- 		i2c2 = &i2c2;
- 		i2c3 = &i2c3;
- 		mmc0 = &sdmmc;
+diff --git a/arch/arm64/boot/dts/rockchip/px30-engicam-common.dtsi b/arch/arm64/boot/dts/rockchip/px30-engicam-common.dtsi
+index 3429e124d95a..3286eb8258d8 100644
+--- a/arch/arm64/boot/dts/rockchip/px30-engicam-common.dtsi
++++ b/arch/arm64/boot/dts/rockchip/px30-engicam-common.dtsi
+@@ -7,8 +7,6 @@
+ 
+ / {
+ 	aliases {
+-		mmc1 = &sdmmc;
+-		mmc2 = &sdio;
+ 	};
+ 
+ 	vcc5v0_sys: vcc5v0-sys {
+diff --git a/arch/arm64/boot/dts/rockchip/px30-engicam-px30-core.dtsi b/arch/arm64/boot/dts/rockchip/px30-engicam-px30-core.dtsi
+index 7249871530ab..4b413b91164b 100644
+--- a/arch/arm64/boot/dts/rockchip/px30-engicam-px30-core.dtsi
++++ b/arch/arm64/boot/dts/rockchip/px30-engicam-px30-core.dtsi
+@@ -13,7 +13,6 @@ / {
+ 	compatible = "engicam,px30-core", "rockchip,px30";
+ 
+ 	aliases {
+-		mmc0 = &emmc;
+ 	};
+ };
+ 
+diff --git a/arch/arm64/boot/dts/rockchip/px30-evb.dts b/arch/arm64/boot/dts/rockchip/px30-evb.dts
+index c1ce9c295e5b..978c3a7957ec 100644
+--- a/arch/arm64/boot/dts/rockchip/px30-evb.dts
++++ b/arch/arm64/boot/dts/rockchip/px30-evb.dts
+@@ -14,9 +14,6 @@ / {
+ 	compatible = "rockchip,px30-evb", "rockchip,px30";
+ 
+ 	aliases {
+-		mmc0 = &sdmmc;
 -		mmc1 = &sdio;
 -		mmc2 = &emmc;
+ 	};
+ 
+ 	chosen {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3308-roc-cc.dts b/arch/arm64/boot/dts/rockchip/rk3308-roc-cc.dts
+index 3dddd4742c3a..c8f15c50b76b 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3308-roc-cc.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3308-roc-cc.dts
+@@ -11,8 +11,6 @@ / {
+ 	compatible = "firefly,roc-rk3308-cc", "rockchip,rk3308";
+ 
+ 	aliases {
+-		mmc0 = &sdmmc;
+-		mmc1 = &emmc;
+ 	};
+ 
+ 	chosen {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3318-a95x-z2.dts b/arch/arm64/boot/dts/rockchip/rk3318-a95x-z2.dts
+index 763cf9b4620e..eaedd3d85adf 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3318-a95x-z2.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3318-a95x-z2.dts
+@@ -9,9 +9,6 @@ / {
+ 	compatible = "zkmagic,a95x-z2", "rockchip,rk3318";
+ 
+ 	aliases {
+-		mmc0 = &sdmmc;
+-		mmc1 = &sdio;
+-		mmc2 = &emmc;
+ 	};
+ 
+ 	chosen {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3326-odroid-go2.dts b/arch/arm64/boot/dts/rockchip/rk3326-odroid-go2.dts
+index 49c97f76df77..b6d029dd8aa7 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3326-odroid-go2.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3326-odroid-go2.dts
+@@ -15,7 +15,6 @@ / {
+ 	compatible = "hardkernel,rk3326-odroid-go2", "rockchip,rk3326";
+ 
+ 	aliases {
+-		mmc0 = &sdmmc;
+ 	};
+ 
+ 	chosen {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3328-a1.dts b/arch/arm64/boot/dts/rockchip/rk3328-a1.dts
+index de2d3e88e27f..67168bef0b20 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3328-a1.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3328-a1.dts
+@@ -9,8 +9,6 @@ / {
+ 	compatible = "azw,beelink-a1", "rockchip,rk3328";
+ 
+ 	aliases {
+-		mmc0 = &sdmmc;
+-		mmc1 = &emmc;
+ 	};
+ 
+ 	/*
+diff --git a/arch/arm64/boot/dts/rockchip/rk3328-evb.dts b/arch/arm64/boot/dts/rockchip/rk3328-evb.dts
+index ff6b466e0e07..afc9024c3f2e 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3328-evb.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3328-evb.dts
+@@ -11,9 +11,6 @@ / {
+ 	compatible = "rockchip,rk3328-evb", "rockchip,rk3328";
+ 
+ 	aliases {
+-		mmc0 = &sdmmc;
+-		mmc1 = &sdio;
+-		mmc2 = &emmc;
+ 	};
+ 
+ 	chosen {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3328-nanopi-r2s.dts b/arch/arm64/boot/dts/rockchip/rk3328-nanopi-r2s.dts
+index f807bc066ccb..ebd6f3b8cf72 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3328-nanopi-r2s.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3328-nanopi-r2s.dts
+@@ -14,7 +14,6 @@ / {
+ 	compatible = "friendlyarm,nanopi-r2s", "rockchip,rk3328";
+ 
+ 	aliases {
+-		mmc0 = &sdmmc;
+ 	};
+ 
+ 	chosen {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3328-roc-cc.dts b/arch/arm64/boot/dts/rockchip/rk3328-roc-cc.dts
+index a05732b59f38..e17e1ebb99ae 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3328-roc-cc.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3328-roc-cc.dts
+@@ -11,8 +11,6 @@ / {
+ 	compatible = "firefly,roc-rk3328-cc", "rockchip,rk3328";
+ 
+ 	aliases {
+-		mmc0 = &sdmmc;
+-		mmc1 = &emmc;
+ 	};
+ 
+ 	chosen {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts b/arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts
+index c7e31efdd2e1..fcd76fa28b2e 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts
+@@ -21,8 +21,6 @@ / {
+ 	compatible = "radxa,rockpi-e", "rockchip,rk3328";
+ 
+ 	aliases {
+-		mmc0 = &sdmmc;
+-		mmc1 = &emmc;
+ 	};
+ 
+ 	chosen {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3328-rock64.dts b/arch/arm64/boot/dts/rockchip/rk3328-rock64.dts
+index 12d46b040e95..92c511bf2f1b 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3328-rock64.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3328-rock64.dts
+@@ -11,8 +11,6 @@ / {
+ 	compatible = "pine64,rock64", "rockchip,rk3328";
+ 
+ 	aliases {
+-		mmc0 = &sdmmc;
+-		mmc1 = &emmc;
+ 	};
+ 
+ 	chosen {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3328.dtsi b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
+index 3ed69ecbcf3c..b8071462aeb8 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3328.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
+@@ -27,6 +27,9 @@ aliases {
+ 		i2c1 = &i2c1;
+ 		i2c2 = &i2c2;
+ 		i2c3 = &i2c3;
++		mmc0 = &sdmmc;
 +		mmc1 = &emmc;
 +		mmc2 = &sdio;
  		ethernet0 = &gmac2io;
  		ethernet1 = &gmac2phy;
  	};
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399.dtsi b/arch/arm64/boot/dts/rockchip/rk3399.dtsi
-index edbbf35fe19e..f7daa13ea5c2 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399.dtsi
-@@ -29,9 +29,9 @@ aliases {
- 		i2c6 = &i2c6;
- 		i2c7 = &i2c7;
- 		i2c8 = &i2c8;
+diff --git a/arch/arm64/boot/dts/rockchip/rk3368-evb.dtsi b/arch/arm64/boot/dts/rockchip/rk3368-evb.dtsi
+index 15d1fc541c38..6e57c6ca7646 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3368-evb.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3368-evb.dtsi
+@@ -9,7 +9,6 @@
+ 
+ / {
+ 	aliases {
+-		mmc0 = &emmc;
+ 	};
+ 
+ 	chosen {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3368-geekbox.dts b/arch/arm64/boot/dts/rockchip/rk3368-geekbox.dts
+index 62aa97a0b8c9..ff68707f40b6 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3368-geekbox.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3368-geekbox.dts
+@@ -12,7 +12,6 @@ / {
+ 	compatible = "geekbuying,geekbox", "rockchip,rk3368";
+ 
+ 	aliases {
+-		mmc0 = &emmc;
+ 	};
+ 
+ 	chosen {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3368-lion-haikou.dts b/arch/arm64/boot/dts/rockchip/rk3368-lion-haikou.dts
+index cae01d35b93d..b90f6c49583a 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3368-lion-haikou.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3368-lion-haikou.dts
+@@ -11,7 +11,6 @@ / {
+ 	compatible = "tsd,rk3368-lion-haikou", "rockchip,rk3368";
+ 
+ 	aliases {
+-		mmc1 = &sdmmc;
+ 	};
+ 
+ 	chosen {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3368-lion.dtsi b/arch/arm64/boot/dts/rockchip/rk3368-lion.dtsi
+index bcd7977fb0f8..12619fcd4376 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3368-lion.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3368-lion.dtsi
+@@ -8,7 +8,6 @@
+ 
+ / {
+ 	aliases {
+-		mmc0 = &emmc;
+ 	};
+ 
+ 	chosen {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3368-orion-r68-meta.dts b/arch/arm64/boot/dts/rockchip/rk3368-orion-r68-meta.dts
+index 3ebe15e03cf4..7f79d30ce28a 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3368-orion-r68-meta.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3368-orion-r68-meta.dts
+@@ -12,8 +12,6 @@ / {
+ 	compatible = "tronsmart,orion-r68-meta", "rockchip,rk3368";
+ 
+ 	aliases {
+-		mmc0 = &sdmmc;
+-		mmc1 = &emmc;
+ 	};
+ 
+ 	chosen {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3368-px5-evb.dts b/arch/arm64/boot/dts/rockchip/rk3368-px5-evb.dts
+index 5ccaa5f7a370..03dabec49424 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3368-px5-evb.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3368-px5-evb.dts
+@@ -12,8 +12,6 @@ / {
+ 	compatible = "rockchip,px5-evb", "rockchip,px5", "rockchip,rk3368";
+ 
+ 	aliases {
+-		mmc0 = &sdmmc;
+-		mmc1 = &emmc;
+ 	};
+ 
+ 	chosen {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3368-r88.dts b/arch/arm64/boot/dts/rockchip/rk3368-r88.dts
+index 959d3cc801f2..baa318610dd2 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3368-r88.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3368-r88.dts
+@@ -12,8 +12,6 @@ / {
+ 	compatible = "rockchip,r88", "rockchip,rk3368";
+ 
+ 	aliases {
+-		mmc0 = &sdio0;
+-		mmc1 = &emmc;
+ 	};
+ 
+ 	chosen {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-evb.dts b/arch/arm64/boot/dts/rockchip/rk3399-evb.dts
+index 7b717ebec8ff..5cb66b950ca6 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-evb.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-evb.dts
+@@ -12,7 +12,6 @@ / {
+ 	compatible = "rockchip,rk3399-evb", "rockchip,rk3399";
+ 
+ 	aliases {
+-		mmc0 = &sdhci;
+ 	};
+ 
+ 	backlight: backlight {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-firefly.dts b/arch/arm64/boot/dts/rockchip/rk3399-firefly.dts
+index 45254be1350d..2b9c174643f5 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-firefly.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-firefly.dts
+@@ -14,9 +14,6 @@ / {
+ 	compatible = "firefly,firefly-rk3399", "rockchip,rk3399";
+ 
+ 	aliases {
 -		mmc0 = &sdio0;
 -		mmc1 = &sdmmc;
 -		mmc2 = &sdhci;
+ 	};
+ 
+ 	chosen {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-gru.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-gru.dtsi
+index 4002742fed4c..17dd177947b2 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-gru.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-gru.dtsi
+@@ -11,8 +11,6 @@
+ 
+ / {
+ 	aliases {
+-		mmc0 = &sdmmc;
+-		mmc1 = &sdhci;
+ 	};
+ 
+ 	chosen {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-hugsun-x99.dts b/arch/arm64/boot/dts/rockchip/rk3399-hugsun-x99.dts
+index bee45c17e2ca..2a551256f6cf 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-hugsun-x99.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-hugsun-x99.dts
+@@ -10,9 +10,6 @@ / {
+ 	compatible = "hugsun,x99", "rockchip,rk3399";
+ 
+ 	aliases {
+-		mmc0 = &sdio0;
+-		mmc1 = &sdmmc;
+-		mmc2 = &sdhci;
+ 	};
+ 
+ 	chosen {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-khadas-edge.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-khadas-edge.dtsi
+index d5c7648c841d..a337aefdf4e6 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-khadas-edge.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-khadas-edge.dtsi
+@@ -12,9 +12,6 @@
+ 
+ / {
+ 	aliases {
+-		mmc0 = &sdio0;
+-		mmc1 = &sdmmc;
+-		mmc2 = &sdhci;
+ 	};
+ 
+ 	chosen {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-kobol-helios64.dts b/arch/arm64/boot/dts/rockchip/rk3399-kobol-helios64.dts
+index 19485b552bc4..2539b494d961 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-kobol-helios64.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-kobol-helios64.dts
+@@ -19,8 +19,6 @@ / {
+ 	compatible = "kobol,helios64", "rockchip,rk3399";
+ 
+ 	aliases {
+-		mmc0 = &sdmmc;
+-		mmc1 = &sdhci;
+ 	};
+ 
+ 	avdd_1v8_s0: avdd-1v8-s0 {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-leez-p710.dts b/arch/arm64/boot/dts/rockchip/rk3399-leez-p710.dts
+index 7c93f840bc64..fed5da2bddc8 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-leez-p710.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-leez-p710.dts
+@@ -14,9 +14,6 @@ / {
+ 	compatible = "leez,p710", "rockchip,rk3399";
+ 
+ 	aliases {
+-		mmc0 = &sdio0;
+-		mmc1 = &sdmmc;
+-		mmc2 = &sdhci;
+ 	};
+ 
+ 	chosen {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-nanopi4.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-nanopi4.dtsi
+index 16fd58c4a80f..20092aea421a 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-nanopi4.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-nanopi4.dtsi
+@@ -18,9 +18,6 @@
+ 
+ / {
+ 	aliases {
+-		mmc0 = &sdio0;
+-		mmc1 = &sdmmc;
+-		mmc2 = &sdhci;
+ 	};
+ 
+ 	chosen {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-orangepi.dts b/arch/arm64/boot/dts/rockchip/rk3399-orangepi.dts
+index 04b54abea3cc..e88a94f48d7a 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-orangepi.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-orangepi.dts
+@@ -16,9 +16,6 @@ / {
+ 	compatible = "rockchip,rk3399-orangepi", "rockchip,rk3399";
+ 
+ 	aliases {
+-		mmc0 = &sdio0;
+-		mmc1 = &sdmmc;
+-		mmc2 = &sdhci;
+ 	};
+ 
+ 	chosen {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+index 2b5f001ff4a6..b219a542c0cb 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+@@ -19,9 +19,6 @@ / {
+ 	compatible = "pine64,pinebook-pro", "rockchip,rk3399";
+ 
+ 	aliases {
+-		mmc0 = &sdio0;
+-		mmc1 = &sdmmc;
+-		mmc2 = &sdhci;
+ 	};
+ 
+ 	chosen {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts b/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts
+index 292bb7e80cf3..443dedfc3a09 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts
+@@ -11,7 +11,6 @@ / {
+ 	compatible = "tsd,rk3399-puma-haikou", "rockchip,rk3399";
+ 
+ 	aliases {
+-		mmc1 = &sdmmc;
+ 	};
+ 
+ 	chosen {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
+index fb67db4619ea..860fc7ee914d 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
+@@ -9,7 +9,6 @@
+ 
+ / {
+ 	aliases {
+-		mmc0 = &sdhci;
+ 	};
+ 
+ 	leds {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-roc-pc-mezzanine.dts b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc-mezzanine.dts
+index 9447c8724b65..e04eefccfb32 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-roc-pc-mezzanine.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc-mezzanine.dts
+@@ -12,7 +12,6 @@ / {
+ 	compatible = "firefly,roc-rk3399-pc-mezzanine", "rockchip,rk3399";
+ 
+ 	aliases {
+-		mmc2 = &sdio0;
+ 	};
+ 
+ 	/* MP8009 PoE PD */
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi
+index c172f5a803e7..6d95b54e617d 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi
+@@ -14,8 +14,6 @@ / {
+ 	compatible = "firefly,roc-rk3399-pc", "rockchip,rk3399";
+ 
+ 	aliases {
+-		mmc0 = &sdmmc;
+-		mmc1 = &sdhci;
+ 	};
+ 
+ 	chosen {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi
+index 7d0a7c697703..7cc550dfb9b5 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi
+@@ -12,8 +12,6 @@
+ 
+ / {
+ 	aliases {
+-		mmc0 = &sdmmc;
+-		mmc1 = &sdhci;
+ 	};
+ 
+ 	chosen {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4b.dts b/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4b.dts
+index 6c63e617063c..1fbb92b8186d 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4b.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4b.dts
+@@ -12,7 +12,6 @@ / {
+ 	compatible = "radxa,rockpi4b", "radxa,rockpi4", "rockchip,rk3399";
+ 
+ 	aliases {
+-		mmc2 = &sdio0;
+ 	};
+ };
+ 
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4c.dts b/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4c.dts
+index 99169bcd51c0..1c00e77eb24a 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4c.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4c.dts
+@@ -13,7 +13,6 @@ / {
+ 	compatible = "radxa,rockpi4c", "radxa,rockpi4", "rockchip,rk3399";
+ 
+ 	aliases {
+-		mmc2 = &sdio0;
+ 	};
+ };
+ 
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-rock960.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-rock960.dtsi
+index 25dc61c26a94..858f62849e0c 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-rock960.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-rock960.dtsi
+@@ -10,9 +10,6 @@
+ 
+ / {
+ 	aliases {
+-		mmc0 = &sdio0;
+-		mmc1 = &sdmmc;
+-		mmc2 = &sdhci;
+ 	};
+ 
+ 	sdio_pwrseq: sdio-pwrseq {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi
+index f7dc397ec235..3b4bd359f29b 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi
+@@ -11,9 +11,6 @@
+ 
+ / {
+ 	aliases {
+-		mmc0 = &sdio0;
+-		mmc1 = &sdmmc;
+-		mmc2 = &sdhci;
+ 	};
+ 
+ 	chosen {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-sapphire-excavator.dts b/arch/arm64/boot/dts/rockchip/rk3399-sapphire-excavator.dts
+index f6b2199a42bd..c20763030f66 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-sapphire-excavator.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-sapphire-excavator.dts
+@@ -11,7 +11,6 @@ / {
+ 	compatible = "rockchip,rk3399-sapphire-excavator", "rockchip,rk3399";
+ 
+ 	aliases {
+-		mmc2 = &sdio0;
+ 	};
+ 
+ 	adc-keys {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-sapphire.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-sapphire.dtsi
+index 46b0f97a0b1c..c2049d86917d 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-sapphire.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-sapphire.dtsi
+@@ -12,8 +12,6 @@ / {
+ 	compatible = "rockchip,rk3399-sapphire", "rockchip,rk3399";
+ 
+ 	aliases {
+-		mmc0 = &sdmmc;
+-		mmc1 = &sdhci;
+ 	};
+ 
+ 	chosen {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399.dtsi b/arch/arm64/boot/dts/rockchip/rk3399.dtsi
+index 634a91af8e83..6f42819ec73a 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399.dtsi
+@@ -34,6 +34,9 @@ aliases {
+ 		serial2 = &uart2;
+ 		serial3 = &uart3;
+ 		serial4 = &uart4;
 +		mmc0 = &sdmmc;
 +		mmc1 = &sdhci;
 +		mmc2 = &sdio0;
- 		serial0 = &uart0;
- 		serial1 = &uart1;
- 		serial2 = &uart2;
+ 	};
+ 
+ 	cpus {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399pro-vmarc-som.dtsi b/arch/arm64/boot/dts/rockchip/rk3399pro-vmarc-som.dtsi
+index c0074b3ed4af..27303bac866b 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399pro-vmarc-som.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399pro-vmarc-som.dtsi
+@@ -13,8 +13,6 @@ / {
+ 	compatible = "vamrs,rk3399pro-vmarc-som", "rockchip,rk3399pro";
+ 
+ 	aliases {
+-		mmc0 = &sdmmc;
+-		mmc1 = &sdhci;
+ 	};
+ 
+ 	vcc3v3_pcie: vcc-pcie-regulator {
 -- 
 2.30.2
 
