@@ -1,16 +1,21 @@
 #!/bin/bash
 
-if [ ! -e /boot/rpi ]; then
+if ! grep -q "/boot/rpi" /etc/fstab; then
   echo "/boot/rpi does not exist. You need to update files manually, which is installed to /usr/lib/rpi64-boot."
+  exit 0
+fi
+
+if ! mount -a; then
+  echo "Unable to mount /boot/rpi! Not treating as an error, exiting cleanly."
   exit 0
 fi
 
 if [ -e /boot/rpi/kernel8.img ]; then
   echo "Copying new firmware..."
-  cp /usr/lib/rpi64-boot/*.{elf,bin,dat} /boot/rpi/
+  cp /usr/lib/rpi64/boot/*.{elf,bin,dat} /boot/rpi/
 else
   echo "Copying kernel and firmware..."
-  cp -r /usr/lib/rpi64-boot/* /boot/rpi/
+  cp -r /usr/lib/rpi64/boot/* /boot/rpi/
 fi
 
 if [ ! -e /boot/rpi/config.txt ]; then
@@ -107,9 +112,9 @@ kernel=kernel8.img
 # initramfs initrd.img followkernel
 EOF
 fi
+
 if [ ! -e /boot/rpi/cmdline.txt ]; then
   PARTUUID="$(lsblk -x MOUNTPOINT -o MOUNTPOINT,PARTUUID | egrep '^/\s' | awk '{print $2}')"
   echo "Generating new cmdline.txt..."
   echo -n "root=PARTUUID=${PARTUUID} rootfstype=ext4 rw elevator=deadline fsck.repair=yes rootwait" > /boot/rpi/cmdline.txt
 fi
-

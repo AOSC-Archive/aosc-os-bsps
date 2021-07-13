@@ -1,5 +1,4 @@
-VER="1.20201022"
-REL=2
-SRCS="tbl::https://github.com/raspberrypi/firmware/archive/$VER.tar.gz"
-CHKSUMS="sha256::95a944d45e19403be9e54ca645d2fb439dac2d862d6d2da0485a4a03192a8d74"
-
+VER="1.20210710"
+COMMIT="98835e734d19a69e55a50360e5f56d098b8f79d2"
+SRCS="tbl::https://github.com/raspberrypi/firmware/archive/$COMMIT.tar.gz"
+CHKSUMS="sha256::7fbb7e8f1a23e0e6b532a479c5734ff666107e7d9478cbb5d7d34871bed5d1f6"
