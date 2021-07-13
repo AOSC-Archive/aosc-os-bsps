@@ -116,5 +116,5 @@ fi
 if [ ! -e /boot/rpi/cmdline.txt ]; then
   PARTUUID="$(lsblk -x MOUNTPOINT -o MOUNTPOINT,PARTUUID | egrep '^/\s' | awk '{print $2}')"
   echo "Generating new cmdline.txt..."
-  echo -n "root=PARTUUID=${PARTUUID} rootfstype=ext4 rw elevator=deadline fsck.repair=yes rootwait" > /boot/rpi/cmdline.txt
+  echo -n "root=PARTUUID=${PARTUUID} rw elevator=deadline fsck.repair=yes rootwait" > /boot/rpi/cmdline.txt
 fi
