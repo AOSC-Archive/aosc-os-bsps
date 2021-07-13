@@ -4,4 +4,4 @@ PKGSEC=libs
 
 ABHOST=noarch
 ABSTRIP=no
-
+ABSPLITDBG=0
