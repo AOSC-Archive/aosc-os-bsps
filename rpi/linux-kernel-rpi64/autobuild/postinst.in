@@ -16,26 +16,18 @@ fi
 if [ -x /etc/kernel/postinst.d/apt-auto-removal ]; then
   /etc/kernel/postinst.d/apt-auto-removal
 fi
-
-if [ ! -z "$(ls -A /boot/rpi 2>/dev/null)" ]; then
-  echo "Backing up old boot files and replacing the new one..."
-  if [ -e /boot/rpi-backup ]; then
-    echo "Removing old backup files..."
-    rm -r /boot/rpi-backup
-    echo "Backing up..."
+if grep -q "/boot/rpi" /etc/fstab; then
+  # try mounting it first
+  mount -a
+  if [ "$?" != "0" ]; then
+    # failed, try one last time
+    echo "Unable to mount /boot/rpi."
+    mkdir -p /boot/rpi
+    mount -a || exit 1
+    echo "/boot/rpi is created and mounted. Continuing."
   fi
-  mkdir -p /boot/rpi-backup
-  cp -r /boot/rpi/* /boot/rpi-backup/
-  echo "Installing kernel..."
-  cp -r /usr/lib/rpi64-boot/* /boot/rpi/
-elif [ ! -z "$(grep "/boot/rpi" /etc/fstab)" ]; then
-  echo "Installing kernel for the first time..."
-  mkdir -p /boot/rpi
-  mount -a &>/dev/null
-  cp -r /usr/lib/rpi64-boot/* /boot/rpi/
+  echo "Updating kernel..."
+  cp -r /usr/lib/rpi64/kernel/* /boot/rpi/
 else
-  echo "We can't find the mountpoint /boot/rpi. You should manually replace your kernel to your boot partition, which is installed to /usr/lib/rpi64-boot."
+  echo "Can not find mount point /boot/rpi. Skip copying kernel."
 fi
-
-echo "Done installing kernel."
-
