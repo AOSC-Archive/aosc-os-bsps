@@ -1,3 +1,0 @@
-VER="0+git20210128"
-SRCS="git::commit=e7fd166981ab4bb9a36c2d1500205a078a35714d::https://github.com/RPi-Distro/bluez-firmware.git"
-CHKSUMS="SKIP"
