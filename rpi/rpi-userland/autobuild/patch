@@ -1,4 +1,4 @@
 abinfo "Replacing hardcoded \`/opt/vc' with \`/usr'..."
 
 find -type f -exec sed -i "s/\/opt\/vc/\/usr/" {} \;
-find -type f -exec sed -i "s/man\/man/share\/man\/man" {} \;
+find -type f -exec sed -i "s/man\/man/share\/man\/man/g" {} \;
