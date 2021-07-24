@@ -1,4 +1,4 @@
-From 511bea12d8934584b1235abe4f1c0aa590b7fad2 Mon Sep 17 00:00:00 2001
+From f16f8762bf30ebc67be9b0cc18faca9d2a183644 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 2 Nov 2017 16:48:27 +0800
 Subject: [PATCH 14/29] arm64: allwinner: a64: enable Wi-Fi for SoPine
@@ -15,7 +15,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 18 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-sopine-baseboard.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-sopine-baseboard.dts
-index 5e66ce1a334f..f8cd7b81ed24 100644
+index 970d528378db..a00a8f9eee6f 100644
 --- a/arch/arm64/boot/dts/allwinner/sun50i-a64-sopine-baseboard.dts
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-sopine-baseboard.dts
 @@ -7,6 +7,8 @@
@@ -39,7 +39,7 @@ index 5e66ce1a334f..f8cd7b81ed24 100644
  };
  
  &ac_power_supply {
-@@ -103,6 +110,17 @@ ext_rgmii_phy: ethernet-phy@1 {
+@@ -107,6 +114,17 @@ ext_rgmii_phy: ethernet-phy@1 {
  	};
  };
  

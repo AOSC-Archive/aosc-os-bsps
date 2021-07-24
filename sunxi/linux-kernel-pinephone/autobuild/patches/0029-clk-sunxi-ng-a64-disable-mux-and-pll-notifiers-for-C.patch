@@ -1,4 +1,4 @@
-From 99453f0cad3505d0ac315694808b33ed32ac4bf9 Mon Sep 17 00:00:00 2001
+From e53ef74ce0ab70dbe9b4899c697c1c4dcc999a1c Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 9 Nov 2020 13:09:17 +0800
 Subject: [PATCH 29/29] clk: sunxi-ng: a64: disable mux and pll notifiers for

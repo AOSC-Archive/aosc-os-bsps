@@ -1,4 +1,4 @@
-From 7ddd1e47bf182aa5f12d2db7f01168b60674a5dd Mon Sep 17 00:00:00 2001
+From ea2d1e6307d6f20341102c736321881b481a8cbf Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 9 Jun 2021 12:45:25 +0800
 Subject: [PATCH 04/29] arm64: dts: allwinner: a64-sopine-baseboard: change
@@ -22,7 +22,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-sopine-baseboard.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-sopine-baseboard.dts
-index e22b94c83647..5e66ce1a334f 100644
+index 4dd89d03e199..970d528378db 100644
 --- a/arch/arm64/boot/dts/allwinner/sun50i-a64-sopine-baseboard.dts
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-sopine-baseboard.dts
 @@ -79,7 +79,7 @@ &ehci1 {

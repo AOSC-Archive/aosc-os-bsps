@@ -1,8 +1,8 @@
-PKGNAME=linux-kernel-pinephone-5.12.12
+PKGNAME=linux-kernel-pinephone-5.13.3
 PKGSEC=kernel
 PKGDEP=""
 BUILDDEP="bc dracut git"
-PKGDES="Linux Kernel version 5.12.12 optimized for PinePhone/PineTab"
+PKGDES="Linux Kernel version ${PKGVER} optimized for PinePhone/PineTab"
 
 ABSTRIP=no
 ABELFDEP=no

@@ -1,4 +1,4 @@
-From 922f95b2700a03bb312845f4bcae19ffbd7118a3 Mon Sep 17 00:00:00 2001
+From 16fd71aee09cedd748848fd77f90d71e678d5f3a Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 15 Aug 2018 20:14:20 +0800
 Subject: [PATCH 09/29] arm64: allwinner: dts: h5: fix the VDD-CPUX voltage of

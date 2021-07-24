@@ -1,4 +1,4 @@
-From aaea8a466b0f39fbe3054f7b5c0990e8093ef6a5 Mon Sep 17 00:00:00 2001
+From 91d9766d5dadcb061db0a272399994daf5c3a2e6 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 17 Jun 2020 08:49:39 +0800
 Subject: [PATCH 27/29] arm64: allwinner: dts: a64: enable HDMI port on

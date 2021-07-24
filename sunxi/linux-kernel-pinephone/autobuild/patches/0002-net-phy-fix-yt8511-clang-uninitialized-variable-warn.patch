@@ -1,4 +1,4 @@
-From 1fd032ca9edad53995955b8a1db80f3d50c33939 Mon Sep 17 00:00:00 2001
+From c50f287e4e0ecfdc1bb1b2d79bf13f8f23a1744c Mon Sep 17 00:00:00 2001
 From: Peter Geis <pgwipeout@gmail.com>
 Date: Sat, 29 May 2021 07:05:55 -0400
 Subject: [PATCH 02/29] net: phy: fix yt8511 clang uninitialized variable

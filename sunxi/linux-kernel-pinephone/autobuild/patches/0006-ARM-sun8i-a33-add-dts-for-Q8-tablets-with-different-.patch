@@ -1,4 +1,4 @@
-From 1f7b7f65265fac519453aa36414631ec762e5c78 Mon Sep 17 00:00:00 2001
+From f132dbd7367244e1d823c680f9ca952aa03e0c6f Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 17 Aug 2017 15:41:27 +0800
 Subject: [PATCH 06/29] ARM: sun8i: a33: add dts for Q8 tablets with different
@@ -25,10 +25,10 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  create mode 100644 arch/arm/boot/dts/sun8i-a33-q8-tablet-800x480.dts
 
 diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
-index 127a10cb590d..7bffa26693e1 100644
+index aad3f9317efd..946e75f44028 100644
 --- a/arch/arm/boot/dts/Makefile
 +++ b/arch/arm/boot/dts/Makefile
-@@ -1186,6 +1186,8 @@ dtb-$(CONFIG_MACH_SUN8I) += \
+@@ -1198,6 +1198,8 @@ dtb-$(CONFIG_MACH_SUN8I) += \
  	sun8i-a33-ippo-q8h-v1.2.dtb \
  	sun8i-a33-olinuxino.dtb \
  	sun8i-a33-q8-tablet.dtb \

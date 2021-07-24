@@ -1,4 +1,4 @@
-From d3b751745baab22e1366cb81b0f9b3ad0fc30dcf Mon Sep 17 00:00:00 2001
+From d35a98e62dfc1ec712fccbd6923256070f2f8569 Mon Sep 17 00:00:00 2001
 From: Vasily Khoruzhick <anarsoul@gmail.com>
 Date: Wed, 31 Oct 2018 20:43:26 -0700
 Subject: [PATCH 19/29] arm64: allwinner: a64: enable Bluetooth On Pinebook

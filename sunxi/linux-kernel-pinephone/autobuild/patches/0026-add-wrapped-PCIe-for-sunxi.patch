@@ -1,4 +1,4 @@
-From 1db6a86de30905e06af9a0511e3a6beb2758fffe Mon Sep 17 00:00:00 2001
+From 9831cf801d33e50b27d388c2c2bd707f9f184d96 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 29 Mar 2020 10:56:16 +0800
 Subject: [PATCH 26/29] add wrapped PCIe for sunxi
@@ -14,7 +14,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  create mode 100644 drivers/pci/controller/dwc/pcie-sunxi-wrapped.c
 
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6-pine-h64.dts b/arch/arm64/boot/dts/allwinner/sun50i-h6-pine-h64.dts
-index c87569157bf8..f5390337353b 100644
+index 408d36a59734..8c377523390e 100644
 --- a/arch/arm64/boot/dts/allwinner/sun50i-h6-pine-h64.dts
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-h6-pine-h64.dts
 @@ -70,6 +70,16 @@ reg_gmac_3v3: gmac-3v3 {
@@ -34,7 +34,7 @@ index c87569157bf8..f5390337353b 100644
  	reg_usb_vbus: vbus {
  		compatible = "regulator-fixed";
  		regulator-name = "usb-vbus";
-@@ -173,6 +183,14 @@ &ohci3 {
+@@ -177,6 +187,14 @@ &ohci3 {
  	status = "okay";
  };
  
@@ -50,7 +50,7 @@ index c87569157bf8..f5390337353b 100644
  	vcc-pc-supply = <&reg_bldo2>;
  	vcc-pd-supply = <&reg_cldo1>;
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-h6.dtsi
-index 15badcd0d1e0..70f198e61922 100644
+index ae2892bc8a5e..8de001663317 100644
 --- a/arch/arm64/boot/dts/allwinner/sun50i-h6.dtsi
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-h6.dtsi
 @@ -11,6 +11,8 @@
@@ -62,7 +62,7 @@ index 15badcd0d1e0..70f198e61922 100644
  / {
  	interrupt-parent = <&gic>;
  	#address-cells = <1>;
-@@ -829,6 +831,35 @@ ohci3: usb@5311400 {
+@@ -824,6 +826,35 @@ ohci3: usb@5311400 {
  			status = "disabled";
  		};
  
@@ -99,7 +99,7 @@ index 15badcd0d1e0..70f198e61922 100644
  			#sound-dai-cells = <0>;
  			compatible = "allwinner,sun50i-h6-dw-hdmi";
 diff --git a/drivers/pci/controller/dwc/Kconfig b/drivers/pci/controller/dwc/Kconfig
-index 22c5529e9a65..6f4f2d9b5b2c 100644
+index 423d35872ce4..e0076eecd68e 100644
 --- a/drivers/pci/controller/dwc/Kconfig
 +++ b/drivers/pci/controller/dwc/Kconfig
 @@ -253,6 +253,14 @@ config PCI_MESON
@@ -118,10 +118,10 @@ index 22c5529e9a65..6f4f2d9b5b2c 100644
  	tristate
  
 diff --git a/drivers/pci/controller/dwc/Makefile b/drivers/pci/controller/dwc/Makefile
-index a751553fa0db..002cecadd5b6 100644
+index 9e6ce0dc2f53..4382afcf108f 100644
 --- a/drivers/pci/controller/dwc/Makefile
 +++ b/drivers/pci/controller/dwc/Makefile
-@@ -18,6 +18,7 @@ obj-$(CONFIG_PCIE_KIRIN) += pcie-kirin.o
+@@ -19,6 +19,7 @@ obj-$(CONFIG_PCIE_KIRIN) += pcie-kirin.o
  obj-$(CONFIG_PCIE_HISI_STB) += pcie-histb.o
  obj-$(CONFIG_PCI_MESON) += pci-meson.o
  obj-$(CONFIG_PCIE_TEGRA194) += pcie-tegra194.o

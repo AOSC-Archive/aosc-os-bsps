@@ -1,4 +1,4 @@
-From 686a7ca2f37cafe8e465824543bb5db8068a010e Mon Sep 17 00:00:00 2001
+From 80ca842e76bf4c23e29204609226b850c6b3e17a Mon Sep 17 00:00:00 2001
 From: Peter Geis <pgwipeout@gmail.com>
 Date: Sat, 29 May 2021 07:05:56 -0400
 Subject: [PATCH 03/29] net: phy: abort loading yt8511 driver in unsupported

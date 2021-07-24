@@ -1,4 +1,4 @@
-From 8131e98dce1f84ef9530d8f41f04e3f4cecfdbdf Mon Sep 17 00:00:00 2001
+From 400553fff1c5ae70710b31aede111d8b3ab70297 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 29 Jul 2019 23:14:19 +0800
 Subject: [PATCH 22/29] ARM: dts: sun8i: v40: enable USB power supply on BPi M2
@@ -15,10 +15,10 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 4 insertions(+)
 
 diff --git a/arch/arm/boot/dts/sun8i-v40-bananapi-m2-berry.dts b/arch/arm/boot/dts/sun8i-v40-bananapi-m2-berry.dts
-index 47954551f573..560de1e731a9 100644
+index 5df3d347b8a8..36cd5ff88a5b 100644
 --- a/arch/arm/boot/dts/sun8i-v40-bananapi-m2-berry.dts
 +++ b/arch/arm/boot/dts/sun8i-v40-bananapi-m2-berry.dts
-@@ -299,6 +299,10 @@ bluetooth {
+@@ -307,6 +307,10 @@ bluetooth {
  	};
  };
  

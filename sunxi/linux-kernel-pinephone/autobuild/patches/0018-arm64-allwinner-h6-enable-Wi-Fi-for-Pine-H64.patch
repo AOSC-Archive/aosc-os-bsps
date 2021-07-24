@@ -1,4 +1,4 @@
-From 6c5c4a3aaec99dfae9c7405266a78ac6b0ff9fc8 Mon Sep 17 00:00:00 2001
+From d093ad3162c888fb2ec976e40d8b0e58d908ecb3 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Wed, 15 Aug 2018 20:47:44 +0800
 Subject: [PATCH 18/29] arm64: allwinner: h6: enable Wi-Fi for Pine H64
@@ -9,7 +9,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 16 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6-pine-h64.dts b/arch/arm64/boot/dts/allwinner/sun50i-h6-pine-h64.dts
-index d13ed7b1c17f..c87569157bf8 100644
+index a2e7e697c16e..408d36a59734 100644
 --- a/arch/arm64/boot/dts/allwinner/sun50i-h6-pine-h64.dts
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-h6-pine-h64.dts
 @@ -79,6 +79,11 @@ reg_usb_vbus: vbus {
@@ -24,7 +24,7 @@ index d13ed7b1c17f..c87569157bf8 100644
  };
  
  &cpu0 {
-@@ -141,6 +146,15 @@ &mmc0 {
+@@ -145,6 +150,15 @@ &mmc0 {
  	status = "okay";
  };
  
@@ -40,7 +40,7 @@ index d13ed7b1c17f..c87569157bf8 100644
  &mmc2 {
  	vmmc-supply = <&reg_cldo1>;
  	vqmmc-supply = <&reg_bldo2>;
-@@ -234,12 +248,14 @@ reg_cldo1: cldo1 {
+@@ -238,12 +252,14 @@ reg_cldo1: cldo1 {
  			};
  
  			reg_cldo2: cldo2 {

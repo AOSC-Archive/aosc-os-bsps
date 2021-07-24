@@ -1,4 +1,4 @@
-From ab1bb1aa440fc956c9e97045a32e2eac4e36ed55 Mon Sep 17 00:00:00 2001
+From c96c6a91bdd8eeca457d792615b75d2bc2523cd1 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sat, 19 Aug 2017 12:30:07 +0800
 Subject: [PATCH 08/29] ARM: sun8i: q8-1024x600: Enable LCD with a generic

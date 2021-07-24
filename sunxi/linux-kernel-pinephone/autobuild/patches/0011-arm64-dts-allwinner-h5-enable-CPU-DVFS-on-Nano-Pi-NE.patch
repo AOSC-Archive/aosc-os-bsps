@@ -1,4 +1,4 @@
-From 8afb5a1237d4c58736ed67639c4f213d970c704c Mon Sep 17 00:00:00 2001
+From 24a232bd9c9af5a4f02f505ebe0ff4dd3e8c7f45 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 5 Nov 2020 21:27:43 +0800
 Subject: [PATCH 11/29] arm64: dts: allwinner: h5: enable CPU DVFS on Nano Pi

@@ -1,4 +1,4 @@
-From b4ef27ab1b1e3eee0adb2bb95fb38af1c04d3217 Mon Sep 17 00:00:00 2001
+From 4a71ee8b8783a8f07a30843bfab974b5a25a8d18 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 5 Nov 2020 21:25:21 +0800
 Subject: [PATCH 10/29] arm64: dts: allwinner: h5: enable CPU DVFS on Orange Pi
@@ -16,7 +16,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 21 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h5-orangepi-prime.dts b/arch/arm64/boot/dts/allwinner/sun50i-h5-orangepi-prime.dts
-index 74e0444af19b..ca636b410609 100644
+index 19b8538e0e15..db13fe12fdef 100644
 --- a/arch/arm64/boot/dts/allwinner/sun50i-h5-orangepi-prime.dts
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-h5-orangepi-prime.dts
 @@ -5,6 +5,7 @@
@@ -38,7 +38,7 @@ index 74e0444af19b..ca636b410609 100644
  &de {
  	status = "okay";
  };
-@@ -182,6 +187,22 @@ &ohci3 {
+@@ -186,6 +191,22 @@ &ohci3 {
  	status = "okay";
  };
  
@@ -58,9 +58,9 @@ index 74e0444af19b..ca636b410609 100644
 +	};
 +};
 +
- &uart0 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&uart0_pa_pins>;
+ &sound_hdmi {
+ 	status = "okay";
+ };
 -- 
 2.30.2
 

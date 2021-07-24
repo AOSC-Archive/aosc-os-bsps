@@ -1,4 +1,4 @@
-From 89aa008fb792852128ec6cede7af6df9037f321f Mon Sep 17 00:00:00 2001
+From 1ad1382c12d9d697bf82b56ef82b4739e2dcde10 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 9 Nov 2020 13:02:23 +0800
 Subject: [PATCH 28/29] clk: sunxi-ng: a64: disable dividers in PLL-CPUX

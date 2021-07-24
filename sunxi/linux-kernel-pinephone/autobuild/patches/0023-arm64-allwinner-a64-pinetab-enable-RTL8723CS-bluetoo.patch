@@ -1,4 +1,4 @@
-From c4be96f8cef2ff3b30cdf83a6d107bcfbed95261 Mon Sep 17 00:00:00 2001
+From 2f0158616a77b6f87bcacac2c0e6772949caa511 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Sun, 14 Apr 2019 23:46:47 +0800
 Subject: [PATCH 23/29] arm64: allwinner: a64: pinetab: enable RTL8723CS

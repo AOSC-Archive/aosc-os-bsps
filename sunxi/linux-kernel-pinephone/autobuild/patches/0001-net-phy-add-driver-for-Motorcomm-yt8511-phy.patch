@@ -1,4 +1,4 @@
-From b319d3e7e2ee4860e07bca009d47a9a40944a1fc Mon Sep 17 00:00:00 2001
+From 95fbf742142ca770226350dcf2b6b903158b8e9d Mon Sep 17 00:00:00 2001
 From: Peter Geis <pgwipeout@gmail.com>
 Date: Thu, 20 May 2021 12:32:30 -0400
 Subject: [PATCH 01/29] net: phy: add driver for Motorcomm yt8511 phy
@@ -18,10 +18,10 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  create mode 100644 drivers/net/phy/motorcomm.c
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 0ae314df41df..c19f4fceb975 100644
+index eebe4f51dbc9..4b65e614c323 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -12100,6 +12100,12 @@ F:	Documentation/userspace-api/media/drivers/meye*
+@@ -12393,6 +12393,12 @@ F:	Documentation/userspace-api/media/drivers/meye*
  F:	drivers/media/pci/meye/
  F:	include/uapi/linux/meye.h
  
@@ -32,13 +32,13 @@ index 0ae314df41df..c19f4fceb975 100644
 +F:	drivers/net/phy/motorcomm.c
 +
  MOXA SMARTIO/INDUSTIO/INTELLIO SERIAL CARD
- M:	Jiri Slaby <jirislaby@kernel.org>
- S:	Maintained
+ S:	Orphan
+ F:	Documentation/driver-api/serial/moxa-smartio.rst
 diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-index 698bea312adc..940f2d701f86 100644
+index 288bf405ebdb..16db9f8037b5 100644
 --- a/drivers/net/phy/Kconfig
 +++ b/drivers/net/phy/Kconfig
-@@ -223,6 +223,12 @@ config MICROSEMI_PHY
+@@ -229,6 +229,12 @@ config MICROSEMI_PHY
  	help
  	  Currently supports VSC8514, VSC8530, VSC8531, VSC8540 and VSC8541 PHYs
  
@@ -52,17 +52,17 @@ index 698bea312adc..940f2d701f86 100644
  	tristate "National Semiconductor PHYs"
  	help
 diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
-index a13e402074cf..5b9b714b8dbd 100644
+index bcda7ed2455d..37ffbc6e3c87 100644
 --- a/drivers/net/phy/Makefile
 +++ b/drivers/net/phy/Makefile
-@@ -69,6 +69,7 @@ obj-$(CONFIG_MICREL_PHY)	+= micrel.o
+@@ -70,6 +70,7 @@ obj-$(CONFIG_MICREL_PHY)	+= micrel.o
  obj-$(CONFIG_MICROCHIP_PHY)	+= microchip.o
  obj-$(CONFIG_MICROCHIP_T1_PHY)	+= microchip_t1.o
  obj-$(CONFIG_MICROSEMI_PHY)	+= mscc/
 +obj-$(CONFIG_MOTORCOMM_PHY)	+= motorcomm.o
  obj-$(CONFIG_NATIONAL_PHY)	+= national.o
+ obj-$(CONFIG_NXP_C45_TJA11XX_PHY)	+= nxp-c45-tja11xx.o
  obj-$(CONFIG_NXP_TJA11XX_PHY)	+= nxp-tja11xx.o
- obj-$(CONFIG_QSEMI_PHY)		+= qsemi.o
 diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
 new file mode 100644
 index 000000000000..796b68f4b499

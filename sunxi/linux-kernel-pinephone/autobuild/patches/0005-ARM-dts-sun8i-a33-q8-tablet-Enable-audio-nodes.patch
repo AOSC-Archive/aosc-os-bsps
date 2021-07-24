@@ -1,4 +1,4 @@
-From e317298879f3ccd003210149bf54c224deb86909 Mon Sep 17 00:00:00 2001
+From f6e68f851026dc5f66379cbcc77e7ceb35fdcf84 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.xyz>
 Date: Fri, 18 Nov 2016 08:05:46 +0800
 Subject: [PATCH 05/29] ARM: dts: sun8i: a33-q8-tablet: Enable audio nodes

@@ -1,4 +1,4 @@
-From a820e22bdd85a1eb234bd1e4f18e7fa7001d2581 Mon Sep 17 00:00:00 2001
+From 2846c268b49f064b6ca0c6fa9c145ae5f90021ec Mon Sep 17 00:00:00 2001
 From: Pantelis Antoniou <pantelis.antoniou@konsulko.com>
 Date: Wed, 4 Dec 2013 19:32:00 +0200
 Subject: [PATCH 25/29] OF: DT-Overlay configfs interface
@@ -33,7 +33,7 @@ index 18450437d5d5..e76803e28433 100644
  	bool
  
 diff --git a/drivers/of/Makefile b/drivers/of/Makefile
-index 6e1e5212f058..ed4af0ae0c59 100644
+index c13b982084a3..76b665cfc5a5 100644
 --- a/drivers/of/Makefile
 +++ b/drivers/of/Makefile
 @@ -12,6 +12,7 @@ obj-$(CONFIG_OF_UNITTEST) += unittest.o
@@ -43,7 +43,7 @@ index 6e1e5212f058..ed4af0ae0c59 100644
 +obj-$(CONFIG_OF_CONFIGFS) += configfs.o
  obj-$(CONFIG_OF_NUMA) += of_numa.o
  
- obj-$(CONFIG_OF_UNITTEST) += unittest-data/
+ ifdef CONFIG_KEXEC_FILE
 diff --git a/drivers/of/configfs.c b/drivers/of/configfs.c
 new file mode 100644
 index 000000000000..ac04301dabe1
