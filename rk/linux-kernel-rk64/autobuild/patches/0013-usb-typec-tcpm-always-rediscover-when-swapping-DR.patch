@@ -1,0 +1,47 @@
+From 1813305a0bb3e78fa16dfd9f19cb57287aac3663 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Fri, 13 Aug 2021 11:52:30 +0800
+Subject: [PATCH 13/13] usb: typec: tcpm: always rediscover when swapping DR
+
+Currently, TCPM code omits discover when swapping to gadget, and assume
+that no altmodes are available when swapping from gadget. However, we do
+send discover when we get attached as gadget -- this leads to modes to be
+discovered twice when attached as gadget and then swap to host.
+
+Always re-send discover when swapping DR, regardless of what change is
+being made; and because of this, the assumption that no altmodes are
+registered with gadget role is broken, and altmodes de-registeration is
+always needed now.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ drivers/usb/typec/tcpm/tcpm.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+index c6c6bd454c26..1795c18d383e 100644
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -4564,15 +4564,14 @@ static void run_state_machine(struct tcpm_port *port)
+ 		tcpm_set_state(port, ready_state(port), 0);
+ 		break;
+ 	case DR_SWAP_CHANGE_DR:
+-		if (port->data_role == TYPEC_HOST) {
+-			tcpm_unregister_altmodes(port);
++		tcpm_unregister_altmodes(port);
++		if (port->data_role == TYPEC_HOST)
+ 			tcpm_set_roles(port, true, port->pwr_role,
+ 				       TYPEC_DEVICE);
+-		} else {
++		else
+ 			tcpm_set_roles(port, true, port->pwr_role,
+ 				       TYPEC_HOST);
+-			port->send_discover = true;
+-		}
++		port->send_discover = true;
+ 		tcpm_ams_finish(port);
+ 		tcpm_set_state(port, ready_state(port), 0);
+ 		break;
+-- 
+2.30.2
+

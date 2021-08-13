@@ -1,4 +1,4 @@
-PKGNAME=linux-kernel-rk64-5.13.5
+PKGNAME=linux-kernel-rk64-5.13.9
 PKGSEC=kernel
 PKGDEP=""
 BUILDDEP="bc dracut git"
