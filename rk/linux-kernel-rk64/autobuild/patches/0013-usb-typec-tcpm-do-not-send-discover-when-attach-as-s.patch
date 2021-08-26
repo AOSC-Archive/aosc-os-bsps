@@ -1,0 +1,33 @@
+From 5bde0d41193b7f08f983a724895ba9c173085b3d Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Thu, 26 Aug 2021 12:42:10 +0800
+Subject: [PATCH 13/13] usb: typec: tcpm: do not send discover when attach as
+ sink
+
+According to PD 2.0 spec, sink shouldn't send discover; however some
+docks will respond to discover even if they're attached as source, thus
+creates altmodes on TCPM side that won't be properly unregistered when
+DR_SWAP.
+
+Remove the code that sets discover sending flag in sink attaching code.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ drivers/usb/typec/tcpm/tcpm.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+index 6d436219507a..abe788b3a0f7 100644
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -3787,7 +3787,6 @@ static int tcpm_snk_attach(struct tcpm_port *port)
+ 	port->partner = NULL;
+ 
+ 	port->attached = true;
+-	port->send_discover = true;
+ 
+ 	return 0;
+ }
+-- 
+2.30.2
+
