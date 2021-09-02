@@ -1,15 +1,11 @@
-DATE=20200623
-REV=36cb2e4544cdd4ad272a646aeacf42f56050ae7a
+DATE="${PKGVER/0+git/}"
 
 mkdir -p "$PKGDIR"/usr/src/
-git clone https://github.com/Icenowy/rtl8723cs "$PKGDIR"/usr/src/rtl8723cs-$DATE
-pushd "$PKGDIR"/usr/src/rtl8723cs-$DATE
-git checkout $REV
-rm -rf .git
-sed -i 's/CONFIG_POWER_SAVING = n/CONFIG_POWER_SAVING = y/g' Makefile
+mkdir -p "$PKGDIR/usr/src/rtl8723cs-$DATE"
 sed -i 's/obj-$(CONFIG_RTL8723CS)/obj-m/g' Makefile
+cp -r core hal include Kconfig Makefile os_dep platform "$PKGDIR/usr/src/rtl8723cs-$DATE"
 
-cat > dkms.conf << EOF
+cat > "$PKGDIR/usr/src/rtl8723cs-$DATE"/dkms.conf << EOF
 PACKAGE_NAME="rtl8723cs"
 PACKAGE_VERSION="$DATE"
 BUILT_MODULE_NAME[0]="8723cs"
@@ -17,3 +13,6 @@ DEST_MODULE_LOCATION[0]="/extra"
 AUTOINSTALL="yes"
 EOF
 popd
+
+sed -e "s/@DATE@/$DATE/g" < autobuild/postinst.in > autobuild/postinst
+sed -e "s/@DATE@/$DATE/g" < autobuild/prerm.in > autobuild/prerm
