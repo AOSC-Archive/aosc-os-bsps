@@ -12,7 +12,6 @@ BUILT_MODULE_NAME[0]="8723cs"
 DEST_MODULE_LOCATION[0]="/extra"
 AUTOINSTALL="yes"
 EOF
-popd
 
 sed -e "s/@DATE@/$DATE/g" < autobuild/postinst.in > autobuild/postinst
 sed -e "s/@DATE@/$DATE/g" < autobuild/prerm.in > autobuild/prerm
