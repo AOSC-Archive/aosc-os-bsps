@@ -1,8 +1,8 @@
-From dbaac324243b9fec1608f7fe617297d4c9f0a393 Mon Sep 17 00:00:00 2001
+From 537fd64206d14a82aeccfeb3f7a1708bbe33f9f5 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 30 Nov 2020 22:50:50 +0800
-Subject: [PATCH 4/7] arm64: rockchip: dts: rk3399: disable cdn_dp on Pinebook
- Pro
+Subject: [PATCH 04/12] arm64: rockchip: dts: rk3399: disable cdn_dp on
+ Pinebook Pro
 
 The corresponding extcon support for fusb302 is not yet available, and
 thus the Type-C controller is not tied with the DP controller. However

@@ -1,7 +1,7 @@
-From aa03d88aea25921c369a73be670ae38406c99c11 Mon Sep 17 00:00:00 2001
+From a94b8a063d50e350631b6b11a2cb22cf61148e7c Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 27 Jul 2021 00:05:17 +0800
-Subject: [PATCH 11/12] usb: typec: displayport: fill properties for TCPM
+Subject: [PATCH 10/12] usb: typec: displayport: fill properties for TCPM
  extcon
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
