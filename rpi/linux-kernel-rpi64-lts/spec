@@ -1,3 +1,3 @@
 VER=5.10.63
-SRCTBL="https://github.com/raspberrypi/linux/archive/7bd951d4d234ec1e408496196df02193d1e236ab.tar.gz"
-CHKSUM="sha256::8c9523acf9d68694acf57ff993f44ec37259e3c6ecd825ec45282456c90500cd"
+SRCS="tbl::https://github.com/raspberrypi/linux/archive/6237d09759ba6c8746cd1e19b16faee50c97bfac.tar.gz"
+CHKSUMS="sha256::69901f9da7f98a6452e031fbe3498e97083c60c30c7c025398714d28795298a6"
