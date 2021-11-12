@@ -1,6 +1,6 @@
 PKGNAME=linux+kernel+rpi64
 PKGSEC=kernel
-PKGDEP="rpi-firmware-boot rpi-userland linux-kernel-rpi64-5.14.9"
+PKGDEP="rpi-firmware-boot rpi-userland linux-kernel-rpi64-5.14.17"
 PKGDES="Mainline branch of the Linux Kernel for 64-bit Raspberry Pi boards (downstream)"
 PKGEPOCH=1
 
