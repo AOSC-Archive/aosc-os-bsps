@@ -1,0 +1,10 @@
+PKGNAME=linux-kernel-asahi-5.16.0-rc6
+PKGSEC=kernel
+PKGDEP=""
+BUILDDEP="bc git pahole"
+PKGDES="Downstream branch of the Linux kernel for Apple Silicon"
+
+ABSTRIP=0
+ABELFDEP=0
+
+PKGBREAK="zfs<=2.0.7"
