@@ -1,0 +1,4 @@
+VER=5.16.0
+VER_UPSTREAM=5.16-rc6
+SRCS="tbl::https://git.kernel.org/torvalds/t/linux-${VER_UPSTREAM}.tar.gz"
+CHKSUMS="sha256::2fb1dca461e00412822fa8de089701e5ae1ef703e1a57e839f5fd1a194f33ecb"
