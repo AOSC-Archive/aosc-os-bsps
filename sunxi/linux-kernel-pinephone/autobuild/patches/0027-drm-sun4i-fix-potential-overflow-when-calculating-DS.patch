@@ -1,0 +1,39 @@
+From bd1ee4b35cded8234be7c63cb0ec955cb425745b Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Thu, 9 Sep 2021 23:52:05 +0800
+Subject: [PATCH 27/36] drm: sun4i: fix potential overflow when calculating DSI
+ dotclock rate
+
+When calculating DSI dotclock rate, the clock rate is first multiplied
+by 1000 (to convert kHz to Hz), then bit per pixel value, and finally
+divided by (lanes * 4).
+
+Putting the two multiplication at first makes it risky to overflow when
+the panel expected clock rate is >= 90MHz, which is possible at least on
+1080p panel.
+
+Move the *1000 multiplication to the end to prevent overflow.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ drivers/gpu/drm/sun4i/sun4i_tcon.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/gpu/drm/sun4i/sun4i_tcon.c b/drivers/gpu/drm/sun4i/sun4i_tcon.c
+index 38878074b734..aca2a9b08c90 100644
+--- a/drivers/gpu/drm/sun4i/sun4i_tcon.c
++++ b/drivers/gpu/drm/sun4i/sun4i_tcon.c
+@@ -389,8 +389,8 @@ static void sun4i_tcon0_mode_set_cpu(struct sun4i_tcon *tcon,
+ 	tcon->dclk_max_div = SUN6I_DSI_TCON_DIV;
+ 
+ 	/* Configure the dot clock */
+-	clk_set_rate(tcon->dclk, mode->crtc_clock * 1000
+-				 * bpp / (lanes * SUN6I_DSI_TCON_DIV));
++	clk_set_rate(tcon->dclk, mode->crtc_clock * bpp
++				 / (lanes * SUN6I_DSI_TCON_DIV) * 1000);
+ 
+         /* Set the resolution */
+ 	regmap_write(tcon->regs, SUN4I_TCON0_BASIC0_REG,
+-- 
+2.30.2
+

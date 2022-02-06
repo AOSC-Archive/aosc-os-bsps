@@ -1,0 +1,62 @@
+From db2cb31f92f274b3cd6d9b88a2f06bb051dc66ac Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Mon, 9 Nov 2020 13:09:17 +0800
+Subject: [PATCH 25/36] clk: sunxi-ng: a64: disable mux and pll notifiers for
+ CPUX reclocking
+
+After the dividers of PLL-CPUX disabled, there's no need for PLL-CPUX to
+be gated when tweaking the clock of CPUX, thus reparenting CPUX to
+osc24M is also now not needed.
+
+Remove these notifiers.
+
+Preventing reparenting CPUX is said to be able to help solving the issue
+that the timer jumps backward according to Ondrej Jirman.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ drivers/clk/sunxi-ng/ccu-sun50i-a64.c | 21 ---------------------
+ 1 file changed, 21 deletions(-)
+
+diff --git a/drivers/clk/sunxi-ng/ccu-sun50i-a64.c b/drivers/clk/sunxi-ng/ccu-sun50i-a64.c
+index 191c1e77f75f..43a17f3d7c3a 100644
+--- a/drivers/clk/sunxi-ng/ccu-sun50i-a64.c
++++ b/drivers/clk/sunxi-ng/ccu-sun50i-a64.c
+@@ -955,20 +955,6 @@ static const struct sunxi_ccu_desc sun50i_a64_ccu_desc = {
+ 	.num_resets	= ARRAY_SIZE(sun50i_a64_ccu_resets),
+ };
+ 
+-static struct ccu_pll_nb sun50i_a64_pll_cpu_nb = {
+-	.common	= &pll_cpux_clk.common,
+-	/* copy from pll_cpux_clk */
+-	.enable	= BIT(31),
+-	.lock	= BIT(28),
+-};
+-
+-static struct ccu_mux_nb sun50i_a64_cpu_nb = {
+-	.common		= &cpux_clk.common,
+-	.cm		= &cpux_clk.mux,
+-	.delay_us	= 1, /* > 8 clock cycles at 24 MHz */
+-	.bypass_index	= 1, /* index of 24 MHz oscillator */
+-};
+-
+ static struct ccu_rate_reset_nb sun50i_a64_pll_video0_reset_tcon0_nb = {
+ 	.common		= &pll_video0_clk.common,
+ };
+@@ -1085,13 +1071,6 @@ static int sun50i_a64_ccu_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return ret;
+ 
+-	/* Gate then ungate PLL CPU after any rate changes */
+-	ccu_pll_notifier_register(&sun50i_a64_pll_cpu_nb);
+-
+-	/* Reparent CPU during PLL CPU rate changes */
+-	ccu_mux_notifier_register(pll_cpux_clk.common.hw.clk,
+-				  &sun50i_a64_cpu_nb);
+-
+ 	/* Reset the rate of TCON0 clock when PLL-VIDEO0 is changed */
+ 	sun50i_a64_pll_video0_reset_tcon0_nb.target_clk = tcon0_clk.common.hw.clk;
+ 	ccu_rate_reset_notifier_register(&sun50i_a64_pll_video0_reset_tcon0_nb);
+-- 
+2.30.2
+

@@ -1,4 +1,4 @@
-PKGNAME=linux-kernel-pinephone-5.13.3
+PKGNAME=linux-kernel-pinephone-5.16.7
 PKGSEC=kernel
 PKGDEP=""
 BUILDDEP="bc dracut git"

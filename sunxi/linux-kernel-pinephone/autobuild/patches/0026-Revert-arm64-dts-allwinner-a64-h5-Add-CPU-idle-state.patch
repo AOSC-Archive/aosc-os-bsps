@@ -1,0 +1,74 @@
+From 3f37a61c45e86cc8874854f1fca63d212d14dd0d Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Thu, 6 Jan 2022 15:55:45 +0800
+Subject: [PATCH 26/36] Revert "arm64: dts: allwinner: a64/h5: Add CPU idle
+ states"
+
+This reverts commit da8a143bd1acfc0e67002669d94930d823e55ede.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi | 26 -------------------
+ 1 file changed, 26 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
+index 2fbca3f98fbf..fdb365b96f3d 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
+@@ -60,7 +60,6 @@ cpu0: cpu@0 {
+ 			clocks = <&ccu CLK_CPUX>;
+ 			clock-names = "cpu";
+ 			#cooling-cells = <2>;
+-			cpu-idle-states = <&cpu_sleep>, <&cluster_sleep>;
+ 		};
+ 
+ 		cpu1: cpu@1 {
+@@ -72,7 +71,6 @@ cpu1: cpu@1 {
+ 			clocks = <&ccu CLK_CPUX>;
+ 			clock-names = "cpu";
+ 			#cooling-cells = <2>;
+-			cpu-idle-states = <&cpu_sleep>, <&cluster_sleep>;
+ 		};
+ 
+ 		cpu2: cpu@2 {
+@@ -84,7 +82,6 @@ cpu2: cpu@2 {
+ 			clocks = <&ccu CLK_CPUX>;
+ 			clock-names = "cpu";
+ 			#cooling-cells = <2>;
+-			cpu-idle-states = <&cpu_sleep>, <&cluster_sleep>;
+ 		};
+ 
+ 		cpu3: cpu@3 {
+@@ -96,29 +93,6 @@ cpu3: cpu@3 {
+ 			clocks = <&ccu CLK_CPUX>;
+ 			clock-names = "cpu";
+ 			#cooling-cells = <2>;
+-			cpu-idle-states = <&cpu_sleep>, <&cluster_sleep>;
+-		};
+-
+-		idle-states {
+-			entry-method = "psci";
+-
+-			cpu_sleep: cpu-sleep {
+-				compatible = "arm,idle-state";
+-				local-timer-stop;
+-				entry-latency-us = <800>;
+-				exit-latency-us = <1500>;
+-				min-residency-us = <25000>;
+-				arm,psci-suspend-param = <0x00010003>;
+-			};
+-
+-			cluster_sleep: cluster-sleep {
+-				compatible = "arm,idle-state";
+-				local-timer-stop;
+-				entry-latency-us = <850>;
+-				exit-latency-us = <1500>;
+-				min-residency-us = <50000>;
+-				arm,psci-suspend-param = <0x01010013>;
+-			};
+ 		};
+ 
+ 		L2: l2-cache {
+-- 
+2.30.2
+

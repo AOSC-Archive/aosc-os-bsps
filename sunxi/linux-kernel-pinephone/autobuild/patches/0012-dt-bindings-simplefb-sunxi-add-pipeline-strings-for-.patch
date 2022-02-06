@@ -1,0 +1,32 @@
+From 1c313d69b543f335f33224dee6d3a0e6b3e5e19f Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Wed, 1 Aug 2018 11:42:46 +0800
+Subject: [PATCH 12/36] dt-bindings: simplefb-sunxi: add pipeline strings for
+ DE2/3 w/ TCON_TOP
+
+Newer Allwinner SoCs come with a display pipeline muxing component
+called TCON_TOP, and the TCONs are named "tcon_lcdX" or "tcon_tvX".
+
+Add some corresponding pipeline strings for them.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ .../devicetree/bindings/display/simple-framebuffer.yaml         | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/display/simple-framebuffer.yaml b/Documentation/devicetree/bindings/display/simple-framebuffer.yaml
+index c2499a7906f5..7279ba75016c 100644
+--- a/Documentation/devicetree/bindings/display/simple-framebuffer.yaml
++++ b/Documentation/devicetree/bindings/display/simple-framebuffer.yaml
+@@ -112,6 +112,8 @@ properties:
+       - mixer0-lcd0-hdmi
+       - mixer1-lcd1-hdmi
+       - mixer1-lcd1-tve
++      - mixer0-tcon_tv0-hdmi
++      - mixer0-tcon_lcd0"
+ 
+   amlogic,pipeline:
+     description: Pipeline used by the framebuffer on Amlogic SoCs
+-- 
+2.30.2
+

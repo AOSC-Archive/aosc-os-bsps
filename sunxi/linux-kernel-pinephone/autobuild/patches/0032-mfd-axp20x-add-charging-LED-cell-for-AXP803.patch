@@ -1,0 +1,31 @@
+From 450b11b948cfcd12a0699c6d67b246ddc5992b22 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Thu, 3 Feb 2022 00:53:02 +0800
+Subject: [PATCH 32/36] mfd: axp20x: add charging LED cell for AXP803
+
+AXP803 PMIC has a charging LED similar to the one in AXP813.
+
+Add a MFD cell for it with the AXP813 compatible.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ drivers/mfd/axp20x.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/mfd/axp20x.c b/drivers/mfd/axp20x.c
+index f5347d010b7a..09eb66a4de27 100644
+--- a/drivers/mfd/axp20x.c
++++ b/drivers/mfd/axp20x.c
+@@ -801,6 +801,9 @@ static const struct mfd_cell axp803_cells[] = {
+ 		.num_resources	= ARRAY_SIZE(axp803_usb_power_supply_resources),
+ 		.resources	= axp803_usb_power_supply_resources,
+ 		.of_compatible	= "x-powers,axp813-usb-power-supply",
++	}, {
++		.name		= "axp20x-charger-led",
++		.of_compatible	= "x-powers,axp813-charger-led",
+ 	},
+ 	{	.name		= "axp20x-regulator" },
+ };
+-- 
+2.30.2
+
