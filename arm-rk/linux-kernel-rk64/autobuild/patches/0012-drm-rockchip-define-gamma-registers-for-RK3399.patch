@@ -1,7 +1,7 @@
-From 3c37b7ffa3056e5dc8607fff7633fab699225774 Mon Sep 17 00:00:00 2001
+From 61b1ebc22bb62c97cc5594cbbb4e92dbf2c4c0cc Mon Sep 17 00:00:00 2001
 From: Hugh Cole-Baker <sigmaris@gmail.com>
 Date: Tue, 19 Oct 2021 22:58:41 +0100
-Subject: [PATCH 13/32] drm/rockchip: define gamma registers for RK3399
+Subject: [PATCH 12/31] drm/rockchip: define gamma registers for RK3399
 
 The VOP on RK3399 has a different approach from previous versions for
 setting a gamma lookup table, using an update_gamma_lut register. As

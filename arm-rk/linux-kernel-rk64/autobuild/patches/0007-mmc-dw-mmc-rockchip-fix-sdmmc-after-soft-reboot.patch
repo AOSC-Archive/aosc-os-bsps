@@ -1,7 +1,7 @@
-From b0209aee7ee44f8b998ed4a88cae7f2709a510ee Mon Sep 17 00:00:00 2001
+From f26675c56079104059b2ae75b248148b51df0615 Mon Sep 17 00:00:00 2001
 From: Peter Geis <pgwipeout@gmail.com>
 Date: Sat, 22 Jan 2022 20:35:39 +0000
-Subject: [PATCH 08/32] mmc: dw-mmc-rockchip: fix sdmmc after soft reboot
+Subject: [PATCH 07/31] mmc: dw-mmc-rockchip: fix sdmmc after soft reboot
 
 During shutdown the dw-mmc driver shuts down the vqmmc regulator.
 This leads to situations where the sdmmc is unavailable after a soft

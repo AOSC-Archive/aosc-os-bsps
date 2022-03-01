@@ -1,7 +1,7 @@
-From 03511a19476d1355689b682dea2a55b14291fbc4 Mon Sep 17 00:00:00 2001
+From a583bc4aeb13f66568cade81ac8526fdcac4f4ee Mon Sep 17 00:00:00 2001
 From: Shawn Anastasio <shawn@anastas.io>
 Date: Thu, 25 Jun 2020 22:30:23 -0500
-Subject: [PATCH 09/32] drm/bridge: analogix_dp: Add enable_psr param
+Subject: [PATCH 08/31] drm/bridge: analogix_dp: Add enable_psr param
 
 Add a toggle to enable/disable PSR from the kernel commandline.
 This is useful in situations where PSR is supported by the hardware

@@ -1,7 +1,7 @@
-From a8de87063de19df692d69dc4305f862d43500ce2 Mon Sep 17 00:00:00 2001
+From 8f4ee5d1a5b761a2c1237d65eb8f1341086193e2 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 27 Jul 2021 00:05:45 +0800
-Subject: [PATCH 31/32] arm64: allwinner: dts: a64: assign FUSB302 TCPM extcon
+Subject: [PATCH 30/31] arm64: allwinner: dts: a64: assign FUSB302 TCPM extcon
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---

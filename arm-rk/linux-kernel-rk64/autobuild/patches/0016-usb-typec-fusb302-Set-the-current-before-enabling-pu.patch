@@ -1,7 +1,7 @@
-From fb6a68aa664637a8bf7ff5da8403f16f8dcb99cc Mon Sep 17 00:00:00 2001
+From e8c8b69f89925992c5f9e46b85cd823dff24fbd1 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Ond=C5=99ej=20Jirman?= <megi@xff.cz>
 Date: Sun, 7 Nov 2021 19:28:27 +0100
-Subject: [PATCH 17/32] usb: typec: fusb302: Set the current before enabling
+Subject: [PATCH 16/31] usb: typec: fusb302: Set the current before enabling
  pullups
 
 This seems more reasonable and should avoid short period of incorrect

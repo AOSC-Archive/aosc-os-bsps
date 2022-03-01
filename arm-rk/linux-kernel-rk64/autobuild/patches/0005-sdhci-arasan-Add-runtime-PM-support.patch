@@ -1,7 +1,7 @@
-From 3c7841dfab5bc6c4c2096ce9a92720be86d714ea Mon Sep 17 00:00:00 2001
+From 42e098bfe033dc0030d99ea7e822ab77bb0cb6d6 Mon Sep 17 00:00:00 2001
 From: Manish Narani <manish.narani@xilinx.com>
 Date: Tue, 18 Sep 2018 20:34:06 +0530
-Subject: [PATCH 06/32] sdhci: arasan: Add runtime PM support
+Subject: [PATCH 05/31] sdhci: arasan: Add runtime PM support
 
 Add runtime PM support in Arasan SDHCI driver.
 

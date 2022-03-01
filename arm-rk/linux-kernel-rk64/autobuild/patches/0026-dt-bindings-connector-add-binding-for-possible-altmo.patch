@@ -1,7 +1,7 @@
-From 5a49494efed29afac0affc0a6748e16e9587b179 Mon Sep 17 00:00:00 2001
+From aeb2e9f65d728db8545eedc29f9840be06e2f2b8 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 27 Jul 2021 00:03:36 +0800
-Subject: [PATCH 27/32] dt-bindings: connector: add binding for possible
+Subject: [PATCH 26/31] dt-bindings: connector: add binding for possible
  altmodes for Type-C
 
 As we already have some code to parse fwnode to populate alternate modes

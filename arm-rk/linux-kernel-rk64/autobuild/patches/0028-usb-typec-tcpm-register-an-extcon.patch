@@ -1,7 +1,7 @@
-From d15427a82fec765d465f07c5fc4b7847e2fe030b Mon Sep 17 00:00:00 2001
+From 44f810c718904f689929887b7a2ca55d99f55b84 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 27 Jul 2021 00:05:01 +0800
-Subject: [PATCH 29/32] usb: typec: tcpm: register an extcon
+Subject: [PATCH 28/31] usb: typec: tcpm: register an extcon
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---

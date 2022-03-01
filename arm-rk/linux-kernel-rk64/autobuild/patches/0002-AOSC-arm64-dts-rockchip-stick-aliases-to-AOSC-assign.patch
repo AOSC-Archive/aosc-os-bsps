@@ -1,7 +1,7 @@
-From e68267f32de3a769dd8fd3dab1855a7037f9e2c4 Mon Sep 17 00:00:00 2001
+From 58127fa223c05a2002cb97d97ac76a59702ad450 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 30 Nov 2020 22:05:28 +0800
-Subject: [PATCH 03/32] AOSC: arm64: dts: rockchip: stick aliases to AOSC
+Subject: [PATCH 02/31] AOSC: arm64: dts: rockchip: stick aliases to AOSC
  assignment
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
@@ -198,7 +198,7 @@ index 018a3a5075c72..25940b8d5d208 100644
  
  	chosen {
 diff --git a/arch/arm64/boot/dts/rockchip/rk3328-rock64.dts b/arch/arm64/boot/dts/rockchip/rk3328-rock64.dts
-index 50c38c0e15d54..ee2c48541749f 100644
+index f69a38f42d2d5..ddea3891f94d0 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3328-rock64.dts
 +++ b/arch/arm64/boot/dts/rockchip/rk3328-rock64.dts
 @@ -11,8 +11,6 @@ / {
@@ -548,7 +548,7 @@ index 25dc61c26a943..858f62849e0c5 100644
  
  	sdio_pwrseq: sdio-pwrseq {
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi
-index e3327a52af25a..c1c988b39a392 100644
+index d5ab0b41233d1..dc13374264b14 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi
 +++ b/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi
 @@ -11,9 +11,6 @@

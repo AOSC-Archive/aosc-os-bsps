@@ -1,7 +1,7 @@
-From ede4c4981d294932b1c015880ff9ad9bc859f26c Mon Sep 17 00:00:00 2001
+From 6629a3155ee08eb510d087645c91607f37d720d5 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Ond=C5=99ej=20Jirman?= <megi@xff.cz>
 Date: Tue, 23 Nov 2021 17:57:06 +0100
-Subject: [PATCH 20/32] usb: typec: fusb302: Update VBUS state even if VBUS
+Subject: [PATCH 19/31] usb: typec: fusb302: Update VBUS state even if VBUS
  interrupt is not triggered
 
 This seems to improve robustness.

@@ -1,7 +1,7 @@
-From c72c0d395ed48337db8b7ccf6726ee41c146c205 Mon Sep 17 00:00:00 2001
+From 6ccdd08d5d4d9d089d1040dfeefc85bae5e959f5 Mon Sep 17 00:00:00 2001
 From: Kyle Copperfield <kmcopper@danwin1210.me>
 Date: Sat, 20 Nov 2021 12:23:02 +0000
-Subject: [PATCH 16/32] media: rockchip/rga: do proper error checking in probe
+Subject: [PATCH 15/31] media: rockchip/rga: do proper error checking in probe
 
 The latest fix for probe error handling contained a typo that causes
 probing to fail with the following message:

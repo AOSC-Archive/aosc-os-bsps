@@ -1,7 +1,7 @@
-From 4cb6c12380a83d2a0bc127e7bca555caabc73647 Mon Sep 17 00:00:00 2001
+From 52d41e3a3bdc407652ebb0abce4ce2d378cf0c1f Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Ond=C5=99ej=20Jirman?= <megi@xff.cz>
 Date: Fri, 4 Feb 2022 02:25:34 +0100
-Subject: [PATCH 26/32] phy: rockchip-inno-usb2: More robust charger detection
+Subject: [PATCH 25/31] phy: rockchip-inno-usb2: More robust charger detection
  extcon updates
 
 Make sure we always clear the charger detection results. Allow to

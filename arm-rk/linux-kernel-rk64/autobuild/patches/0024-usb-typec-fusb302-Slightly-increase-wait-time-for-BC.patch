@@ -1,7 +1,7 @@
-From 81ef9f2016d2fb8dc255e2accae4f709777126a1 Mon Sep 17 00:00:00 2001
+From fdef62b339ad427ba17ead9e054a39be334a477d Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Ond=C5=99ej=20Jirman?= <megi@xff.cz>
 Date: Sun, 30 Jan 2022 23:46:37 +0100
-Subject: [PATCH 25/32] usb: typec: fusb302: Slightly increase wait time for
+Subject: [PATCH 24/31] usb: typec: fusb302: Slightly increase wait time for
  BC1.2 result
 
 This is not strictly necessary, but it should not hurt. Looking at

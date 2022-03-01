@@ -1,7 +1,7 @@
-From 355ffca09e7c83fc6b6122d1c59c9278141cd246 Mon Sep 17 00:00:00 2001
+From 8e9c22a09fb00e93479beb621b423212fae847a1 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Ond=C5=99ej=20Jirman?= <megi@xff.cz>
 Date: Tue, 23 Nov 2021 17:53:27 +0100
-Subject: [PATCH 19/32] usb: typec: fusb302: Retry reading of CC pins status if
+Subject: [PATCH 18/31] usb: typec: fusb302: Retry reading of CC pins status if
  activity is detected
 
 This is just for testing, to see if this ever happens. It should

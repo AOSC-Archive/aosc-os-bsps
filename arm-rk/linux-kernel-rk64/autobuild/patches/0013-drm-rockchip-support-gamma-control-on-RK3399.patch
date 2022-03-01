@@ -1,7 +1,7 @@
-From 5b75527edace10447d4887465952d73f93ae0804 Mon Sep 17 00:00:00 2001
+From 22646e1551d620fcd86549528ad9f679daa48913 Mon Sep 17 00:00:00 2001
 From: Hugh Cole-Baker <sigmaris@gmail.com>
 Date: Tue, 19 Oct 2021 22:58:42 +0100
-Subject: [PATCH 14/32] drm/rockchip: support gamma control on RK3399
+Subject: [PATCH 13/31] drm/rockchip: support gamma control on RK3399
 
 The RK3399 has a 1024-entry gamma LUT with 10 bits per component on its
 "big" VOP and a 256-entry, 8 bit per component LUT on the "little" VOP.

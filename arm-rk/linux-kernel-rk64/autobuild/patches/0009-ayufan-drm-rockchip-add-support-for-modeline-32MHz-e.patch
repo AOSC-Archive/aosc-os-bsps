@@ -1,7 +1,7 @@
-From ca44da43b8bb48367729d52f4c916956f9780b43 Mon Sep 17 00:00:00 2001
+From 4607e09644a2f2c1801d9346519f2b08d9e4e130 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Kamil=20Trzci=C5=84ski?= <ayufan@ayufan.eu>
 Date: Fri, 10 Apr 2020 00:24:03 +0200
-Subject: [PATCH 10/32] ayufan: drm: rockchip: add support for modeline 32MHz
+Subject: [PATCH 09/31] ayufan: drm: rockchip: add support for modeline 32MHz
  (ex. `1024x600@43`)
 
 ---

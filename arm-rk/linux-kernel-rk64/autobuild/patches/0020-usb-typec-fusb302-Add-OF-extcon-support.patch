@@ -1,7 +1,7 @@
-From 355c50c689d096490490f18d1816c0764ea9978b Mon Sep 17 00:00:00 2001
+From 7c52ac9dd0876239b44f48a7d7d464b26500f762 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Ond=C5=99ej=20Jirman?= <megi@xff.cz>
 Date: Sun, 14 Nov 2021 01:14:25 +0100
-Subject: [PATCH 21/32] usb: typec: fusb302: Add OF extcon support
+Subject: [PATCH 20/31] usb: typec: fusb302: Add OF extcon support
 
 It's possible to create a dependency cycle between fusb302 and
 other drivers via extcon device, so we retrieve the device on

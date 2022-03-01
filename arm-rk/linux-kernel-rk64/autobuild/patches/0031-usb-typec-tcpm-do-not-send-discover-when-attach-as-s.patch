@@ -1,7 +1,7 @@
-From e1a73af9bdc2a838c5edf1f16723b51aa21e4751 Mon Sep 17 00:00:00 2001
+From 57bac15fcee806184c653dff63f4f15f428c5e6d Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 26 Aug 2021 12:42:10 +0800
-Subject: [PATCH 32/32] usb: typec: tcpm: do not send discover when attach as
+Subject: [PATCH 31/31] usb: typec: tcpm: do not send discover when attach as
  sink
 
 According to PD 2.0 spec, sink shouldn't send discover; however some

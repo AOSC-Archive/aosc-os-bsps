@@ -1,7 +1,7 @@
-From 9072a11e4a3e133b28c750252e92d6a2d353c950 Mon Sep 17 00:00:00 2001
+From 3c127c313bc9c23b96a1ad203a004110deef9186 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Kamil=20Trzci=C5=84ski?= <ayufan@ayufan.eu>
 Date: Sun, 30 Dec 2018 13:32:47 +0100
-Subject: [PATCH 01/32] arm64: dts: rockchip: change GMAC rx_delay for
+Subject: [PATCH 01/31] arm64: dts: rockchip: change GMAC rx_delay for
  RockPro64
 
 ---

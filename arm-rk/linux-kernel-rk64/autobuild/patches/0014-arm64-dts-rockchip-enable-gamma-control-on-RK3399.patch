@@ -1,7 +1,7 @@
-From b462184f4ba5081b8d04d6683a0bedf3f1abf9a4 Mon Sep 17 00:00:00 2001
+From 97f213188be9234440f126a1867a7b7132cda740 Mon Sep 17 00:00:00 2001
 From: Hugh Cole-Baker <sigmaris@gmail.com>
 Date: Tue, 19 Oct 2021 22:58:43 +0100
-Subject: [PATCH 15/32] arm64: dts: rockchip: enable gamma control on RK3399
+Subject: [PATCH 14/31] arm64: dts: rockchip: enable gamma control on RK3399
 
 Define the memory region on RK3399 VOPs containing the gamma LUT at
 base+0x2000.
