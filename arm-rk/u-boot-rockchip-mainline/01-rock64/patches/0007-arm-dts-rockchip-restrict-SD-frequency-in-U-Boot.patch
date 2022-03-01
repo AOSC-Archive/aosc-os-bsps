@@ -1,0 +1,28 @@
+From 9643cc84044cf4a31e55979b4d5336d100ebf41c Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Wed, 16 Jun 2021 02:38:56 +0800
+Subject: [PATCH 07/11] arm: dts: rockchip: restrict SD frequency in U-Boot
+
+Fixes boot issue from SD.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ arch/arm/dts/rk3399-u-boot.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/arm/dts/rk3399-u-boot.dtsi b/arch/arm/dts/rk3399-u-boot.dtsi
+index 716b9a433a..54a5248878 100644
+--- a/arch/arm/dts/rk3399-u-boot.dtsi
++++ b/arch/arm/dts/rk3399-u-boot.dtsi
+@@ -126,6 +126,8 @@
+ 
+ 	/* mmc to sram can't do dma, prevent aborts transferring TF-A parts */
+ 	u-boot,spl-fifo-mode;
++
++	max-frequency = <50000000>;
+ };
+ 
+ &spi1 {
+-- 
+2.30.2
+

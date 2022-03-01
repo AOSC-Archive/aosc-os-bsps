@@ -1,0 +1,36 @@
+From 20ac3d0423c63bba6d33ea2f2175dc0a0f0b84dd Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Tue, 1 Mar 2022 17:58:04 +0800
+Subject: [PATCH 11/11] hack rockchip platforms to boot from USB first
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ include/configs/rockchip-common.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/include/configs/rockchip-common.h b/include/configs/rockchip-common.h
+index ba7061a287..de32322b32 100644
+--- a/include/configs/rockchip-common.h
++++ b/include/configs/rockchip-common.h
+@@ -55,16 +55,16 @@
+ 
+ #ifdef CONFIG_ROCKCHIP_RK3399
+ #define BOOT_TARGET_DEVICES(func) \
++	BOOT_TARGET_USB(func) \
+ 	BOOT_TARGET_MMC(func) \
+ 	BOOT_TARGET_NVME(func) \
+-	BOOT_TARGET_USB(func) \
+ 	BOOT_TARGET_PXE(func) \
+ 	BOOT_TARGET_DHCP(func) \
+ 	BOOT_TARGET_SF(func)
+ #else
+ #define BOOT_TARGET_DEVICES(func) \
+-	BOOT_TARGET_MMC(func) \
+ 	BOOT_TARGET_USB(func) \
++	BOOT_TARGET_MMC(func) \
+ 	BOOT_TARGET_PXE(func) \
+ 	BOOT_TARGET_DHCP(func)
+ #endif
+-- 
+2.30.2
+

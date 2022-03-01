@@ -1,0 +1,14 @@
+abinfo "Cleaning ..."
+make mrproper
+
+abinfo "Building ..."
+make ${UBOOT_BOARD}_defconfig
+make
+make idbloader.img
+make u-boot.itb
+
+abinfo "Installing ..."
+mkdir -p "$PKGDIR"/usr/lib/u-boot-${LINUX_BOARD}
+cp -v u-boot u-boot.img u-boot.itb spl/u-boot-spl.bin tpl/u-boot-tpl.bin tpl/u-boot-tpl.img idbloader.img "$PKGDIR"/usr/lib/u-boot-${LINUX_BOARD}
+mkdir -p "$PKGDIR"/usr/lib/aosc-os-arm64-rockchip-boot/
+1ln -sfv ../u-boot-${LINUX_BOARD} "$PKGDIR"/usr/lib/aosc-os-arm64-rockchip-boot/

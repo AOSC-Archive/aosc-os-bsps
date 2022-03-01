@@ -1,0 +1,8 @@
+PKGNAME=u-boot-rk3399-nanopc-t4
+PKGDES="U-Boot for NanoPC T4"
+PKGSEC=embedded
+BUILDDEP="dtc swig"
+
+ABSTRIP=no
+ABELFDEP=no
+ABRPMAUTOPROVONLY=yes

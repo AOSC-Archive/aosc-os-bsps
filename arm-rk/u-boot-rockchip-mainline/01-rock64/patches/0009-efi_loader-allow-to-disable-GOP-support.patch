@@ -1,0 +1,76 @@
+From 68ed8185f9f23ee7270750664b9f21a5db02b090 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Wed, 16 Jun 2021 05:08:09 +0800
+Subject: [PATCH 09/11] efi_loader: allow to disable GOP support
+
+Sometimes EFI GOP support may be not wanted (e.g. because the operating
+system cannot operate well with it) even if video support in U-Boot is
+needed.
+
+Allow to disable EFI GOP support with a Kconfig option.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ lib/efi_loader/Kconfig     |  8 ++++++++
+ lib/efi_loader/Makefile    |  3 +--
+ lib/efi_loader/efi_setup.c | 11 ++++++-----
+ 3 files changed, 15 insertions(+), 7 deletions(-)
+
+diff --git a/lib/efi_loader/Kconfig b/lib/efi_loader/Kconfig
+index 24f9a2bb75..e51c20811f 100644
+--- a/lib/efi_loader/Kconfig
++++ b/lib/efi_loader/Kconfig
+@@ -286,6 +286,14 @@ config EFI_HAVE_RUNTIME_RESET
+ 	depends on ARCH_BCM283X || FSL_LAYERSCAPE || PSCI_RESET || \
+ 		   SANDBOX || SYSRESET_X86
+ 
++config EFI_GOP_PROTOCOL
++	bool "EFI_GOP_PROTOCOL support"
++	default y
++	depends on DM_VIDEO || LCD
++	help
++	  Provide a EFI_GOP_PROTOCOL implementation using the graphics
++	  hardware initialized by U-Boot.
++
+ config EFI_GRUB_ARM32_WORKAROUND
+ 	bool "Workaround for GRUB on 32bit ARM"
+ 	default n if ARCH_BCM283X || ARCH_SUNXI || ARCH_QEMU
+diff --git a/lib/efi_loader/Makefile b/lib/efi_loader/Makefile
+index fd344cea29..826563d9a7 100644
+--- a/lib/efi_loader/Makefile
++++ b/lib/efi_loader/Makefile
+@@ -54,8 +54,7 @@ obj-$(CONFIG_EFI_VARIABLES_PRESEED) += efi_var_seed.o
+ endif
+ obj-y += efi_watchdog.o
+ obj-$(CONFIG_EFI_ESRT) += efi_esrt.o
+-obj-$(CONFIG_LCD) += efi_gop.o
+-obj-$(CONFIG_DM_VIDEO) += efi_gop.o
++obj-$(CONFIG_EFI_GOP_PROTOCOL) += efi_gop.o
+ obj-$(CONFIG_PARTITIONS) += efi_disk.o
+ obj-$(CONFIG_NET) += efi_net.o
+ obj-$(CONFIG_GENERATE_ACPI_TABLE) += efi_acpi.o
+diff --git a/lib/efi_loader/efi_setup.c b/lib/efi_loader/efi_setup.c
+index 49172e3579..e9a7615cf5 100644
+--- a/lib/efi_loader/efi_setup.c
++++ b/lib/efi_loader/efi_setup.c
+@@ -268,11 +268,12 @@ efi_status_t efi_init_obj_list(void)
+ 			goto out;
+ 	}
+ 
+-#if defined(CONFIG_LCD) || defined(CONFIG_DM_VIDEO)
+-	ret = efi_gop_register();
+-	if (ret != EFI_SUCCESS)
+-		goto out;
+-#endif
++	if (IS_ENABLED(CONFIG_EFI_GOP_PROTOCOL)) {
++		ret = efi_gop_register();
++		if (ret != EFI_SUCCESS)
++			goto out;
++	}
++
+ #ifdef CONFIG_NET
+ 	ret = efi_net_register();
+ 	if (ret != EFI_SUCCESS)
+-- 
+2.30.2
+

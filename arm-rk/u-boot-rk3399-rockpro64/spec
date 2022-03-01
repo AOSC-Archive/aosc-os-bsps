@@ -1,3 +1,0 @@
-VER=2020.01~rc3
-SRCTBL="ftp://ftp.denx.de/pub/u-boot/u-boot-2020.01-rc3.tar.bz2"
-CHKSUM="sha256::d5d8a99870c6ea37581530b8e254418f17352a81933f631e232d872a6705d18c"

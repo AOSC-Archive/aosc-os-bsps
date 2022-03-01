@@ -1,0 +1,7 @@
+export UBOOT_BOARD=rock64-rk3328
+export LINUX_BOARD=rk3328-rock64
+
+unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
+
+. autobuild/build-common/build-atf
+. autobuild/build-common/rkuboot-build

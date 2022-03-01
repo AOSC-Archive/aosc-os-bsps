@@ -1,0 +1,7 @@
+export UBOOT_BOARD=nanopc-t4-rk3399
+export LINUX_BOARD=rk3399-nanopc-t4
+
+unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
+
+. autobuild/build-common/build-atf
+. autobuild/build-common/rkuboot-build

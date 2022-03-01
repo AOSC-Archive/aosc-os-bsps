@@ -1,0 +1,430 @@
+From 753fd173be8454235745c2f0a1c7bac03e0f79a2 Mon Sep 17 00:00:00 2001
+From: Alper Nebi Yasak <alpernebiyasak@gmail.com>
+Date: Thu, 30 Dec 2021 22:36:51 +0300
+Subject: [PATCH 01/11] phy: Track power-on and init counts in uclass
+
+On boards using the RK3399 SoC, the USB OHCI and EHCI controllers share
+the same PHY device instance. While these controllers are being stopped
+they both attempt to power-off and deinitialize it, but trying to
+power-off the deinitialized PHY device results in a hang. This usually
+happens just before booting an OS, and can be explicitly triggered by
+running "usb start; usb stop" in the U-Boot shell.
+
+Implement a uclass-wide counting mechanism for PHY initialization and
+power state change requests, so that we don't power-off/deinitialize a
+PHY instance until all of its users want it done. The Allwinner A10 USB
+PHY driver does this counting in-driver, remove those parts in favour of
+this in-uclass implementation.
+
+The sandbox PHY operations test needs some changes since the uclass will
+no longer call into the drivers for actions matching its tracked state
+(e.g. powering-off a powered-off PHY). Update that test, and add a new
+one which simulates multiple users of a single PHY.
+
+The major complication here is that PHY handles aren't deduplicated per
+instance, so the obvious idea of putting the counts in the PHY handles
+don't immediately work. It seems possible to bind a child udevice per
+PHY instance to the PHY provider and deduplicate the handles in each
+child's uclass-private areas, like in the CLK framework. An alternative
+approach could be to use those bound child udevices themselves as the
+PHY handles. Instead, to avoid the architectural changes those would
+require, this patch solves things by dynamically allocating a list of
+structs (one per instance) in the provider's uclass-private area.
+
+Signed-off-by: Alper Nebi Yasak <alpernebiyasak@gmail.com>
+Reviewed-by: Simon Glass <sjg@chromium.org>
+Tested-by: Peter Robinson <pbrobinson@gmail.com> - Rock960
+---
+ drivers/phy/allwinner/phy-sun4i-usb.c |   9 --
+ drivers/phy/phy-uclass.c              | 137 ++++++++++++++++++++++++++
+ test/dm/phy.c                         |  83 +++++++++++++++-
+ 3 files changed, 215 insertions(+), 14 deletions(-)
+
+diff --git a/drivers/phy/allwinner/phy-sun4i-usb.c b/drivers/phy/allwinner/phy-sun4i-usb.c
+index ab2a5d17fc..86c589a65f 100644
+--- a/drivers/phy/allwinner/phy-sun4i-usb.c
++++ b/drivers/phy/allwinner/phy-sun4i-usb.c
+@@ -125,7 +125,6 @@ struct sun4i_usb_phy_info {
+ 
+ struct sun4i_usb_phy_plat {
+ 	void __iomem *pmu;
+-	int power_on_count;
+ 	int gpio_vbus;
+ 	int gpio_vbus_det;
+ 	int gpio_id_det;
+@@ -225,10 +224,6 @@ static int sun4i_usb_phy_power_on(struct phy *phy)
+ 		initial_usb_scan_delay = 0;
+ 	}
+ 
+-	usb_phy->power_on_count++;
+-	if (usb_phy->power_on_count != 1)
+-		return 0;
+-
+ 	if (usb_phy->gpio_vbus >= 0)
+ 		gpio_set_value(usb_phy->gpio_vbus, SUNXI_GPIO_PULL_UP);
+ 
+@@ -240,10 +235,6 @@ static int sun4i_usb_phy_power_off(struct phy *phy)
+ 	struct sun4i_usb_phy_data *data = dev_get_priv(phy->dev);
+ 	struct sun4i_usb_phy_plat *usb_phy = &data->usb_phy[phy->id];
+ 
+-	usb_phy->power_on_count--;
+-	if (usb_phy->power_on_count != 0)
+-		return 0;
+-
+ 	if (usb_phy->gpio_vbus >= 0)
+ 		gpio_set_value(usb_phy->gpio_vbus, SUNXI_GPIO_PULL_DISABLE);
+ 
+diff --git a/drivers/phy/phy-uclass.c b/drivers/phy/phy-uclass.c
+index 59683a080c..cec46c2c41 100644
+--- a/drivers/phy/phy-uclass.c
++++ b/drivers/phy/phy-uclass.c
+@@ -11,12 +11,96 @@
+ #include <dm/device_compat.h>
+ #include <dm/devres.h>
+ #include <generic-phy.h>
++#include <linux/list.h>
++
++/**
++ * struct phy_counts - Init and power-on counts of a single PHY port
++ *
++ * This structure is used to keep track of PHY initialization and power
++ * state change requests, so that we don't power off and deinitialize a
++ * PHY instance until all of its users want it done. Otherwise, multiple
++ * consumers using the same PHY port can cause problems (e.g. one might
++ * call power_off() after another's exit() and hang indefinitely).
++ *
++ * @id: The PHY ID within a PHY provider
++ * @power_on_count: Times generic_phy_power_on() was called for this ID
++ *                  without a matching generic_phy_power_off() afterwards
++ * @init_count: Times generic_phy_init() was called for this ID
++ *              without a matching generic_phy_exit() afterwards
++ * @list: Handle for a linked list of these structures corresponding to
++ *        ports of the same PHY provider
++ */
++struct phy_counts {
++	unsigned long id;
++	int power_on_count;
++	int init_count;
++	struct list_head list;
++};
+ 
+ static inline struct phy_ops *phy_dev_ops(struct udevice *dev)
+ {
+ 	return (struct phy_ops *)dev->driver->ops;
+ }
+ 
++static struct phy_counts *phy_get_counts(struct phy *phy)
++{
++	struct list_head *uc_priv;
++	struct phy_counts *counts;
++
++	if (!generic_phy_valid(phy))
++		return NULL;
++
++	uc_priv = dev_get_uclass_priv(phy->dev);
++	list_for_each_entry(counts, uc_priv, list)
++		if (counts->id == phy->id)
++			return counts;
++
++	return NULL;
++}
++
++static int phy_alloc_counts(struct phy *phy)
++{
++	struct list_head *uc_priv;
++	struct phy_counts *counts;
++
++	if (!generic_phy_valid(phy))
++		return 0;
++	if (phy_get_counts(phy))
++		return 0;
++
++	uc_priv = dev_get_uclass_priv(phy->dev);
++	counts = kzalloc(sizeof(*counts), GFP_KERNEL);
++	if (!counts)
++		return -ENOMEM;
++
++	counts->id = phy->id;
++	counts->power_on_count = 0;
++	counts->init_count = 0;
++	list_add(&counts->list, uc_priv);
++
++	return 0;
++}
++
++static int phy_uclass_pre_probe(struct udevice *dev)
++{
++	struct list_head *uc_priv = dev_get_uclass_priv(dev);
++
++	INIT_LIST_HEAD(uc_priv);
++
++	return 0;
++}
++
++static int phy_uclass_pre_remove(struct udevice *dev)
++{
++	struct list_head *uc_priv = dev_get_uclass_priv(dev);
++	struct phy_counts *counts, *next;
++
++	list_for_each_entry_safe(counts, next, uc_priv, list)
++		kfree(counts);
++
++	return 0;
++}
++
+ static int generic_phy_xlate_offs_flags(struct phy *phy,
+ 					struct ofnode_phandle_args *args)
+ {
+@@ -88,6 +172,12 @@ int generic_phy_get_by_index_nodev(ofnode node, int index, struct phy *phy)
+ 		goto err;
+ 	}
+ 
++	ret = phy_alloc_counts(phy);
++	if (ret) {
++		debug("phy_alloc_counts() failed: %d\n", ret);
++		goto err;
++	}
++
+ 	return 0;
+ 
+ err:
+@@ -118,6 +208,7 @@ int generic_phy_get_by_name(struct udevice *dev, const char *phy_name,
+ 
+ int generic_phy_init(struct phy *phy)
+ {
++	struct phy_counts *counts;
+ 	struct phy_ops const *ops;
+ 	int ret;
+ 
+@@ -126,10 +217,19 @@ int generic_phy_init(struct phy *phy)
+ 	ops = phy_dev_ops(phy->dev);
+ 	if (!ops->init)
+ 		return 0;
++
++	counts = phy_get_counts(phy);
++	if (counts->init_count > 0) {
++		counts->init_count++;
++		return 0;
++	}
++
+ 	ret = ops->init(phy);
+ 	if (ret)
+ 		dev_err(phy->dev, "PHY: Failed to init %s: %d.\n",
+ 			phy->dev->name, ret);
++	else
++		counts->init_count = 1;
+ 
+ 	return ret;
+ }
+@@ -154,6 +254,7 @@ int generic_phy_reset(struct phy *phy)
+ 
+ int generic_phy_exit(struct phy *phy)
+ {
++	struct phy_counts *counts;
+ 	struct phy_ops const *ops;
+ 	int ret;
+ 
+@@ -162,16 +263,28 @@ int generic_phy_exit(struct phy *phy)
+ 	ops = phy_dev_ops(phy->dev);
+ 	if (!ops->exit)
+ 		return 0;
++
++	counts = phy_get_counts(phy);
++	if (counts->init_count == 0)
++		return 0;
++	if (counts->init_count > 1) {
++		counts->init_count--;
++		return 0;
++	}
++
+ 	ret = ops->exit(phy);
+ 	if (ret)
+ 		dev_err(phy->dev, "PHY: Failed to exit %s: %d.\n",
+ 			phy->dev->name, ret);
++	else
++		counts->init_count = 0;
+ 
+ 	return ret;
+ }
+ 
+ int generic_phy_power_on(struct phy *phy)
+ {
++	struct phy_counts *counts;
+ 	struct phy_ops const *ops;
+ 	int ret;
+ 
+@@ -180,16 +293,26 @@ int generic_phy_power_on(struct phy *phy)
+ 	ops = phy_dev_ops(phy->dev);
+ 	if (!ops->power_on)
+ 		return 0;
++
++	counts = phy_get_counts(phy);
++	if (counts->power_on_count > 0) {
++		counts->power_on_count++;
++		return 0;
++	}
++
+ 	ret = ops->power_on(phy);
+ 	if (ret)
+ 		dev_err(phy->dev, "PHY: Failed to power on %s: %d.\n",
+ 			phy->dev->name, ret);
++	else
++		counts->power_on_count = 1;
+ 
+ 	return ret;
+ }
+ 
+ int generic_phy_power_off(struct phy *phy)
+ {
++	struct phy_counts *counts;
+ 	struct phy_ops const *ops;
+ 	int ret;
+ 
+@@ -198,10 +321,21 @@ int generic_phy_power_off(struct phy *phy)
+ 	ops = phy_dev_ops(phy->dev);
+ 	if (!ops->power_off)
+ 		return 0;
++
++	counts = phy_get_counts(phy);
++	if (counts->power_on_count == 0)
++		return 0;
++	if (counts->power_on_count > 1) {
++		counts->power_on_count--;
++		return 0;
++	}
++
+ 	ret = ops->power_off(phy);
+ 	if (ret)
+ 		dev_err(phy->dev, "PHY: Failed to power off %s: %d.\n",
+ 			phy->dev->name, ret);
++	else
++		counts->power_on_count = 0;
+ 
+ 	return ret;
+ }
+@@ -316,4 +450,7 @@ int generic_phy_power_off_bulk(struct phy_bulk *bulk)
+ UCLASS_DRIVER(phy) = {
+ 	.id		= UCLASS_PHY,
+ 	.name		= "phy",
++	.pre_probe	= phy_uclass_pre_probe,
++	.pre_remove	= phy_uclass_pre_remove,
++	.per_device_auto = sizeof(struct list_head),
+ };
+diff --git a/test/dm/phy.c b/test/dm/phy.c
+index ecbd47bf12..df4c73fc70 100644
+--- a/test/dm/phy.c
++++ b/test/dm/phy.c
+@@ -79,12 +79,15 @@ static int dm_test_phy_ops(struct unit_test_state *uts)
+ 	ut_assertok(generic_phy_power_off(&phy1));
+ 
+ 	/*
+-	 * test operations after exit().
+-	 * The sandbox phy driver does not allow it.
++	 * Test power_on() failure after exit().
++	 * The sandbox phy driver does not allow power-on/off after
++	 * exit, but the uclass counts power-on/init calls and skips
++	 * calling the driver's ops when e.g. powering off an already
++	 * powered-off phy.
+ 	 */
+ 	ut_assertok(generic_phy_exit(&phy1));
+ 	ut_assert(generic_phy_power_on(&phy1) != 0);
+-	ut_assert(generic_phy_power_off(&phy1) != 0);
++	ut_assertok(generic_phy_power_off(&phy1));
+ 
+ 	/*
+ 	 * test normal operations again (after re-init)
+@@ -99,6 +102,17 @@ static int dm_test_phy_ops(struct unit_test_state *uts)
+ 	 */
+ 	ut_assertok(generic_phy_reset(&phy1));
+ 
++	/*
++	 * Test power_off() failure after exit().
++	 * For this we need to call exit() while the phy is powered-on,
++	 * so that the uclass actually calls the driver's power-off()
++	 * and reports the resulting failure.
++	 */
++	ut_assertok(generic_phy_power_on(&phy1));
++	ut_assertok(generic_phy_exit(&phy1));
++	ut_assert(generic_phy_power_off(&phy1) != 0);
++	ut_assertok(generic_phy_power_on(&phy1));
++
+ 	/* PHY2 has a known problem with power off */
+ 	ut_assertok(generic_phy_init(&phy2));
+ 	ut_assertok(generic_phy_power_on(&phy2));
+@@ -106,8 +120,8 @@ static int dm_test_phy_ops(struct unit_test_state *uts)
+ 
+ 	/* PHY3 has a known problem with power off and power on */
+ 	ut_assertok(generic_phy_init(&phy3));
+-	ut_asserteq(-EIO, generic_phy_power_off(&phy3));
+-	ut_asserteq(-EIO, generic_phy_power_off(&phy3));
++	ut_asserteq(-EIO, generic_phy_power_on(&phy3));
++	ut_assertok(generic_phy_power_off(&phy3));
+ 
+ 	return 0;
+ }
+@@ -145,3 +159,62 @@ static int dm_test_phy_bulk(struct unit_test_state *uts)
+ 	return 0;
+ }
+ DM_TEST(dm_test_phy_bulk, UT_TESTF_SCAN_PDATA | UT_TESTF_SCAN_FDT);
++
++static int dm_test_phy_multi_exit(struct unit_test_state *uts)
++{
++	struct phy phy1_method1;
++	struct phy phy1_method2;
++	struct phy phy1_method3;
++	struct udevice *parent;
++
++	/* Get the same phy instance in 3 different ways. */
++	ut_assertok(uclass_get_device_by_name(UCLASS_SIMPLE_BUS,
++					      "gen_phy_user", &parent));
++	ut_assertok(generic_phy_get_by_name(parent, "phy1", &phy1_method1));
++	ut_asserteq(0, phy1_method1.id);
++	ut_assertok(generic_phy_get_by_name(parent, "phy1", &phy1_method2));
++	ut_asserteq(0, phy1_method2.id);
++	ut_asserteq_ptr(phy1_method1.dev, phy1_method1.dev);
++
++	ut_assertok(uclass_get_device_by_name(UCLASS_SIMPLE_BUS,
++					      "gen_phy_user1", &parent));
++	ut_assertok(generic_phy_get_by_name(parent, "phy1", &phy1_method3));
++	ut_asserteq(0, phy1_method3.id);
++	ut_asserteq_ptr(phy1_method1.dev, phy1_method3.dev);
++
++	/*
++	 * Test using the same PHY from different handles.
++	 * In non-test code these could be in different drivers.
++	 */
++
++	/*
++	 * These must only call the driver's ops at the first init()
++	 * and power_on().
++	 */
++	ut_assertok(generic_phy_init(&phy1_method1));
++	ut_assertok(generic_phy_init(&phy1_method2));
++	ut_assertok(generic_phy_power_on(&phy1_method1));
++	ut_assertok(generic_phy_power_on(&phy1_method2));
++	ut_assertok(generic_phy_init(&phy1_method3));
++	ut_assertok(generic_phy_power_on(&phy1_method3));
++
++	/*
++	 * These must not call the driver's ops as other handles still
++	 * want the PHY powered-on and initialized.
++	 */
++	ut_assertok(generic_phy_power_off(&phy1_method3));
++	ut_assertok(generic_phy_exit(&phy1_method3));
++
++	/*
++	 * We would get an error here if the generic_phy_exit() above
++	 * actually called the driver's exit(), as the sandbox driver
++	 * doesn't allow power-off() after exit().
++	 */
++	ut_assertok(generic_phy_power_off(&phy1_method1));
++	ut_assertok(generic_phy_power_off(&phy1_method2));
++	ut_assertok(generic_phy_exit(&phy1_method1));
++	ut_assertok(generic_phy_exit(&phy1_method2));
++
++	return 0;
++}
++DM_TEST(dm_test_phy_multi_exit, UT_TESTF_SCAN_PDATA | UT_TESTF_SCAN_FDT);
+-- 
+2.30.2
+

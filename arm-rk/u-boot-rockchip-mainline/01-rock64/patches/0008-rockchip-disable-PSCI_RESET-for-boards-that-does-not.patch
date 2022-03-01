@@ -1,0 +1,209 @@
+From 573f1769326f72b490712895ff327daa27532d98 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Tue, 1 Mar 2022 17:53:35 +0800
+Subject: [PATCH 08/11] rockchip: disable PSCI_RESET for boards that does not
+ use Coreboot
+
+Currently the mainline ATF of RK3399 only supports shutting down or
+reset the whole system by writing to a GPIO passed by Coreboot. If the
+system is not brought up by Coreboot, or the system have more complex
+facility to power off or reboot (e.g. writing to RK808 PMIC, which is
+the case of Pinebook Pro), ATF won't be able to shut down the system
+correctly.
+
+Disable PSCI_RESET for these boards to prevent calling this problematic
+codepath.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ configs/evb-rk3399_defconfig                 | 1 +
+ configs/firefly-rk3399_defconfig             | 1 +
+ configs/khadas-edge-captain-rk3399_defconfig | 1 +
+ configs/khadas-edge-rk3399_defconfig         | 1 +
+ configs/khadas-edge-v-rk3399_defconfig       | 1 +
+ configs/leez-rk3399_defconfig                | 1 +
+ configs/nanopc-t4-rk3399_defconfig           | 1 +
+ configs/nanopi-m4-2gb-rk3399_defconfig       | 1 +
+ configs/nanopi-m4-rk3399_defconfig           | 1 +
+ configs/nanopi-m4b-rk3399_defconfig          | 1 +
+ configs/nanopi-neo4-rk3399_defconfig         | 1 +
+ configs/nanopi-r4s-rk3399_defconfig          | 1 +
+ configs/orangepi-rk3399_defconfig            | 1 +
+ configs/pinebook-pro-rk3399_defconfig        | 1 +
+ configs/rock-pi-4-rk3399_defconfig           | 1 +
+ configs/rock-pi-4c-rk3399_defconfig          | 1 +
+ configs/rock-pi-n10-rk3399pro_defconfig      | 1 +
+ configs/rockpro64-rk3399_defconfig           | 1 +
+ 18 files changed, 18 insertions(+)
+
+diff --git a/configs/evb-rk3399_defconfig b/configs/evb-rk3399_defconfig
+index 4aa49102bf..098d3b9140 100644
+--- a/configs/evb-rk3399_defconfig
++++ b/configs/evb-rk3399_defconfig
+@@ -74,3 +74,4 @@ CONFIG_VIDEO_ROCKCHIP_MAX_YRES=1200
+ CONFIG_DISPLAY_ROCKCHIP_MIPI=y
+ CONFIG_SPL_TINY_MEMSET=y
+ CONFIG_ERRNO_STR=y
++# CONFIG_PSCI_RESET is not set
+diff --git a/configs/firefly-rk3399_defconfig b/configs/firefly-rk3399_defconfig
+index d576b5c38d..56ada0a9c3 100644
+--- a/configs/firefly-rk3399_defconfig
++++ b/configs/firefly-rk3399_defconfig
+@@ -68,3 +68,4 @@ CONFIG_USB_ETHER_RTL8152=y
+ CONFIG_USB_ETHER_SMSC95XX=y
+ CONFIG_SPL_TINY_MEMSET=y
+ CONFIG_ERRNO_STR=y
++# CONFIG_PSCI_RESET is not set
+diff --git a/configs/khadas-edge-captain-rk3399_defconfig b/configs/khadas-edge-captain-rk3399_defconfig
+index 6b9df2a230..0898566f3a 100644
+--- a/configs/khadas-edge-captain-rk3399_defconfig
++++ b/configs/khadas-edge-captain-rk3399_defconfig
+@@ -62,3 +62,4 @@ CONFIG_USB_ETHER_RTL8152=y
+ CONFIG_USB_ETHER_SMSC95XX=y
+ CONFIG_SPL_TINY_MEMSET=y
+ CONFIG_ERRNO_STR=y
++# CONFIG_PSCI_RESET is not set
+diff --git a/configs/khadas-edge-rk3399_defconfig b/configs/khadas-edge-rk3399_defconfig
+index 47b2b34bf0..ed9e5ff3d6 100644
+--- a/configs/khadas-edge-rk3399_defconfig
++++ b/configs/khadas-edge-rk3399_defconfig
+@@ -61,3 +61,4 @@ CONFIG_USB_ETHER_RTL8152=y
+ CONFIG_USB_ETHER_SMSC95XX=y
+ CONFIG_SPL_TINY_MEMSET=y
+ CONFIG_ERRNO_STR=y
++# CONFIG_PSCI_RESET is not set
+diff --git a/configs/khadas-edge-v-rk3399_defconfig b/configs/khadas-edge-v-rk3399_defconfig
+index 1caadb0c82..f1daca711d 100644
+--- a/configs/khadas-edge-v-rk3399_defconfig
++++ b/configs/khadas-edge-v-rk3399_defconfig
+@@ -62,3 +62,4 @@ CONFIG_USB_ETHER_RTL8152=y
+ CONFIG_USB_ETHER_SMSC95XX=y
+ CONFIG_SPL_TINY_MEMSET=y
+ CONFIG_ERRNO_STR=y
++# CONFIG_PSCI_RESET is not set
+diff --git a/configs/leez-rk3399_defconfig b/configs/leez-rk3399_defconfig
+index 0f8a795d2a..86382bff09 100644
+--- a/configs/leez-rk3399_defconfig
++++ b/configs/leez-rk3399_defconfig
+@@ -56,3 +56,4 @@ CONFIG_USB_ETHER_RTL8152=y
+ CONFIG_USB_ETHER_SMSC95XX=y
+ CONFIG_SPL_TINY_MEMSET=y
+ CONFIG_ERRNO_STR=y
++# CONFIG_PSCI_RESET is not set
+diff --git a/configs/nanopc-t4-rk3399_defconfig b/configs/nanopc-t4-rk3399_defconfig
+index f31668c5c2..cabc044c3a 100644
+--- a/configs/nanopc-t4-rk3399_defconfig
++++ b/configs/nanopc-t4-rk3399_defconfig
+@@ -67,3 +67,4 @@ CONFIG_VIDEO_ROCKCHIP=y
+ CONFIG_DISPLAY_ROCKCHIP_HDMI=y
+ CONFIG_SPL_TINY_MEMSET=y
+ CONFIG_ERRNO_STR=y
++# CONFIG_PSCI_RESET is not set
+diff --git a/configs/nanopi-m4-2gb-rk3399_defconfig b/configs/nanopi-m4-2gb-rk3399_defconfig
+index 100cd336cd..3cab6a3be4 100644
+--- a/configs/nanopi-m4-2gb-rk3399_defconfig
++++ b/configs/nanopi-m4-2gb-rk3399_defconfig
+@@ -61,3 +61,4 @@ CONFIG_VIDEO_ROCKCHIP=y
+ CONFIG_DISPLAY_ROCKCHIP_HDMI=y
+ CONFIG_SPL_TINY_MEMSET=y
+ CONFIG_ERRNO_STR=y
++# CONFIG_PSCI_RESET is not set
+diff --git a/configs/nanopi-m4-rk3399_defconfig b/configs/nanopi-m4-rk3399_defconfig
+index ba02b6e6df..6e990d4f1d 100644
+--- a/configs/nanopi-m4-rk3399_defconfig
++++ b/configs/nanopi-m4-rk3399_defconfig
+@@ -61,3 +61,4 @@ CONFIG_VIDEO_ROCKCHIP=y
+ CONFIG_DISPLAY_ROCKCHIP_HDMI=y
+ CONFIG_SPL_TINY_MEMSET=y
+ CONFIG_ERRNO_STR=y
++# CONFIG_PSCI_RESET is not set
+diff --git a/configs/nanopi-m4b-rk3399_defconfig b/configs/nanopi-m4b-rk3399_defconfig
+index 7916307b07..f90b44e39e 100644
+--- a/configs/nanopi-m4b-rk3399_defconfig
++++ b/configs/nanopi-m4b-rk3399_defconfig
+@@ -61,3 +61,4 @@ CONFIG_VIDEO_ROCKCHIP=y
+ CONFIG_DISPLAY_ROCKCHIP_HDMI=y
+ CONFIG_SPL_TINY_MEMSET=y
+ CONFIG_ERRNO_STR=y
++# CONFIG_PSCI_RESET is not set
+diff --git a/configs/nanopi-neo4-rk3399_defconfig b/configs/nanopi-neo4-rk3399_defconfig
+index 5aa226a6cf..77e2100544 100644
+--- a/configs/nanopi-neo4-rk3399_defconfig
++++ b/configs/nanopi-neo4-rk3399_defconfig
+@@ -61,3 +61,4 @@ CONFIG_VIDEO_ROCKCHIP=y
+ CONFIG_DISPLAY_ROCKCHIP_HDMI=y
+ CONFIG_SPL_TINY_MEMSET=y
+ CONFIG_ERRNO_STR=y
++# CONFIG_PSCI_RESET is not set
+diff --git a/configs/nanopi-r4s-rk3399_defconfig b/configs/nanopi-r4s-rk3399_defconfig
+index 7d176ce28e..88188999f0 100644
+--- a/configs/nanopi-r4s-rk3399_defconfig
++++ b/configs/nanopi-r4s-rk3399_defconfig
+@@ -62,3 +62,4 @@ CONFIG_VIDEO_ROCKCHIP=y
+ CONFIG_DISPLAY_ROCKCHIP_HDMI=y
+ CONFIG_SPL_TINY_MEMSET=y
+ CONFIG_ERRNO_STR=y
++# CONFIG_PSCI_RESET is not set
+diff --git a/configs/orangepi-rk3399_defconfig b/configs/orangepi-rk3399_defconfig
+index 9857fb1065..709cdca20e 100644
+--- a/configs/orangepi-rk3399_defconfig
++++ b/configs/orangepi-rk3399_defconfig
+@@ -56,3 +56,4 @@ CONFIG_USB_ETHER_RTL8152=y
+ CONFIG_USB_ETHER_SMSC95XX=y
+ CONFIG_SPL_TINY_MEMSET=y
+ CONFIG_ERRNO_STR=y
++# CONFIG_PSCI_RESET is not set
+diff --git a/configs/pinebook-pro-rk3399_defconfig b/configs/pinebook-pro-rk3399_defconfig
+index 81aedb28e3..a22020adc5 100644
+--- a/configs/pinebook-pro-rk3399_defconfig
++++ b/configs/pinebook-pro-rk3399_defconfig
+@@ -11,6 +11,7 @@ CONFIG_DEBUG_UART_BASE=0xFF1A0000
+ CONFIG_DEBUG_UART_CLOCK=24000000
+ CONFIG_SPL_SPI_FLASH_SUPPORT=y
+ CONFIG_SPL_SPI=y
++# CONFIG_PSCI_RESET is not set
+ CONFIG_DEBUG_UART=y
+ CONFIG_SYS_LOAD_ADDR=0x800800
+ CONFIG_BOOTDELAY=3
+diff --git a/configs/rock-pi-4-rk3399_defconfig b/configs/rock-pi-4-rk3399_defconfig
+index 032b908669..cca5cd04da 100644
+--- a/configs/rock-pi-4-rk3399_defconfig
++++ b/configs/rock-pi-4-rk3399_defconfig
+@@ -75,3 +75,4 @@ CONFIG_VIDEO_ROCKCHIP=y
+ CONFIG_DISPLAY_ROCKCHIP_HDMI=y
+ CONFIG_SPL_TINY_MEMSET=y
+ CONFIG_ERRNO_STR=y
++# CONFIG_PSCI_RESET is not set
+diff --git a/configs/rock-pi-4c-rk3399_defconfig b/configs/rock-pi-4c-rk3399_defconfig
+index 6f5e8666b0..0754f9678a 100644
+--- a/configs/rock-pi-4c-rk3399_defconfig
++++ b/configs/rock-pi-4c-rk3399_defconfig
+@@ -75,3 +75,4 @@ CONFIG_VIDEO_ROCKCHIP=y
+ CONFIG_DISPLAY_ROCKCHIP_HDMI=y
+ CONFIG_SPL_TINY_MEMSET=y
+ CONFIG_ERRNO_STR=y
++# CONFIG_PSCI_RESET is not set
+diff --git a/configs/rock-pi-n10-rk3399pro_defconfig b/configs/rock-pi-n10-rk3399pro_defconfig
+index bd8b1201ef..540366923a 100644
+--- a/configs/rock-pi-n10-rk3399pro_defconfig
++++ b/configs/rock-pi-n10-rk3399pro_defconfig
+@@ -70,3 +70,4 @@ CONFIG_DISPLAY=y
+ CONFIG_VIDEO_ROCKCHIP=y
+ CONFIG_DISPLAY_ROCKCHIP_HDMI=y
+ CONFIG_ERRNO_STR=y
++# CONFIG_PSCI_RESET is not set
+diff --git a/configs/rockpro64-rk3399_defconfig b/configs/rockpro64-rk3399_defconfig
+index 637c5c2466..3536f5d0ef 100644
+--- a/configs/rockpro64-rk3399_defconfig
++++ b/configs/rockpro64-rk3399_defconfig
+@@ -13,6 +13,7 @@ CONFIG_DEBUG_UART_CLOCK=24000000
+ CONFIG_SPL_SPI_FLASH_SUPPORT=y
+ CONFIG_SPL_SPI=y
+ CONFIG_DEBUG_UART=y
++# CONFIG_PSCI_RESET is not set
+ CONFIG_SYS_LOAD_ADDR=0x800800
+ CONFIG_USE_PREBOOT=y
+ CONFIG_DEFAULT_FDT_FILE="rockchip/rk3399-rockpro64.dtb"
+-- 
+2.30.2
+
