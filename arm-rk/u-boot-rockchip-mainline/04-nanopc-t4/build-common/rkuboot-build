@@ -1,6 +1,3 @@
-abinfo "Cleaning ..."
-make mrproper
-
 abinfo "Building ..."
 if [ ! -e "$SRCDIR"/autobuild/aosc-customization.config.fragment ]; then
 	make ${UBOOT_BOARD}_defconfig

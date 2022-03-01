@@ -1,1 +1,4 @@
+abinfo "Cleaning up source tree ..."
+make mrproper
+abinfo "Copying bl31.elf ..."
 cp autobuild/bl31.elf .
