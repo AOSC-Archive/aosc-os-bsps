@@ -1,7 +1,7 @@
-From 28ffa62f799125839556b1bf08eaf4990b619ebb Mon Sep 17 00:00:00 2001
+From 9072a11e4a3e133b28c750252e92d6a2d353c950 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Kamil=20Trzci=C5=84ski?= <ayufan@ayufan.eu>
 Date: Sun, 30 Dec 2018 13:32:47 +0100
-Subject: [PATCH 01/12] arm64: dts: rockchip: change GMAC rx_delay for
+Subject: [PATCH 01/32] arm64: dts: rockchip: change GMAC rx_delay for
  RockPro64
 
 ---
@@ -9,10 +9,10 @@ Subject: [PATCH 01/12] arm64: dts: rockchip: change GMAC rx_delay for
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi
-index 6bff8db7d33e..d6cf98c507ba 100644
+index 83db4ca673349..d5ab0b41233d1 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi
 +++ b/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi
-@@ -261,7 +261,7 @@ &gmac {
+@@ -290,7 +290,7 @@ &gmac {
  	snps,reset-active-low;
  	snps,reset-delays-us = <0 10000 50000>;
  	tx_delay = <0x28>;

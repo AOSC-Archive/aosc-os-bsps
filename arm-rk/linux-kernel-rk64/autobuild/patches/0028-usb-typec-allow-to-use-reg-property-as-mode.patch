@@ -1,7 +1,7 @@
-From e9599e584bb0e802e5159842117724afcb84094b Mon Sep 17 00:00:00 2001
+From 1af00f0f27fd79623b6c2bce0e5dcd8f9c041b8f Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 27 Jul 2021 00:03:59 +0800
-Subject: [PATCH 08/12] usb: typec: allow to use reg property as mode
+Subject: [PATCH 28/32] usb: typec: allow to use reg property as mode
 
 As newly introduced DT binding uses reg property to indicate the mode
 number, utilize it in the altmode populating code.
@@ -12,7 +12,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/usb/typec/class.c b/drivers/usb/typec/class.c
-index aeef453aa658..e8daa482dd9e 100644
+index 45a6f0c807cb5..9877105745a39 100644
 --- a/drivers/usb/typec/class.c
 +++ b/drivers/usb/typec/class.c
 @@ -1933,7 +1933,7 @@ void typec_port_register_altmodes(struct typec_port *port,

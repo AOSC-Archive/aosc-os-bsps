@@ -1,0 +1,42 @@
+From 03511a19476d1355689b682dea2a55b14291fbc4 Mon Sep 17 00:00:00 2001
+From: Shawn Anastasio <shawn@anastas.io>
+Date: Thu, 25 Jun 2020 22:30:23 -0500
+Subject: [PATCH 09/32] drm/bridge: analogix_dp: Add enable_psr param
+
+Add a toggle to enable/disable PSR from the kernel commandline.
+This is useful in situations where PSR is supported by the hardware
+but is not desired by the user. One such use case is working around
+hardware errata.
+
+Signed-off-by: Shawn Anastasio <shawn@anastas.io>
+---
+ drivers/gpu/drm/bridge/analogix/analogix_dp_core.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
+index b7d2e4449cfaa..398d3d625a6f0 100644
+--- a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
++++ b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
+@@ -35,6 +35,10 @@
+ 
+ static const bool verify_fast_training;
+ 
++static bool enable_psr = true;
++module_param(enable_psr, bool, 0644);
++MODULE_PARM_DESC(enable_psr, "PSR support (1 = enabled (default), 0 = disabled)");
++
+ struct bridge_init {
+ 	struct i2c_client *client;
+ 	struct device_node *node;
+@@ -979,7 +983,7 @@ static int analogix_dp_commit(struct analogix_dp_device *dp)
+ 	if (ret)
+ 		return ret;
+ 
+-	if (analogix_dp_detect_sink_psr(dp)) {
++	if (enable_psr && analogix_dp_detect_sink_psr(dp)) {
+ 		ret = analogix_dp_enable_sink_psr(dp);
+ 		if (ret)
+ 			return ret;
+-- 
+2.30.2
+

@@ -1,7 +1,7 @@
-From 2e1c30ec79ade57549b3802c1599b0995592af9a Mon Sep 17 00:00:00 2001
+From a8de87063de19df692d69dc4305f862d43500ce2 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 27 Jul 2021 00:05:45 +0800
-Subject: [PATCH 11/12] arm64: allwinner: dts: a64: assign FUSB302 TCPM extcon
+Subject: [PATCH 31/32] arm64: allwinner: dts: a64: assign FUSB302 TCPM extcon
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---
@@ -9,10 +9,10 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 18 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
-index 8d03a92922bc..af1cf5c6d141 100644
+index 34a661069e590..7c889f7f3ea44 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
 +++ b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
-@@ -382,6 +382,11 @@ mains_charger: dc-charger {
+@@ -383,6 +383,11 @@ mains_charger: dc-charger {
  	};
  };
  
@@ -24,7 +24,7 @@ index 8d03a92922bc..af1cf5c6d141 100644
  &cpu_b0 {
  	cpu-supply = <&vdd_cpu_b>;
  };
-@@ -714,6 +719,17 @@ connector {
+@@ -715,6 +720,17 @@ connector {
  				<PDO_FIXED(5000, 1400, PDO_FIXED_DUAL_ROLE | PDO_FIXED_DATA_SWAP | PDO_FIXED_USB_COMM)>;
  			try-power-role = "source";
  
@@ -42,7 +42,7 @@ index 8d03a92922bc..af1cf5c6d141 100644
  			ports {
  				#address-cells = <1>;
  				#size-cells = <0>;
-@@ -997,6 +1013,7 @@ spiflash: flash@0 {
+@@ -998,6 +1014,7 @@ spiflash: flash@0 {
  
  &tcphy0 {
  	status = "okay";
@@ -50,7 +50,7 @@ index 8d03a92922bc..af1cf5c6d141 100644
  };
  
  &tcphy0_dp {
-@@ -1102,6 +1119,7 @@ &usb_host1_ohci {
+@@ -1103,6 +1120,7 @@ &usb_host1_ohci {
  
  &usbdrd3_0 {
  	status = "okay";

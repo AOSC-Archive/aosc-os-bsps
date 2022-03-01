@@ -1,7 +1,7 @@
-From 196f7e38e5405e84dea0f7d5a21b5f121c6766d7 Mon Sep 17 00:00:00 2001
+From d15427a82fec765d465f07c5fc4b7847e2fe030b Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 27 Jul 2021 00:05:01 +0800
-Subject: [PATCH 09/12] usb: typec: tcpm: register an extcon
+Subject: [PATCH 29/32] usb: typec: tcpm: register an extcon
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---
@@ -9,7 +9,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 126 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-index 5d05de666597..fede970b8f10 100644
+index 5fce795b69c7f..f6851d6da4562 100644
 --- a/drivers/usb/typec/tcpm/tcpm.c
 +++ b/drivers/usb/typec/tcpm/tcpm.c
 @@ -8,6 +8,7 @@
@@ -29,8 +29,8 @@ index 5d05de666597..fede970b8f10 100644
  	enum typec_role vconn_role;
  	enum typec_role pwr_role;
  	enum typec_data_role data_role;
-@@ -325,6 +328,8 @@ struct tcpm_port {
- 	bool connected;
+@@ -328,6 +331,8 @@ struct tcpm_port {
+ 	bool pd_supported;
  	enum typec_port_type port_type;
  
 +	bool has_dp;
@@ -38,7 +38,7 @@ index 5d05de666597..fede970b8f10 100644
  	/*
  	 * Set to true when vbus is greater than VSAFE5V min.
  	 * Set to false when vbus falls below vSinkDisconnect max threshold.
-@@ -493,6 +498,20 @@ static const char * const pd_rev[] = {
+@@ -496,6 +501,20 @@ static const char * const pd_rev[] = {
  	[PD_REV30]		= "rev3",
  };
  
@@ -59,7 +59,7 @@ index 5d05de666597..fede970b8f10 100644
  #define tcpm_cc_is_sink(cc) \
  	((cc) == TYPEC_CC_RP_DEF || (cc) == TYPEC_CC_RP_1_5 || \
  	 (cc) == TYPEC_CC_RP_3_0)
-@@ -923,6 +942,7 @@ static int tcpm_mux_set(struct tcpm_port *port, int state,
+@@ -929,6 +948,7 @@ static int tcpm_mux_set(struct tcpm_port *port, int state,
  			enum typec_orientation orientation)
  {
  	int ret;
@@ -67,7 +67,7 @@ index 5d05de666597..fede970b8f10 100644
  
  	tcpm_log(port, "Requesting mux state %d, usb-role %d, orientation %d",
  		 state, usb_role, orientation);
-@@ -937,7 +957,66 @@ static int tcpm_mux_set(struct tcpm_port *port, int state,
+@@ -943,7 +963,66 @@ static int tcpm_mux_set(struct tcpm_port *port, int state,
  			return ret;
  	}
  
@@ -135,7 +135,7 @@ index 5d05de666597..fede970b8f10 100644
  }
  
  static int tcpm_set_polarity(struct tcpm_port *port,
-@@ -6276,7 +6355,7 @@ static enum hrtimer_restart send_discover_timer_handler(struct hrtimer *timer)
+@@ -6332,7 +6411,7 @@ static enum hrtimer_restart send_discover_timer_handler(struct hrtimer *timer)
  struct tcpm_port *tcpm_register_port(struct device *dev, struct tcpc_dev *tcpc)
  {
  	struct tcpm_port *port;
@@ -144,9 +144,9 @@ index 5d05de666597..fede970b8f10 100644
  
  	if (!dev || !tcpc ||
  	    !tcpc->get_vbus || !tcpc->set_cc || !tcpc->get_cc ||
-@@ -6358,6 +6437,47 @@ struct tcpm_port *tcpm_register_port(struct device *dev, struct tcpc_dev *tcpc)
- 				     &tcpm_altmode_ops, port,
+@@ -6415,6 +6494,47 @@ struct tcpm_port *tcpm_register_port(struct device *dev, struct tcpc_dev *tcpc)
  				     port->port_altmode, ALTMODE_DISCOVERY_MAX);
+ 	port->registered = true;
  
 +	for (i = 0; i < ALTMODE_DISCOVERY_MAX; i++) {
 +		if (!port->port_altmode[i])
@@ -192,7 +192,7 @@ index 5d05de666597..fede970b8f10 100644
  	mutex_lock(&port->lock);
  	tcpm_init(port);
  	mutex_unlock(&port->lock);
-@@ -6365,6 +6485,10 @@ struct tcpm_port *tcpm_register_port(struct device *dev, struct tcpc_dev *tcpc)
+@@ -6422,6 +6542,10 @@ struct tcpm_port *tcpm_register_port(struct device *dev, struct tcpc_dev *tcpc)
  	tcpm_log(port, "%s: registered", dev_name(dev));
  	return port;
  

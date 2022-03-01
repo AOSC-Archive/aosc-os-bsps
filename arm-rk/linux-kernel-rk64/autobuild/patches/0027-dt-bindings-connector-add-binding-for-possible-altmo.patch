@@ -1,7 +1,7 @@
-From a5b693f156db41b19d4656989689ce8e570f33a2 Mon Sep 17 00:00:00 2001
+From 5a49494efed29afac0affc0a6748e16e9587b179 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 27 Jul 2021 00:03:36 +0800
-Subject: [PATCH 07/12] dt-bindings: connector: add binding for possible
+Subject: [PATCH 27/32] dt-bindings: connector: add binding for possible
  altmodes for Type-C
 
 As we already have some code to parse fwnode to populate alternate modes
@@ -14,10 +14,10 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 28 insertions(+)
 
 diff --git a/Documentation/devicetree/bindings/connector/usb-connector.yaml b/Documentation/devicetree/bindings/connector/usb-connector.yaml
-index 92b49bc37939..1ae76c5bcf83 100644
+index 7eb8659fa610f..927b50bd4ebd7 100644
 --- a/Documentation/devicetree/bindings/connector/usb-connector.yaml
 +++ b/Documentation/devicetree/bindings/connector/usb-connector.yaml
-@@ -189,6 +189,34 @@ properties:
+@@ -193,6 +193,34 @@ properties:
      required:
        - port@0
  

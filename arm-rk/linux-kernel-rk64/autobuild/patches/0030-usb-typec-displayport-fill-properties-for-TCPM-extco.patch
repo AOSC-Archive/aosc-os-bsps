@@ -1,16 +1,16 @@
-From a94b8a063d50e350631b6b11a2cb22cf61148e7c Mon Sep 17 00:00:00 2001
+From 25a0a5ab7bc5cca4ce3a4b4033bcf11fa8a066fe Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 27 Jul 2021 00:05:17 +0800
-Subject: [PATCH 10/12] usb: typec: displayport: fill properties for TCPM
+Subject: [PATCH 30/32] usb: typec: displayport: fill properties for TCPM
  extcon
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---
- drivers/usb/typec/altmodes/displayport.c | 66 ++++++++++++++++++++++--
- 1 file changed, 63 insertions(+), 3 deletions(-)
+ drivers/usb/typec/altmodes/displayport.c | 54 ++++++++++++++++++++++++
+ 1 file changed, 54 insertions(+)
 
 diff --git a/drivers/usb/typec/altmodes/displayport.c b/drivers/usb/typec/altmodes/displayport.c
-index b7f094435b00..c09ed9374e75 100644
+index c1d8c23baa399..67db17c40fd16 100644
 --- a/drivers/usb/typec/altmodes/displayport.c
 +++ b/drivers/usb/typec/altmodes/displayport.c
 @@ -9,6 +9,7 @@
@@ -20,10 +20,10 @@ index b7f094435b00..c09ed9374e75 100644
 +#include <linux/extcon-provider.h>
  #include <linux/mutex.h>
  #include <linux/module.h>
- #include <linux/usb/pd_vdo.h>
-@@ -135,15 +136,69 @@ static int dp_altmode_status_update(struct dp_altmode *dp)
- 	return ret;
- }
+ #include <linux/property.h>
+@@ -68,6 +69,56 @@ struct dp_altmode {
+ 	struct fwnode_handle *connector_fwnode;
+ };
  
 +static void dp_altmode_update_extcon(struct dp_altmode *dp, bool disconnect)
 +{
@@ -75,41 +75,21 @@ index b7f094435b00..c09ed9374e75 100644
 +#endif
 +}
 +
- static int dp_altmode_configured(struct dp_altmode *dp)
+ static int dp_altmode_notify(struct dp_altmode *dp)
  {
- 	int ret;
- 
- 	sysfs_notify(&dp->alt->dev.kobj, "displayport", "configuration");
- 
--	if (!dp->data.conf)
-+	if (!dp->data.conf) {
+ 	unsigned long conf;
+@@ -76,8 +127,10 @@ static int dp_altmode_notify(struct dp_altmode *dp)
+ 	if (dp->data.conf) {
+ 		state = get_count_order(DP_CONF_GET_PIN_ASSIGN(dp->data.conf));
+ 		conf = TYPEC_MODAL_STATE(state);
++		dp_altmode_update_extcon(dp, false);
+ 	} else {
+ 		conf = TYPEC_STATE_USB;
 +		dp_altmode_update_extcon(dp, true);
- 		return typec_altmode_notify(dp->alt, TYPEC_STATE_USB,
- 					    &dp->data);
-+	}
-+
-+	dp_altmode_update_extcon(dp, false);
- 
- 	ret = dp_altmode_notify(dp);
- 	if (ret)
-@@ -173,11 +228,14 @@ static int dp_altmode_configure_vdm(struct dp_altmode *dp, u32 conf)
- 
- 	ret = typec_altmode_vdm(dp->alt, header, &conf, 2);
- 	if (ret) {
--		if (DP_CONF_GET_PIN_ASSIGN(dp->data.conf))
-+		if (DP_CONF_GET_PIN_ASSIGN(dp->data.conf)) {
-+			dp_altmode_update_extcon(dp, false);
- 			dp_altmode_notify(dp);
--		else
-+		} else {
-+			dp_altmode_update_extcon(dp, true);
- 			typec_altmode_notify(dp->alt, TYPEC_STATE_USB,
- 					     &dp->data);
-+		}
  	}
  
- 	return ret;
-@@ -220,6 +278,7 @@ static void dp_altmode_work(struct work_struct *work)
+ 	return typec_altmode_notify(dp->alt, conf, &dp->data);
+@@ -221,6 +274,7 @@ static void dp_altmode_work(struct work_struct *work)
  	case DP_STATE_EXIT:
  		if (typec_altmode_exit(dp->alt))
  			dev_err(&dp->alt->dev, "Exit Mode Failed!\n");
@@ -117,14 +97,6 @@ index b7f094435b00..c09ed9374e75 100644
  		break;
  	default:
  		break;
-@@ -250,6 +309,7 @@ static void dp_altmode_attention(struct typec_altmode *alt, const u32 vdo)
- 	if (dp_altmode_notify(dp))
- 		dev_err(&alt->dev, "%s: notification failed\n", __func__);
- 
-+	dp_altmode_update_extcon(dp, false);
- 	if (old_state == DP_STATE_IDLE && dp->state != DP_STATE_IDLE)
- 		schedule_work(&dp->work);
- 
 -- 
 2.30.2
 
