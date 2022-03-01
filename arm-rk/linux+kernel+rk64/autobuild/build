@@ -4,5 +4,5 @@ mkdir -p "$PKGDIR"/usr/lib/aosc-os-arm64-rockchip-boot/
 ln -sfv linux-kernel-${KERNVER}-aosc-rk64 "$PKGDIR"/usr/lib/aosc-os-arm64-rockchip-boot/linux-kernel-rk64
 for i in /usr/lib/aosc-os-arm64-rockchip-boot/dtbs-kernel-${KERNVER}-aosc-rk64/*.dtb; do
 	mkdir -p "$PKGDIR"/usr/lib/aosc-os-arm64-rockchip-boot/dtb-"$(basename $i | cut -d . -f 1)"
-	ln -sfv ../dtbs-kernel-${KERNVER}-aosc-rk64/$i "$PKGDIR"/usr/lib/aosc-os-arm64-rockchip-boot/dtb-"$(basename $i | cut -d . -f 1)"/dtb.dtb
+	ln -sfv ../dtbs-kernel-${KERNVER}-aosc-rk64/"$(basename $i)" "$PKGDIR"/usr/lib/aosc-os-arm64-rockchip-boot/dtb-"$(basename $i | cut -d . -f 1)"/dtb.dtb
 done
