@@ -2,7 +2,11 @@ abinfo "Cleaning ..."
 make mrproper
 
 abinfo "Building ..."
-make ${UBOOT_BOARD}_defconfig
+if [ ! -e "$SRCDIR"/autobuild/aosc-customization.config.fragment ]; then
+	make ${UBOOT_BOARD}_defconfig
+else
+	sh "$SRCDIR"/scripts/kconfig/merge_kconfig.sh "$SRCDIR"/configs/${UBOOT_BOARD}_defconfig "$SRCDIR"/autobuild/aosc-customization.config.fragment
+fi
 make
 make idbloader.img
 make u-boot.itb
