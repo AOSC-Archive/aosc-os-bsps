@@ -1,0 +1,108 @@
+From 2b099554ea82366980a56dd3e60fcc85f6af275a Mon Sep 17 00:00:00 2001
+From: Alper Nebi Yasak <alpernebiyasak@gmail.com>
+Date: Sat, 29 Jan 2022 01:42:39 +0300
+Subject: [PATCH 15/15] rockchip: sdhci: Add HS400 Enhanced Strobe support for
+ RK3568
+
+On RK3568, a register bit must be set to enable Enhanced Strobe.
+However, it appears that the address of this register may differ from
+vendor to vendor and should be read from the underlying MMC IP. Let the
+Rockchip SDHCI driver read this address and set the relevant bit when
+Enhanced Strobe configuration is requested.
+
+Additionally, a bit signifying that the connected hardware is an eMMC
+chip must be set to enable Data Strobe for HS400 and HS400ES modes. Also
+make the driver set this bit as appropriate.
+
+This is partly ported from Linux's Synopsys DWC MSHC driver which
+happens to be the underlying IP. (drivers/mmc/host/sdhci-of-dwcmshc.c in
+Linux tree).
+
+Signed-off-by: Alper Nebi Yasak <alpernebiyasak@gmail.com>
+Reviewed-by: Jaehoon Chung <jh80.chung@samsung.com>
+---
+ drivers/mmc/rockchip_sdhci.c | 42 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
+
+diff --git a/drivers/mmc/rockchip_sdhci.c b/drivers/mmc/rockchip_sdhci.c
+index f4d5a59036..1d96c4696b 100644
+--- a/drivers/mmc/rockchip_sdhci.c
++++ b/drivers/mmc/rockchip_sdhci.c
+@@ -45,6 +45,14 @@
+ #define ARASAN_VENDOR_REGISTER		0x78
+ #define ARASAN_VENDOR_ENHANCED_STROBE	BIT(0)
+ 
++/* DWC IP vendor area 1 pointer */
++#define DWCMSHC_P_VENDOR_AREA1		0xe8
++#define DWCMSHC_AREA1_MASK		GENMASK(11, 0)
++/* Offset inside the vendor area 1 */
++#define DWCMSHC_EMMC_CONTROL		0x2c
++#define DWCMSHC_CARD_IS_EMMC		BIT(0)
++#define DWCMSHC_ENHANCED_STROBE		BIT(8)
++
+ /* Rockchip specific Registers */
+ #define DWCMSHC_EMMC_DLL_CTRL		0x800
+ #define DWCMSHC_EMMC_DLL_CTRL_RESET	BIT(1)
+@@ -279,11 +287,25 @@ static int rk3568_emmc_phy_init(struct udevice *dev)
+ {
+ 	struct rockchip_sdhc *prv = dev_get_priv(dev);
+ 	struct sdhci_host *host = &prv->host;
++	struct mmc *mmc = host->mmc;
+ 	u32 extra;
++	u32 vendor;
++	int reg;
+ 
+ 	extra = DLL_RXCLK_NO_INVERTER << DWCMSHC_EMMC_DLL_RXCLK_SRCSEL;
+ 	sdhci_writel(host, extra, DWCMSHC_EMMC_DLL_RXCLK);
+ 
++	/* set CARD_IS_EMMC bit to enable Data Strobe for HS400 and HS400ES */
++	reg = (sdhci_readl(host, DWCMSHC_P_VENDOR_AREA1) & DWCMSHC_AREA1_MASK)
++	      + DWCMSHC_EMMC_CONTROL;
++
++	vendor = sdhci_readw(host, reg);
++	if (IS_MMC(mmc))
++		vendor |= DWCMSHC_CARD_IS_EMMC;
++	else
++		vendor &= ~DWCMSHC_CARD_IS_EMMC;
++	sdhci_writew(host, vendor, reg);
++
+ 	return 0;
+ }
+ 
+@@ -346,6 +368,25 @@ static int rk3568_emmc_get_phy(struct udevice *dev)
+ 	return 0;
+ }
+ 
++static int rk3568_sdhci_set_enhanced_strobe(struct sdhci_host *host)
++{
++	struct mmc *mmc = host->mmc;
++	u32 vendor;
++	int reg;
++
++	reg = (sdhci_readl(host, DWCMSHC_P_VENDOR_AREA1) & DWCMSHC_AREA1_MASK)
++	      + DWCMSHC_EMMC_CONTROL;
++
++	vendor = sdhci_readl(host, reg);
++	if (mmc->selected_mode == MMC_HS_400_ES)
++		vendor |= DWCMSHC_ENHANCED_STROBE;
++	else
++		vendor &= ~DWCMSHC_ENHANCED_STROBE;
++	sdhci_writel(host, vendor, reg);
++
++	return 0;
++}
++
+ static int rk3568_sdhci_set_ios_post(struct sdhci_host *host)
+ {
+ 	struct mmc *mmc = host->mmc;
+@@ -554,6 +595,7 @@ static const struct sdhci_data rk3568_data = {
+ 	.get_phy = rk3568_emmc_get_phy,
+ 	.emmc_phy_init = rk3568_emmc_phy_init,
+ 	.set_ios_post = rk3568_sdhci_set_ios_post,
++	.set_enhanced_strobe = rk3568_sdhci_set_enhanced_strobe,
+ };
+ 
+ static const struct udevice_id sdhci_ids[] = {
+-- 
+2.35.1
+
