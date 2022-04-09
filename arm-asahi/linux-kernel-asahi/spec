@@ -1,4 +1,3 @@
-VER=5.16.0
-VER_UPSTREAM=5.16-rc6
-SRCS="tbl::https://git.kernel.org/torvalds/t/linux-${VER_UPSTREAM}.tar.gz"
-CHKSUMS="sha256::2fb1dca461e00412822fa8de089701e5ae1ef703e1a57e839f5fd1a194f33ecb"
+VER=5.17.0
+SRCS="git::commit=ab5fc7cc531cae8ee1be36df25678030e5dba29f::https://github.com/cthbleachbit/linux-aosc"
+CHKSUMS="SKIP"
