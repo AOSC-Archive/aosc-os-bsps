@@ -1,3 +1,3 @@
 VER=5.17.2
-SRCS="git::commit=5c3dca5b3114592ef25aa49f31ba20eefed99c79::https://github.com/cthbleachbit/linux-aosc"
+SRCS="git::commit=44c139ca8881b2b2aae3fcf43ef015c3927b3a8b::https://github.com/cthbleachbit/linux-aosc"
 CHKSUMS="SKIP"
