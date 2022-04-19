@@ -1,7 +1,7 @@
-From e8c8b69f89925992c5f9e46b85cd823dff24fbd1 Mon Sep 17 00:00:00 2001
+From 8c54794ccac1941e1f4667bd191bbad9ffc17bb4 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Ond=C5=99ej=20Jirman?= <megi@xff.cz>
 Date: Sun, 7 Nov 2021 19:28:27 +0100
-Subject: [PATCH 16/31] usb: typec: fusb302: Set the current before enabling
+Subject: [PATCH 16/76] usb: typec: fusb302: Set the current before enabling
  pullups
 
 This seems more reasonable and should avoid short period of incorrect
@@ -13,7 +13,7 @@ Signed-off-by: Ondrej Jirman <megi@xff.cz>
  1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/usb/typec/tcpm/fusb302.c b/drivers/usb/typec/tcpm/fusb302.c
-index 72f9001b07921..776a949ef6e39 100644
+index 72f9001b0792..776a949ef6e3 100644
 --- a/drivers/usb/typec/tcpm/fusb302.c
 +++ b/drivers/usb/typec/tcpm/fusb302.c
 @@ -635,6 +635,14 @@ static int tcpm_set_cc(struct tcpc_dev *dev, enum typec_cc_status cc)
@@ -47,5 +47,5 @@ index 72f9001b07921..776a949ef6e39 100644
  	switch (cc) {
  	case TYPEC_CC_RP_DEF:
 -- 
-2.30.2
+2.35.1
 

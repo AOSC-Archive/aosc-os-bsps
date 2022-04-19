@@ -1,7 +1,7 @@
-From 7c52ac9dd0876239b44f48a7d7d464b26500f762 Mon Sep 17 00:00:00 2001
+From 3c5813d78135e02069f00a3cbec1c8cba20f9cc0 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Ond=C5=99ej=20Jirman?= <megi@xff.cz>
 Date: Sun, 14 Nov 2021 01:14:25 +0100
-Subject: [PATCH 20/31] usb: typec: fusb302: Add OF extcon support
+Subject: [PATCH 20/76] usb: typec: fusb302: Add OF extcon support
 
 It's possible to create a dependency cycle between fusb302 and
 other drivers via extcon device, so we retrieve the device on
@@ -13,7 +13,7 @@ Signed-off-by: Ondrej Jirman <megi@xff.cz>
  1 file changed, 10 insertions(+)
 
 diff --git a/drivers/usb/typec/tcpm/fusb302.c b/drivers/usb/typec/tcpm/fusb302.c
-index f6be9aa308241..35622bd5345f9 100644
+index f6be9aa30824..35622bd5345f 100644
 --- a/drivers/usb/typec/tcpm/fusb302.c
 +++ b/drivers/usb/typec/tcpm/fusb302.c
 @@ -518,6 +518,16 @@ static int tcpm_get_current_limit(struct tcpc_dev *dev)
@@ -34,5 +34,5 @@ index f6be9aa308241..35622bd5345f9 100644
  		return 0;
  
 -- 
-2.30.2
+2.35.1
 

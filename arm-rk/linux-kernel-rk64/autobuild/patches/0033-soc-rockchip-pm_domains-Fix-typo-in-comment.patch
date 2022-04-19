@@ -1,0 +1,34 @@
+From 490d173d661b748bc705ef837b4fc9b7e19b2352 Mon Sep 17 00:00:00 2001
+From: Sebastian Fricke <sebastian.fricke@collabora.com>
+Date: Sat, 26 Mar 2022 19:34:50 +0100
+Subject: [PATCH 33/76] soc: rockchip: pm_domains: Fix typo in comment
+
+s/eject devices form power domain/eject devices from the power domain/
+
+Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
+Link: https://lore.kernel.org/r/20220326183451.66115-1-sebastian.fricke@collabora.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+---
+ drivers/soc/rockchip/pm_domains.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/soc/rockchip/pm_domains.c b/drivers/soc/rockchip/pm_domains.c
+index 0868b7d406fb..1b029e494274 100644
+--- a/drivers/soc/rockchip/pm_domains.c
++++ b/drivers/soc/rockchip/pm_domains.c
+@@ -1068,9 +1068,9 @@ static struct platform_driver rockchip_pm_domain_driver = {
+ 		.name   = "rockchip-pm-domain",
+ 		.of_match_table = rockchip_pm_domain_dt_match,
+ 		/*
+-		 * We can't forcibly eject devices form power domain,
+-		 * so we can't really remove power domains once they
+-		 * were added.
++		 * We can't forcibly eject devices from the power
++		 * domain, so we can't really remove power domains
++		 * once they were added.
+ 		 */
+ 		.suppress_bind_attrs = true,
+ 	},
+-- 
+2.35.1
+

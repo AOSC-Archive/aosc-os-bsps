@@ -1,7 +1,7 @@
-From 22646e1551d620fcd86549528ad9f679daa48913 Mon Sep 17 00:00:00 2001
+From 8b9988ab9a6245aff6a4742ab719832f61e5ad26 Mon Sep 17 00:00:00 2001
 From: Hugh Cole-Baker <sigmaris@gmail.com>
 Date: Tue, 19 Oct 2021 22:58:42 +0100
-Subject: [PATCH 13/31] drm/rockchip: support gamma control on RK3399
+Subject: [PATCH 13/76] drm/rockchip: support gamma control on RK3399
 
 The RK3399 has a 1024-entry gamma LUT with 10 bits per component on its
 "big" VOP and a 256-entry, 8 bit per component LUT on the "little" VOP.
@@ -17,7 +17,7 @@ Signed-off-by: Hugh Cole-Baker <sigmaris@gmail.com>
  1 file changed, 71 insertions(+), 34 deletions(-)
 
 diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
-index 3e8d9e2d1b675..afdf6188f4348 100644
+index 3e8d9e2d1b67..afdf6188f434 100644
 --- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
 +++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
 @@ -9,6 +9,7 @@
@@ -194,5 +194,5 @@ index 3e8d9e2d1b675..afdf6188f4348 100644
  		}
  		vop->lut_regs = devm_ioremap_resource(dev, res);
 -- 
-2.30.2
+2.35.1
 

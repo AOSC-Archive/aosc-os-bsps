@@ -1,7 +1,7 @@
-From 731228aff10d11fc34943a0729cfbe33ecbdba0d Mon Sep 17 00:00:00 2001
+From 8805531af463cb6ea1ceccd920b9b2f325f79ed8 Mon Sep 17 00:00:00 2001
 From: Dan Johansen <strit@manjaro.org>
 Date: Thu, 2 Sep 2021 09:44:47 +0200
-Subject: [PATCH 11/31] arm64: dts: rockchip: Add pcie bus scan delay to
+Subject: [PATCH 11/76] arm64: dts: rockchip: Add pcie bus scan delay to
  rockpro64
 
 Signed-off-by: Dan Johansen <strit@manjaro.org>
@@ -10,7 +10,7 @@ Signed-off-by: Dan Johansen <strit@manjaro.org>
  1 file changed, 1 insertion(+)
 
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi
-index dc13374264b14..0af84656fdcc5 100644
+index 14f770621f10..cafa64ac9ec7 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi
 +++ b/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi
 @@ -604,6 +604,7 @@ &pcie0 {
@@ -22,5 +22,5 @@ index dc13374264b14..0af84656fdcc5 100644
  };
  
 -- 
-2.30.2
+2.35.1
 

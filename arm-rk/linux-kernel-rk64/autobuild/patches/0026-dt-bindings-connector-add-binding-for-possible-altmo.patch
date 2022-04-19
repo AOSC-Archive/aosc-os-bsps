@@ -1,7 +1,7 @@
-From aeb2e9f65d728db8545eedc29f9840be06e2f2b8 Mon Sep 17 00:00:00 2001
+From 2b4a94a83c559df1d79f06ce74283e75887b8daf Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 27 Jul 2021 00:03:36 +0800
-Subject: [PATCH 26/31] dt-bindings: connector: add binding for possible
+Subject: [PATCH 26/76] dt-bindings: connector: add binding for possible
  altmodes for Type-C
 
 As we already have some code to parse fwnode to populate alternate modes
@@ -14,10 +14,10 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 28 insertions(+)
 
 diff --git a/Documentation/devicetree/bindings/connector/usb-connector.yaml b/Documentation/devicetree/bindings/connector/usb-connector.yaml
-index 7eb8659fa610f..927b50bd4ebd7 100644
+index 0420fa563532..d2ce2ffe8328 100644
 --- a/Documentation/devicetree/bindings/connector/usb-connector.yaml
 +++ b/Documentation/devicetree/bindings/connector/usb-connector.yaml
-@@ -193,6 +193,34 @@ properties:
+@@ -192,6 +192,34 @@ properties:
      required:
        - port@0
  
@@ -53,5 +53,5 @@ index 7eb8659fa610f..927b50bd4ebd7 100644
      description: Initial current capability of the new source when vSafe5V
        is applied during PD3.0 Fast Role Swap. "Table 6-14 Fixed Supply PDO - Sink"
 -- 
-2.30.2
+2.35.1
 

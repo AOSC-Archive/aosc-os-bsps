@@ -1,7 +1,7 @@
-From 42e098bfe033dc0030d99ea7e822ab77bb0cb6d6 Mon Sep 17 00:00:00 2001
+From 25093a29b73a972cac4c03eebc2c4fa32bfa17c8 Mon Sep 17 00:00:00 2001
 From: Manish Narani <manish.narani@xilinx.com>
 Date: Tue, 18 Sep 2018 20:34:06 +0530
-Subject: [PATCH 05/31] sdhci: arasan: Add runtime PM support
+Subject: [PATCH 05/76] sdhci: arasan: Add runtime PM support
 
 Add runtime PM support in Arasan SDHCI driver.
 
@@ -11,7 +11,7 @@ Signed-off-by: Manish Narani <manish.narani@xilinx.com>
  1 file changed, 86 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/mmc/host/sdhci-of-arasan.c b/drivers/mmc/host/sdhci-of-arasan.c
-index 6a2e5a4684246..e08d6efd9de76 100644
+index 6a2e5a468424..e08d6efd9de7 100644
 --- a/drivers/mmc/host/sdhci-of-arasan.c
 +++ b/drivers/mmc/host/sdhci-of-arasan.c
 @@ -19,6 +19,7 @@
@@ -152,5 +152,5 @@ index 6a2e5a4684246..e08d6efd9de76 100644
  
  	ret = sdhci_pltfm_unregister(pdev);
 -- 
-2.30.2
+2.35.1
 

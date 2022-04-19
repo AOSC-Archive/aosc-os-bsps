@@ -1,7 +1,7 @@
-From 65d81a5163bc3f31c8c33164500801b129fcb2b9 Mon Sep 17 00:00:00 2001
+From 85fa016ea609414313d506a874c53d3a45e07a1b Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Ond=C5=99ej=20Jirman?= <megi@xff.cz>
 Date: Sun, 7 Nov 2021 19:29:06 +0100
-Subject: [PATCH 17/31] usb: typec: fusb302: Extend debugging interface with
+Subject: [PATCH 17/76] usb: typec: fusb302: Extend debugging interface with
  driver state dumps
 
 This is useful for debugging.
@@ -12,7 +12,7 @@ Signed-off-by: Ondrej Jirman <megi@xff.cz>
  1 file changed, 78 insertions(+)
 
 diff --git a/drivers/usb/typec/tcpm/fusb302.c b/drivers/usb/typec/tcpm/fusb302.c
-index 776a949ef6e39..1a758e33e888c 100644
+index 776a949ef6e3..1a758e33e888 100644
 --- a/drivers/usb/typec/tcpm/fusb302.c
 +++ b/drivers/usb/typec/tcpm/fusb302.c
 @@ -207,6 +207,81 @@ static int fusb302_debug_show(struct seq_file *s, void *v)
@@ -108,5 +108,5 @@ index 776a949ef6e39..1a758e33e888c 100644
  
  static void fusb302_debugfs_exit(struct fusb302_chip *chip)
 -- 
-2.30.2
+2.35.1
 

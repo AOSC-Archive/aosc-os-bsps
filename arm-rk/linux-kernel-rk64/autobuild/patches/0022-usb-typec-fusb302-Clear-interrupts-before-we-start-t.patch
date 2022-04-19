@@ -1,7 +1,7 @@
-From f7f13d5c697aaee2e8cbbd81b9017447b82f1f2d Mon Sep 17 00:00:00 2001
+From 25d764f9d2e63acc566186022c4baa4949e15a7e Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Ond=C5=99ej=20Jirman?= <megi@xff.cz>
 Date: Sat, 20 Nov 2021 14:35:10 +0100
-Subject: [PATCH 22/31] usb: typec: fusb302: Clear interrupts before we start
+Subject: [PATCH 22/76] usb: typec: fusb302: Clear interrupts before we start
  toggling
 
 This is recommended by the datasheet.
@@ -12,7 +12,7 @@ Signed-off-by: Ondrej Jirman <megi@xff.cz>
  1 file changed, 7 insertions(+)
 
 diff --git a/drivers/usb/typec/tcpm/fusb302.c b/drivers/usb/typec/tcpm/fusb302.c
-index 35622bd5345f9..8ce8f7e81ed58 100644
+index 35622bd5345f..8ce8f7e81ed5 100644
 --- a/drivers/usb/typec/tcpm/fusb302.c
 +++ b/drivers/usb/typec/tcpm/fusb302.c
 @@ -586,6 +586,7 @@ static int fusb302_set_toggling(struct fusb302_chip *chip,
@@ -37,5 +37,5 @@ index 35622bd5345f9..8ce8f7e81ed58 100644
  		ret = fusb302_i2c_clear_bits(chip, FUSB_REG_MASKA,
  					     FUSB_REG_MASKA_TOGDONE);
 -- 
-2.30.2
+2.35.1
 

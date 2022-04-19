@@ -1,7 +1,7 @@
-From 610e024a8b8c0fae818ab2eefbb7a7ce135874fe Mon Sep 17 00:00:00 2001
+From 0e927394d94f39b91d6749c0d31cfa7685196dbf Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Ond=C5=99ej=20Jirman?= <megi@xff.cz>
 Date: Tue, 23 Nov 2021 17:32:18 +0100
-Subject: [PATCH 06/31] phy: rockchip-typec: Make sure the plug orientation is
+Subject: [PATCH 06/76] phy: rockchip-typec: Make sure the plug orientation is
  respected
 
 RK3399 TRM says about bit 8:
@@ -20,7 +20,7 @@ Signed-off-by: Ondrej Jirman <megi@xff.cz>
  1 file changed, 5 insertions(+)
 
 diff --git a/drivers/phy/rockchip/phy-rockchip-typec.c b/drivers/phy/rockchip/phy-rockchip-typec.c
-index d2bbdc96a1672..fa10ee9a5794e 100644
+index d2bbdc96a167..fa10ee9a5794 100644
 --- a/drivers/phy/rockchip/phy-rockchip-typec.c
 +++ b/drivers/phy/rockchip/phy-rockchip-typec.c
 @@ -350,6 +350,7 @@ struct usb3phy_reg {
@@ -64,5 +64,5 @@ index d2bbdc96a1672..fa10ee9a5794e 100644
  	tcphy_dp_aux_set_flip(tcphy);
  
 -- 
-2.30.2
+2.35.1
 

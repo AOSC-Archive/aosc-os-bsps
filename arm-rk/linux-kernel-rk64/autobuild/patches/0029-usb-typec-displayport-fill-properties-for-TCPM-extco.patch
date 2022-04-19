@@ -1,7 +1,7 @@
-From 13b1a44024c288572918673008ac4cb7f1bf5bd9 Mon Sep 17 00:00:00 2001
+From c03d261889314f06701e40b6d3a3dfdd9e87a720 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 27 Jul 2021 00:05:17 +0800
-Subject: [PATCH 29/31] usb: typec: displayport: fill properties for TCPM
+Subject: [PATCH 29/76] usb: typec: displayport: fill properties for TCPM
  extcon
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
@@ -10,7 +10,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 54 insertions(+)
 
 diff --git a/drivers/usb/typec/altmodes/displayport.c b/drivers/usb/typec/altmodes/displayport.c
-index c1d8c23baa399..67db17c40fd16 100644
+index c1d8c23baa39..67db17c40fd1 100644
 --- a/drivers/usb/typec/altmodes/displayport.c
 +++ b/drivers/usb/typec/altmodes/displayport.c
 @@ -9,6 +9,7 @@
@@ -98,5 +98,5 @@ index c1d8c23baa399..67db17c40fd16 100644
  	default:
  		break;
 -- 
-2.30.2
+2.35.1
 

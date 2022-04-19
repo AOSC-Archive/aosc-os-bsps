@@ -1,7 +1,7 @@
-From a583bc4aeb13f66568cade81ac8526fdcac4f4ee Mon Sep 17 00:00:00 2001
+From 3b22611f1a0af53ba401b62692e20a3d9a8ef6e8 Mon Sep 17 00:00:00 2001
 From: Shawn Anastasio <shawn@anastas.io>
 Date: Thu, 25 Jun 2020 22:30:23 -0500
-Subject: [PATCH 08/31] drm/bridge: analogix_dp: Add enable_psr param
+Subject: [PATCH 08/76] drm/bridge: analogix_dp: Add enable_psr param
 
 Add a toggle to enable/disable PSR from the kernel commandline.
 This is useful in situations where PSR is supported by the hardware
@@ -14,7 +14,7 @@ Signed-off-by: Shawn Anastasio <shawn@anastas.io>
  1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-index b7d2e4449cfaa..398d3d625a6f0 100644
+index eb590fb8e8d0..ac402cd41a58 100644
 --- a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
 +++ b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
 @@ -35,6 +35,10 @@
@@ -38,5 +38,5 @@ index b7d2e4449cfaa..398d3d625a6f0 100644
  		if (ret)
  			return ret;
 -- 
-2.30.2
+2.35.1
 

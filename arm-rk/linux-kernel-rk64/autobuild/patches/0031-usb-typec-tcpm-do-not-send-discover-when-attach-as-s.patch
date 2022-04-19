@@ -1,7 +1,7 @@
-From 57bac15fcee806184c653dff63f4f15f428c5e6d Mon Sep 17 00:00:00 2001
+From 0c55b3462e20053513ebf64f79efd7cf1f733f34 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 26 Aug 2021 12:42:10 +0800
-Subject: [PATCH 31/31] usb: typec: tcpm: do not send discover when attach as
+Subject: [PATCH 31/76] usb: typec: tcpm: do not send discover when attach as
  sink
 
 According to PD 2.0 spec, sink shouldn't send discover; however some
@@ -17,7 +17,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 1 deletion(-)
 
 diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-index f6851d6da4562..640b55631c8b7 100644
+index 039e26b8216b..b511428765d7 100644
 --- a/drivers/usb/typec/tcpm/tcpm.c
 +++ b/drivers/usb/typec/tcpm/tcpm.c
 @@ -3809,7 +3809,6 @@ static int tcpm_snk_attach(struct tcpm_port *port)
@@ -29,5 +29,5 @@ index f6851d6da4562..640b55631c8b7 100644
  	return 0;
  }
 -- 
-2.30.2
+2.35.1
 

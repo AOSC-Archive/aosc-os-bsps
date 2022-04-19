@@ -1,0 +1,33 @@
+From f1695e2ad7472d8358633fdfc6718b4cab7e5894 Mon Sep 17 00:00:00 2001
+From: Robin Murphy <robin.murphy@arm.com>
+Date: Tue, 15 Mar 2022 22:08:10 +0000
+Subject: [PATCH 38/76] arm64: dts: rockchip: Add some pins for NanoPi4
+
+The NanoPi4 boards have the RK808's always-on 32KHz clock wired to the
+SoC, so have it claim the relevant pinctrl to actually enable the
+CLK32K_IN input. The RK808's SLEEP pin is also wired to the SoC's
+AP_PWROFF output, so we may as well claim that too.
+
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Link: https://lore.kernel.org/r/e870284a872567f163868b77267c01b77ed6f22a.1647381986.git.robin.murphy@arm.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+---
+ arch/arm64/boot/dts/rockchip/rk3399-nanopi4.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-nanopi4.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-nanopi4.dtsi
+index b9afecf37866..af365a88c5d5 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-nanopi4.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-nanopi4.dtsi
+@@ -264,7 +264,7 @@ rk808: pmic@1b {
+ 		interrupt-parent = <&gpio1>;
+ 		interrupts = <21 IRQ_TYPE_LEVEL_LOW>;
+ 		pinctrl-names = "default";
+-		pinctrl-0 = <&pmic_int_l>;
++		pinctrl-0 = <&pmic_int_l>, <&ap_pwroff>, <&clk_32k>;
+ 		rockchip,system-power-controller;
+ 		wakeup-source;
+ 
+-- 
+2.35.1
+

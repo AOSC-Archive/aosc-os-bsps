@@ -1,7 +1,7 @@
-From f26675c56079104059b2ae75b248148b51df0615 Mon Sep 17 00:00:00 2001
+From 6b58c70c8eab678acb91d037fab4a4be5a03d1b4 Mon Sep 17 00:00:00 2001
 From: Peter Geis <pgwipeout@gmail.com>
 Date: Sat, 22 Jan 2022 20:35:39 +0000
-Subject: [PATCH 07/31] mmc: dw-mmc-rockchip: fix sdmmc after soft reboot
+Subject: [PATCH 07/76] mmc: dw-mmc-rockchip: fix sdmmc after soft reboot
 
 During shutdown the dw-mmc driver shuts down the vqmmc regulator.
 This leads to situations where the sdmmc is unavailable after a soft
@@ -15,7 +15,7 @@ Signed-off-by: Peter Geis <pgwipeout@gmail.com>
  1 file changed, 12 insertions(+)
 
 diff --git a/drivers/mmc/host/dw_mmc-rockchip.c b/drivers/mmc/host/dw_mmc-rockchip.c
-index 95d0ec0f5f3a4..3e48648f94f78 100644
+index f825487aa739..acf938d22c5b 100644
 --- a/drivers/mmc/host/dw_mmc-rockchip.c
 +++ b/drivers/mmc/host/dw_mmc-rockchip.c
 @@ -10,6 +10,7 @@
@@ -26,7 +26,7 @@ index 95d0ec0f5f3a4..3e48648f94f78 100644
  #include <linux/slab.h>
  
  #include "dw_mmc.h"
-@@ -369,9 +370,20 @@ static const struct dev_pm_ops dw_mci_rockchip_dev_pm_ops = {
+@@ -388,9 +389,20 @@ static const struct dev_pm_ops dw_mci_rockchip_dev_pm_ops = {
  			   NULL)
  };
  
@@ -48,5 +48,5 @@ index 95d0ec0f5f3a4..3e48648f94f78 100644
  		.name		= "dwmmc_rockchip",
  		.probe_type	= PROBE_PREFER_ASYNCHRONOUS,
 -- 
-2.30.2
+2.35.1
 

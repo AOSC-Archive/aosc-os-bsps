@@ -1,7 +1,7 @@
-From 6629a3155ee08eb510d087645c91607f37d720d5 Mon Sep 17 00:00:00 2001
+From bc3c52389a26882de53f2ecb8b2c48a6e84d1103 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Ond=C5=99ej=20Jirman?= <megi@xff.cz>
 Date: Tue, 23 Nov 2021 17:57:06 +0100
-Subject: [PATCH 19/31] usb: typec: fusb302: Update VBUS state even if VBUS
+Subject: [PATCH 19/76] usb: typec: fusb302: Update VBUS state even if VBUS
  interrupt is not triggered
 
 This seems to improve robustness.
@@ -12,7 +12,7 @@ Signed-off-by: Ondrej Jirman <megi@xff.cz>
  1 file changed, 8 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/usb/typec/tcpm/fusb302.c b/drivers/usb/typec/tcpm/fusb302.c
-index 7386805e4f303..f6be9aa308241 100644
+index 7386805e4f30..f6be9aa30824 100644
 --- a/drivers/usb/typec/tcpm/fusb302.c
 +++ b/drivers/usb/typec/tcpm/fusb302.c
 @@ -1636,14 +1636,16 @@ static void fusb302_irq_work(struct work_struct *work)
@@ -39,5 +39,5 @@ index 7386805e4f303..f6be9aa308241 100644
  
  	if ((interrupta & FUSB_REG_INTERRUPTA_TOGDONE) && intr_togdone) {
 -- 
-2.30.2
+2.35.1
 

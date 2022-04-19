@@ -1,0 +1,35 @@
+From 70805b1530f9f39b3e120637a739dd15d92b5e74 Mon Sep 17 00:00:00 2001
+From: Michael Riesch <michael.riesch@wolfvision.net>
+Date: Thu, 10 Mar 2022 22:03:50 +0100
+Subject: [PATCH 41/76] dt-bindings: arm: rockchip: add radxa rock3 model a
+
+Add entry for the Radxa ROCK3 Model A board (with the Rockchip
+RK3568 SoC).
+
+Signed-off-by: Michael Riesch <michael.riesch@wolfvision.net>
+Acked-by: Rob Herring <robh@kernel.org>
+Link: https://lore.kernel.org/r/20220310210352.451136-2-michael.riesch@wolfvision.net
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+---
+ Documentation/devicetree/bindings/arm/rockchip.yaml | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/arm/rockchip.yaml b/Documentation/devicetree/bindings/arm/rockchip.yaml
+index eece92f83a2d..efb0a9c4347b 100644
+--- a/Documentation/devicetree/bindings/arm/rockchip.yaml
++++ b/Documentation/devicetree/bindings/arm/rockchip.yaml
+@@ -545,6 +545,11 @@ properties:
+           - const: radxa,rock2-square
+           - const: rockchip,rk3288
+ 
++      - description: Radxa ROCK3 Model A
++        items:
++          - const: radxa,rock3a
++          - const: rockchip,rk3568
++
+       - description: Rikomagic MK808 v1
+         items:
+           - const: rikomagic,mk808
+-- 
+2.35.1
+

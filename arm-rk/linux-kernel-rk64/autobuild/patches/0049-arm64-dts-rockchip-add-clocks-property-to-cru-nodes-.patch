@@ -1,0 +1,41 @@
+From 93e3a2dad011b37e2f5ab913f5b6f7a5ad16f394 Mon Sep 17 00:00:00 2001
+From: Johan Jonker <jbx6244@gmail.com>
+Date: Tue, 29 Mar 2022 17:07:42 +0200
+Subject: [PATCH 49/76] arm64: dts: rockchip: add clocks property to cru nodes
+ rk3399
+
+Add clocks property to rk3399 cru nodes to fix warnings like:
+'clocks' is a dependency of 'assigned-clocks'.
+
+Signed-off-by: Johan Jonker <jbx6244@gmail.com>
+Link: https://lore.kernel.org/r/20220329150742.22093-6-jbx6244@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+---
+ arch/arm64/boot/dts/rockchip/rk3399.dtsi | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399.dtsi b/arch/arm64/boot/dts/rockchip/rk3399.dtsi
+index 2d5972766f2d..1021c3302b30 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399.dtsi
+@@ -1419,6 +1419,8 @@ dmac_peri: dma-controller@ff6e0000 {
+ 	pmucru: clock-controller@ff750000 {
+ 		compatible = "rockchip,rk3399-pmucru";
+ 		reg = <0x0 0xff750000 0x0 0x1000>;
++		clocks = <&xin24m>;
++		clock-names = "xin24m";
+ 		rockchip,grf = <&pmugrf>;
+ 		#clock-cells = <1>;
+ 		#reset-cells = <1>;
+@@ -1429,6 +1431,8 @@ pmucru: clock-controller@ff750000 {
+ 	cru: clock-controller@ff760000 {
+ 		compatible = "rockchip,rk3399-cru";
+ 		reg = <0x0 0xff760000 0x0 0x1000>;
++		clocks = <&xin24m>;
++		clock-names = "xin24m";
+ 		rockchip,grf = <&grf>;
+ 		#clock-cells = <1>;
+ 		#reset-cells = <1>;
+-- 
+2.35.1
+

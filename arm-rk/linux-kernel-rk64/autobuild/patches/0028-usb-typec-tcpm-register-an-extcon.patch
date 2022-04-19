@@ -1,7 +1,7 @@
-From 44f810c718904f689929887b7a2ca55d99f55b84 Mon Sep 17 00:00:00 2001
+From 6237fe089b46b0dfea262aa30c47836ff09edc85 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Tue, 27 Jul 2021 00:05:01 +0800
-Subject: [PATCH 28/31] usb: typec: tcpm: register an extcon
+Subject: [PATCH 28/76] usb: typec: tcpm: register an extcon
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---
@@ -9,7 +9,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 126 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-index 5fce795b69c7f..f6851d6da4562 100644
+index 3bc2f4ebd1fe..039e26b8216b 100644
 --- a/drivers/usb/typec/tcpm/tcpm.c
 +++ b/drivers/usb/typec/tcpm/tcpm.c
 @@ -8,6 +8,7 @@
@@ -135,7 +135,7 @@ index 5fce795b69c7f..f6851d6da4562 100644
  }
  
  static int tcpm_set_polarity(struct tcpm_port *port,
-@@ -6332,7 +6411,7 @@ static enum hrtimer_restart send_discover_timer_handler(struct hrtimer *timer)
+@@ -6310,7 +6389,7 @@ static enum hrtimer_restart send_discover_timer_handler(struct hrtimer *timer)
  struct tcpm_port *tcpm_register_port(struct device *dev, struct tcpc_dev *tcpc)
  {
  	struct tcpm_port *port;
@@ -144,7 +144,7 @@ index 5fce795b69c7f..f6851d6da4562 100644
  
  	if (!dev || !tcpc ||
  	    !tcpc->get_vbus || !tcpc->set_cc || !tcpc->get_cc ||
-@@ -6415,6 +6494,47 @@ struct tcpm_port *tcpm_register_port(struct device *dev, struct tcpc_dev *tcpc)
+@@ -6393,6 +6472,47 @@ struct tcpm_port *tcpm_register_port(struct device *dev, struct tcpc_dev *tcpc)
  				     port->port_altmode, ALTMODE_DISCOVERY_MAX);
  	port->registered = true;
  
@@ -192,7 +192,7 @@ index 5fce795b69c7f..f6851d6da4562 100644
  	mutex_lock(&port->lock);
  	tcpm_init(port);
  	mutex_unlock(&port->lock);
-@@ -6422,6 +6542,10 @@ struct tcpm_port *tcpm_register_port(struct device *dev, struct tcpc_dev *tcpc)
+@@ -6400,6 +6520,10 @@ struct tcpm_port *tcpm_register_port(struct device *dev, struct tcpc_dev *tcpc)
  	tcpm_log(port, "%s: registered", dev_name(dev));
  	return port;
  
@@ -204,5 +204,5 @@ index 5fce795b69c7f..f6851d6da4562 100644
  	usb_role_switch_put(port->role_sw);
  out_destroy_wq:
 -- 
-2.30.2
+2.35.1
 
