@@ -1,0 +1,7 @@
+export UBOOT_BOARD=rk3568
+export LINUX_BOARD=rk3566-quartz64-a
+
+unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
+
+. autobuild/build-common/build-atf
+. autobuild/build-common/rkuboot-build-rkddr

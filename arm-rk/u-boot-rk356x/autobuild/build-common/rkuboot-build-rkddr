@@ -1,0 +1,17 @@
+abinfo "Building ..."
+if [ ! -e "$SRCDIR"/autobuild/aosc-customization.config.fragment ]; then
+	make ${UBOOT_BOARD}_defconfig
+else
+	sh "$SRCDIR"/scripts/kconfig/merge_config.sh "$SRCDIR"/configs/${UBOOT_BOARD}_defconfig "$SRCDIR"/autobuild/aosc-customization.config.fragment
+fi
+make
+make u-boot.itb
+
+abinfo "Generating idbloader.img ..."
+./tools/mkimage -n rk3568 -T rksd -d autobuild/ddr.bin:spl/u-boot-spl.bin idbloader.img
+
+abinfo "Installing ..."
+mkdir -p "$PKGDIR"/usr/lib/u-boot-${LINUX_BOARD}
+cp -v u-boot u-boot.img u-boot.itb spl/u-boot-spl.bin idbloader.img "$PKGDIR"/usr/lib/u-boot-${LINUX_BOARD}
+mkdir -p "$PKGDIR"/usr/lib/aosc-os-arm64-rockchip-boot/
+ln -sfv ../u-boot-${LINUX_BOARD} "$PKGDIR"/usr/lib/aosc-os-arm64-rockchip-boot/

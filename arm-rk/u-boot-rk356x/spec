@@ -1,0 +1,3 @@
+VER=2017.09+git20220126
+SRCS="git::commit=693c4cd017e57a6af8e471494be5e8780c041b08::https://github.com/radxa/u-boot.git"
+CHKSUMS="SKIP"
