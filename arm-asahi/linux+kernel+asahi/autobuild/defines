@@ -1,6 +1,6 @@
 PKGNAME=linux+kernel+asahi
 PKGSEC=kernel
-PKGDEP="linux-kernel-asahi-5.17.2"
+PKGDEP="linux-kernel-asahi-5.17.4"
 PKGDES="Downstream branch of the Linux kernel for Apple Silicon"
 
 PKGREP="linux+image+new linux+header+new linux+image linux+header linux+image+old linux+header+old"
