@@ -16,8 +16,8 @@ for i in `find "$SRCDIR"/arch/arm64/boot/dts/ -name '*.dtb'`; do
     install -Dvm644 $i -t \
         "$PKGDIR"/boot/dtb/$version$LOCALNAME/"$(basename $(dirname $i))"
 done
-install -Dvm644 "$SRCDIR"/arch/arm64/boot/Image{,.gz} \
-    "$PKGDIR"/boot/vmlinux-$version$LOCALNAME
+install -Dvm644 "$SRCDIR"/arch/arm64/boot/Image.gz \
+    "$PKGDIR"/boot/vmlinuz-$version$LOCALNAME
 
 export ARCH=$OLDARCH
 rm -rf "$PKGDIR"/usr/lib/firmware
