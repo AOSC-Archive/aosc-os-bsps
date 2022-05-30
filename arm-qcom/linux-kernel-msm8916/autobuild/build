@@ -1,0 +1,28 @@
+OLDARCH=$ARCH
+unset ARCH
+cp -v autobuild/config "$SRCDIR"/.config
+SRCARCH=arm64
+
+. autobuild/build-common/set-var
+
+make
+make INSTALL_MOD_PATH="$PKGDIR" modules_install
+
+mkdir -p "$PKGDIR"/usr
+mv "$PKGDIR"/lib "$PKGDIR"/usr/lib
+
+mkdir -pv "$PKGDIR"/boot
+for i in `find "$SRCDIR"/arch/arm64/boot/dts/ -name '*.dtb'`; do
+    install -Dvm644 $i -t \
+        "$PKGDIR"/boot/dtb/$version$LOCALNAME/"$(basename $(dirname $i))"
+done
+install -Dvm644 "$SRCDIR"/arch/arm64/boot/Image{,.gz} \
+    "$PKGDIR"/boot/vmlinux-$version$LOCALNAME
+
+export ARCH=$OLDARCH
+rm -rf "$PKGDIR"/usr/lib/firmware
+
+headers_extra=-msm8916
+
+. autobuild/build-common/ext-hdr
+. autobuild/build-common/gen-scripts
