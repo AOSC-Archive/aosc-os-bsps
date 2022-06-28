@@ -1,7 +1,7 @@
-From 9cd44d5f7bd26309489d71609b2a06a933a662d6 Mon Sep 17 00:00:00 2001
+From 187a1ffe9715df0f9abb695f2c87ca3639d71e6b Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 3 Feb 2022 00:51:31 +0800
-Subject: [PATCH 30/36] ft8716 panel
+Subject: [PATCH 06/15] ft8716 panel
 
 TODO: proper model name
 
@@ -14,10 +14,10 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  create mode 100644 drivers/gpu/drm/panel/panel-ft8716.c
 
 diff --git a/drivers/gpu/drm/panel/Kconfig b/drivers/gpu/drm/panel/Kconfig
-index 166bd4ae9cac..a059a210f5f7 100644
+index faf140c56257..b1d8086220c8 100644
 --- a/drivers/gpu/drm/panel/Kconfig
 +++ b/drivers/gpu/drm/panel/Kconfig
-@@ -129,6 +129,15 @@ config DRM_PANEL_FEIYANG_FY07024DI26A30D
+@@ -142,6 +142,15 @@ config DRM_PANEL_FEIYANG_FY07024DI26A30D
  	  Say Y if you want to enable support for panels based on the
  	  Feiyang FY07024DI26A30-D MIPI-DSI interface.
  
@@ -34,10 +34,10 @@ index 166bd4ae9cac..a059a210f5f7 100644
  	tristate "HIMAX HX8394 MIPI-DSI LCD panel"
  	depends on OF
 diff --git a/drivers/gpu/drm/panel/Makefile b/drivers/gpu/drm/panel/Makefile
-index 486926c69806..e09340462f7a 100644
+index 656bdb1c6ae7..9b735da5edb8 100644
 --- a/drivers/gpu/drm/panel/Makefile
 +++ b/drivers/gpu/drm/panel/Makefile
-@@ -11,6 +11,7 @@ obj-$(CONFIG_DRM_PANEL_EDP) += panel-edp.o
+@@ -12,6 +12,7 @@ obj-$(CONFIG_DRM_PANEL_EDP) += panel-edp.o
  obj-$(CONFIG_DRM_PANEL_ELIDA_KD35T133) += panel-elida-kd35t133.o
  obj-$(CONFIG_DRM_PANEL_FEIXIN_K101_IM2BA02) += panel-feixin-k101-im2ba02.o
  obj-$(CONFIG_DRM_PANEL_FEIYANG_FY07024DI26A30D) += panel-feiyang-fy07024di26a30d.o
@@ -660,5 +660,5 @@ index 000000000000..bb7c6f91287d
 +MODULE_DESCRIPTION("FT8716 Pocket-PC MIPI-DSI LCD panel");
 +MODULE_LICENSE("GPL");
 -- 
-2.30.2
+2.36.0
 

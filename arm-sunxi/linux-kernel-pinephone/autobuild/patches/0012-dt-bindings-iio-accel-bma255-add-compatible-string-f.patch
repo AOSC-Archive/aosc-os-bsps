@@ -1,0 +1,31 @@
+From 1914bb951f63d6ab363ed86b807dcf2a06fb75ea Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <uwu@icenowy.me>
+Date: Tue, 28 Jun 2022 17:36:04 +0800
+Subject: [PATCH 12/15] dt-bindings: iio: accel: bma255: add compatible string
+ for BMA223
+
+BMA223 is an accelerometer from Bosch that is quite similar to BMA222E
+(even with the same chip id).
+
+Add a compatible string for it.
+
+Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
+---
+ Documentation/devicetree/bindings/iio/accel/bosch,bma255.yaml | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Documentation/devicetree/bindings/iio/accel/bosch,bma255.yaml b/Documentation/devicetree/bindings/iio/accel/bosch,bma255.yaml
+index 478e75ae0885..72ee636ebe80 100644
+--- a/Documentation/devicetree/bindings/iio/accel/bosch,bma255.yaml
++++ b/Documentation/devicetree/bindings/iio/accel/bosch,bma255.yaml
+@@ -20,6 +20,7 @@ properties:
+       # bmc150-accel driver in Linux
+       - bosch,bma222
+       - bosch,bma222e
++      - bosch,bma223
+       - bosch,bma250e
+       - bosch,bma253
+       - bosch,bma254
+-- 
+2.36.0
+

@@ -1,7 +1,7 @@
-From 450b11b948cfcd12a0699c6d67b246ddc5992b22 Mon Sep 17 00:00:00 2001
+From 2895cc317b0394f9d9b1d9515b8945c4962cef42 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 3 Feb 2022 00:53:02 +0800
-Subject: [PATCH 32/36] mfd: axp20x: add charging LED cell for AXP803
+Subject: [PATCH 08/15] mfd: axp20x: add charging LED cell for AXP803
 
 AXP803 PMIC has a charging LED similar to the one in AXP813.
 
@@ -27,5 +27,5 @@ index f5347d010b7a..09eb66a4de27 100644
  	{	.name		= "axp20x-regulator" },
  };
 -- 
-2.30.2
+2.36.0
 

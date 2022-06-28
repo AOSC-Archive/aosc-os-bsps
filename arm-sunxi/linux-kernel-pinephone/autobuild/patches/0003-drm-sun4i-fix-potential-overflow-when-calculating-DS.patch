@@ -1,7 +1,7 @@
-From bd1ee4b35cded8234be7c63cb0ec955cb425745b Mon Sep 17 00:00:00 2001
+From 74ff92cc5a973f369af0349077fdd9e3e6bf17d9 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 9 Sep 2021 23:52:05 +0800
-Subject: [PATCH 27/36] drm: sun4i: fix potential overflow when calculating DSI
+Subject: [PATCH 03/15] drm: sun4i: fix potential overflow when calculating DSI
  dotclock rate
 
 When calculating DSI dotclock rate, the clock rate is first multiplied
@@ -35,5 +35,5 @@ index 38878074b734..aca2a9b08c90 100644
          /* Set the resolution */
  	regmap_write(tcon->regs, SUN4I_TCON0_BASIC0_REG,
 -- 
-2.30.2
+2.36.0
 

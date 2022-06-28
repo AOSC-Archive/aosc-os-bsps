@@ -1,7 +1,7 @@
-From db2cb31f92f274b3cd6d9b88a2f06bb051dc66ac Mon Sep 17 00:00:00 2001
+From cbb6ae5122a72c66c506554e6e66689f8e9fe0a9 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 9 Nov 2020 13:09:17 +0800
-Subject: [PATCH 25/36] clk: sunxi-ng: a64: disable mux and pll notifiers for
+Subject: [PATCH 02/15] clk: sunxi-ng: a64: disable mux and pll notifiers for
  CPUX reclocking
 
 After the dividers of PLL-CPUX disabled, there's no need for PLL-CPUX to
@@ -19,7 +19,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 21 deletions(-)
 
 diff --git a/drivers/clk/sunxi-ng/ccu-sun50i-a64.c b/drivers/clk/sunxi-ng/ccu-sun50i-a64.c
-index 191c1e77f75f..43a17f3d7c3a 100644
+index cbc0a81121d9..2cf218241974 100644
 --- a/drivers/clk/sunxi-ng/ccu-sun50i-a64.c
 +++ b/drivers/clk/sunxi-ng/ccu-sun50i-a64.c
 @@ -955,20 +955,6 @@ static const struct sunxi_ccu_desc sun50i_a64_ccu_desc = {
@@ -58,5 +58,5 @@ index 191c1e77f75f..43a17f3d7c3a 100644
  	sun50i_a64_pll_video0_reset_tcon0_nb.target_clk = tcon0_clk.common.hw.clk;
  	ccu_rate_reset_notifier_register(&sun50i_a64_pll_video0_reset_tcon0_nb);
 -- 
-2.30.2
+2.36.0
 

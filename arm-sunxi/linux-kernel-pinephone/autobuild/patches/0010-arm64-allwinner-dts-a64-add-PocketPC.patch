@@ -1,7 +1,7 @@
-From 1e9025d0fa07108ca918e3775eb93f0c09a5900a Mon Sep 17 00:00:00 2001
+From 76a74cfc2a8a869ab925bc5855da9d0113e10f07 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 3 Feb 2022 00:54:30 +0800
-Subject: [PATCH 34/36] arm64: allwinner: dts: a64: add PocketPC
+Subject: [PATCH 10/15] arm64: allwinner: dts: a64: add PocketPC
 
 Co-authored-by: rampageservices <vonneh@gmail.com>
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
@@ -12,7 +12,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  create mode 100644 arch/arm64/boot/dts/allwinner/sun50i-a64-pocket-pc.dts
 
 diff --git a/arch/arm64/boot/dts/allwinner/Makefile b/arch/arm64/boot/dts/allwinner/Makefile
-index a96d9d2d8dd8..45b578c4cee0 100644
+index 8fa5c060a4fe..d5ba0b1cdd50 100644
 --- a/arch/arm64/boot/dts/allwinner/Makefile
 +++ b/arch/arm64/boot/dts/allwinner/Makefile
 @@ -14,6 +14,7 @@ dtb-$(CONFIG_ARCH_SUNXI) += sun50i-a64-pinephone-1.1.dtb
@@ -518,5 +518,5 @@ index 000000000000..d309fc49a50f
 +	};
 +};
 -- 
-2.30.2
+2.36.0
 

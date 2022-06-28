@@ -1,7 +1,7 @@
-From ebe8c47943be0f51984af53dd4518c40d2c43edc Mon Sep 17 00:00:00 2001
+From c808c741ad988d99bda966398b94eb436b6c82bc Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 3 Feb 2022 00:53:38 +0800
-Subject: [PATCH 33/36] arm64: allwinner: dts: axp803: add charging LED cell DT
+Subject: [PATCH 09/15] arm64: allwinner: dts: axp803: add charging LED cell DT
  node
 
 As we added the charging LED cell to the MFD driver, add a corresponding
@@ -30,5 +30,5 @@ index 578ef368e2b4..2a37e1cea7ba 100644
  		/* Default work frequency for buck regulators */
  		x-powers,dcdc-freq = <3000>;
 -- 
-2.30.2
+2.36.0
 

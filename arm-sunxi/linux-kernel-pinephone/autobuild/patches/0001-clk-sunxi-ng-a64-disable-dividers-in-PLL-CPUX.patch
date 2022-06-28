@@ -1,7 +1,7 @@
-From 1a583212a8757e647e60bfa512421a03bffea94d Mon Sep 17 00:00:00 2001
+From 6d677e4d6a6432d605952261a33acafae41a5e65 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 9 Nov 2020 13:02:23 +0800
-Subject: [PATCH 24/36] clk: sunxi-ng: a64: disable dividers in PLL-CPUX
+Subject: [PATCH 01/15] clk: sunxi-ng: a64: disable dividers in PLL-CPUX
 
 According to the user manual, PLL-CPUX have two dividers, in which P is
 only allowed when the desired rate is less than 240MHz. As the CCU
@@ -26,7 +26,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 77 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/clk/sunxi-ng/ccu-sun50i-a64.c b/drivers/clk/sunxi-ng/ccu-sun50i-a64.c
-index 1e82d2f99dfd..191c1e77f75f 100644
+index 761d505972d1..cbc0a81121d9 100644
 --- a/drivers/clk/sunxi-ng/ccu-sun50i-a64.c
 +++ b/drivers/clk/sunxi-ng/ccu-sun50i-a64.c
 @@ -4,6 +4,7 @@
@@ -35,7 +35,7 @@ index 1e82d2f99dfd..191c1e77f75f 100644
  #include <linux/clk-provider.h>
 +#include <linux/delay.h>
  #include <linux/io.h>
- #include <linux/of_address.h>
+ #include <linux/module.h>
  #include <linux/platform_device.h>
 @@ -23,13 +24,14 @@
  
@@ -142,5 +142,5 @@ index 1e82d2f99dfd..191c1e77f75f 100644
  	if (ret)
  		return ret;
 -- 
-2.30.2
+2.36.0
 

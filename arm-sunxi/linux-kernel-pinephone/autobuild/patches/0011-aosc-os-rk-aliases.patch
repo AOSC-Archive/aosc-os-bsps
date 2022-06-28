@@ -1,7 +1,7 @@
-From 20178ef77fbf384af2cf950addb63ecdd4cf001d Mon Sep 17 00:00:00 2001
+From 47b2ab5277375048ed287da4db5d077f3daaced2 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 31 Jan 2022 09:52:59 +0800
-Subject: [PATCH 35/36] aosc os rk aliases
+Subject: [PATCH 11/15] aosc os rk aliases
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
 ---
@@ -9,7 +9,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
-index 932658ab685f..9494dfa5ce72 100644
+index 182e042a15ba..dfd0156a424e 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
 +++ b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
 @@ -18,9 +18,9 @@ / {
@@ -26,5 +26,5 @@ index 932658ab685f..9494dfa5ce72 100644
  
  	chosen {
 -- 
-2.30.2
+2.36.0
 

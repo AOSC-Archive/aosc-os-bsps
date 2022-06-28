@@ -1,7 +1,7 @@
-From b3e2ded70ae6ed848c34c112ed1a15dac35255ee Mon Sep 17 00:00:00 2001
+From 6fb651edcf3c20ead5cc0c73287c698e4f30e942 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 3 Feb 2022 00:47:59 +0800
-Subject: [PATCH 28/36] dt-bindings: edt-ft5x06: add compatible string for
+Subject: [PATCH 04/15] dt-bindings: edt-ft5x06: add compatible string for
  FT8716 touch func
 
 Focaltech FT8716 is a LCD controller + touchscreen controller combo
@@ -28,5 +28,5 @@ index 2e8da7470513..5389ecb5fc5e 100644
    reg:
      maxItems: 1
 -- 
-2.30.2
+2.36.0
 

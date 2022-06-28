@@ -1,7 +1,7 @@
-From 78adb18cdc26095dc92b8e034da715698b5d961f Mon Sep 17 00:00:00 2001
+From 594ef424e4919492591d147602bb2951483def72 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 3 Feb 2022 00:52:00 +0800
-Subject: [PATCH 31/36] dt-bindings: leds: leds-axp20x: add compatible for
+Subject: [PATCH 07/15] dt-bindings: leds: leds-axp20x: add compatible for
  AXP803
 
 AXP803 is quite similar to AXP813 as of the PMIC part.
@@ -15,7 +15,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/Documentation/devicetree/bindings/leds/leds-axp20x.yaml b/Documentation/devicetree/bindings/leds/leds-axp20x.yaml
-index 79282d55764b..e54fb782cbd6 100644
+index 110edae82204..95f69e3b54a9 100644
 --- a/Documentation/devicetree/bindings/leds/leds-axp20x.yaml
 +++ b/Documentation/devicetree/bindings/leds/leds-axp20x.yaml
 @@ -18,7 +18,11 @@ description: |
@@ -32,5 +32,5 @@ index 79282d55764b..e54fb782cbd6 100644
  required:
    - compatible
 -- 
-2.30.2
+2.36.0
 

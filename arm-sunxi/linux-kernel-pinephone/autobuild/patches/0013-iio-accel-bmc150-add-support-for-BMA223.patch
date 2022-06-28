@@ -1,0 +1,81 @@
+From 7fc3fa21fe17eca2b6b335e0b375948bf2eaa31f Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <uwu@icenowy.me>
+Date: Tue, 28 Jun 2022 17:37:17 +0800
+Subject: [PATCH 13/15] iio: accel: bmc150: add support for BMA223
+
+BMA223 is an accelerometer that is quite similar with BMA222E (even the
+chip id is the same).
+
+Add support for it by adding probing-related IDs.
+
+Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
+---
+ drivers/iio/accel/bmc150-accel-core.c | 2 +-
+ drivers/iio/accel/bmc150-accel-i2c.c  | 3 +++
+ drivers/iio/accel/bmc150-accel-spi.c  | 2 ++
+ 3 files changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
+index 7516d7dde1af..6e8b782e00a3 100644
+--- a/drivers/iio/accel/bmc150-accel-core.c
++++ b/drivers/iio/accel/bmc150-accel-core.c
+@@ -1155,7 +1155,7 @@ static const struct bmc150_accel_chip_info bmc150_accel_chip_info_tbl[] = {
+ 				 {1225831, BMC150_ACCEL_DEF_RANGE_16G} },
+ 	},
+ 	{
+-		.name = "BMA222E",
++		.name = "BMA222E/BMA223",
+ 		.chip_id = 0xF8,
+ 		.channels = bma222e_accel_channels,
+ 		.num_channels = ARRAY_SIZE(bma222e_accel_channels),
+diff --git a/drivers/iio/accel/bmc150-accel-i2c.c b/drivers/iio/accel/bmc150-accel-i2c.c
+index dff4d7dd101c..2b686fa95af7 100644
+--- a/drivers/iio/accel/bmc150-accel-i2c.c
++++ b/drivers/iio/accel/bmc150-accel-i2c.c
+@@ -223,6 +223,7 @@ static const struct acpi_device_id bmc150_accel_acpi_match[] = {
+ 	{"BMA0280"},
+ 	{"BMA222"},
+ 	{"BMA222E"},
++	{"BMA223"},
+ 	{"BMA250E"},
+ 	{"BMC150A"},
+ 	{"BMI055A"},
+@@ -236,6 +237,7 @@ MODULE_DEVICE_TABLE(acpi, bmc150_accel_acpi_match);
+ static const struct i2c_device_id bmc150_accel_id[] = {
+ 	{"bma222"},
+ 	{"bma222e"},
++	{"bma223"},
+ 	{"bma250e"},
+ 	{"bma253"},
+ 	{"bma254"},
+@@ -252,6 +254,7 @@ MODULE_DEVICE_TABLE(i2c, bmc150_accel_id);
+ static const struct of_device_id bmc150_accel_of_match[] = {
+ 	{ .compatible = "bosch,bma222" },
+ 	{ .compatible = "bosch,bma222e" },
++	{ .compatible = "bosch,bma223" },
+ 	{ .compatible = "bosch,bma250e" },
+ 	{ .compatible = "bosch,bma253" },
+ 	{ .compatible = "bosch,bma254" },
+diff --git a/drivers/iio/accel/bmc150-accel-spi.c b/drivers/iio/accel/bmc150-accel-spi.c
+index 921fb46be0b8..98727e432dea 100644
+--- a/drivers/iio/accel/bmc150-accel-spi.c
++++ b/drivers/iio/accel/bmc150-accel-spi.c
+@@ -45,6 +45,7 @@ static const struct acpi_device_id bmc150_accel_acpi_match[] = {
+ 	{"BMA0280"},
+ 	{"BMA222"},
+ 	{"BMA222E"},
++	{"BMA223"},
+ 	{"BMA250E"},
+ 	{"BMC150A"},
+ 	{"BMI055A"},
+@@ -56,6 +57,7 @@ MODULE_DEVICE_TABLE(acpi, bmc150_accel_acpi_match);
+ static const struct spi_device_id bmc150_accel_id[] = {
+ 	{"bma222"},
+ 	{"bma222e"},
++	{"bma223"},
+ 	{"bma250e"},
+ 	{"bma253"},
+ 	{"bma255"},
+-- 
+2.36.0
+

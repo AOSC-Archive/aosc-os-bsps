@@ -1,0 +1,41 @@
+From 753bf452b457f05e1e7213cb16efcd1b9e535fd6 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <uwu@icenowy.me>
+Date: Tue, 28 Jun 2022 18:44:11 +0800
+Subject: [PATCH 15/15] drm/panel: ilitek-ili9881c: fix error cleanup if
+ attaching failed
+
+The process of attaching the panel to the DSI host could return
+-EPROBE_DEFER that requests probe deferring, however currently the
+cleanup codepath of attaching error is missing, which lead to dangling
+pointer in DSI panel list when re-probing.
+
+Fix this by clean up the panel from the panel list when attaching fails.
+
+Fixes: 26aec25593c2 ("drm/panel: Add Ilitek ILI9881c panel driver")
+Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
+---
+ drivers/gpu/drm/panel/panel-ilitek-ili9881c.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/panel/panel-ilitek-ili9881c.c b/drivers/gpu/drm/panel/panel-ilitek-ili9881c.c
+index ba30d11547ad..1714f214bca0 100644
+--- a/drivers/gpu/drm/panel/panel-ilitek-ili9881c.c
++++ b/drivers/gpu/drm/panel/panel-ilitek-ili9881c.c
+@@ -908,7 +908,13 @@ static int ili9881c_dsi_probe(struct mipi_dsi_device *dsi)
+ 	dsi->format = MIPI_DSI_FMT_RGB888;
+ 	dsi->lanes = 4;
+ 
+-	return mipi_dsi_attach(dsi);
++	ret = mipi_dsi_attach(dsi);
++	if (ret) {
++		drm_panel_remove(&ctx->panel);
++		return ret;
++	}
++
++	return 0;
+ }
+ 
+ static int ili9881c_dsi_remove(struct mipi_dsi_device *dsi)
+-- 
+2.36.0
+

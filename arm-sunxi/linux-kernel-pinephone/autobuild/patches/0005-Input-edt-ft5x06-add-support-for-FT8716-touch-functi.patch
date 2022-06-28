@@ -1,7 +1,7 @@
-From 50b545b0cb665c88ed4b9bfa7c5ba8dde4fda4cf Mon Sep 17 00:00:00 2001
+From b4fcf869f89d593aedecbc2ada8226f178411909 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Thu, 3 Feb 2022 00:49:36 +0800
-Subject: [PATCH 29/36] Input: edt-ft5x06 - add support for FT8716 touch
+Subject: [PATCH 05/15] Input: edt-ft5x06 - add support for FT8716 touch
  function
 
 FT8716 is a LCD/touchscreen combo controller, with its touchscreen
@@ -27,5 +27,5 @@ index bb2e1cbffba7..8acb4a13a4d2 100644
  };
  MODULE_DEVICE_TABLE(of, edt_ft5x06_of_match);
 -- 
-2.30.2
+2.36.0
 
