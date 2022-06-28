@@ -1,0 +1,3 @@
+VER=0.4.3
+SRCS="git::commit=tags/${VER}::https://gitlab.com/mobian1/devices/eg25-manager.git"
+CHKSUMS="SKIP"

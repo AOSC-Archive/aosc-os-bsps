@@ -1,0 +1,4 @@
+PKGNAME=eg25-manager
+PKGSEC=admin
+PKGDEP="modemmanager libgpiod libusb glib"
+PKGDES="Manager daemon for Quectel EG25-G baseband on PinePhone series devices"
