@@ -1,0 +1,3 @@
+PKGNAME=qrtr
+PKGDES="Userspace reference for Linux kernel QRTR functionality (Qualcomm RouTeR)"
+PKGSEC=admin

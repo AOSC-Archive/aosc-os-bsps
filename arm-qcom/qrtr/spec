@@ -1,0 +1,3 @@
+VER=0.3+git20201208
+SRCS="git::commit=9dc7a88548c27983e06465d3fbba2ba27d4bc050::https://github.com/andersson/qrtr.git"
+CHKSUMS="SKIP"
