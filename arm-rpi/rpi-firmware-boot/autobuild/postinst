@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if ! grep -q "/boot/rpi" /etc/fstab; then
-  echo "/boot/rpi does not exist. You need to update files manually, which is installed to /usr/lib/rpi64-boot."
+  echo "/boot/rpi does not exist. You need to update files manually, which is installed to /usr/lib/rpi64/boot and /usr/lib/rpi64/kernel."
   exit 0
 fi
 
@@ -10,13 +10,8 @@ if ! mount -a; then
   exit 0
 fi
 
-if [ -e /boot/rpi/kernel8.img ]; then
-  echo "Copying new firmware..."
-  cp /usr/lib/rpi64/boot/*.{elf,bin,dat} /boot/rpi/
-else
-  echo "Copying kernel and firmware..."
-  cp -r /usr/lib/rpi64/boot/* /boot/rpi/
-fi
+echo "Copying new firmware..."
+cp /usr/lib/rpi64/boot/* /boot/rpi/
 
 if [ ! -e /boot/rpi/config.txt ]; then
   echo "Creating config.txt..."
