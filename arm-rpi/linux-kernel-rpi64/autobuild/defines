@@ -1,4 +1,4 @@
-PKGNAME="linux-kernel-rpi64-5.14.17"
+PKGNAME="linux-kernel-rpi64-5.18.9"
 PKGSEC=kernel
 BUILDDEP="bc dracut git"
 PKGDES="Raspberry Pi downstream kernel (Mainline branch)"
