@@ -45,7 +45,7 @@ cp -v arch/arm64/boot/Image "$PKGDIR/usr/lib/rpi64/kernel/kernel8.img"
 # Copies the dtbs and overlays.
 abinfo "Coping new device tree and overlays..."
 cp -v arch/arm64/boot/dts/broadcom/*.dtb "$PKGDIR/usr/lib/rpi64/kernel/"
-cp -rv arch/arm64/boot/dts/overlays/*.dtb* "$PKGDIR/usr/lib/rpi64/kernel/overlays"
+cp -rv arch/arm64/boot/dts/overlays/*.dtb* "$PKGDIR/usr/lib/rpi64/kernel/overlays/"
 
 export ARCH=$OLDARCH
 rm -rf "$PKGDIR"/usr/lib/firmware
