@@ -14,7 +14,7 @@ fi
 
 if [ -e /boot/rpi/kernel8.img ]; then
   echo "Copying new firmware..."
-  cp /usr/lib/rpi64/boot/*.{elf,bin,dat} /boot/rpi/
+  cp -r /usr/lib/rpi64/boot/* /boot/rpi/
 else
   echo "Copying kernel and firmware..."
   cp -r /usr/lib/rpi64/boot/* /boot/rpi/
