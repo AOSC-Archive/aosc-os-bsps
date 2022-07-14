@@ -18,7 +18,9 @@ if [ -e /boot/rpi/kernel8.img ]; then
 else
   echo "Copying kernel and firmware..."
   cp -r /usr/lib/rpi64/boot/* /boot/rpi/
-  cp -r /usr/lib/rpi64/kernel/* /boot/rpi/
+  if [ -e /usr/lib/rpi64/kernel/kernel8.img ]; then
+    cp -r /usr/lib/rpi64/kernel/* /boot/rpi/
+  fi
 fi
 
 if [ ! -e /boot/rpi/config.txt ]; then
@@ -34,5 +36,11 @@ fi
 if [ ! -e /boot/rpi/cmdline.txt ]; then
   PARTUUID="$(lsblk -x MOUNTPOINT -o MOUNTPOINT,PARTUUID | egrep '^/\s' | awk '{print $2}')"
   echo "Generating new cmdline.txt..."
-  echo -n "console=serial0,115200 console=tty1 root=PARTUUID=${PARTUUID} rw elevator=deadline fsck.repair=yes rootwait" > /boot/rpi/cmdline.txt
+  if [ ! "$PARTUUID" ]; then
+    echo "WARNING: Could not determine PARTUUID of your current root filesystem!"
+    echo "Falling back to default root device /dev/mmcblk0p2."
+    echo -n "console=serial0,115200 console=tty1 root=/dev/mmcblk0p2 rw elevator=deadline fsck.repair=yes rootwait" > /boot/rpi/cmdline.txt
+  else
+    echo -n "console=serial0,115200 console=tty1 root=PARTUUID=${PARTUUID} rw elevator=deadline fsck.repair=yes rootwait" > /boot/rpi/cmdline.txt
+  fi
 fi
