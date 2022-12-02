@@ -1,0 +1,8 @@
+PKGNAME=u-boot-hifive-unmatched-a00
+PKGDES="U-Boot for HiFive Unmatched board A00 revision"
+PKGSEC=embedded
+BUILDDEP="dtc swig"
+
+ABSTRIP=no
+ABELFDEP=no
+ABRPMAUTOPROVONLY=yes

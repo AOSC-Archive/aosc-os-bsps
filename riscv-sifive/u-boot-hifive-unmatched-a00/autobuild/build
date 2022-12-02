@@ -1,0 +1,14 @@
+UBOOT_BOARD=sifive_unmatched
+LINUX_BOARD=hifive-unmatched-a00
+
+unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
+
+ln -sv /usr/bin/ld.bfd ld
+export PATH="$PWD:$PATH"
+
+. autobuild/build-common/build-opensbi
+
+make ${UBOOT_BOARD}_defconfig
+make $ABMK
+mkdir -p "$PKGDIR"/usr/lib/u-boot-${LINUX_BOARD}
+cp "$SRCDIR"/{u-boot.itb,spl/u-boot-spl.bin} "$PKGDIR"/usr/lib/u-boot-${LINUX_BOARD}

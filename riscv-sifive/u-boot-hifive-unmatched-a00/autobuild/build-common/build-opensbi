@@ -1,0 +1,2 @@
+make -C "$SRCDIR"/../opensbi PLATFORM=generic $ABMK
+ln -sfv ../opensbi/build/platform/generic/firmware/fw_dynamic.bin "$SRCDIR"

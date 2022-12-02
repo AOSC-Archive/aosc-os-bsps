@@ -1,0 +1,7 @@
+VER=2023.01~rc2
+OPENSBI_VER=1.1
+SRCS="tbl::https://ftp.denx.de/pub/u-boot/u-boot-${VER/\~/-}.tar.bz2 \
+      git::rename=opensbi;commit=tags/v${OPENSBI_VER}::https://github.com/riscv-software-src/opensbi.git"
+CHKSUMS="sha256::99348211e02ebe704c78dd67ca56db94f56d6ac2af14e3c855a3720c368198db \
+         SKIP"
+SUBDIR="u-boot-${VER/\~/-}"
