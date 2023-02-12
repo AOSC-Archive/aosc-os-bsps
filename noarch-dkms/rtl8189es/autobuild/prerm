@@ -1,5 +1,0 @@
-unset ARCH
-
-DATE=20200214
-
-dkms remove rtl8189es/$DATE --all || true > /dev/null

@@ -1,6 +1,0 @@
-PKGNAME=rtl8189es
-PKGSEC=net
-PKGDES="DKMS driver for the Realtek RTL8189ES/ETV Wi-Fi chip"
-PKGDEP="dkms"
-
-ABHOST=noarch
