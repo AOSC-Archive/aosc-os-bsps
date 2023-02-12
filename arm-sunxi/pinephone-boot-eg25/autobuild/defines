@@ -1,4 +1,0 @@
-PKGNAME=pinephone-boot-eg25
-PKGDES="Script to boot up PinePhone EG25 modem when booting the system"
-PKGDEP="systemd"
-PKGSEC=admin
