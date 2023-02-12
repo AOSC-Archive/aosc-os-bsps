@@ -1,2 +1,0 @@
-mkdir -p $PKGDIR/usr/lib/aosc-os-arm64-sunxi-boot
-cp -r linux-* dtb-* u-boot-* $PKGDIR/usr/lib/aosc-os-arm64-sunxi-boot/

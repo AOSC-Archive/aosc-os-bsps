@@ -1,4 +1,0 @@
-#! /bin/bash
-if [ -e /usr/bin/aosc-arm-flasher ]; then
-	aosc-arm-flasher autoflash aosc-os-arm64-sunxi-boot
-fi
