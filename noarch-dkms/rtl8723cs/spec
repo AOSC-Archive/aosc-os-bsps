@@ -1,3 +1,0 @@
-VER=0+git20200902
-SRCS="git::commit=0fb0c240b0efb72a9c49872afcb847c5d1c7f243::https://github.com/Icenowy/rtl8723cs"
-CHKSUMS="SKIP"

@@ -1,5 +1,0 @@
-unset ARCH
-
-DATE=@DATE@
-
-dkms remove rtl8723cs/$DATE --all || true > /dev/null
