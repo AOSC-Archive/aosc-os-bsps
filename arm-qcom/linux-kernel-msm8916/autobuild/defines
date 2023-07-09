@@ -1,9 +1,11 @@
-PKGNAME=linux-kernel-msm8916-5.18.0
+PKGNAME=linux-kernel-msm8916-6.3.0
 PKGSEC=kernel
 PKGDEP=""
-BUILDDEP="bc dracut git"
-PKGDES="Linux Kernel version 5.18.0 optimized for Qualcomm MSM8x16/APQ8016 devices"
+BUILDDEP="bc dracut git kernel-build-common"
+PKGDES="Linux Kernel version 6.3.0 optimized for Qualcomm MSM8x16/APQ8016 devices"
 
 ABSTRIP=no
 ABELFDEP=no
 ABRPMAUTOPROVONLY=yes
+
+FAIL_ARCH="!(arm64)"

@@ -1,0 +1,5 @@
+abinfo "Converting the kernel to .gz format, which is preferred by Qualcomm Little Kernel ..."
+for i in "$PKGDIR"/boot/vmlinux*; do
+	gzip -n9 "$i"
+	mv "$i".gz "$(echo $i | sed 's/vmlinux/vmlinuz/')"
+done

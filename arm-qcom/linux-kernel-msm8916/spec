@@ -1,4 +1,3 @@
-VER=5.18.0
-REL=1
-SRCS="git::commit=tags/v5.18-msm8916::https://github.com/msm8916-mainline/linux"
+VER=6.3.0
+SRCS="git::commit=tags/v6.3-msm8916::https://github.com/msm8916-mainline/linux"
 CHKSUMS="SKIP"

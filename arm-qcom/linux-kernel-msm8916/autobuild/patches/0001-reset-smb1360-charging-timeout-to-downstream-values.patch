@@ -1,20 +1,8 @@
-From 1fa2d5a62e3563b2c57bfb458203d63dad38315d Mon Sep 17 00:00:00 2001
-From: Icenowy Zheng <uwu@icenowy.me>
-Date: Tue, 28 Jun 2022 01:23:11 +0800
-Subject: [PATCH] reset smb1360 charging timeout to downstream values
-
-Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
----
- arch/arm64/boot/dts/qcom/msm8916-alcatel-idol347.dts  | 2 +-
- arch/arm64/boot/dts/qcom/msm8916-longcheer-l8910.dts  | 2 +-
- arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts | 1 -
- 3 files changed, 2 insertions(+), 3 deletions(-)
-
 diff --git a/arch/arm64/boot/dts/qcom/msm8916-alcatel-idol347.dts b/arch/arm64/boot/dts/qcom/msm8916-alcatel-idol347.dts
-index 145c6b477218..33ea4f2aa6e5 100644
+index 52675328fe41..293ac92510cc 100644
 --- a/arch/arm64/boot/dts/qcom/msm8916-alcatel-idol347.dts
 +++ b/arch/arm64/boot/dts/qcom/msm8916-alcatel-idol347.dts
-@@ -111,7 +111,7 @@ charger: battery@14 {
+@@ -122,7 +122,7 @@ charger: battery@14 {
  
  		qcom,float-voltage-mv = <4350>;
  		qcom,iterm-ma = <75>;
@@ -24,10 +12,10 @@ index 145c6b477218..33ea4f2aa6e5 100644
  		qcom,chg-inhibit-disabled;
  
 diff --git a/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8910.dts b/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8910.dts
-index 36ee0e7b85e8..8ec7728c6b66 100644
+index 5edbad10c5a3..7b49658e6127 100644
 --- a/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8910.dts
 +++ b/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8910.dts
-@@ -158,7 +158,7 @@ charger: battery@14 {
+@@ -151,7 +151,7 @@ charger: battery@14 {
  
  		qcom,float-voltage-mv = <4400>;
  		qcom,iterm-ma = <100>;
@@ -37,10 +25,10 @@ index 36ee0e7b85e8..8ec7728c6b66 100644
  		qcom,chg-inhibit-disabled;
  
 diff --git a/arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts b/arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts
-index bbc97948cbef..f2b649348307 100644
+index 632904a4846f..b76fef7d4f55 100644
 --- a/arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts
 +++ b/arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts
-@@ -134,7 +134,6 @@ charger: battery@14 {
+@@ -143,7 +143,6 @@ charger: battery@14 {
  
  		qcom,float-voltage-mv = <4350>;
  		qcom,iterm-ma = <100>;
@@ -48,6 +36,3 @@ index bbc97948cbef..f2b649348307 100644
  		qcom,chg-inhibit-disabled;
  
  		qcom,fg-batt-capacity-mah = <0>; /* Set by bootloader */
--- 
-2.36.0
-
