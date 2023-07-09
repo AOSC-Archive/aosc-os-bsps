@@ -1,4 +1,5 @@
 PKGNAME=rmtfs
 PKGDES="Userspace implementation for Qualcomm Remote FS service"
 PKGSEC=admin
-PKGDEP=qrtr
+PKGDEP="qrtr"
+BUILDDEP="qmic"
