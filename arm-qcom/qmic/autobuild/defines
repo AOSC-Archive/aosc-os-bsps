@@ -1,0 +1,3 @@
+PKGNAME=qmic
+PKGDES="Compiler for the Qualcomm QMI IDL"
+PKGSEC=admin
