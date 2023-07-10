@@ -3,6 +3,8 @@ Description=Mount NON-HLOS image
 Requires=systemd-fsck@dev-disk-by\x2dpartlabel-modem.service
 After=systemd-fsck@dev-disk-by\x2dpartlabel-modem.service
 After=blockdev@dev-disk-by\x2dpartlabel-modem.target
+Before=modprobe@qcom_wcnss_pil.service
+Before=rmtfs.service
 
 [Mount]
 Where=/mnt/modem
