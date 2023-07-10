@@ -1,0 +1,7 @@
+PKGNAME=firmware-xiaomi-wt88047
+PKGDES="Firmware mount units and symlinks for Xiaomi Redmi 2 (wt88047)"
+PKGSEC=kernel
+ABHOST=noarch
+
+# a.k.a.
+PKGPROV=firmware-wingtech-wt88047

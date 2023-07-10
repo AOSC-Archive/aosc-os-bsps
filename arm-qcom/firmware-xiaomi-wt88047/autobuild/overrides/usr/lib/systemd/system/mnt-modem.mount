@@ -1,0 +1,11 @@
+[Unit]
+Description=Mount NON-HLOS image
+Requires=systemd-fsck@dev-disk-by\x2dpartlabel-modem.service
+After=systemd-fsck@dev-disk-by\x2dpartlabel-modem.service
+After=blockdev@dev-disk-by\x2dpartlabel-modem.target
+
+[Mount]
+Where=/mnt/modem
+What=/dev/disk/by-partlabel/modem
+Type=vfat
+Options=fmask=0077,dmask=0077

@@ -1,0 +1,11 @@
+[Unit]
+Description=Mount persistent storage
+Requires=systemd-fsck@dev-disk-by\x2dpartlabel-persist.service
+After=systemd-fsck@dev-disk-by\x2dpartlabel-persist.service
+After=blockdev@dev-disk-by\x2dpartlabel-persist.target
+
+[Mount]
+Where=/mnt/persist
+What=/dev/disk/by-partlabel/persist
+Type=ext4
+Options=ro
