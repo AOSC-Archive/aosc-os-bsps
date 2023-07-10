@@ -1,0 +1,10 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+[Unit]
+Description=Load Kernel Module qcom_wcnss_pil
+ConditionCapability=CAP_SYS_MODULE
+StartLimitIntervalSec=0
+
+[Service]
+Type=oneshot
+ExecStart=-/sbin/modprobe -aq qcom_wcnss_pil
