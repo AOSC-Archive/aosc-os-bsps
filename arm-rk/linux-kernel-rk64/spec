@@ -1,3 +1,3 @@
-VER=5.18.0~rc7
-SRCS="tbl::https://git.kernel.org/torvalds/t/linux-5.18-rc7.tar.gz"
-CHKSUMS="sha256::da477700e2a5e91ae5b0a6f5c70b2618aab07aa39dcfe78106b9d742df411a24"
+VER=6.1.49
+SRCS="tbl::https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-$VER.tar.xz"
+CHKSUMS="sha256::c9ea14231ca4ca6e3882a9339a8c3c414e4c91519d3e50af6822f47e99057a0f"

@@ -1,7 +1,7 @@
-From cde8c05991241a9aa3757d106cab9147f4586545 Mon Sep 17 00:00:00 2001
+From fffcc22ebd3c7a80d3781e9b85bf60f4bb25a7a7 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Kamil=20Trzci=C5=84ski?= <ayufan@ayufan.eu>
 Date: Fri, 10 Apr 2020 00:24:03 +0200
-Subject: [PATCH 09/76] ayufan: drm: rockchip: add support for modeline 32MHz
+Subject: [PATCH 09/33] ayufan: drm: rockchip: add support for modeline 32MHz
  (ex. `1024x600@43`)
 
 ---
@@ -10,7 +10,7 @@ Subject: [PATCH 09/76] ayufan: drm: rockchip: add support for modeline 32MHz
  2 files changed, 7 insertions(+)
 
 diff --git a/drivers/clk/rockchip/clk-rk3399.c b/drivers/clk/rockchip/clk-rk3399.c
-index 306910a3a0d3..2ae5767f83f2 100644
+index 9ebd6c451b3d..e132f0e4b5ec 100644
 --- a/drivers/clk/rockchip/clk-rk3399.c
 +++ b/drivers/clk/rockchip/clk-rk3399.c
 @@ -101,6 +101,7 @@ static struct rockchip_pll_rate_table rk3399_pll_rates[] = {
@@ -22,10 +22,10 @@ index 306910a3a0d3..2ae5767f83f2 100644
  	{ /* sentinel */ },
  };
 diff --git a/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c b/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
-index 8677c8271678..72c3fa6f70cd 100644
+index ae857bf8bd62..415e8fe251f3 100644
 --- a/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
 +++ b/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
-@@ -84,6 +84,12 @@ static const struct dw_hdmi_mpll_config rockchip_mpll_cfg[] = {
+@@ -96,6 +96,12 @@ static const struct dw_hdmi_mpll_config rockchip_mpll_cfg[] = {
  			{ 0x2153, 0x0000},
  			{ 0x40f3, 0x0000}
  		},
@@ -39,5 +39,5 @@ index 8677c8271678..72c3fa6f70cd 100644
  		36000000, {
  			{ 0x00b3, 0x0000},
 -- 
-2.35.1
+2.42.0
 

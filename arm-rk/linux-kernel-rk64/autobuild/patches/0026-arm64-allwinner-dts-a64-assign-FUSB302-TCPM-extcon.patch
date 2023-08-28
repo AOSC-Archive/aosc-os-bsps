@@ -1,0 +1,63 @@
+From 18b2a36bfe4a31a8a313cd1c749294cfbbe2c44a Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Tue, 27 Jul 2021 00:05:45 +0800
+Subject: [PATCH 26/33] arm64: allwinner: dts: a64: assign FUSB302 TCPM extcon
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ .../boot/dts/rockchip/rk3399-pinebook-pro.dts  | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+index 5f91a87eafc0..f19f8fb7533d 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+@@ -383,6 +383,11 @@ mains_charger: dc-charger {
+ 	};
+ };
+ 
++&cdn_dp {
++	extcon = <&fusb0>;
++	status = "okay";
++};
++
+ &cpu_b0 {
+ 	cpu-supply = <&vdd_cpu_b>;
+ };
+@@ -713,6 +718,17 @@ connector {
+ 				<PDO_FIXED(5000, 1400, PDO_FIXED_DUAL_ROLE | PDO_FIXED_DATA_SWAP | PDO_FIXED_USB_COMM)>;
+ 			try-power-role = "source";
+ 
++			altmodes {
++				#address-cells = <1>;
++				#size-cells = <0>;
++
++				displayport@1 {
++					reg = <1>;
++					svid = <0xff01>;
++					vdo = <0x001c0000>;
++				};
++			};
++
+ 			ports {
+ 				#address-cells = <1>;
+ 				#size-cells = <0>;
+@@ -996,6 +1012,7 @@ spiflash: flash@0 {
+ 
+ &tcphy0 {
+ 	status = "okay";
++	extcon = <&fusb0>;
+ };
+ 
+ &tcphy0_dp {
+@@ -1101,6 +1118,7 @@ &usb_host1_ohci {
+ 
+ &usbdrd3_0 {
+ 	status = "okay";
++	extcon = <&fusb0>;
+ };
+ 
+ &usbdrd_dwc3_0 {
+-- 
+2.42.0
+

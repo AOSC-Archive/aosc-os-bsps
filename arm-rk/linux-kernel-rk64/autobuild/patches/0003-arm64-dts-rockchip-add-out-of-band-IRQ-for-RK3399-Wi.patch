@@ -1,7 +1,7 @@
-From 04e3ff122d98bd52378a966c95dd0b256f6dd551 Mon Sep 17 00:00:00 2001
+From 2ee8b5a678356850814818df9800ef118d837935 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 30 Nov 2020 22:49:55 +0800
-Subject: [PATCH 03/76] arm64: dts: rockchip: add out-of-band IRQ for RK3399
+Subject: [PATCH 03/33] arm64: dts: rockchip: add out-of-band IRQ for RK3399
  Wi-Fi
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
@@ -10,7 +10,7 @@ Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
  1 file changed, 16 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
-index 4fe1fed1b7e5..b022b876eedb 100644
+index 56b519d4ee09..e726086cf5f0 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
 +++ b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
 @@ -911,6 +911,10 @@ bt_host_wake_pin: bt-host-wake-pin {
@@ -44,5 +44,5 @@ index 4fe1fed1b7e5..b022b876eedb 100644
  
  &sdhci {
 -- 
-2.35.1
+2.42.0
 

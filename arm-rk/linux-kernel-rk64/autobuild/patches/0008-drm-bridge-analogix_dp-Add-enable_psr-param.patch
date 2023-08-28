@@ -1,7 +1,7 @@
-From 3b22611f1a0af53ba401b62692e20a3d9a8ef6e8 Mon Sep 17 00:00:00 2001
+From bcf400ef571edb0d08197579f1a80ef60d62bf60 Mon Sep 17 00:00:00 2001
 From: Shawn Anastasio <shawn@anastas.io>
 Date: Thu, 25 Jun 2020 22:30:23 -0500
-Subject: [PATCH 08/76] drm/bridge: analogix_dp: Add enable_psr param
+Subject: [PATCH 08/33] drm/bridge: analogix_dp: Add enable_psr param
 
 Add a toggle to enable/disable PSR from the kernel commandline.
 This is useful in situations where PSR is supported by the hardware
@@ -14,10 +14,10 @@ Signed-off-by: Shawn Anastasio <shawn@anastas.io>
  1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-index eb590fb8e8d0..ac402cd41a58 100644
+index df9370e0ff23..7f5224105bef 100644
 --- a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
 +++ b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-@@ -35,6 +35,10 @@
+@@ -36,6 +36,10 @@
  
  static const bool verify_fast_training;
  
@@ -28,7 +28,7 @@ index eb590fb8e8d0..ac402cd41a58 100644
  struct bridge_init {
  	struct i2c_client *client;
  	struct device_node *node;
-@@ -979,7 +983,7 @@ static int analogix_dp_commit(struct analogix_dp_device *dp)
+@@ -980,7 +984,7 @@ static int analogix_dp_commit(struct analogix_dp_device *dp)
  	if (ret)
  		return ret;
  
@@ -38,5 +38,5 @@ index eb590fb8e8d0..ac402cd41a58 100644
  		if (ret)
  			return ret;
 -- 
-2.35.1
+2.42.0
 

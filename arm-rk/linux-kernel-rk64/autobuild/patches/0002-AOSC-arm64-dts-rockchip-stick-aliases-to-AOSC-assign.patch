@@ -1,7 +1,7 @@
-From 00d5b654447feaae44a32d17e7c207a8e5ca38b1 Mon Sep 17 00:00:00 2001
+From 344c10ba1679cb40ff3ec91f38c5fb015a3c5638 Mon Sep 17 00:00:00 2001
 From: Icenowy Zheng <icenowy@aosc.io>
 Date: Mon, 30 Nov 2020 22:05:28 +0800
-Subject: [PATCH 02/76] AOSC: arm64: dts: rockchip: stick aliases to AOSC
+Subject: [PATCH 02/33] AOSC: arm64: dts: rockchip: stick aliases to AOSC
  assignment
 
 Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
@@ -70,7 +70,7 @@ index 3429e124d95a..3286eb8258d8 100644
  
  	vcc5v0_sys: vcc5v0-sys {
 diff --git a/arch/arm64/boot/dts/rockchip/px30-engicam-px30-core.dtsi b/arch/arm64/boot/dts/rockchip/px30-engicam-px30-core.dtsi
-index 7249871530ab..4b413b91164b 100644
+index 5eecbefa8a33..c9b93fa7b5b7 100644
 --- a/arch/arm64/boot/dts/rockchip/px30-engicam-px30-core.dtsi
 +++ b/arch/arm64/boot/dts/rockchip/px30-engicam-px30-core.dtsi
 @@ -13,7 +13,6 @@ / {
@@ -82,7 +82,7 @@ index 7249871530ab..4b413b91164b 100644
  };
  
 diff --git a/arch/arm64/boot/dts/rockchip/px30-evb.dts b/arch/arm64/boot/dts/rockchip/px30-evb.dts
-index 848bc39cf86a..e5d1cdc58b6f 100644
+index c1bbd555f5f5..384c70931ff5 100644
 --- a/arch/arm64/boot/dts/rockchip/px30-evb.dts
 +++ b/arch/arm64/boot/dts/rockchip/px30-evb.dts
 @@ -14,9 +14,6 @@ / {
@@ -96,7 +96,7 @@ index 848bc39cf86a..e5d1cdc58b6f 100644
  
  	chosen {
 diff --git a/arch/arm64/boot/dts/rockchip/rk3308-roc-cc.dts b/arch/arm64/boot/dts/rockchip/rk3308-roc-cc.dts
-index ea6820902ede..c26e605f00ab 100644
+index 7ea48167747c..3c6254b2a2ea 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3308-roc-cc.dts
 +++ b/arch/arm64/boot/dts/rockchip/rk3308-roc-cc.dts
 @@ -11,8 +11,6 @@ / {
@@ -109,7 +109,7 @@ index ea6820902ede..c26e605f00ab 100644
  
  	chosen {
 diff --git a/arch/arm64/boot/dts/rockchip/rk3318-a95x-z2.dts b/arch/arm64/boot/dts/rockchip/rk3318-a95x-z2.dts
-index 43c928ac98f0..6973ccd036d4 100644
+index 1deef53a4c94..43280c48876a 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3318-a95x-z2.dts
 +++ b/arch/arm64/boot/dts/rockchip/rk3318-a95x-z2.dts
 @@ -9,9 +9,6 @@ / {
@@ -123,7 +123,7 @@ index 43c928ac98f0..6973ccd036d4 100644
  
  	chosen {
 diff --git a/arch/arm64/boot/dts/rockchip/rk3326-odroid-go2.dts b/arch/arm64/boot/dts/rockchip/rk3326-odroid-go2.dts
-index ea0695b51ecd..b92052ee927a 100644
+index 72899a714310..89f7d0e05414 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3326-odroid-go2.dts
 +++ b/arch/arm64/boot/dts/rockchip/rk3326-odroid-go2.dts
 @@ -15,7 +15,6 @@ / {
@@ -162,7 +162,7 @@ index ff6b466e0e07..afc9024c3f2e 100644
  
  	chosen {
 diff --git a/arch/arm64/boot/dts/rockchip/rk3328-nanopi-r2s.dts b/arch/arm64/boot/dts/rockchip/rk3328-nanopi-r2s.dts
-index 3857d487ab84..ac3520998f86 100644
+index 1445b879ac7a..3b680ad409c8 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3328-nanopi-r2s.dts
 +++ b/arch/arm64/boot/dts/rockchip/rk3328-nanopi-r2s.dts
 @@ -15,7 +15,6 @@ / {
@@ -174,7 +174,7 @@ index 3857d487ab84..ac3520998f86 100644
  
  	chosen {
 diff --git a/arch/arm64/boot/dts/rockchip/rk3328-roc-cc.dts b/arch/arm64/boot/dts/rockchip/rk3328-roc-cc.dts
-index aa22a0c22265..69c9d9aa509a 100644
+index 5d5d9574088c..2dddbc53e479 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3328-roc-cc.dts
 +++ b/arch/arm64/boot/dts/rockchip/rk3328-roc-cc.dts
 @@ -11,8 +11,6 @@ / {
@@ -213,7 +213,7 @@ index f69a38f42d2d..ddea3891f94d 100644
  
  	chosen {
 diff --git a/arch/arm64/boot/dts/rockchip/rk3328.dtsi b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
-index b822533dc7f1..6448739d85e5 100644
+index 49ae15708a0b..cc56573a408e 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3328.dtsi
 +++ b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
 @@ -27,6 +27,9 @@ aliases {
@@ -227,7 +227,7 @@ index b822533dc7f1..6448739d85e5 100644
  		ethernet1 = &gmac2phy;
  	};
 diff --git a/arch/arm64/boot/dts/rockchip/rk3368-evb.dtsi b/arch/arm64/boot/dts/rockchip/rk3368-evb.dtsi
-index 15d1fc541c38..6e57c6ca7646 100644
+index 083452c67711..e594a139aecb 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3368-evb.dtsi
 +++ b/arch/arm64/boot/dts/rockchip/rk3368-evb.dtsi
 @@ -9,7 +9,6 @@
@@ -239,7 +239,7 @@ index 15d1fc541c38..6e57c6ca7646 100644
  
  	chosen {
 diff --git a/arch/arm64/boot/dts/rockchip/rk3368-geekbox.dts b/arch/arm64/boot/dts/rockchip/rk3368-geekbox.dts
-index 62aa97a0b8c9..ff68707f40b6 100644
+index be06e6e64d18..bc5cc84e68b3 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3368-geekbox.dts
 +++ b/arch/arm64/boot/dts/rockchip/rk3368-geekbox.dts
 @@ -12,7 +12,6 @@ / {
@@ -275,7 +275,7 @@ index 5753e57fd716..da481058787d 100644
  
  	chosen {
 diff --git a/arch/arm64/boot/dts/rockchip/rk3368-orion-r68-meta.dts b/arch/arm64/boot/dts/rockchip/rk3368-orion-r68-meta.dts
-index 3ebe15e03cf4..7f79d30ce28a 100644
+index 81d1064fdb21..d4d6944e7d12 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3368-orion-r68-meta.dts
 +++ b/arch/arm64/boot/dts/rockchip/rk3368-orion-r68-meta.dts
 @@ -12,8 +12,6 @@ / {
@@ -288,7 +288,7 @@ index 3ebe15e03cf4..7f79d30ce28a 100644
  
  	chosen {
 diff --git a/arch/arm64/boot/dts/rockchip/rk3368-px5-evb.dts b/arch/arm64/boot/dts/rockchip/rk3368-px5-evb.dts
-index 5ccaa5f7a370..03dabec49424 100644
+index 29df84b81552..0ce1269d624c 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3368-px5-evb.dts
 +++ b/arch/arm64/boot/dts/rockchip/rk3368-px5-evb.dts
 @@ -12,8 +12,6 @@ / {
@@ -301,7 +301,7 @@ index 5ccaa5f7a370..03dabec49424 100644
  
  	chosen {
 diff --git a/arch/arm64/boot/dts/rockchip/rk3368-r88.dts b/arch/arm64/boot/dts/rockchip/rk3368-r88.dts
-index 959d3cc801f2..baa318610dd2 100644
+index 5589f3db6b36..d12050df2de9 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3368-r88.dts
 +++ b/arch/arm64/boot/dts/rockchip/rk3368-r88.dts
 @@ -12,8 +12,6 @@ / {
@@ -314,7 +314,7 @@ index 959d3cc801f2..baa318610dd2 100644
  
  	chosen {
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399-evb.dts b/arch/arm64/boot/dts/rockchip/rk3399-evb.dts
-index 7b717ebec8ff..5cb66b950ca6 100644
+index 3d1e126b553f..86ed5b9a3a30 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3399-evb.dts
 +++ b/arch/arm64/boot/dts/rockchip/rk3399-evb.dts
 @@ -12,7 +12,6 @@ / {
@@ -326,10 +326,10 @@ index 7b717ebec8ff..5cb66b950ca6 100644
  
  	backlight: backlight {
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399-firefly.dts b/arch/arm64/boot/dts/rockchip/rk3399-firefly.dts
-index c654b6b02f3f..157285d73f54 100644
+index c5db64f3e124..5533eb043f35 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3399-firefly.dts
 +++ b/arch/arm64/boot/dts/rockchip/rk3399-firefly.dts
-@@ -15,9 +15,6 @@ / {
+@@ -16,9 +16,6 @@ / {
  	compatible = "firefly,firefly-rk3399", "rockchip,rk3399";
  
  	aliases {
@@ -340,7 +340,7 @@ index c654b6b02f3f..157285d73f54 100644
  
  	chosen {
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399-gru.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-gru.dtsi
-index 162f08bca0d4..2c7fd96cd335 100644
+index 23bfba86daab..c3616622e1a9 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3399-gru.dtsi
 +++ b/arch/arm64/boot/dts/rockchip/rk3399-gru.dtsi
 @@ -11,8 +11,6 @@
@@ -353,10 +353,10 @@ index 162f08bca0d4..2c7fd96cd335 100644
  
  	chosen {
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399-hugsun-x99.dts b/arch/arm64/boot/dts/rockchip/rk3399-hugsun-x99.dts
-index bee45c17e2ca..2a551256f6cf 100644
+index 7af27e8216f1..e6772b15cc9b 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3399-hugsun-x99.dts
 +++ b/arch/arm64/boot/dts/rockchip/rk3399-hugsun-x99.dts
-@@ -10,9 +10,6 @@ / {
+@@ -11,9 +11,6 @@ / {
  	compatible = "hugsun,x99", "rockchip,rk3399";
  
  	aliases {
@@ -367,10 +367,10 @@ index bee45c17e2ca..2a551256f6cf 100644
  
  	chosen {
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399-khadas-edge.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-khadas-edge.dtsi
-index 7ba3ed24084b..03dc39e68587 100644
+index 9d9297bc5f04..8105e5231b12 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3399-khadas-edge.dtsi
 +++ b/arch/arm64/boot/dts/rockchip/rk3399-khadas-edge.dtsi
-@@ -12,9 +12,6 @@
+@@ -13,9 +13,6 @@
  
  / {
  	aliases {
@@ -394,10 +394,10 @@ index 1eb287a3f8c0..f47bab98b3d2 100644
  		spi2 = &spi2;
  		spi5 = &spi5;
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399-leez-p710.dts b/arch/arm64/boot/dts/rockchip/rk3399-leez-p710.dts
-index 5bbe74bed0ea..0b528ed5dcd4 100644
+index a21ac319f809..c776e3b0a363 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3399-leez-p710.dts
 +++ b/arch/arm64/boot/dts/rockchip/rk3399-leez-p710.dts
-@@ -14,9 +14,6 @@ / {
+@@ -15,9 +15,6 @@ / {
  	compatible = "leez,p710", "rockchip,rk3399";
  
  	aliases {
@@ -408,7 +408,7 @@ index 5bbe74bed0ea..0b528ed5dcd4 100644
  
  	chosen {
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399-nanopi4.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-nanopi4.dtsi
-index 8c0ff6c96e03..b9afecf37866 100644
+index b6e082f1f6d9..b7a17209c8f5 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3399-nanopi4.dtsi
 +++ b/arch/arm64/boot/dts/rockchip/rk3399-nanopi4.dtsi
 @@ -18,9 +18,6 @@
@@ -422,10 +422,10 @@ index 8c0ff6c96e03..b9afecf37866 100644
  
  	chosen {
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399-orangepi.dts b/arch/arm64/boot/dts/rockchip/rk3399-orangepi.dts
-index 9d3a718f66f6..d13f55ce2c56 100644
+index dba4d03bfc2b..0f9c34581708 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3399-orangepi.dts
 +++ b/arch/arm64/boot/dts/rockchip/rk3399-orangepi.dts
-@@ -16,9 +16,6 @@ / {
+@@ -17,9 +17,6 @@ / {
  	compatible = "rockchip,rk3399-orangepi", "rockchip,rk3399";
  
  	aliases {
@@ -436,7 +436,7 @@ index 9d3a718f66f6..d13f55ce2c56 100644
  
  	chosen {
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
-index d6b68d77d63a..4fe1fed1b7e5 100644
+index 194e48c755f6..56b519d4ee09 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
 +++ b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
 @@ -20,9 +20,6 @@ / {
@@ -450,7 +450,7 @@ index d6b68d77d63a..4fe1fed1b7e5 100644
  
  	chosen {
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts b/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts
-index 3ae5d727e367..644eba2fa4c5 100644
+index 115c14c0a3c6..1c55f5ea238e 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts
 +++ b/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts
 @@ -11,7 +11,6 @@ / {
@@ -462,7 +462,7 @@ index 3ae5d727e367..644eba2fa4c5 100644
  
  	chosen {
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-index b1ac3a89f259..d6f9c879e3be 100644
+index aa3e21bd6c8f..4bdde5e43a8c 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
 +++ b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
 @@ -9,7 +9,6 @@
@@ -486,7 +486,7 @@ index 9447c8724b65..e04eefccfb32 100644
  
  	/* MP8009 PoE PD */
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi
-index 0e45cc2d195b..88c7112c3c60 100644
+index bbf1e3f24585..b3cc8c623be5 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi
 +++ b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi
 @@ -14,8 +14,6 @@ / {
@@ -499,10 +499,10 @@ index 0e45cc2d195b..88c7112c3c60 100644
  
  	chosen {
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi
-index 401e1ae9d944..fd5378240a26 100644
+index 9bdc0b93001f..3080bf842837 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi
 +++ b/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi
-@@ -12,8 +12,6 @@
+@@ -13,8 +13,6 @@
  
  / {
  	aliases {
@@ -512,7 +512,7 @@ index 401e1ae9d944..fd5378240a26 100644
  
  	chosen {
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4b.dts b/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4b.dts
-index cf48746a3ad8..54f11edf290a 100644
+index 0806545922f5..7b26d028b1f8 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4b.dts
 +++ b/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4b.dts
 @@ -12,7 +12,6 @@ / {
@@ -524,7 +524,7 @@ index cf48746a3ad8..54f11edf290a 100644
  };
  
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4c.dts b/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4c.dts
-index 793d84833921..566953bab4a3 100644
+index 4053ba72618c..bb91bc357340 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4c.dts
 +++ b/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4c.dts
 @@ -13,7 +13,6 @@ / {
@@ -536,10 +536,10 @@ index 793d84833921..566953bab4a3 100644
  };
  
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399-rock960.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-rock960.dtsi
-index 25dc61c26a94..858f62849e0c 100644
+index 94e39ed63397..78dd536b2d15 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3399-rock960.dtsi
 +++ b/arch/arm64/boot/dts/rockchip/rk3399-rock960.dtsi
-@@ -10,9 +10,6 @@
+@@ -11,9 +11,6 @@
  
  / {
  	aliases {
@@ -550,7 +550,7 @@ index 25dc61c26a94..858f62849e0c 100644
  
  	sdio_pwrseq: sdio-pwrseq {
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi
-index 8df67b1305da..14f770621f10 100644
+index b16b69f94d6c..90cc2a555da9 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi
 +++ b/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi
 @@ -11,9 +11,6 @@
@@ -564,7 +564,7 @@ index 8df67b1305da..14f770621f10 100644
  
  	chosen {
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399-sapphire-excavator.dts b/arch/arm64/boot/dts/rockchip/rk3399-sapphire-excavator.dts
-index f6b2199a42bd..c20763030f66 100644
+index dbec2b7173a0..d1a4888ae037 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3399-sapphire-excavator.dts
 +++ b/arch/arm64/boot/dts/rockchip/rk3399-sapphire-excavator.dts
 @@ -11,7 +11,6 @@ / {
@@ -576,7 +576,7 @@ index f6b2199a42bd..c20763030f66 100644
  
  	adc-keys {
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399-sapphire.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-sapphire.dtsi
-index 2aa0fad8f893..6d425588c67f 100644
+index e6ac292ce645..c7d9b8275e7e 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3399-sapphire.dtsi
 +++ b/arch/arm64/boot/dts/rockchip/rk3399-sapphire.dtsi
 @@ -12,8 +12,6 @@ / {
@@ -589,7 +589,7 @@ index 2aa0fad8f893..6d425588c67f 100644
  
  	chosen {
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399.dtsi b/arch/arm64/boot/dts/rockchip/rk3399.dtsi
-index 080457a68e3c..03caa7f5c774 100644
+index 59858f2dc8b9..9b85ac0a00e6 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3399.dtsi
 +++ b/arch/arm64/boot/dts/rockchip/rk3399.dtsi
 @@ -34,6 +34,9 @@ aliases {
@@ -603,7 +603,7 @@ index 080457a68e3c..03caa7f5c774 100644
  
  	cpus {
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399pro-vmarc-som.dtsi b/arch/arm64/boot/dts/rockchip/rk3399pro-vmarc-som.dtsi
-index 01d1a75c8b4d..094c996ddcea 100644
+index bf9eb0405b62..a448a3930200 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3399pro-vmarc-som.dtsi
 +++ b/arch/arm64/boot/dts/rockchip/rk3399pro-vmarc-som.dtsi
 @@ -13,8 +13,6 @@ / {
@@ -616,7 +616,7 @@ index 01d1a75c8b4d..094c996ddcea 100644
  
  	vcc3v3_pcie: vcc-pcie-regulator {
 diff --git a/arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi b/arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi
-index fea748adfa90..a51be428a4fb 100644
+index 8d61f824c12d..375f6e3dd3ac 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi
 +++ b/arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi
 @@ -9,10 +9,6 @@
@@ -631,10 +631,10 @@ index fea748adfa90..a51be428a4fb 100644
  		stdout-path = "serial2:1500000n8";
  	};
 diff --git a/arch/arm64/boot/dts/rockchip/rk3566-quartz64-a.dts b/arch/arm64/boot/dts/rockchip/rk3566-quartz64-a.dts
-index dd7f4b9b686b..328d93cc04ef 100644
+index 25a8c781f4e7..56a6feb583c8 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3566-quartz64-a.dts
 +++ b/arch/arm64/boot/dts/rockchip/rk3566-quartz64-a.dts
-@@ -12,8 +12,6 @@ / {
+@@ -13,8 +13,6 @@ / {
  
  	aliases {
  		ethernet0 = &gmac1;
@@ -644,23 +644,23 @@ index dd7f4b9b686b..328d93cc04ef 100644
  
  	chosen: chosen {
 diff --git a/arch/arm64/boot/dts/rockchip/rk3568-bpi-r2-pro.dts b/arch/arm64/boot/dts/rockchip/rk3568-bpi-r2-pro.dts
-index a01886b467ed..953706bda8e4 100644
+index 26d7fda275ed..43525f00fa96 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3568-bpi-r2-pro.dts
 +++ b/arch/arm64/boot/dts/rockchip/rk3568-bpi-r2-pro.dts
-@@ -16,8 +16,6 @@ / {
- 
+@@ -18,8 +18,6 @@ / {
  	aliases {
  		ethernet0 = &gmac0;
+ 		ethernet1 = &gmac1;
 -		mmc0 = &sdmmc0;
 -		mmc1 = &sdhci;
  	};
  
  	chosen: chosen {
 diff --git a/arch/arm64/boot/dts/rockchip/rk3568-evb1-v10.dts b/arch/arm64/boot/dts/rockchip/rk3568-evb1-v10.dts
-index a794a0ea5c70..713abffb9f18 100644
+index 674792567fa6..9e2e4620fe02 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3568-evb1-v10.dts
 +++ b/arch/arm64/boot/dts/rockchip/rk3568-evb1-v10.dts
-@@ -17,8 +17,6 @@ / {
+@@ -18,8 +18,6 @@ / {
  	aliases {
  		ethernet0 = &gmac0;
  		ethernet1 = &gmac1;
@@ -670,7 +670,7 @@ index a794a0ea5c70..713abffb9f18 100644
  
  	chosen: chosen {
 diff --git a/arch/arm64/boot/dts/rockchip/rk356x.dtsi b/arch/arm64/boot/dts/rockchip/rk356x.dtsi
-index 7cdef800cb3c..c7fa6fa4bbcc 100644
+index 234b5bbda120..c4ee5b2de660 100644
 --- a/arch/arm64/boot/dts/rockchip/rk356x.dtsi
 +++ b/arch/arm64/boot/dts/rockchip/rk356x.dtsi
 @@ -43,6 +43,8 @@ aliases {
@@ -683,5 +683,5 @@ index 7cdef800cb3c..c7fa6fa4bbcc 100644
  
  	cpus {
 -- 
-2.35.1
+2.42.0
 

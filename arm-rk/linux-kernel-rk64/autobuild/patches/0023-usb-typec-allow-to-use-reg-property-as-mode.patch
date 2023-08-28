@@ -1,0 +1,49 @@
+From a3cc6b9d975e799260e01ac68da54b229af81be7 Mon Sep 17 00:00:00 2001
+From: Icenowy Zheng <icenowy@aosc.io>
+Date: Tue, 27 Jul 2021 00:03:59 +0800
+Subject: [PATCH 23/33] usb: typec: allow to use reg property as mode
+
+As newly introduced DT binding uses reg property to indicate the mode
+number, utilize it in the altmode populating code.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+---
+ drivers/usb/typec/class.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/usb/typec/class.c b/drivers/usb/typec/class.c
+index 3c3bab33e03a..2bfb99c12393 100644
+--- a/drivers/usb/typec/class.c
++++ b/drivers/usb/typec/class.c
+@@ -2111,7 +2111,7 @@ void typec_port_register_altmodes(struct typec_port *port,
+ 	struct typec_altmode_desc desc;
+ 	struct typec_altmode *alt;
+ 	size_t index = 0;
+-	u32 svid, vdo;
++	u32 svid, vdo, mode;
+ 	int ret;
+ 
+ 	altmodes_node = device_get_named_child_node(&port->dev, "altmodes");
+@@ -2133,6 +2133,10 @@ void typec_port_register_altmodes(struct typec_port *port,
+ 			continue;
+ 		}
+ 
++		ret = fwnode_property_read_u32(child, "reg", &mode);
++		if (ret)
++			mode = (u32)index + 1;
++
+ 		if (index >= n) {
+ 			dev_err(&port->dev, "Error not enough space for altmode %s\n",
+ 				fwnode_get_name(child));
+@@ -2141,7 +2145,7 @@ void typec_port_register_altmodes(struct typec_port *port,
+ 
+ 		desc.svid = svid;
+ 		desc.vdo = vdo;
+-		desc.mode = index + 1;
++		desc.mode = mode;
+ 		alt = typec_port_register_altmode(port, &desc);
+ 		if (IS_ERR(alt)) {
+ 			dev_err(&port->dev, "Error registering altmode %s\n",
+-- 
+2.42.0
+
