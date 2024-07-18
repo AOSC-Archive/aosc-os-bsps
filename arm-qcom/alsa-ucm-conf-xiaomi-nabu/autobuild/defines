@@ -1,0 +1,5 @@
+PKGNAME=alsa-ucm-conf-xiaomi-nabu
+PKGDES="Alsa UCM configurations for Xiaomi Pad 5 (nabu)"
+PKGSEC=sound
+ABHOST=noarch
+PKGDEP="alsa-ucm-conf"

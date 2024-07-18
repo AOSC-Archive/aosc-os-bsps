@@ -1,0 +1,3 @@
+VER=0.1
+SRCS="git::commit=322e638879428aa27ebf5be06ea55336e5265603::https://github.com/map220v/ubuntu-xiaomi-nabu.git"
+CHKSUMS="SKIP"
