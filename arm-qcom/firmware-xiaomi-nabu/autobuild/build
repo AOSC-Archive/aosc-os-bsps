@@ -1,0 +1,3 @@
+abinfo "Copying firmware files ..."
+mkdir -pv "${PKGDIR}"
+cp -rv "${SRCDIR}"/firmware-xiaomi-nabu/usr "${PKGDIR}"/usr

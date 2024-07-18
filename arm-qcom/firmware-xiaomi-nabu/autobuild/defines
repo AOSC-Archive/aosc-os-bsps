@@ -1,0 +1,5 @@
+PKGNAME=firmware-xiaomi-nabu
+PKGDES="Firmware binaries for Xiaomi Pad 5 (nabu)"
+PKGSEC=kernel
+ABHOST=noarch
+PKGCONFL=firmware-nonfree
